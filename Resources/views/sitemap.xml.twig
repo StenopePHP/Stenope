@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for url in sitemap %}
+        <url>
+            <loc>{{ url.location }}</loc>
+            {% if url.lastModified is defined %}<lastmod>{{ url.lastModified|date('c') }}</lastmod>{% endif %}
+            {% if url.priority is defined %}<priority>{{ url.priority  }}</priority>{% endif %}
+            <changefreq>{{ url.frequency|default('monthly')  }}</changefreq>
+        </url>
+    {% endfor %}
+</urlset>

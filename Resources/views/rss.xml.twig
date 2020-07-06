@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>{{ title }}</title>
+        <description>{{ description }}</description>
+        <language>{{ language|default(app.request.locale) }}</language>
+        <link>{{ link|default(canonical) }}</link>
+        <atom:link href="{{ link|default(canonical) }}" rel="self" type="application/rss+xml" />
+        {% if webmaster.email|default(null) and webmaster.name|default(null) %}
+            <webMaster>{{ webmaster.email }} ({{ webmaster.name }})</webMaster>
+        {% endif %}
+        {% set pubDate = pubDate|default((items|first).pubDate) %}
+        {% if pubDate %}
+            <pubDate>{{ pubDate|date(constant('DateTime::RFC2822')) }}</pubDate>
+        {% endif %}
+        {% if copyright|default(null) %}
+            <copyright>{{ copyright }}</copyright>
+        {% endif %}
+        {% if image|default(null) %}
+        <image>
+            <url>{{ image.url }}</url>
+            <title>{{ title|default(title) }}</title>
+            <link>{{ link|default(canonical) }}</link>
+            <description>{{ description }}</description>
+            <width>{{ image.width }}</width>
+            <height>{{ image.height }}</height>
+        </image>
+        {% endif %}
+        {% for item in items %}
+        <item>
+            <title>{{ item.title }}</title>
+            <link>{{ item.link }}</link>
+            <description>{{ item.description }}</description>
+            {% if item.guid|default(null) %}
+                <guid>{{ item.guid }}</guid>
+            {% endif %}
+            {% if item.pubDate|default(null) %}
+                <pubDate>{{ item.pubDate|date(constant('DateTime::RFC2822')) }}</pubDate>
+            {% endif %}
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
