@@ -22,7 +22,7 @@ lint-phpstan:
 	vendor/bin/phpstan analyse
 
 lint-twig:
-	bin/console lint:twig Resources/views
+	php bin/lint.twig.php Resources/views
 
 lint-yaml:
-	bin/console lint:yaml Resources/config
+	php bin/lint.yaml.php Resources/config
