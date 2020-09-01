@@ -1,3 +1,11 @@
+
+###########
+# Install #
+###########
+
+install:
+	composer install
+
 ########
 # Lint #
 ########
