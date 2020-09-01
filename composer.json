@@ -20,7 +20,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.2.9",
-        "erusev/parsedown": "^1.7",
+        "erusev/parsedown": "^1.7.4",
         "symfony/dom-crawler": "^5.1",
         "symfony/serializer": "^5.1",
         "symfony/asset": "^5.1",
