@@ -133,6 +133,8 @@ class Builder
      */
     public function build(bool $sitemap = true, bool $assets = true): void
     {
+        \set_error_handler([$this, 'onError']);
+
         $this->clear();
 
         $this->scanAllRoutes();
@@ -146,6 +148,8 @@ class Builder
         if ($assets) {
             $this->buildAssets();
         }
+
+        \restore_error_handler();
     }
 
     /**
@@ -245,7 +249,14 @@ class Builder
     private function buildUrl(string $url): void
     {
         $request = Request::create($url, 'GET');
-        $response = $this->httpKernel->handle($request);
+
+        try {
+            $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
+        } catch (\Throwable $exception) {
+            throw new \Exception(
+                sprintf('Could not build url "%s":%s%s', $url, \PHP_EOL, $exception), 0, $exception
+            );
+        }
 
         $this->httpKernel->terminate($request, $response);
         $this->entrypointLookup->reset();
@@ -285,5 +296,10 @@ class Builder
         }
 
         $this->files->dumpFile(sprintf('%s/%s', $directory, $file), $content);
+    }
+
+    public function onError(int $severity, string $message, ?string $file, ?int $line): bool
+    {
+        throw new \ErrorException($message, $severity, $severity, $file, $line);
     }
 }
