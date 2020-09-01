@@ -8,9 +8,7 @@
 
 namespace Content\Command;
 
-use App\Kernel;
 use Content\Builder;
-use Content\Builder\Sitemap;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,22 +29,11 @@ class BuildCommand extends Command
      */
     private $builder;
 
-    /**
-     * Sitemap (optional)
-     *
-     * @var Sitemap
-     */
-    private $sitemap;
-
-    public function __construct()
+    public function __construct(Builder $builder)
     {
         parent::__construct();
 
-        $httpKernel = new Kernel('production', true);
-
-        $httpKernel->boot();
-
-        $this->builder = $httpKernel->getContainer()->get(Builder::class);
+        $this->builder = $builder;
     }
 
     /**
