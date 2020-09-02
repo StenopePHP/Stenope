@@ -60,7 +60,13 @@ class ContentManager
         }
 
         if ($sorter = $this->getSortFunction($sortBy)) {
+            \set_error_handler(function (int $severity, string $message, ?string $file, ?int $line) use ($type): void {
+                throw new \ErrorException(sprintf('There was a problem sorting %s: %s', $type, $message), $severity, $severity, $file, $line);
+            });
+
             usort($contents, $sorter);
+
+            \restore_error_handler();
         }
 
         return $contents;
@@ -175,15 +181,6 @@ class ContentManager
         }
 
         return $this->cache['contents'][$path];
-    }
-
-    public function sortContent(array $contents, callable $sorter): void
-    {
-        if (!$sorter) {
-            return;
-        }
-
-        usort($contents, $sorter);
     }
 
     private function getSortFunction($sortBy): callable

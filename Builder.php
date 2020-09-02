@@ -133,8 +133,6 @@ class Builder
      */
     public function build(bool $sitemap = true, bool $assets = true): void
     {
-        \set_error_handler([$this, 'onError']);
-
         $this->clear();
 
         $this->scanAllRoutes();
@@ -148,8 +146,6 @@ class Builder
         if ($assets) {
             $this->buildAssets();
         }
-
-        \restore_error_handler();
     }
 
     /**
@@ -296,10 +292,5 @@ class Builder
         }
 
         $this->files->dumpFile(sprintf('%s/%s', $directory, $file), $content);
-    }
-
-    public function onError(int $severity, string $message, ?string $file, ?int $line): bool
-    {
-        throw new \ErrorException($message, $severity, $severity, $file, $line);
     }
 }
