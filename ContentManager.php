@@ -13,6 +13,7 @@ use Content\Behaviour\PropertyHandlerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -26,11 +27,11 @@ class ContentManager
     private array $handlers;
     private array $cache;
 
-    public function __construct(string $path, SerializerInterface $serializer, PropertyAccessorInterface $propertyAccessor)
+    public function __construct(string $path, SerializerInterface $serializer, PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->path = rtrim($path, '/');
         $this->serializer = $serializer;
-        $this->propertyAccessor = $propertyAccessor;
+        $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->files = new FileSystem();
         $this->providers = [];
         $this->handlers = [];
