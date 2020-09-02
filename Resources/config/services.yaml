@@ -58,5 +58,3 @@ services:
     Content\ContentManager:
         arguments:
             $path: '%kernel.project_dir%/data'
-            $denormalizers: []
-            $decoders: []
