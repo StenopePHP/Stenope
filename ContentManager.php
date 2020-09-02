@@ -27,7 +27,7 @@ class ContentManager
     private array $handlers;
     private array $cache;
 
-    public function __construct(string $path, SerializerInterface $serializer, PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(string $path, SerializerInterface $serializer, ?PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->path = rtrim($path, '/');
         $this->serializer = $serializer;
