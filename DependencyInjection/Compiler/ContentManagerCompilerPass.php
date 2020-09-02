@@ -21,7 +21,7 @@ class ContentManagerCompilerPass implements CompilerPassInterface
 
         // Content providers
         foreach ($container->findTaggedServiceIds('content.content_provider') as $id => $tags) {
-            $definition->addMethodCall('addProvider', [new Reference($id)]);
+            $definition->addMethodCall('addContentProvider', [new Reference($id)]);
         }
 
         // Property handlers

@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Build Command
@@ -99,13 +100,13 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln(sprintf('Building'));
+        $io = new SymfonyStyle($input, $output);
 
-        try {
-            $this->builder->build(!$input->getOption('no-sitemap'), !$input->getOption('no-expose'));
-        } catch (\Exception $exception) {
-            return Command::FAILURE;
-        }
+        $io->title('Building static site');
+
+        $this->builder->build(!$input->getOption('no-sitemap'), !$input->getOption('no-expose'));
+
+        $io->success('Done.');
 
         return Command::SUCCESS;
     }

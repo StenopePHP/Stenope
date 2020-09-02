@@ -40,7 +40,7 @@ class ContentManager
         ];
     }
 
-    public function addProvider(ContentProviderInterface $provider): void
+    public function addContentProvider(ContentProviderInterface $provider): void
     {
         $this->providers[] = $provider;
     }
@@ -60,7 +60,13 @@ class ContentManager
         }
 
         if ($sorter = $this->getSortFunction($sortBy)) {
+            \set_error_handler(function (int $severity, string $message, ?string $file, ?int $line) use ($type): void {
+                throw new \ErrorException(sprintf('There was a problem sorting %s: %s', $type, $message), $severity, $severity, $file, $line);
+            });
+
             usort($contents, $sorter);
+
+            \restore_error_handler();
         }
 
         return $contents;
@@ -76,11 +82,6 @@ class ContentManager
         }
 
         return $this->load($provider, $type, current(\iterator_to_array($files)));
-    }
-
-    public function addContentProvider(ContentProviderInterface $provider): void
-    {
-        $this->providers[] = $provider;
     }
 
     private function getProvider(string $type): ContentProviderInterface
@@ -177,19 +178,14 @@ class ContentManager
         return $this->cache['contents'][$path];
     }
 
-    public function sortContent(array $contents, callable $sorter): void
-    {
-        if (!$sorter) {
-            return;
-        }
-
-        usort($contents, $sorter);
-    }
-
     private function getSortFunction($sortBy): callable
     {
         if (!$sortBy) {
             return null;
+        }
+
+        if (\is_string($sortBy)) {
+            return $this->getSortFunction([$sortBy => true]);
         }
 
         if (\is_callable($sortBy)) {
@@ -210,10 +206,6 @@ class ContentManager
 
                 return ($valueA > $valueB) === $asc ? 1 : -1;
             };
-        }
-
-        if (\is_string($sortBy)) {
-            return $this->getSortFunction([$sortBy => true]);
         }
 
         throw new \Exception('Unknown sorter');
