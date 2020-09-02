@@ -40,7 +40,7 @@ class ContentManager
         ];
     }
 
-    public function addProvider(ContentProviderInterface $provider): void
+    public function addContentProvider(ContentProviderInterface $provider): void
     {
         $this->providers[] = $provider;
     }
@@ -82,11 +82,6 @@ class ContentManager
         }
 
         return $this->load($provider, $type, current(\iterator_to_array($files)));
-    }
-
-    public function addContentProvider(ContentProviderInterface $provider): void
-    {
-        $this->providers[] = $provider;
     }
 
     private function getProvider(string $type): ContentProviderInterface
@@ -189,6 +184,10 @@ class ContentManager
             return null;
         }
 
+        if (\is_string($sortBy)) {
+            return $this->getSortFunction([$sortBy => true]);
+        }
+
         if (\is_callable($sortBy)) {
             return $sortBy;
         }
@@ -207,10 +206,6 @@ class ContentManager
 
                 return ($valueA > $valueB) === $asc ? 1 : -1;
             };
-        }
-
-        if (\is_string($sortBy)) {
-            return $this->getSortFunction([$sortBy => true]);
         }
 
         throw new \Exception('Unknown sorter');
