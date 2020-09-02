@@ -249,9 +249,7 @@ class Builder
         try {
             $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
         } catch (\Throwable $exception) {
-            throw new \Exception(
-                sprintf('Could not build url "%s":%s%s', $url, \PHP_EOL, $exception), 0, $exception
-            );
+            throw new \Exception(sprintf('Could not build url "%s".', $url), 0, $exception);
         }
 
         $this->httpKernel->terminate($request, $response);

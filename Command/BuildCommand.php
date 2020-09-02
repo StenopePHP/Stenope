@@ -104,13 +104,7 @@ class BuildCommand extends Command
 
         $io->title('Building static site');
 
-        try {
-            $this->builder->build(!$input->getOption('no-sitemap'), !$input->getOption('no-expose'));
-        } catch (\Throwable $exception) {
-            $io->error($exception->getMessage());
-
-            return Command::FAILURE;
-        }
+        $this->builder->build(!$input->getOption('no-sitemap'), !$input->getOption('no-expose'));
 
         $io->success('Done.');
 
