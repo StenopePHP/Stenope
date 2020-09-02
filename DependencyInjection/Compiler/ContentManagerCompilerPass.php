@@ -34,17 +34,5 @@ class ContentManagerCompilerPass implements CompilerPassInterface
                 $definition->addMethodCall('addPropertyHandler', [$tag['property'], new Reference($id)]);
             }
         }
-
-        // Decoders
-        $definition->replaceArgument('$decoders', array_map(
-            function ($id) { return new Reference($id); },
-            array_keys($container->findTaggedServiceIds('content.content_decoder'))
-        ));
-
-        // Denormalizers
-        $definition->replaceArgument('$denormalizers', array_map(
-            function ($id) { return new Reference($id); },
-            array_keys($container->findTaggedServiceIds('content.content_denormalizer'))
-        ));
     }
 }

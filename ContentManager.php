@@ -13,25 +13,25 @@ use Content\Behaviour\PropertyHandlerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ContentManager
 {
-    private $path;
-    private $serializer;
-    private $files;
-    private $propertyAccessor;
-    private $providers;
-    private $handlers;
-    private $cache;
+    private string $path;
+    private SerializerInterface $serializer;
+    private FileSystem $files;
+    private PropertyAccessorInterface $propertyAccessor;
+    private array $providers;
+    private array $handlers;
+    private array $cache;
 
-    public function __construct(string $path, array $denormalizers = [], array $decoders = [])
+    public function __construct(string $path, SerializerInterface $serializer, PropertyAccessorInterface $propertyAccessor)
     {
         $this->path = rtrim($path, '/');
-        $this->serializer = new Serializer($denormalizers, $decoders);
+        $this->serializer = $serializer;
+        $this->propertyAccessor = $propertyAccessor;
         $this->files = new FileSystem();
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->providers = [];
         $this->handlers = [];
         $this->cache = [
@@ -40,16 +40,14 @@ class ContentManager
         ];
     }
 
-    public function addContentProvider(ContentProviderInterface $provider): void
-    {
-        $this->providers[] = $provider;
-    }
-
-    public function addPropertyHandler(string $property, PropertyHandlerInterface $handler): void
-    {
-        $this->handlers[$property] = $handler;
-    }
-
+    /**
+     * List all content for the given type
+     *
+     * @param string $type   Model e.g. "App/Model/Article"
+     * @param mixed  $sortBy String, array or callable
+     *
+     * @return array List of contents
+     */
     public function getContents(string $type, $sortBy = null): array
     {
         $contents = [];
@@ -72,6 +70,14 @@ class ContentManager
         return $contents;
     }
 
+    /**
+     * Fetch a specific content
+     *
+     * @param string $type Model  e.g. "App/Model/Article"
+     * @param string $id   Unique identifier (name of the file)
+     *
+     * @return mixed An object of the given type.
+     */
     public function getContent(string $type, string $id)
     {
         $provider = $this->getProvider($type);
@@ -82,6 +88,16 @@ class ContentManager
         }
 
         return $this->load($provider, $type, current(\iterator_to_array($files)));
+    }
+
+    public function addContentProvider(ContentProviderInterface $provider): void
+    {
+        $this->providers[] = $provider;
+    }
+
+    public function addPropertyHandler(string $property, PropertyHandlerInterface $handler): void
+    {
+        $this->handlers[$property] = $handler;
     }
 
     private function getProvider(string $type): ContentProviderInterface
