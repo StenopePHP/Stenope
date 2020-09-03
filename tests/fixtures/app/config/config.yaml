@@ -1,0 +1,11 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+
+    php_errors:
+        log: true
+
+    router:
+        utf8: true
+
+twig:
+    default_path: '%kernel.project_dir%/templates'

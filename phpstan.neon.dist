@@ -2,8 +2,12 @@ includes:
     - vendor/ekino/phpstan-banned-code/extension.neon
 
 parameters:
+    bootstrapFiles:
+        - vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php
+
     excludes_analyse:
         - vendor/
+        - tests/fixtures/app/var/
 
     level: 1
 

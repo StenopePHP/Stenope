@@ -23,10 +23,6 @@ services:
     Content\Service\Parsedown:
         $highlighter: '@Content\Highlighter\Prism'
 
-    Content\PropertyHandler\DateTimePropertyHandler:
-        tags:
-            - { name: 'content.property_handler', property: 'date' }
-
     Content\PropertyHandler\LastModifiedPropertyHandler:
         tags:
             - { name: 'content.property_handler', property: 'lastModified' }
@@ -47,10 +43,10 @@ services:
     Content\Builder:
         public: true
         arguments:
-            $public: "%kernel.project_dir%/public"
-            $destination: "%kernel.project_dir%/build"
+            $public: '%kernel.project_dir%/public'
+            $httpKernel: '@kernel'
+            $destination: '%kernel.project_dir%/build'
 
     # Content Manager
     Content\ContentManager:
-        arguments:
-            $path: '%kernel.project_dir%/data'
+        $path: '%kernel.project_dir%/data'

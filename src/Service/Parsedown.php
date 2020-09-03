@@ -72,7 +72,7 @@ class Parsedown extends BaseParsedown
     {
         $data = parent::inlineLink($Excerpt);
 
-        if (preg_match('#(https?:)?//#i', $data['element']['attributes']['href'])) {
+        if ($data !== null && preg_match('#(https?:)?//#i', $data['element']['attributes']['href'])) {
             $data['element']['attributes']['target'] = '_blank';
         }
 

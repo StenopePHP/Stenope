@@ -1,0 +1,5 @@
+/var/
+/node_modules/
+/public/build/
+npm-debug.log
+build/

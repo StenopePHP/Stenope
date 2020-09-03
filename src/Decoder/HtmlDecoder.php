@@ -20,21 +20,14 @@ class HtmlDecoder implements ContentDecoderInterface
     /**
      * Supported format
      */
-    const FORMAT = 'html';
+    public const FORMAT = 'html';
 
     /**
      * Code highlighter
-     *
-     * @var HighlighterInterface
      */
-    protected $highlighter;
+    protected HighlighterInterface $highlighter;
 
-    /**
-     * Constructor
-     *
-     * @param HighlighterInterface $highlighter
-     */
-    public function __construct(HighlighterInterface $highlighter = null)
+    public function __construct(HighlighterInterface $highlighter)
     {
         $this->highlighter = $highlighter;
     }
