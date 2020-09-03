@@ -1,0 +1,22 @@
+{
+  "name": "content",
+  "version": "0.1.0",
+  "description": "Content",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tom32i/content.git"
+  },
+  "author": "Thomas Jarrand <thomas.jarrand@gmail.com> (https://thomas.jarrand.fr)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tom32i/content/issues"
+  },
+  "homepage": "https://github.com/Tom32i/content#readme",
+  "dependencies": {
+    "prismjs": "^1.21.0"
+  }
+}

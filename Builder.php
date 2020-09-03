@@ -8,7 +8,6 @@
 
 namespace Content;
 
-use Content\Builder\AssetList;
 use Content\Builder\PageList;
 use Content\Builder\RouteInfo;
 use Content\Builder\Sitemap;
@@ -62,13 +61,6 @@ class Builder
     private $templating;
 
     /**
-     * Asset list
-     *
-     * @var AssetList
-     */
-    private $assetList;
-
-    /**
      * Page list
      *
      * @var PageList
@@ -109,7 +101,6 @@ class Builder
         UrlGeneratorInterface $urlGenerator,
         EntrypointLookupInterface $entrypointLookup,
         Environment $templating,
-        AssetList $assetList,
         PageList $pageList,
         Sitemap $sitemap,
         string $public,
@@ -120,7 +111,6 @@ class Builder
         $this->urlGenerator = $urlGenerator;
         $this->templating = $templating;
         $this->entrypointLookup = $entrypointLookup;
-        $this->assetList = $assetList;
         $this->pageList = $pageList;
         $this->sitemap = $sitemap;
         $this->destination = $destination;
@@ -131,20 +121,20 @@ class Builder
     /**
      * Bluid static site
      */
-    public function build(bool $sitemap = true, bool $assets = true): void
+    public function build(bool $sitemap = true, bool $expose = true): void
     {
         $this->clear();
 
         $this->scanAllRoutes();
 
+        if ($expose) {
+            $this->exposePublic();
+        }
+
         $this->buildPages();
 
         if ($sitemap) {
             $this->buildSitemap();
-        }
-
-        if ($assets) {
-            $this->buildAssets();
         }
     }
 
@@ -225,18 +215,10 @@ class Builder
         $this->write($content, '/', 'sitemap.xml');
     }
 
-    /**
-     * Expose public assets
-     */
-    private function buildAssets(): void
+    private function exposePublic(): void
     {
-        foreach ($this->assetList as $path) {
-            $this->files->copy(
-                implode('/', [$this->public, $path]),
-                implode('/', [$this->destination, $path]),
-                true
-            );
-        }
+        $this->files->mirror($this->public, $this->destination);
+        $this->files->remove(sprintf('%s/index.php', $this->destination));
     }
 
     /**
