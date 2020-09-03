@@ -5,7 +5,6 @@ services:
 
     Content\Command\BuildCommand: ~
 
-    Content\Builder\AssetList: ~
     Content\Builder\PageList: ~
     Content\Builder\Sitemap: ~
 
@@ -43,9 +42,6 @@ services:
     # Decorators
     Content\Routing\UrlGenerator:
         decorates: Symfony\Component\Routing\Generator\UrlGeneratorInterface
-
-    Content\Asset\Packages:
-        decorates: assets._default_package
 
     # Builder
     Content\Builder:

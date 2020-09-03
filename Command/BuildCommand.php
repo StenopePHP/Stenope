@@ -72,7 +72,7 @@ class BuildCommand extends Command
                 'no-expose',
                 null,
                 InputOption::VALUE_NONE,
-                'Don\'t expose the public directory after build'
+                'Don\'t expose the public directory'
             )
         ;
     }
