@@ -6,9 +6,11 @@ This file is part of the "Tom32i/Content" bundle.
 @author Thomas Jarrand <thomas.jarrand@gmail.com>
 EOF;
 
-$finder = PhpCsFixer\Finder::create()->in([
-    __DIR__,
-]);
+$finder = PhpCsFixer\Finder::create()
+    ->in([__DIR__])
+    ->exclude('tests/fixtures/app/var')
+    ->exclude('tests/fixtures/app/build')
+;
 
 return PhpCsFixer\Config::create()
     ->setUsingCache(true)

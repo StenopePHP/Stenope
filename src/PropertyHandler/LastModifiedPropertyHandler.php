@@ -11,22 +11,16 @@ namespace Content\PropertyHandler;
 use Content\Behaviour\PropertyHandlerInterface;
 
 /**
- * Parse the given property as Datetime
+ * Set a "LastModified" property based on file date
  */
-class DateTimePropertyHandler implements PropertyHandlerInterface
+class LastModifiedPropertyHandler implements PropertyHandlerInterface
 {
     /**
-     * Is data supported?
+     * {@inheritdoc}
      */
     public function isSupported($value): bool
     {
-        try {
-            new \DateTime($value);
-        } catch (\Exception $e) {
-            return false;
-        }
-
-        return true;
+        return !$value;
     }
 
     /**
@@ -34,6 +28,6 @@ class DateTimePropertyHandler implements PropertyHandlerInterface
      */
     public function handle($value, array $context)
     {
-        return new \DateTime($value);
+        return (new \DateTime('@' . $context['file']->getMTime()))->format(\DateTimeInterface::RFC3339);
     }
 }

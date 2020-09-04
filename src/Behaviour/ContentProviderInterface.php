@@ -10,5 +10,7 @@ namespace Content\Behaviour;
 
 interface ContentProviderInterface
 {
+    public function getDirectory(): string;
+
     public function supports(string $className): bool;
 }

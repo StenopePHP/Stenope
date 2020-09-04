@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{% block meta_locale app.request.locale %}">
+<head>
+    <meta charset="UTF-8">
+    <title>Content demo</title>
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        {% block header %}
+            <a href="{{ path('homepage') }}">Home</a>
+        {% endblock %}
+
+        {% set menu = [
+            { path: 'recipes', label: 'Our recipes' },
+        ] %}
+
+        {% block nav %}
+            <nav class="nav">
+                <ul>
+                    {% for item in menu %}
+                        <li class="nav__item">
+                            <a href="{{ path(item.path) }}">
+                                <span>{{ item.label }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endblock %}
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+</body>
+</html>

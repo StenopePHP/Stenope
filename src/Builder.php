@@ -15,9 +15,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface;
 use Twig\Environment;
 
 /**
@@ -45,13 +43,6 @@ class Builder
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
-
-    /**
-     * Encore webpack
-     *
-     * @var EntrypointLookupInterface
-     */
-    private $entrypointLookup;
 
     /**
      * Twig templating engine
@@ -99,7 +90,6 @@ class Builder
         RouterInterface $router,
         HttpKernelInterface $httpKernel,
         UrlGeneratorInterface $urlGenerator,
-        EntrypointLookupInterface $entrypointLookup,
         Environment $templating,
         PageList $pageList,
         Sitemap $sitemap,
@@ -110,7 +100,6 @@ class Builder
         $this->httpKernel = $httpKernel;
         $this->urlGenerator = $urlGenerator;
         $this->templating = $templating;
-        $this->entrypointLookup = $entrypointLookup;
         $this->pageList = $pageList;
         $this->sitemap = $sitemap;
         $this->destination = $destination;
@@ -235,7 +224,6 @@ class Builder
         }
 
         $this->httpKernel->terminate($request, $response);
-        $this->entrypointLookup->reset();
 
         list($path, $file) = $this->getFilePath($request->getPathInfo());
 

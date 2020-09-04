@@ -20,41 +20,16 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class SitemapListener implements EventSubscriberInterface
 {
-    /**
-     * Routes
-     *
-     * @var RouteCollection
-     */
-    private $routes;
+    private array $routes;
+    private Sitemap $sitemap;
 
-    /**
-     * Sitemap
-     *
-     * @var Sitemap
-     */
-    private $sitemap;
-
-    /**
-     * Constructor
-     */
     public function __construct(RouterInterface $router, Sitemap $sitemap)
     {
         $this->routes = RouteInfo::createFromRouteCollection($router->getRouteCollection());
         $this->sitemap = $sitemap;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return [KernelEvents::RESPONSE => 'onKernelReponse'];
-    }
-
-    /**
-     * Handler Kernel Response events
-     */
-    public function onKernelReponse(ResponseEvent $event): void
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
@@ -71,5 +46,13 @@ class SitemapListener implements EventSubscriberInterface
                 new \DateTime($response->headers->get('Last-Modified'))
             );
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [KernelEvents::RESPONSE => 'onKernelResponse'];
     }
 }

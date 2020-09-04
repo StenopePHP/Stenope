@@ -55,11 +55,11 @@ class ContentManager
         $provider = $this->getProvider($type);
 
         foreach ($this->listFiles($provider) as $file) {
-            $contents[] = $this->load($provider, $type, $file);
+            $contents[] = $this->load($type, $file);
         }
 
         if ($sorter = $this->getSortFunction($sortBy)) {
-            \set_error_handler(function (int $severity, string $message, ?string $file, ?int $line) use ($type): void {
+            \set_error_handler(static function (int $severity, string $message, ?string $file, ?int $line) use ($type): void {
                 throw new \ErrorException(sprintf('There was a problem sorting %s: %s', $type, $message), $severity, $severity, $file, $line);
             });
 
@@ -88,7 +88,7 @@ class ContentManager
             throw new \Exception(sprintf('Content not found for type "%s" and id "%s".', $type, $id));
         }
 
-        return $this->load($provider, $type, current(\iterator_to_array($files)));
+        return $this->load($type, current(\iterator_to_array($files)));
     }
 
     public function addContentProvider(ContentProviderInterface $provider): void
@@ -171,7 +171,7 @@ class ContentManager
         return clone $this->cache['files'][$path];
     }
 
-    private function load(ContentProviderInterface $provider, string $type, SplFileInfo $file)
+    private function load(string $type, SplFileInfo $file)
     {
         $path = $file->getPathName();
 
@@ -195,7 +195,7 @@ class ContentManager
         return $this->cache['contents'][$path];
     }
 
-    private function getSortFunction($sortBy): callable
+    private function getSortFunction($sortBy): ?callable
     {
         if (!$sortBy) {
             return null;
@@ -217,11 +217,7 @@ class ContentManager
                 $valueA = $this->propertyAccessor->getValue($a, $key);
                 $valueB = $this->propertyAccessor->getValue($b, $key);
 
-                if ($valueA == $valueB) {
-                    return 0;
-                }
-
-                return ($valueA > $valueB) === $asc ? 1 : -1;
+                return ($valueA <=> $valueB) * ($asc ? 1 : -1);
             };
         }
 

@@ -1,0 +1,66 @@
+name: Tests
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+
+jobs:
+
+    integration:
+        name: Integration
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                php: ['7.4']
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    coverage: "none"
+                    extensions: "json"
+                    ini-values: "memory_limit=-1"
+                    php-version: "${{ matrix.php }}"
+
+            -   name: Determine composer cache directory
+                id: composer-cache
+                run: echo "::set-output name=directory::$(composer config cache-dir)"
+
+            -   name: Cache composer dependencies
+                uses: actions/cache@v1
+                with:
+                    path: ${{ steps.composer-cache.outputs.directory }}
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: ${{ matrix.php }}-composer-
+
+            -   name: Install dependencies
+                run: |
+                    echo "::group::composer update"
+                    composer update --no-progress --no-suggest --ansi
+                    echo "::endgroup::"
+                    echo "::group::install phpunit"
+                    vendor/bin/simple-phpunit install
+                    echo "::endgroup::"
+
+            -   name: Lint
+                run: |
+                    echo "::group::PHP CS Fixer"
+                    vendor/bin/php-cs-fixer fix --dry-run --diff
+
+                    echo "::group::PhpStan"
+                    vendor/bin/phpstan analyse
+
+                    echo "::group::Lint twig"
+                    bin/lint.twig.php src/Resources/views
+
+                    echo "::group::Lint yaml"
+                    bin/lint.yaml.php src/Resources/config
+
+            -   name: Run tests
+                run: vendor/bin/simple-phpunit
