@@ -23,18 +23,28 @@ class ContentManager
     private SerializerInterface $serializer;
     private FileSystem $files;
     private PropertyAccessorInterface $propertyAccessor;
-    private array $providers;
-    private array $handlers;
+
+    /** @var iterable<ContentProviderInterface> */
+    private iterable $providers;
+
+    /** @var iterable<string, PropertyHandlerInterface> indexed by property name */
+    private iterable $handlers;
+
     private array $cache;
 
-    public function __construct(string $path, SerializerInterface $serializer, ?PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        string $path,
+        SerializerInterface $serializer,
+        iterable $propertyHandlers,
+        iterable $contentProviders,
+        ?PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $this->path = rtrim($path, '/');
         $this->serializer = $serializer;
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->files = new FileSystem();
-        $this->providers = [];
-        $this->handlers = [];
+        $this->providers = $contentProviders;
+        $this->handlers = $propertyHandlers;
         $this->cache = [
             'files' => [],
             'contents' => [],
@@ -89,16 +99,6 @@ class ContentManager
         }
 
         return $this->load($type, current(\iterator_to_array($files)));
-    }
-
-    public function addContentProvider(ContentProviderInterface $provider): void
-    {
-        $this->providers[] = $provider;
-    }
-
-    public function addPropertyHandler(string $property, PropertyHandlerInterface $handler): void
-    {
-        $this->handlers[$property] = $handler;
     }
 
     private function getProvider(string $type): ContentProviderInterface

@@ -17,8 +17,8 @@ use Symfony\Component\Routing\RequestContext;
  */
 class UrlGenerator implements UrlGeneratorInterface
 {
-    private $urlGenerator;
-    private $pageList;
+    private UrlGeneratorInterface $urlGenerator;
+    private PageList $pageList;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, PageList $pageList)
     {

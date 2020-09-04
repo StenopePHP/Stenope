@@ -14,6 +14,3 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
-
-    Content\ContentManager:
-        $path: '%kernel.project_dir%/content'

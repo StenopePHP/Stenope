@@ -3,7 +3,9 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    Content\Command\BuildCommand: ~
+    Content\Command\BuildCommand:
+        arguments: ['@Content\Builder']
+        tags: [{ name: console.command, command: content:build }]
 
     Content\Builder\PageList: ~
     Content\Builder\Sitemap: ~
@@ -41,12 +43,18 @@ services:
 
     # Builder
     Content\Builder:
-        public: true
         arguments:
-            $public: '%kernel.project_dir%/public'
             $httpKernel: '@kernel'
-            $destination: '%kernel.project_dir%/build'
+            $buildDir: !abstract The build dir, defined by the extension
+            $filesToCopy: !abstract The files to copy after build, defined by the extension
+            $logger: '@?logger'
 
     # Content Manager
     Content\ContentManager:
-        $path: '%kernel.project_dir%/data'
+        autowire: false
+        arguments:
+            $path: !abstract The content dir, defined by the extension
+            $serializer: '@serializer'
+            $propertyAccessor: '@property_accessor'
+            $contentProviders: !tagged_iterator 'content.content_provider'
+            $propertyHandlers: !tagged_iterator { tag: 'content.property_handler', index_by: 'property' }

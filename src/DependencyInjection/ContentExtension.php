@@ -8,9 +8,9 @@
 
 namespace Content\DependencyInjection;
 
-use Content\Behaviour\ContentDecoderInterface;
-use Content\Behaviour\ContentDenormalizerInterface;
 use Content\Behaviour\ContentProviderInterface;
+use Content\Builder;
+use Content\ContentManager;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -24,7 +24,12 @@ class ContentExtension extends Extension
         $loader->load('services.yaml');
 
         $container->registerForAutoconfiguration(ContentProviderInterface::class)->addTag('content.content_provider');
-        $container->registerForAutoconfiguration(ContentDecoderInterface::class)->addTag('content.content_decoder');
-        $container->registerForAutoconfiguration(ContentDenormalizerInterface::class)->addTag('content.content_denormalizer');
+
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        $container->getDefinition(ContentManager::class)->replaceArgument('$path', $config['content_dir']);
+
+        $container->getDefinition(Builder::class)->replaceArgument('$buildDir', $config['build_dir']);
+        $container->getDefinition(Builder::class)->replaceArgument('$filesToCopy', $config['copy']);
     }
 }

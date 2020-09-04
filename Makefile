@@ -25,7 +25,7 @@ lint-twig:
 	php bin/lint.twig.php src/Resources/views
 
 lint-yaml:
-	php bin/lint.yaml.php src/Resources/config
+	php bin/lint.yaml.php --parse-tags src/Resources/config
 
 ########
 # Demo #

@@ -11,6 +11,8 @@ namespace Content;
 use Content\Builder\PageList;
 use Content\Builder\RouteInfo;
 use Content\Builder\Sitemap;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -23,92 +25,43 @@ use Twig\Environment;
  */
 class Builder
 {
-    /**
-     * Router
-     *
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
+    private HttpKernelInterface $httpKernel;
+    private Environment $templating;
+    private PageList $pageList;
+    private Sitemap $sitemap;
 
-    /**
-     * HTTP Kernel
-     *
-     * @var HttpKernelInterface
-     */
-    private $httpKernel;
+    /** Path to output the static site */
+    private string $buildDir;
+    private FileSystem $files;
 
-    /**
-     * Url Generator
-     *
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-
-    /**
-     * Twig templating engine
-     *
-     * @var Environment
-     */
-    private $templating;
-
-    /**
-     * Page list
-     *
-     * @var PageList
-     */
-    private $pageList;
-
-    /**
-     * Sitemap
-     *
-     * @var Sitemap
-     */
-    private $sitemap;
-
-    /**
-     * Path to output the static site
-     *
-     * @var string
-     */
-    private $destination;
-
-    /**
-     * Public path
-     *
-     * @var string
-     */
-    private $public;
-
-    /**
-     * File system
-     *
-     * @var FileSystem
-     */
-    private $files;
+    /** Files to copy after build */
+    private array $filesToCopy;
+    private LoggerInterface $logger;
 
     public function __construct(
         RouterInterface $router,
         HttpKernelInterface $httpKernel,
-        UrlGeneratorInterface $urlGenerator,
         Environment $templating,
         PageList $pageList,
         Sitemap $sitemap,
-        string $public,
-        string $destination
+        string $buildDir,
+        array $filesToCopy = [],
+        ?LoggerInterface $logger = null
     ) {
         $this->router = $router;
         $this->httpKernel = $httpKernel;
-        $this->urlGenerator = $urlGenerator;
         $this->templating = $templating;
         $this->pageList = $pageList;
         $this->sitemap = $sitemap;
-        $this->destination = $destination;
-        $this->public = $public;
+        $this->buildDir = $buildDir;
+        $this->filesToCopy = $filesToCopy;
         $this->files = new Filesystem();
+        $this->logger = $logger ?? new NullLogger();
     }
 
     /**
-     * Bluid static site
+     * Build static site
      */
     public function build(bool $sitemap = true, bool $expose = true): void
     {
@@ -117,7 +70,7 @@ class Builder
         $this->scanAllRoutes();
 
         if ($expose) {
-            $this->exposePublic();
+            $this->copyFiles();
         }
 
         $this->buildPages();
@@ -127,12 +80,14 @@ class Builder
         }
     }
 
-    /**
-     * Set output path
-     */
-    public function setDestination(string $destination = null): void
+    public function setBuildDir(string $buildDir): void
     {
-        $this->destination = $destination;
+        $this->buildDir = $buildDir;
+    }
+
+    public function getBuildDir(): string
+    {
+        return $this->buildDir;
     }
 
     /**
@@ -140,7 +95,7 @@ class Builder
      */
     public function setHost(string $host): void
     {
-        $this->urlGenerator->getContext()->setHost($host);
+        $this->router->getContext()->setHost($host);
     }
 
     /**
@@ -148,7 +103,7 @@ class Builder
      */
     public function setScheme(string $scheme): void
     {
-        $this->urlGenerator->getContext()->setScheme($scheme);
+        $this->router->getContext()->setScheme($scheme);
     }
 
     /**
@@ -156,15 +111,15 @@ class Builder
      */
     private function clear(): void
     {
-        if ($this->files->exists($this->destination)) {
-            $this->files->remove($this->destination);
+        if ($this->files->exists($this->buildDir)) {
+            $this->files->remove($this->buildDir);
         }
 
-        $this->files->mkdir($this->destination);
+        $this->files->mkdir($this->buildDir);
     }
 
     /**
-     * Scall all declared route and tries to add them to the page list.
+     * Scan all declared route and tries to add them to the page list.
      */
     private function scanAllRoutes(): void
     {
@@ -173,7 +128,7 @@ class Builder
         foreach ($routes as $name => $route) {
             if ($route->isVisible() && $route->isGettable()) {
                 try {
-                    $url = $this->urlGenerator->generate($name, [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $url = $this->router->generate($name, [], UrlGeneratorInterface::ABSOLUTE_URL);
                 } catch (\Exception $exception) {
                     continue;
                 }
@@ -204,10 +159,34 @@ class Builder
         $this->write($content, '/', 'sitemap.xml');
     }
 
-    private function exposePublic(): void
+    private function copyFiles(): void
     {
-        $this->files->mirror($this->public, $this->destination);
-        $this->files->remove(sprintf('%s/index.php', $this->destination));
+        foreach ($this->filesToCopy as ['src' => $src, 'dest' => $dest, 'fail_if_missing' => $failIfMissing]) {
+            $dest ??= basename($src);
+
+            if (is_dir($src)) {
+                $this->files->mirror($src, "$this->buildDir/$dest");
+                continue;
+            }
+
+            if (!is_file($src)) {
+                if ($failIfMissing) {
+                    throw new \RuntimeException(sprintf(
+                        'Failed to copy "%s" because the path is neither a file or a directory.',
+                        $src
+                    ));
+                }
+
+                $this->logger->warning('Failed to copy "{src}" because the path is neither a file or a directory.', [
+                    'src' => $src,
+                    'dest' => $dest,
+                ]);
+
+                continue;
+            }
+
+            $this->files->copy($src, "$this->buildDir/$dest");
+        }
     }
 
     /**
@@ -253,7 +232,7 @@ class Builder
      */
     private function write(string $content, string $path, string $file): void
     {
-        $directory = sprintf('%s/%s', $this->destination, trim($path, '/'));
+        $directory = sprintf('%s/%s', $this->buildDir, trim($path, '/'));
 
         if (!$this->files->exists($directory)) {
             $this->files->mkdir($directory);
