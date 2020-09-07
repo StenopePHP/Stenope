@@ -32,4 +32,14 @@ class ContentExtension extends Extension
         $container->getDefinition(Builder::class)->replaceArgument('$buildDir', $config['build_dir']);
         $container->getDefinition(Builder::class)->replaceArgument('$filesToCopy', $config['copy']);
     }
+
+    public function getNamespace()
+    {
+        return 'http://tom32i.com/schema/dic/content';
+    }
+
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__ . '/../Resources/config/schema';
+    }
 }

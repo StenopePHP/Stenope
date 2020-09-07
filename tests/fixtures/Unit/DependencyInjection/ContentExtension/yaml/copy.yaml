@@ -1,0 +1,5 @@
+content:
+    copy:
+        - { src: '%kernel.project_dir%/public/build', dest: 'dist' }
+        - '%kernel.project_dir%/public/robots.txt'
+        - { src: '%kernel.project_dir%/public/missing-file', fail_if_missing: false }
