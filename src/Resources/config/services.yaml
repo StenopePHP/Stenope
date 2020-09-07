@@ -13,6 +13,11 @@ services:
             $parser: '@Content\Service\Parsedown'
         tags: [serializer.encoder]
 
+    Content\Decoder\HtmlDecoder:
+        arguments:
+            $highlighter: '@Content\Highlighter\Prism'
+        tags: [serializer.encoder]
+
     Content\EventListener\Informator:
         arguments:
             $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
@@ -27,9 +32,6 @@ services:
 
     Content\Highlighter\Pygments: ~
     Content\Highlighter\Prism: ~
-
-    Content\Decoder\HtmlDecoder:
-        $highlighter: '@Content\Highlighter\Prism'
 
     Content\Service\Parsedown:
         $highlighter: '@Content\Highlighter\Prism'

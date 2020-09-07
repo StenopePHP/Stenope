@@ -72,7 +72,10 @@ class HtmlDecoder implements DecoderInterface
         return self::FORMAT === $format;
     }
 
-    public function addClass(\DomElement $element, string $class): void
+    /**
+     * Add class to the given element
+     */
+    private function addClass(\DomElement $element, string $class): void
     {
         $element->setAttribute('class', implode(' ', array_filter([
             trim($element->getAttribute('class')),
@@ -80,7 +83,10 @@ class HtmlDecoder implements DecoderInterface
         ])));
     }
 
-    public function setContent(\DomElement $element, string $content): void
+    /**
+     * Set element HTML content
+     */
+    private function setContent(\DomElement $element, string $content): void
     {
         $element->nodeValue = '';
 
