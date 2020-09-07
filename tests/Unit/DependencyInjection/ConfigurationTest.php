@@ -30,7 +30,7 @@ class ConfigurationTest extends TestCase
             'build_dir' => '%kernel.project_dir%/site',
         ]]);
 
-        self::assertSame([
+        self::assertEquals([
             'content_dir' => '%kernel.project_dir%/data',
             'build_dir' => '%kernel.project_dir%/site',
         ] + $this->getDefaultConfig(), $config);
@@ -41,28 +41,31 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
             'copy' => [
-                ['src' => '%kernel.project_dir%/public/build', 'dest' => 'dist'],
+                ['src' => '%kernel.project_dir%/public/build', 'dest' => 'dist', 'excludes' => ['*.excluded']],
                 '%kernel.project_dir%/public/robots.txt',
                 ['src' => '%kernel.project_dir%/public/missing-file', 'fail_if_missing' => false],
             ],
         ]]);
 
-        self::assertSame([
+        self::assertEquals([
             'copy' => [
                 [
                     'src' => '%kernel.project_dir%/public/build',
                     'dest' => 'dist',
+                    'excludes' => ['*.excluded'],
                     'fail_if_missing' => true,
                 ],
                 [
                     'src' => '%kernel.project_dir%/public/robots.txt',
                     'dest' => 'robots.txt',
+                    'excludes' => [],
                     'fail_if_missing' => true,
                 ],
                 [
                     'src' => '%kernel.project_dir%/public/missing-file',
-                    'fail_if_missing' => false,
                     'dest' => 'missing-file',
+                    'excludes' => [],
+                    'fail_if_missing' => false,
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
@@ -73,7 +76,14 @@ class ConfigurationTest extends TestCase
         return [
             'content_dir' => '%kernel.project_dir%/content',
             'build_dir' => '%kernel.project_dir%/build',
-            'copy' => [],
+            'copy' => [
+                [
+                    'src' => '%kernel.project_dir%/public',
+                    'dest' => '.',
+                    'excludes' => ['*.php'],
+                    'fail_if_missing' => true,
+                ],
+            ],
         ];
     }
 }

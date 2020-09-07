@@ -30,16 +30,26 @@ class Configuration implements ConfigurationInterface
                 ->defaultValue('%kernel.project_dir%/build')
             ->end()
             ->arrayNode('copy')
+                ->defaultValue([
+                    [
+                        'src' => '%kernel.project_dir%/public',
+                        'dest' => '.',
+                        'fail_if_missing' => true,
+                        'excludes' => ['*.php'],
+                    ],
+                ])
                 ->example([
                     '%kernel.project_dir%/public/build',
                     '%kernel.project_dir%/public/robots.txt',
                     [
                         'src' => '%kernel.project_dir%/public/some-file-or-dir',
                         'dest' => 'to-another-dest-name',
+                        'excludes' => ['*.php', '*.map'],
                         'fail_if_missing' => 'false',
                     ],
                 ])
                 ->arrayPrototype()
+                    ->addDefaultsIfNotSet()
                     ->beforeNormalization()
                         ->ifString()
                         ->then(static fn (string $v) => ['src' => $v, 'dest' => basename($v)])
@@ -60,6 +70,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('dest')
                             ->defaultNull()
                             ->info('Destination path relative to the configured build_dir. If null, defaults to the same name as source.')
+                        ->end()
+                        ->arrayNode('excludes')
+                            ->fixXmlConfig('exclude')
+                            ->defaultValue([])
+                            ->info('List of files patterns to exclude')
+                            ->beforeNormalization()->ifString()->castToArray()->end()
+                            ->scalarPrototype()->end()
                         ->end()
                         ->scalarNode('fail_if_missing')
                             ->defaultTrue()

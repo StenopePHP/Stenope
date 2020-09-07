@@ -25,7 +25,14 @@ abstract class ContentExtensionTest extends TestCase
 
         self::assertSame('%kernel.project_dir%/content', $container->getDefinition(ContentManager::class)->getArgument('$path'));
         self::assertSame('%kernel.project_dir%/build', $container->getDefinition(Builder::class)->getArgument('$buildDir'));
-        self::assertSame([], $container->getDefinition(Builder::class)->getArgument('$filesToCopy'));
+        self::assertEquals([
+            [
+                'src' => '%kernel.project_dir%/public',
+                'dest' => '.',
+                'excludes' => ['*.php'],
+                'fail_if_missing' => true,
+            ],
+        ], $container->getDefinition(Builder::class)->getArgument('$filesToCopy'));
     }
 
     public function testDirs(): void
@@ -40,20 +47,23 @@ abstract class ContentExtensionTest extends TestCase
     {
         $container = $this->createContainerFromFile('copy');
 
-        self::assertSame([
+        self::assertEquals([
             [
                 'src' => 'PROJECT_DIR/public/build',
                 'dest' => 'dist',
+                'excludes' => ['*.excluded'],
                 'fail_if_missing' => true,
             ],
             [
                 'src' => 'PROJECT_DIR/public/robots.txt',
                 'dest' => 'robots.txt',
+                'excludes' => [],
                 'fail_if_missing' => true,
             ],
             [
                 'src' => 'PROJECT_DIR/public/missing-file',
                 'fail_if_missing' => false,
+                'excludes' => [],
                 'dest' => 'missing-file',
             ],
         ], $container->getDefinition(Builder::class)->getArgument('$filesToCopy'));

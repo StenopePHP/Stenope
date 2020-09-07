@@ -14,6 +14,7 @@ use Content\Builder\Sitemap;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -161,11 +162,23 @@ class Builder
 
     private function copyFiles(): void
     {
-        foreach ($this->filesToCopy as ['src' => $src, 'dest' => $dest, 'fail_if_missing' => $failIfMissing]) {
+        foreach ($this->filesToCopy as [
+            'src' => $src,
+            'dest' => $dest,
+            'fail_if_missing' => $failIfMissing,
+            'excludes' => $excludes,
+        ]) {
             $dest ??= basename($src);
 
             if (is_dir($src)) {
-                $this->files->mirror($src, "$this->buildDir/$dest");
+                if (\count($excludes) > 0) {
+                    $iterator = (new Finder())->in($src);
+                    foreach ($excludes as $exclude) {
+                        $iterator->notName($exclude)->files();
+                    }
+                }
+
+                $this->files->mirror($src, "$this->buildDir/$dest", $iterator ?? null);
                 continue;
             }
 

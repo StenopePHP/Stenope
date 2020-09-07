@@ -12,7 +12,6 @@ twig:
 
 content:
     copy:
-        - { src: '%kernel.project_dir%/public/build', dest: 'dist' }
-        - '%kernel.project_dir%/public/robots.txt'
-        - { src: '%kernel.project_dir%/public/missing-file', fail_if_missing: false }
+        - { src: '%kernel.project_dir%/public/', dest: '.', excludes: 'index.php' }
+        - { src: '%kernel.project_dir%/foo/missing-file', fail_if_missing: false }
 

@@ -16,6 +16,9 @@
     </xsd:complexType>
 
     <xsd:complexType name="copy_entry">
+        <xsd:sequence>
+            <xsd:element name="excludes" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
         <xsd:attribute name="src" type="xsd:string" use="required"/>
         <xsd:attribute name="dest" type="xsd:string"/>
         <xsd:attribute name="fail_if_missing" type="xsd:string"/>
