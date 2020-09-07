@@ -15,9 +15,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-/**
- * Informator
- */
 class Informator implements EventSubscriberInterface
 {
     /**

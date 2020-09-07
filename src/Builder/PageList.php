@@ -13,7 +13,8 @@ namespace Content\Builder;
  */
 class PageList
 {
-    private $urls = [];
+    /** @var array<string,bool> */
+    private array $urls = [];
 
     public function add(string $url): void
     {

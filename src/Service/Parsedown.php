@@ -18,17 +18,10 @@ class Parsedown extends BaseParsedown
 {
     /**
      * Code highlighter
-     *
-     * @var HighlighterInterface
      */
-    protected $highlighter;
+    protected ?HighlighterInterface $highlighter;
 
-    /**
-     * Constructor
-     *
-     * @param HighlighterInterface $highlighter
-     */
-    public function __construct(HighlighterInterface $highlighter = null)
+    public function __construct(?HighlighterInterface $highlighter = null)
     {
         $this->highlighter = $highlighter;
         $this->BlockTypes = array_merge($this->BlockTypes, [
@@ -110,13 +103,13 @@ class Parsedown extends BaseParsedown
     /**
      * Process code content
      */
-    protected function getCode(string $text, string $language = null): string
+    protected function getCode(string $text, ?string $language = null): string
     {
         if ($this->highlighter && $language) {
             return $this->highlighter->highlight($text, $language);
         }
 
-        return $this->escape($text);
+        return self::escape($text);
     }
 
     /**
