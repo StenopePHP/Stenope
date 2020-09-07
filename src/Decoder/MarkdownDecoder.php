@@ -8,35 +8,26 @@
 
 namespace Content\Decoder;
 
-use Content\Behaviour\ContentDecoderInterface;
 use Content\Service\Parsedown;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Parse Markdown data
  */
-class MarkdownDecoder implements ContentDecoderInterface
+class MarkdownDecoder implements DecoderInterface
 {
     /**
      * Supported format
      */
-    const FORMAT = 'markdown';
-
-    /**
-     * Head separator
-     */
-    const HEAD_SEPARATOR = '---';
+    public const FORMAT = 'markdown';
+    private const HEAD_SEPARATOR = '---';
 
     /**
      * Markdown parser
-     *
-     * @var Parsdown
      */
-    private $parser;
+    private Parsedown $parser;
 
-    /**
-     * Constructor
-     */
     public function __construct(Parsedown $parser)
     {
         $this->parser = $parser;
@@ -70,26 +61,15 @@ class MarkdownDecoder implements ContentDecoderInterface
         return self::FORMAT === $format;
     }
 
-    /**
-     * Parse YAML
-     *
-     * @param string $data
-     *
-     * @return array
-     */
-    private function parseYaml($data)
+    private function parseYaml(string $data): array
     {
         return Yaml::parse($data, true);
     }
 
     /**
      * Parse Mardown to return HTML
-     *
-     * @param string $data
-     *
-     * @return string
      */
-    private function markdownify($data)
+    private function markdownify(string $data): string
     {
         return $this->parser->parse($data);
     }

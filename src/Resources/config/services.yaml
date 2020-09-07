@@ -1,18 +1,29 @@
 services:
-    _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    Content\Command\BuildCommand: ~
+    Content\Command\BuildCommand:
+        arguments:
+            $builder: '@Content\Builder'
+        tags: [{ name: console.command, command: content:build }]
 
     Content\Builder\PageList: ~
     Content\Builder\Sitemap: ~
 
-    Content\Decoder\MarkdownDecoder: ~
-    Content\Decoder\YamlDecoder: ~
+    Content\Decoder\MarkdownDecoder:
+        arguments:
+            $parser: '@Content\Service\Parsedown'
+        tags: [serializer.encoder]
 
-    Content\EventListener\Informator: ~
-    Content\EventListener\SitemapListener: ~
+    Content\EventListener\Informator:
+        arguments:
+            $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            $twig: '@twig'
+        tags: [kernel.event_subscriber]
+
+    Content\EventListener\SitemapListener:
+        arguments:
+            $router: '@router'
+            $sitemap: '@Content\Builder\Sitemap'
+        tags: [kernel.event_subscriber]
 
     Content\Highlighter\Pygments: ~
     Content\Highlighter\Prism: ~
@@ -24,29 +35,36 @@ services:
         $highlighter: '@Content\Highlighter\Prism'
 
     Content\PropertyHandler\LastModifiedPropertyHandler:
-        tags:
-            - { name: 'content.property_handler', property: 'lastModified' }
+        tags: [{ name: 'content.property_handler', property: 'lastModified' }]
 
     Content\PropertyHandler\SlugPropertyHandler:
-        tags:
-            - { name: 'content.property_handler', property: 'slug' }
+        tags: [{ name: 'content.property_handler', property: 'slug' }]
 
     Content\PropertyHandler\TitlesPropertyHandler:
-        tags:
-            - { name: 'content.property_handler', property: 'content' }
+        tags: [{ name: 'content.property_handler', property: 'content' }]
 
     # Decorators
     Content\Routing\UrlGenerator:
         decorates: Symfony\Component\Routing\Generator\UrlGeneratorInterface
+        arguments:
+            $urlGenerator: '@Content\Routing\UrlGenerator.inner'
+            $pageList: '@Content\Builder\PageList'
 
     # Builder
     Content\Builder:
-        public: true
-        arguments:
-            $public: '%kernel.project_dir%/public'
-            $httpKernel: '@kernel'
-            $destination: '%kernel.project_dir%/build'
+        $router: '@router'
+        $httpKernel: '@kernel'
+        $templating: '@twig'
+        $pageList: '@Content\Builder\PageList'
+        $sitemap: '@Content\Builder\Sitemap'
+        $buildDir: !abstract The build dir, defined by the extension
+        $filesToCopy: !abstract The files to copy after build, defined by the extension
+        $logger: '@?logger'
 
     # Content Manager
     Content\ContentManager:
-        $path: '%kernel.project_dir%/data'
+        $path: !abstract The content dir, defined by the extension
+        $serializer: '@serializer'
+        $propertyAccessor: '@property_accessor'
+        $contentProviders: !tagged_iterator 'content.content_provider'
+        $propertyHandlers: !tagged_iterator { tag: 'content.property_handler', index_by: 'property' }

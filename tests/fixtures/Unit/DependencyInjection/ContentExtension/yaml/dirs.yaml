@@ -1,0 +1,3 @@
+content:
+    build_dir: '%kernel.project_dir%/site'
+    content_dir: '%kernel.project_dir%/data'

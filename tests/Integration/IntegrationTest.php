@@ -23,7 +23,16 @@ class IntegrationTest extends KernelTestCase
         'debug' => true,
     ];
 
-    public static function setUpBeforeClass(): void
+    protected function setUp(): void
+    {
+        static::bootKernel(self::$kernelOptions);
+    }
+
+    /**
+     * This test is a dependency of all other tests,
+     * so failing will skip the next tests.
+     */
+    public function testBuildApp(): void
     {
         // Empty build & cache
         ($fs = new Filesystem())->remove(($kernel = self::createKernel(self::$kernelOptions))->getCacheDir());
@@ -35,23 +44,39 @@ class IntegrationTest extends KernelTestCase
         $application->setAutoExit(false);
 
         $tester = new ApplicationTester($application);
+        $tester->run(['content:build', '--ansi']);
 
-        self::assertSame(Command::SUCCESS, $tester->run([
-            'content:build',
-            '--no-expose' => true,
-        ]), $tester->getDisplay(true));
+        self::assertSame(Command::SUCCESS, $tester->getStatusCode(), <<<TXT
+        The site cannot be build properly.
+        Inspect output below:
+        ---
+        {$tester->getDisplay(true)}
+        TXT
+        );
     }
 
-    protected function setUp(): void
-    {
-        static::bootKernel(self::$kernelOptions);
-    }
-
+    /**
+     * @depends testBuildApp
+     */
     public function testBuildDirIsCreated(): void
     {
         self::assertDirectoryExists(self::$kernel->getProjectDir() . '/build');
     }
 
+    /**
+     * @depends testBuildApp
+     */
+    public function testCopiedFiles(): void
+    {
+        self::assertDirectoryExists(self::$kernel->getProjectDir() . '/build/build');
+        self::assertFileExists(self::$kernel->getProjectDir() . '/build/build/app.css');
+        self::assertFileExists(self::$kernel->getProjectDir() . '/build/robots.txt');
+        self::assertFileNotExists(self::$kernel->getProjectDir() . '/build/index.php');
+    }
+
+    /**
+     * @depends testBuildApp
+     */
     public function testSiteMap(): void
     {
         self::assertFileExists(self::$kernel->getProjectDir() . '/build/sitemap.xml');
@@ -66,11 +91,17 @@ class IntegrationTest extends KernelTestCase
         ], $crawler->filter('url > loc')->extract(['_text']));
     }
 
+    /**
+     * @depends testBuildApp
+     */
     public function testHomepage(): void
     {
         self::assertFileExists(self::$kernel->getProjectDir() . '/build/index.html');
     }
 
+    /**
+     * @depends testBuildApp
+     */
     public function testRecipes(): void
     {
         $buildDir = self::$kernel->getProjectDir() . '/build';

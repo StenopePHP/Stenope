@@ -9,3 +9,9 @@ framework:
 
 twig:
     default_path: '%kernel.project_dir%/templates'
+
+content:
+    copy:
+        - { src: '%kernel.project_dir%/public/', dest: '.', excludes: 'index.php' }
+        - { src: '%kernel.project_dir%/foo/missing-file', fail_if_missing: false }
+

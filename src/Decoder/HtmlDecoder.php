@@ -8,14 +8,14 @@
 
 namespace Content\Decoder;
 
-use Content\Behaviour\ContentDecoderInterface;
 use Content\Behaviour\HighlighterInterface;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
 
 /**
  * Parse Html data
  */
-class HtmlDecoder implements ContentDecoderInterface
+class HtmlDecoder implements DecoderInterface
 {
     /**
      * Supported format

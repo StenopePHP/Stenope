@@ -60,7 +60,7 @@ jobs:
                     bin/lint.twig.php src/Resources/views
 
                     echo "::group::Lint yaml"
-                    bin/lint.yaml.php src/Resources/config
+                    bin/lint.yaml.php --parse-tags src/Resources/config
 
             -   name: Run tests
-                run: vendor/bin/simple-phpunit
+                run: vendor/bin/simple-phpunit --testdox

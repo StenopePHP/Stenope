@@ -16,15 +16,8 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class RouteInfo
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var Route
-     */
-    private $route;
+    private string $name;
+    private Route $route;
 
     public function __construct(string $name, Route $route)
     {
@@ -32,7 +25,10 @@ class RouteInfo
         $this->route = $route;
     }
 
-    public static function createFromRouteCollection(RouteCollection $collection)
+    /**
+     * @return RouteInfo[]
+     */
+    public static function createFromRouteCollection(RouteCollection $collection): array
     {
         $routes = [];
 

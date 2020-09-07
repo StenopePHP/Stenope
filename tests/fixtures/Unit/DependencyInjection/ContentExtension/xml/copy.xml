@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:content="http://tom32i.com/schema/dic/content"
+           xsi:schemaLocation="http://tom32i.com/schema/dic/content http://tom32i.com/schema/dic/content/content.xsd">
+
+    <content:config>
+        <content:copy src="%kernel.project_dir%/public/build" dest="dist">
+            <content:excludes>*.excluded</content:excludes>
+        </content:copy>
+        <content:copy src="%kernel.project_dir%/public/robots.txt"/>
+        <content:copy src="%kernel.project_dir%/public/missing-file" fail_if_missing="false"/>
+    </content:config>
+</container>

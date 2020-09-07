@@ -23,18 +23,13 @@ class BuildCommand extends Command
 {
     protected static $defaultName = 'content:build';
 
-    /**
-     * Static site builder
-     *
-     * @var Builder
-     */
-    private $builder;
+    private Builder $builder;
 
     public function __construct(Builder $builder)
     {
-        parent::__construct();
-
         $this->builder = $builder;
+
+        parent::__construct();
     }
 
     /**
@@ -46,9 +41,10 @@ class BuildCommand extends Command
             ->setDescription('Build static website')
             ->setHelp('...')
             ->addArgument(
-                'destination',
+                'buildDir',
                 InputArgument::OPTIONAL,
-                'Full path to destination directory'
+                'Full path to build directory',
+                $this->builder->getBuildDir(),
             )
             ->addOption(
                 'host',
@@ -82,8 +78,8 @@ class BuildCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        if ($destination = $input->getArgument('destination')) {
-            $this->builder->setDestination($destination);
+        if ($destination = $input->getArgument('buildDir')) {
+            $this->builder->setBuildDir($destination);
         }
 
         if ($host = $input->getOption('host')) {
