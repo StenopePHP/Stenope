@@ -189,6 +189,6 @@ This argument accepts:
 
 - An string: `'lastModified'` (sort by ascending values of the "lastModified" property).
 - An array: `['title' => false]` (sort by descending values of the "title" property).
-- A comparison callable for the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function: `fn($a, $b) => $a->priority > $b->priority ? 1 : -1`.
+- A comparison callable for the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function: `fn($a, $b) => $a->priority <=> $b->priority`.
 
 When provided, the ContentManager will list all content and sort the array with the corresponding sorting function before returning it.
