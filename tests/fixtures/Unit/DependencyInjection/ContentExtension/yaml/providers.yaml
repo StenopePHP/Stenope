@@ -1,0 +1,17 @@
+content:
+    providers:
+        Foo\Bar:
+            type: files
+            config:
+                path: '%kernel.project_dir%/foo/bar'
+                depth: '< 2'
+                patterns: ['*.md', '*.html']
+                excludes: ['excluded.md']
+
+        Foo\Custom:
+            type: custom
+            config:
+                custom_config_key: custom_value
+                custom_sequence:
+                    - custom_sequence_value_1
+                    - custom_sequence_value_2

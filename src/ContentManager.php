@@ -8,64 +8,57 @@
 
 namespace Content;
 
-use Content\Behaviour\ContentProviderInterface;
 use Content\Behaviour\PropertyHandlerInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
+use Content\Provider\ContentProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ContentManager
 {
-    private string $path;
-    private SerializerInterface $serializer;
-    private FileSystem $files;
+    private DecoderInterface $decoder;
+    private DenormalizerInterface $denormalizer;
     private PropertyAccessorInterface $propertyAccessor;
 
-    /** @var iterable<ContentProviderInterface> */
+    /** @var iterable<ContentProviderInterface>|ContentProviderInterface[] */
     private iterable $providers;
 
-    /** @var iterable<string, PropertyHandlerInterface> indexed by property name */
+    /** @var iterable<string, PropertyHandlerInterface>|PropertyHandlerInterface[] indexed by property name */
     private iterable $handlers;
 
-    private array $cache;
+    /** @var array<string,object> */
+    private array $cache = [];
 
     public function __construct(
-        string $path,
-        SerializerInterface $serializer,
+        DecoderInterface $decoder,
+        DenormalizerInterface $denormalizer,
         iterable $propertyHandlers,
         iterable $contentProviders,
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
-        $this->path = rtrim($path, '/');
-        $this->serializer = $serializer;
+        $this->decoder = $decoder;
+        $this->denormalizer = $denormalizer;
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
-        $this->files = new FileSystem();
         $this->providers = $contentProviders;
         $this->handlers = $propertyHandlers;
-        $this->cache = [
-            'files' => [],
-            'contents' => [],
-        ];
     }
 
     /**
      * List all content for the given type
      *
-     * @param string $type   Model e.g. "App/Model/Article"
-     * @param mixed  $sortBy String, array or callable
+     * @param class-string<object>  $type   Model FQCN e.g. "App/Model/Article"
+     * @param string|array|callable $sortBy String, array or callable
      *
-     * @return array List of contents
+     * @return object[] List of decoded contents
      */
     public function getContents(string $type, $sortBy = null): array
     {
         $contents = [];
-        $provider = $this->getProvider($type);
-
-        foreach ($this->listFiles($provider) as $file) {
-            $contents[] = $this->load($type, $file);
+        foreach ($this->getProviders($type) as $provider) {
+            foreach ($provider->listContents() as $content) {
+                $contents[] = $this->load($type, $content);
+            }
         }
 
         if ($sorter = $this->getSortFunction($sortBy)) {
@@ -84,115 +77,63 @@ class ContentManager
     /**
      * Fetch a specific content
      *
-     * @param string $type Model  e.g. "App/Model/Article"
-     * @param string $id   Unique identifier (name of the file)
+     * @param class-string<object> $type Model FQCN e.g. "App/Model/Article"
+     * @param string               $id   Unique identifier (slug)
      *
-     * @return mixed An object of the given type.
+     * @return object An object of the given type.
      */
-    public function getContent(string $type, string $id)
+    public function getContent(string $type, string $id): object
     {
-        $provider = $this->getProvider($type);
-        $files = $this->listFiles($provider)->name($id . '.*');
-
-        if (!$files->hasResults()) {
-            throw new \Exception(sprintf('Content not found for type "%s" and id "%s".', $type, $id));
+        foreach ($this->getProviders($type) as $provider) {
+            if ($content = $provider->getContent($id)) {
+                return $this->load($type, $content);
+            }
         }
 
-        return $this->load($type, current(\iterator_to_array($files)));
+        throw new \RuntimeException(sprintf('Content not found for type "%s" and id "%s".', $type, $id));
     }
 
-    private function getProvider(string $type): ContentProviderInterface
+    /**
+     * @return iterable<ContentProviderInterface>|ContentProviderInterface[]
+     */
+    private function getProviders(string $type): iterable
     {
+        if (is_countable($this->providers) && 0 === \count($this->providers)) {
+            throw new \LogicException(sprintf('No content providers were configured. Did you forget to instantiate "%s" with the "$providers" argument, or to configure providers in the "content.providers" package config?', self::class));
+        }
+
+        $found = false;
         foreach ($this->providers as $provider) {
             if ($provider->supports($type)) {
-                return $provider;
+                $found = true;
+                yield $provider;
             }
         }
 
-        throw new \Exception('No provider found for type: ' . $type);
-    }
-
-    /**
-     * Get the format of a file from its extension
-     *
-     * @param SplFileInfo $file The file
-     *
-     * @return string The format
-     */
-    private static function getFormat(SplFileInfo $file): string
-    {
-        $name = $file->getRelativePathname();
-        $ext = substr($name, strrpos($name, '.') + 1);
-
-        switch ($ext) {
-            case 'md':
-                return 'markdown';
-
-            case 'yml':
-            case 'yaml':
-                return 'yaml';
-
-            default:
-                return $ext;
+        if (!$found) {
+            throw new \LogicException(sprintf('No provider found for type "%s"', $type));
         }
     }
 
-    /**
-     * Get the name of a file
-     *
-     * @param SplFileInfo $file The file
-     *
-     * @return string The name
-     */
-    private static function getName(SplFileInfo $file): string
+    private function load(string $type, Content $content)
     {
-        $name = $file->getRelativePathname();
+        if ($data = $this->cache[$key = $content->getSlug()] ?? false) {
+            return $data;
+        }
 
-        return substr($name, 0, strrpos($name, '.'));
-    }
+        $data = $this->decoder->decode($content->getRawContent(), $content->getFormat());
 
-    private function listFiles(ContentProviderInterface $provider): Finder
-    {
-        $path = sprintf('%s/%s', $this->path, $provider->getDirectory());
+        foreach ($this->handlers as $property => $handler) {
+            $value = $data[$property] ?? null;
 
-        if (!isset($this->cache['files'][$path])) {
-            if (!$this->files->exists($path)) {
-                throw new \Exception(sprintf(
-                    'Content directory not found. Path "%s" does not exist.',
-                    $this->path
-                ));
+            if ($handler->isSupported($value)) {
+                $data[$property] = $handler->handle($value, ['content' => $content, 'data' => $data]);
             }
-
-            $finder = new Finder();
-
-            $this->cache['files'][$path] = $finder->files()->in($path);
         }
 
-        return clone $this->cache['files'][$path];
-    }
+        $data = $this->denormalizer->denormalize($data, $type, $content->getFormat());
 
-    private function load(string $type, SplFileInfo $file)
-    {
-        $path = $file->getPathName();
-
-        if (!isset($this->cache['contents'][$path])) {
-            $format = static::getFormat($file);
-            $data = $this->serializer->decode($file->getContents(), $format);
-
-            foreach ($this->handlers as $property => $handler) {
-                $value = $data[$property] ?? null;
-
-                if ($handler->isSupported($value)) {
-                    $data[$property] = $handler->handle($value, ['file' => $file, 'data' => $data]);
-                }
-            }
-
-            $data = $this->serializer->denormalize($data, $type, $format);
-
-            $this->cache['contents'][$path] = $data;
-        }
-
-        return $this->cache['contents'][$path];
+        return $this->cache[$key] = $data;
     }
 
     private function getSortFunction($sortBy): ?callable
@@ -221,28 +162,6 @@ class ContentManager
             };
         }
 
-        throw new \Exception('Unknown sorter');
-    }
-
-    /**
-     * Get index of the given content for content lists
-     *
-     * @param array|object $content
-     *
-     * @return string The string index (by default, the file name)
-     */
-    private function getIndex(SplFileInfo $file, $content, string $key = null)
-    {
-        if ($key === null || !$this->propertyAccessor->isReadable($content, $key)) {
-            return static::getName($file);
-        }
-
-        $index = $this->propertyAccessor->getValue($content, $key);
-
-        if ($index instanceof \DateTime) {
-            return $index->format('U');
-        }
-
-        return (string) $index;
+        throw new \LogicException('Unknown sorter');
     }
 }

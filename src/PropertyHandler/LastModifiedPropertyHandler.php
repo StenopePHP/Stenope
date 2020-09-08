@@ -9,6 +9,7 @@
 namespace Content\PropertyHandler;
 
 use Content\Behaviour\PropertyHandlerInterface;
+use Content\Content;
 
 /**
  * Set a "LastModified" property based on file date
@@ -28,6 +29,9 @@ class LastModifiedPropertyHandler implements PropertyHandlerInterface
      */
     public function handle($value, array $context)
     {
-        return (new \DateTime('@' . $context['file']->getMTime()))->format(\DateTimeInterface::RFC3339);
+        /** @var Content $content */
+        $content = $context['content'];
+
+        return $content->getLastModified() ? $content->getLastModified()->format(\DateTimeInterface::RFC3339) : null;
     }
 }

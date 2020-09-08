@@ -15,3 +15,5 @@ content:
         - { src: '%kernel.project_dir%/public/', dest: '.', excludes: 'index.php' }
         - { src: '%kernel.project_dir%/foo/missing-file', fail_if_missing: false }
 
+    providers:
+        App\Content\Model\Recipe: '%kernel.project_dir%/content/recipes'

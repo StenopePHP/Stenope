@@ -8,10 +8,10 @@
     <xsd:element name="config" type="config"/>
 
     <xsd:complexType name="config">
-        <xsd:sequence>
+        <xsd:sequence minOccurs="0">
             <xsd:element name="copy" type="copy_entry" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="provider" type="provider" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-        <xsd:attribute name="content_dir" type="xsd:string"/>
         <xsd:attribute name="build_dir" type="xsd:string"/>
     </xsd:complexType>
 
@@ -22,5 +22,28 @@
         <xsd:attribute name="src" type="xsd:string" use="required"/>
         <xsd:attribute name="dest" type="xsd:string"/>
         <xsd:attribute name="fail_if_missing" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="provider">
+        <xsd:sequence>
+            <xsd:element name="config" type="provider_config" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="type" type="xsd:string" use="required"/>
+        <xsd:attribute name="class" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="provider_config">
+        <xsd:sequence minOccurs="0">
+            <!-- files -->
+            <xsd:element name="pattern" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="exclude" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- custom -->
+            <xsd:any processContents="lax" maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+        <!-- files -->
+        <xsd:attribute name="path" type="xsd:string" />
+        <xsd:attribute name="depth" type="xsd:string" />
+        <!-- custom -->
+        <xsd:anyAttribute processContents="lax" />
     </xsd:complexType>
 </xsd:schema>

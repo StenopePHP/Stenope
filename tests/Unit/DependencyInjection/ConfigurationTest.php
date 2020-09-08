@@ -9,6 +9,7 @@
 namespace Content\Tests\Unit\DependencyInjection;
 
 use Content\DependencyInjection\Configuration;
+use Content\Provider\Factory\LocalFilesystemProviderFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -26,12 +27,10 @@ class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
-            'content_dir' => '%kernel.project_dir%/data',
             'build_dir' => '%kernel.project_dir%/site',
         ]]);
 
         self::assertEquals([
-            'content_dir' => '%kernel.project_dir%/data',
             'build_dir' => '%kernel.project_dir%/site',
         ] + $this->getDefaultConfig(), $config);
     }
@@ -71,10 +70,176 @@ class ConfigurationTest extends TestCase
         ] + $this->getDefaultConfig(), $config);
     }
 
+    /**
+     * @dataProvider providerProvidersConfig
+     */
+    public function testProvidersConfig(array $config, array $expected): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [$config]);
+
+        self::assertEquals($expected + $this->getDefaultConfig(), $config);
+    }
+
+    public function providerProvidersConfig(): iterable
+    {
+        yield 'minimal "files" config' => [
+            'config' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                            'depth' => null,
+                            'patterns' => ['*'],
+                            'excludes' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'full "files" config' => [
+            'config' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                            'depth' => '< 2',
+                            'patterns' => ['*.md', '*.html'],
+                            'excludes' => ['excluded.md'],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                            'depth' => '< 2',
+                            'patterns' => ['*.md', '*.html'],
+                            'excludes' => ['excluded.md'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'normalized "files" config' => [
+            'config' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                            'patterns' => '*.md',
+                            'excludes' => 'excluded.md',
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                            'depth' => null,
+                            'patterns' => ['*.md'],
+                            'excludes' => ['excluded.md'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'custom provider config' => [
+            'config' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => 'custom',
+                        'config' => [
+                            'foo' => 'bar',
+                            'baz' => 'qux',
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => 'custom',
+                        'config' => [
+                            'foo' => 'bar',
+                            'baz' => 'qux',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'shortcut config' => [
+            'config' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'path' => 'foo/bar',
+                        'patterns' => '*.md',
+                        'excludes' => 'excluded.md',
+                    ],
+                ],
+            ],
+            'expected' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                            'depth' => null,
+                            'patterns' => ['*.md'],
+                            'excludes' => ['excluded.md'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'shortcut "files" config' => [
+            'config' => [
+                'providers' => [
+                    'Foo\Bar' => 'foo/bar',
+                ],
+            ],
+            'expected' => [
+                'providers' => [
+                    'Foo\Bar' => [
+                        'type' => LocalFilesystemProviderFactory::TYPE,
+                        'config' => [
+                            'path' => 'foo/bar',
+                            'depth' => null,
+                            'patterns' => ['*'],
+                            'excludes' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     private function getDefaultConfig(): array
     {
         return [
-            'content_dir' => '%kernel.project_dir%/content',
             'build_dir' => '%kernel.project_dir%/build',
             'copy' => [
                 [
@@ -84,6 +249,7 @@ class ConfigurationTest extends TestCase
                     'fail_if_missing' => true,
                 ],
             ],
+            'providers' => [],
         ];
     }
 }

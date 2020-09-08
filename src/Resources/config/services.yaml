@@ -65,8 +65,14 @@ services:
 
     # Content Manager
     Content\ContentManager:
-        $path: !abstract The content dir, defined by the extension
-        $serializer: '@serializer'
+        $decoder: '@serializer'
+        $denormalizer: '@serializer'
         $propertyAccessor: '@property_accessor'
         $contentProviders: !tagged_iterator 'content.content_provider'
         $propertyHandlers: !tagged_iterator { tag: 'content.property_handler', index_by: 'property' }
+
+    Content\Provider\Factory\ContentProviderFactory:
+        $factories: !tagged_iterator 'content.content_provider_factory'
+
+    Content\Provider\Factory\LocalFilesystemProviderFactory:
+        tags: ['content.content_provider_factory']

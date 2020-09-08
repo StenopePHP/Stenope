@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\Glob;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -172,13 +173,15 @@ class Builder
 
             if (is_dir($src)) {
                 if (\count($excludes) > 0) {
-                    $iterator = (new Finder())->in($src);
-                    foreach ($excludes as $exclude) {
-                        $iterator->notName($exclude)->files();
-                    }
+                    $iterator = (new Finder())
+                        ->in($src)
+                        ->files()
+                        ->notPath(array_map(fn ($exclude) => Glob::toRegex($exclude, true, false), $excludes))
+                    ;
                 }
 
                 $this->files->mirror($src, "$this->buildDir/$dest", $iterator ?? null);
+
                 continue;
             }
 
