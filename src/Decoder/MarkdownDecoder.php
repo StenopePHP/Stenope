@@ -38,19 +38,20 @@ class MarkdownDecoder implements DecoderInterface
      */
     public function decode($data, $format, array $context = [])
     {
+        $content = trim($data);
         $separator = static::HEAD_SEPARATOR;
-        $start = strpos($data, $separator);
-        $stop = strpos($data, $separator, 1);
+        $start = strpos($content, $separator);
+        $stop = strpos($content, $separator, $start + 1);
         $length = \strlen($separator) + 1;
 
         if ($start === 0 && $stop) {
             return array_merge(
-                $this->parseYaml(substr($data, $start + $length, $stop - $length)),
-                ['content' => $this->markdownify(substr($data, $stop + $length))]
+                $this->parseYaml(substr($content, $start + $length, $stop - $length)),
+                ['content' => $this->markdownify(substr($content, $stop + $length))]
             );
         }
 
-        return ['content' => $this->markdownify($data)];
+        return ['content' => $this->markdownify($content)];
     }
 
     /**
