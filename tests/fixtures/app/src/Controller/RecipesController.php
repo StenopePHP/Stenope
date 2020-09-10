@@ -10,7 +10,9 @@ namespace App\Controller;
 
 use App\Content\Model\Recipe;
 use Content\ContentManager;
+use Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -39,12 +41,20 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="recipe")
+     * Ensure {@link ContentArgumentResolver} handles nullable arguments properly.
+     *
+     * @Route("/optional-recipe", name="optional-recipe", options={ "hidden": true })
      */
-    public function show(string $slug)
+    public function optionalRecipe(?Recipe $recipe)
     {
-        $recipe = $this->manager->getContent(Recipe::class, $slug);
+        return new Response('OK');
+    }
 
+    /**
+     * @Route("/{recipe}", name="recipe")
+     */
+    public function show(Recipe $recipe)
+    {
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
         ])->setLastModified($recipe->lastModified);

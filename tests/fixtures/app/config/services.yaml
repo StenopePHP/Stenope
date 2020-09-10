@@ -6,10 +6,8 @@ services:
     App\:
         resource: '%kernel.project_dir%/src/'
         exclude:
-            - '%kernel.project_dir%/src/DependencyInjection/'
-            - '%kernel.project_dir%/src/Entity/'
+            - '%kernel.project_dir%/src/Content/Model'
             - '%kernel.project_dir%/src/Kernel.php'
-            - '%kernel.project_dir%/src/Tests/'
 
     App\Controller\:
         resource: '../src/Controller/'
