@@ -8,6 +8,7 @@
 
 namespace Content\DependencyInjection;
 
+use Content\Behaviour\ProcessorInterface;
 use Content\Builder;
 use Content\Provider\ContentProviderInterface;
 use Content\Provider\Factory\ContentProviderFactory;
@@ -27,6 +28,7 @@ class ContentExtension extends Extension
 
         $container->registerForAutoconfiguration(ContentProviderFactoryInterface::class)->addTag('content.content_provider_factory');
         $container->registerForAutoconfiguration(ContentProviderInterface::class)->addTag('content.content_provider');
+        $container->registerForAutoconfiguration(ProcessorInterface::class)->addTag('content.processor');
 
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 

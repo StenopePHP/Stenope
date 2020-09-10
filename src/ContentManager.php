@@ -8,7 +8,7 @@
 
 namespace Content;
 
-use Content\Behaviour\PropertyHandlerInterface;
+use Content\Behaviour\ProcessorInterface;
 use Content\Provider\ContentProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -24,8 +24,8 @@ class ContentManager
     /** @var iterable<ContentProviderInterface>|ContentProviderInterface[] */
     private iterable $providers;
 
-    /** @var iterable<string, PropertyHandlerInterface>|PropertyHandlerInterface[] indexed by property name */
-    private iterable $handlers;
+    /** @var iterable<ProcessorInterface>|ProcessorInterface[] */
+    private iterable $processors;
 
     /** @var array<string,object> */
     private array $cache = [];
@@ -33,15 +33,15 @@ class ContentManager
     public function __construct(
         DecoderInterface $decoder,
         DenormalizerInterface $denormalizer,
-        iterable $propertyHandlers,
         iterable $contentProviders,
+        iterable $processors,
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->decoder = $decoder;
         $this->denormalizer = $denormalizer;
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->providers = $contentProviders;
-        $this->handlers = $propertyHandlers;
+        $this->processors = $processors;
     }
 
     /**
@@ -123,12 +123,13 @@ class ContentManager
 
         $data = $this->decoder->decode($content->getRawContent(), $content->getFormat());
 
-        foreach ($this->handlers as $property => $handler) {
-            $value = $data[$property] ?? null;
-
-            if ($handler->isSupported($value)) {
-                $data[$property] = $handler->handle($value, ['content' => $content, 'data' => $data]);
-            }
+        // Apply processors to decoded data
+        foreach ($this->processors as $processor) {
+            $processor($data, [
+                'type' => $type,
+                'content' => $content,
+                'contentManager' => $this,
+            ]);
         }
 
         $data = $this->denormalizer->denormalize($data, $type, $content->getFormat());

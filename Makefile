@@ -19,7 +19,7 @@ lint-phpcsfixer:
 	vendor/bin/php-cs-fixer fix --dry-run --diff
 
 lint-phpstan:
-	vendor/bin/phpstan analyse
+	vendor/bin/phpstan analyse --memory-limit=-1
 
 lint-twig:
 	php bin/lint.twig.php src/Resources/views

@@ -36,14 +36,17 @@ services:
     Content\Service\Parsedown:
         $highlighter: '@Content\Highlighter\Prism'
 
-    Content\PropertyHandler\LastModifiedPropertyHandler:
-        tags: [{ name: 'content.property_handler', property: 'lastModified' }]
+    Content\Processor\LastModifiedProcessor:
+        tags: ['content.processor']
 
-    Content\PropertyHandler\SlugPropertyHandler:
-        tags: [{ name: 'content.property_handler', property: 'slug' }]
+    Content\Processor\SlugProcessor:
+        tags: ['content.processor']
 
-    Content\PropertyHandler\TitlesPropertyHandler:
-        tags: [{ name: 'content.property_handler', property: 'content' }]
+    Content\Processor\HtmlIdProcessor:
+        tags: ['content.processor']
+
+    Content\Processor\HtmlAnchorProcessor:
+        tags: ['content.processor']
 
     # Decorators
     Content\Routing\UrlGenerator:
@@ -69,7 +72,7 @@ services:
         $denormalizer: '@serializer'
         $propertyAccessor: '@property_accessor'
         $contentProviders: !tagged_iterator 'content.content_provider'
-        $propertyHandlers: !tagged_iterator { tag: 'content.property_handler', index_by: 'property' }
+        $processors: !tagged_iterator 'content.processor'
 
     Content\Provider\Factory\ContentProviderFactory:
         $factories: !tagged_iterator 'content.content_provider_factory'
