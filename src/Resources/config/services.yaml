@@ -76,3 +76,10 @@ services:
 
     Content\Provider\Factory\LocalFilesystemProviderFactory:
         tags: ['content.content_provider_factory']
+
+    Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver:
+        arguments:
+            $contentManager: '@Content\ContentManager'
+        tags:
+            - name: controller.argument_value_resolver
+              priority: 110 # Prior RequestAttributeValueResolver to resolve from route attribute

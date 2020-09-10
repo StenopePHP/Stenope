@@ -6,7 +6,7 @@
     <ul>
         {% for recipe in recipes %}
             <li>
-                <a href="{{ path('recipe', { slug: recipe.slug }) }}">
+                <a href="{{ path('recipe', { recipe: recipe.slug }) }}">
                     {{ recipe.title }}
                 </a>
             </li>

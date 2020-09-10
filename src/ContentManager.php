@@ -164,4 +164,15 @@ class ContentManager
 
         throw new \LogicException('Unknown sorter');
     }
+
+    public function supports(string $type): bool
+    {
+        foreach ($this->providers as $provider) {
+            if ($provider->supports($type)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
