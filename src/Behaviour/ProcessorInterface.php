@@ -10,9 +10,6 @@ namespace Content\Behaviour;
 
 use Content\Content;
 
-/**
- * Processor interface
- */
 interface ProcessorInterface
 {
     /**
