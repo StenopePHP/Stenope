@@ -4,6 +4,7 @@ includes:
 parameters:
     bootstrapFiles:
         - tests/bootstrap.php
+        - src/Resources/config/tags.php
         - vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php
 
     excludes_analyse:
