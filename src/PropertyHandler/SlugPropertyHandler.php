@@ -9,6 +9,7 @@
 namespace Content\PropertyHandler;
 
 use Content\Behaviour\PropertyHandlerInterface;
+use Content\Content;
 
 /**
  * Set "slug" property from file name if not specified
@@ -22,6 +23,9 @@ class SlugPropertyHandler implements PropertyHandlerInterface
 
     public function handle($value, array $context)
     {
-        return \pathinfo($context['file']->getBasename(), PATHINFO_FILENAME);
+        /** @var Content $content */
+        $content = $context['content'];
+
+        return $content->getSlug();
     }
 }

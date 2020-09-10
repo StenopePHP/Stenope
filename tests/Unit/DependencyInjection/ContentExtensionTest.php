@@ -9,8 +9,8 @@
 namespace Content\Tests\Unit\DependencyInjection;
 
 use Content\Builder;
-use Content\ContentManager;
 use Content\DependencyInjection\ContentExtension;
+use Content\Provider\Factory\LocalFilesystemProviderFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
@@ -23,7 +23,6 @@ abstract class ContentExtensionTest extends TestCase
     {
         $container = $this->createContainerFromFile('defaults');
 
-        self::assertSame('%kernel.project_dir%/content', $container->getDefinition(ContentManager::class)->getArgument('$path'));
         self::assertSame('%kernel.project_dir%/build', $container->getDefinition(Builder::class)->getArgument('$buildDir'));
         self::assertEquals([
             [
@@ -39,7 +38,6 @@ abstract class ContentExtensionTest extends TestCase
     {
         $container = $this->createContainerFromFile('dirs');
 
-        self::assertSame('PROJECT_DIR/data', $container->getDefinition(ContentManager::class)->getArgument('$path'));
         self::assertSame('PROJECT_DIR/site', $container->getDefinition(Builder::class)->getArgument('$buildDir'));
     }
 
@@ -67,6 +65,29 @@ abstract class ContentExtensionTest extends TestCase
                 'dest' => 'missing-file',
             ],
         ], $container->getDefinition(Builder::class)->getArgument('$filesToCopy'));
+    }
+
+    public function testProviders(): void
+    {
+        $container = $this->createContainerFromFile('providers');
+
+        $filesProviderFactory = $container->getDefinition('content.provider.files.Foo\Bar');
+        self::assertEquals(LocalFilesystemProviderFactory::TYPE, $filesProviderFactory->getArgument('$type'));
+        self::assertEquals([
+            'class' => 'Foo\Bar',
+            'path' => 'PROJECT_DIR/foo/bar',
+            'depth' => '< 2',
+            'patterns' => ['*.md', '*.html'],
+            'excludes' => ['excluded.md'],
+        ], $filesProviderFactory->getArgument('$config'));
+
+        $customProviderFactory = $container->getDefinition('content.provider.custom.Foo\Custom');
+        self::assertEquals('custom', $customProviderFactory->getArgument('$type'));
+        self::assertEquals([
+            'class' => 'Foo\Custom',
+            'custom_config_key' => 'custom_value',
+            'custom_sequence' => ['custom_sequence_value_1', 'custom_sequence_value_2'],
+        ], $customProviderFactory->getArgument('$config'));
     }
 
     protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder

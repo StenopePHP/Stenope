@@ -5,5 +5,5 @@
            xmlns:content="http://tom32i.com/schema/dic/content"
            xsi:schemaLocation="http://tom32i.com/schema/dic/content http://tom32i.com/schema/dic/content/content.xsd">
 
-    <content:config build_dir="%kernel.project_dir%/site" content_dir="%kernel.project_dir%/data" />
+    <content:config build_dir="%kernel.project_dir%/site" />
 </container>
