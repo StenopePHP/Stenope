@@ -9,6 +9,7 @@
 namespace Content\Processor;
 
 use Content\Behaviour\ProcessorInterface;
+use Content\Content;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -16,77 +17,76 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class HtmlIdProcessor implements ProcessorInterface
 {
-    public function __invoke(array &$data, array $context): void
+    private string $property;
+
+    public function __construct(string $property = 'content')
     {
-        $crawler = new Crawler($data['content'] ?? null);
+        $this->property = $property;
+    }
+
+    public function __invoke(array &$data, string $type, Content $content): void
+    {
+        if (!isset($data[$this->property])) {
+            return;
+        }
+
+        $crawler = new Crawler($data[$this->property]);
 
         try {
             $crawler->html();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             // Content is not valid HTML.
             return;
         }
 
-        $crawler->filter('h1')->each(fn ($node) => $this->setIdFromContent($node));
-        $crawler->filter('h2')->each(fn ($node) => $this->setIdFromContent($node));
-        $crawler->filter('h3')->each(fn ($node) => $this->setIdFromContent($node));
-        $crawler->filter('h4')->each(fn ($node) => $this->setIdFromContent($node));
-        $crawler->filter('h5')->each(fn ($node) => $this->setIdFromContent($node));
-        $crawler->filter('code')->each(fn ($node) => $this->setIdFromHashedContent($node));
-        $crawler->filter('quote')->each(fn ($node) => $this->setIdFromHashedContent($node));
-        $crawler->filter('img')->each(fn ($node) => $this->setIdForImage($node));
+        foreach ($crawler->filter('h1, h2, h3, h4, h5') as $element) {
+            $this->setIdFromContent($element);
+        }
 
-        $data['content'] = $crawler->html();
+        foreach ($crawler->filter('code, quote') as $element) {
+            $this->setIdFromHashedContent($element);
+        }
+
+        foreach ($crawler->filter('img') as $element) {
+            $this->setIdForImage($element);
+        }
+
+        $data[$this->property] = $crawler->html();
     }
 
-    /**
-     * Set id from content
-     */
-    private function setIdFromContent(Crawler $node): void
+    private function setIdFromContent(\DOMElement $element): void
     {
-        $element = $node->getNode(0);
-
         if (!$id = $element->getAttribute('id')) {
-            $element->setAttribute('id', $this->slugify($node->text()));
+            $element->setAttribute('id', $this->slugify($element->textContent));
+        }
+    }
+
+    private function setIdFromHashedContent(\DOMElement $element): void
+    {
+        if (!$id = $element->getAttribute('id')) {
+            $element->setAttribute('id', $this->hash($element->textContent));
+        }
+    }
+
+    private function setIdForImage(\DOMElement $element): void
+    {
+        if (!$id = $element->getAttribute('id')) {
+            $name = $element->getAttribute('alt') ?: \basename($element->getAttribute('src'));
+            $element->setAttribute('id', $this->slugify($name));
         }
     }
 
     /**
-     * Set id from multilign content
-     */
-    private function setIdFromHashedContent(Crawler $node): void
-    {
-        $element = $node->getNode(0);
-
-        if (!$id = $element->getAttribute('id')) {
-            $element->setAttribute('id', hash('md5', $node->text()));
-        }
-    }
-
-    /**
-     * Set id from attribute
-     */
-    private function setIdForImage(Crawler $node): void
-    {
-        $element = $node->getNode(0);
-
-        if (!$id = $element->getAttribute('id')) {
-            if ($alt = $element->getAttribute('alt')) {
-                $element->setAttribute('id', $this->slugify($alt));
-            } else {
-                $element->setAttribute('id', $this->hash($element->getAttribute('src')));
-            }
-        }
-    }
-
-    /**
-     * Get a url valid ID from the given value
+     * Get an url valid ID from the given value
      */
     private function slugify(string $value, int $maxLength = 32): string
     {
         return trim(preg_replace('#[^a-z]+#i', '-', strtolower(substr($value, 0, $maxLength))), '-');
     }
 
+    /**
+     * Get an url valid ID from hashed value
+     */
     private function hash(string $value, string $algo = 'md5'): string
     {
         return hash($algo, $value);

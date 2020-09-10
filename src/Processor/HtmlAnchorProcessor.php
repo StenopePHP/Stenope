@@ -9,6 +9,7 @@
 namespace Content\Processor;
 
 use Content\Behaviour\ProcessorInterface;
+use Content\Content;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -16,9 +17,20 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class HtmlAnchorProcessor implements ProcessorInterface
 {
-    public function __invoke(array &$data, array $context): void
+    private string $property;
+
+    public function __construct(string $property = 'content')
     {
-        $crawler = new Crawler($data['content'] ?? null);
+        $this->property = $property;
+    }
+
+    public function __invoke(array &$data, string $type, Content $content): void
+    {
+        if (!isset($data[$this->property])) {
+            return;
+        }
+
+        $crawler = new Crawler($data[$this->property]);
 
         try {
             $crawler->html();
@@ -27,23 +39,20 @@ class HtmlAnchorProcessor implements ProcessorInterface
             return;
         }
 
-        $crawler = new Crawler($data['content']);
+        $crawler = new Crawler($data[$this->property]);
 
-        $crawler->filter('h1')->each(fn ($node) => $this->addAnchor($node));
-        $crawler->filter('h2')->each(fn ($node) => $this->addAnchor($node));
-        $crawler->filter('h3')->each(fn ($node) => $this->addAnchor($node));
-        $crawler->filter('h4')->each(fn ($node) => $this->addAnchor($node));
-        $crawler->filter('h5')->each(fn ($node) => $this->addAnchor($node));
+        foreach ($crawler->filter('h1, h2, h3, h4, h5') as $element) {
+            $this->addAnchor($element);
+        }
 
-        $data['content'] = $crawler->html();
+        $data[$this->property] = $crawler->html();
     }
 
     /**
      * Set title id and add anchor
      */
-    private function addAnchor(Crawler $node): void
+    private function addAnchor(\DOMElement $element): void
     {
-        $element = $node->getNode(0);
         $child = $element->ownerDocument->createDocumentFragment();
 
         if (!$id = $element->getAttribute('id')) {

@@ -16,20 +16,20 @@ use Content\Content;
  */
 class SlugProcessor implements ProcessorInterface
 {
-    public static function isSupported($value): bool
+    private string $property;
+
+    public function __construct(string $property = 'slug')
     {
-        return \is_null($value);
+        $this->property = $property;
     }
 
-    public function __invoke(array &$data, array $context): void
+    public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!static::isSupported($data['slug'] ?? null)) {
+        if (isset($data[$this->property])) {
+            // Slug already set.
             return;
         }
 
-        /** @var Content $content */
-        $content = $context['content'];
-
-        $data['slug'] = $content->getSlug();
+        $data[$this->property] = $content->getSlug();
     }
 }

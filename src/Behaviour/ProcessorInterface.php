@@ -8,6 +8,8 @@
 
 namespace Content\Behaviour;
 
+use Content\Content;
+
 /**
  * Processor interface
  */
@@ -16,8 +18,9 @@ interface ProcessorInterface
     /**
      * Apply modifications to decoded data before denormalization
      *
-     * @param array $data    The decoded data
-     * @param array $context The context of parsing process
+     * @param array   $data    The decoded data
+     * @param string  $type    The model being processed (FQN)
+     * @param Content $content The source content
      */
-    public function __invoke(array &$data, array $context): void;
+    public function __invoke(array &$data, string $type, Content $content): void;
 }

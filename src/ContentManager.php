@@ -8,6 +8,7 @@
 
 namespace Content;
 
+use Content\Behaviour\ContentManagerAwareInterface;
 use Content\Behaviour\ProcessorInterface;
 use Content\Provider\ContentProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -42,6 +43,12 @@ class ContentManager
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->providers = $contentProviders;
         $this->processors = $processors;
+
+        foreach ($this->processors as $processor) {
+            if ($processor instanceof ContentManagerAwareInterface) {
+                $processor->setContentManager($this);
+            }
+        }
     }
 
     /**
@@ -125,11 +132,7 @@ class ContentManager
 
         // Apply processors to decoded data
         foreach ($this->processors as $processor) {
-            $processor($data, [
-                'type' => $type,
-                'content' => $content,
-                'contentManager' => $this,
-            ]);
+            $processor($data, $type, $content);
         }
 
         $data = $this->denormalizer->denormalize($data, $type, $content->getFormat());

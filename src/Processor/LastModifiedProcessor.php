@@ -16,20 +16,20 @@ use Content\Content;
  */
 class LastModifiedProcessor implements ProcessorInterface
 {
-    public static function isSupported($value): bool
+    private string $property;
+
+    public function __construct(string $property = 'lastModified')
     {
-        return \is_null($value);
+        $this->property = $property;
     }
 
-    public function __invoke(array &$data, array $context): void
+    public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data['lastModified'])) {
+        if (isset($data[$this->property])) {
+            // Last modified already set.
             return;
         }
 
-        /** @var Content $content */
-        $content = $context['content'];
-
-        $data['lastModified'] = $content->getLastModified() ? $content->getLastModified()->format(\DateTimeInterface::RFC3339) : null;
+        $data[$this->property] = $content->getLastModified() ? $content->getLastModified()->format(\DateTimeInterface::RFC3339) : null;
     }
 }
