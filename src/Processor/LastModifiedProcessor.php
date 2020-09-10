@@ -23,7 +23,7 @@ class LastModifiedProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, array $context): void
     {
-        if (!static::isSupported($data['lastModified'] ?? null)) {
+        if (!isset($data['lastModified'])) {
             return;
         }
 

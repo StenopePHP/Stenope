@@ -12,7 +12,7 @@ use Content\Behaviour\ProcessorInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Add anchir to elements with ids
+ * Add anchor to elements with ids
  */
 class HtmlAnchorProcessor implements ProcessorInterface
 {
