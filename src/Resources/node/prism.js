@@ -6,4 +6,4 @@ require('prismjs/components/')([language]);
 
 const result = Prism.highlight(readFileSync(path, 'utf8'), Prism.languages[language], language);
 
-process.stdout.end(result);
+process.stdout.write(result, () => process.exit(0));
