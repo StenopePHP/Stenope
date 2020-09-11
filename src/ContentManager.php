@@ -15,6 +15,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class ContentManager
 {
@@ -28,6 +29,8 @@ class ContentManager
     /** @var iterable<ProcessorInterface>|ProcessorInterface[] */
     private iterable $processors;
 
+    private ?Stopwatch $stopwatch;
+
     /** @var array<string,object> */
     private array $cache = [];
 
@@ -36,13 +39,15 @@ class ContentManager
         DenormalizerInterface $denormalizer,
         iterable $contentProviders,
         iterable $processors,
-        ?PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null,
+        ?Stopwatch $stopwatch = null
     ) {
         $this->decoder = $decoder;
         $this->denormalizer = $denormalizer;
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->providers = $contentProviders;
         $this->processors = $processors;
+        $this->stopwatch = $stopwatch;
     }
 
     /**
@@ -85,9 +90,19 @@ class ContentManager
      */
     public function getContent(string $type, string $id): object
     {
+        if ($this->stopwatch) {
+            $event = $this->stopwatch->start('get_content', 'content');
+        }
+
         foreach ($this->getProviders($type) as $provider) {
             if ($content = $provider->getContent($id)) {
-                return $this->load($type, $content);
+                $loaded = $this->load($type, $content);
+
+                if (isset($event)) {
+                    $event->stop();
+                }
+
+                return $loaded;
             }
         }
 
