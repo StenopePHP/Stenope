@@ -43,12 +43,6 @@ class ContentManager
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->providers = $contentProviders;
         $this->processors = $processors;
-
-        foreach ($this->processors as $processor) {
-            if ($processor instanceof ContentManagerAwareInterface) {
-                $processor->setContentManager($this);
-            }
-        }
     }
 
     /**
@@ -128,6 +122,8 @@ class ContentManager
             return $data;
         }
 
+        $this->initProcessors();
+
         $data = $this->decoder->decode($content->getRawContent(), $content->getFormat());
 
         // Apply processors to decoded data
@@ -178,5 +174,19 @@ class ContentManager
         }
 
         return false;
+    }
+
+    private function initProcessors(): void
+    {
+        static $managerInjected = false;
+        // Lazy inject manager to processor on first need:
+        if (!$managerInjected) {
+            foreach ($this->processors as $processor) {
+                if ($processor instanceof ContentManagerAwareInterface) {
+                    $processor->setContentManager($this);
+                }
+            }
+            $managerInjected = true;
+        }
     }
 }
