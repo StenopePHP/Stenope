@@ -31,8 +31,8 @@ class PrismCli implements HighlighterInterface
         if (!$this->server) {
             $this->input = new InputStream();
             $this->server = new Process(['node', $this->executable], null, null, $this->input);
-            $this->server->setTimeout(0.0);
-            $this->server->setIdleTimeout(0.0);
+            $this->server->setTimeout(60);
+            $this->server->setIdleTimeout(60);
         }
 
         if (!$this->server->isRunning()) {
@@ -58,14 +58,13 @@ class PrismCli implements HighlighterInterface
         $this->start();
 
         $this->input->write(
-            json_encode(['language' => $language, 'value' => $value])// . PHP_EOL
+            json_encode(['language' => $language, 'value' => $value]) . PHP_EOL
         );
 
         $this->server->waitUntil(function ($type, $output) {
-            //dump($type, $output);
             return true;
         });
 
-        return $this->server->getOutput();
+        return $this->server->getIncrementalOutput();
     }
 }

@@ -38,17 +38,12 @@ class PrismApi implements HighlighterInterface
     public function start()
     {
         if (!$this->server) {
-            //dump('Create server');
             $this->server = new Process(['node', $this->executable, $this->host, $this->port]);
             $this->server->disableOutput();
         }
 
         if (!$this->server->isRunning()) {
-            //dump('start');
-            $this->server->start(/*fn ($output) => dump('started', $output)*/);
-            //dump(sprintf('started with pid %s', $this->server->getPid()));
-        } else {
-            //dump('Running');
+            $this->server->start();
         }
     }
 

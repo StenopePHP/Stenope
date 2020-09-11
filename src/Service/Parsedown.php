@@ -105,7 +105,7 @@ class Parsedown extends BaseParsedown
     /**
      * HTML content in markdown
      */
-    /*protected function blockMarkupComplete($Block)
+    protected function blockMarkupComplete($Block)
     {
         $crawler = new Crawler($Block['markup']);
 
@@ -123,7 +123,7 @@ class Parsedown extends BaseParsedown
         $Block['markup'] = $crawler->html();
 
         return $Block;
-    }*/
+    }
 
     /**
      * Process code content
