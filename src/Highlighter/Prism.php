@@ -9,7 +9,6 @@
 namespace Content\Highlighter;
 
 use Content\Behaviour\HighlighterInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 /**
@@ -17,32 +16,11 @@ use Symfony\Component\Process\Process;
  */
 class Prism implements HighlighterInterface
 {
-    /**
-     * Script path
-     *
-     * @var string
-     */
-    private $executable;
+    private string $executable;
 
-    /**
-     * File system
-     *
-     * @var FileSystem
-     */
-    private $files;
-
-    /**
-     * Temporary directory path
-     *
-     * @var string
-     */
-    private $temporaryPath;
-
-    public function __construct(string $executable = __DIR__ . '/../Resources/node/prism.js', string $temporaryPath = null)
+    public function __construct(string $executable = __DIR__ . '/../Resources/node/prism.js')
     {
         $this->executable = $executable;
-        $this->temporaryPath = $temporaryPath ?: sys_get_temp_dir();
-        $this->files = new Filesystem();
     }
 
     /**

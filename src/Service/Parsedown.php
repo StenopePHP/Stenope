@@ -9,7 +9,9 @@
 namespace Content\Service;
 
 use Content\Behaviour\HighlighterInterface;
+use Content\Service\HtmlUtils;
 use Parsedown as BaseParsedown;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Improved Parsedown implementation
@@ -98,6 +100,29 @@ class Parsedown extends BaseParsedown
 
             return $Block;
         }
+    }
+
+    /**
+     * HTML content in markdown
+     */
+    protected function blockMarkupComplete($Block)
+    {
+        $crawler = new Crawler($Block['markup']);
+
+        // Apply code highlight to raw HTML code blocks:
+        $crawler->filter('code')->each(function (Crawler $node): void {
+            if ($language = $node->attr('highlight')) {
+                $element = $node->getNode(0);
+                HtmlUtils::setContent($element, $this->highlighter->highlight(trim($node->html()), $language));
+
+                $element->removeAttribute('highlight');
+                HtmlUtils::addClass($element, $language);
+            }
+        });
+
+        $Block['markup'] = $crawler->html();
+
+        return $Block;
     }
 
     /**

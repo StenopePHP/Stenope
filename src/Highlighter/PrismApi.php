@@ -10,23 +10,50 @@ namespace Content\Highlighter;
 
 use Content\Behaviour\HighlighterInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Process\Process;
 
 /**
  * Prism code highlight
  */
 class PrismApi implements HighlighterInterface
 {
-    /**
-     * Script path
-     */
-    private string $executable;
-
     private HttpClientInterface $client;
+    private string $executable;
+    private string $host;
+    private string $port;
+    private ?Process $server = null;
 
-    public function __construct(HttpClientInterface $client, string $executable = __DIR__ . '/../Resources/node/prism.api.js')
-    {
+    public function __construct(
+        HttpClientInterface $client,
+        string $executable = __DIR__ . '/../Resources/node/prism.api.js',
+        string $host = '127.0.0.1',
+        string $port = '8032'
+    ) {
         $this->client = $client;
         $this->executable = $executable;
+        $this->host = $host;
+        $this->port = $port;
+
+        $this->start();
+    }
+
+    public function start()
+    {
+        if (!$this->server) {
+            $this->server = new Process(['node', $this->executable, $this->host, $this->port]);
+        }
+
+        $this->server->start();
+        //$this->server->wait();
+    }
+
+    public function stop()
+    {
+        if (!$this->server || !$this->server->isRunning()) {
+            return;
+        }
+
+        $this->server->stop();
     }
 
     /**
@@ -36,12 +63,12 @@ class PrismApi implements HighlighterInterface
     {
         $response = $this->client->request(
             'POST',
-            'http://localhost:8032',
+            sprintf('http://%s:%s', $this->host, $this->port),
             ['json' => ['language' => $language, 'value' => $value]]
         );
 
         if ($response->getStatusCode() !== 200) {
-            return $value;
+            throw new \RuntimeException($response->getContent());
         }
 
         return $response->getContent();

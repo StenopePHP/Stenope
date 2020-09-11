@@ -36,7 +36,7 @@ services:
         $client: '@Symfony\Contracts\HttpClient\HttpClientInterface'
 
     Content\Service\Parsedown:
-        $highlighter: '@Content\Highlighter\Prism'
+        $highlighter: '@Content\Highlighter\PrismApi'
 
     Content\Processor\LastModifiedProcessor:
         tags: ['content.processor']
