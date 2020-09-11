@@ -23,12 +23,12 @@ class ContentManagerTest extends TestCase
         $manager = new ContentManager(
             ($decoder = $this->prophesize(DecoderInterface::class))->reveal(),
             ($denormalizer = $this->prophesize(DenormalizerInterface::class))->reveal(),
-            [],
             [
                 ($provider1 = $this->prophesize(ContentProviderInterface::class))->reveal(),
                 ($provider2 = $this->prophesize(ContentProviderInterface::class))->reveal(),
                 ($provider3 = $this->prophesize(ContentProviderInterface::class))->reveal(),
             ],
+            [],
             null
         );
 
