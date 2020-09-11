@@ -1,9 +1,10 @@
 const { readFileSync } = require('fs');
 const Prism = require('prismjs');
-const [language, path] = process.argv.slice(2);
+const loadLanguages = require('prismjs/components/');
+const [language, value] = process.argv.slice(2);
 
-require('prismjs/components/')([language]);
+loadLanguages([language]);
 
-const result = Prism.highlight(readFileSync(path, 'utf8'), Prism.languages[language], language);
+const content = Prism.highlight(value, Prism.languages[language], language);
 
-process.stdout.write(result, () => process.exit(0));
+process.stdout.write(content, () => process.exit(0));

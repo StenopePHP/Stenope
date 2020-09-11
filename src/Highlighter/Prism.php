@@ -50,23 +50,7 @@ class Prism implements HighlighterInterface
      */
     public function highlight(string $value, string $language): string
     {
-        $path = tempnam($this->temporaryPath, 'pri');
-
-        $this->files->dumpFile($path, $value);
-
-        $value = $this->execute($language, $path);
-
-        unlink($path);
-
-        return $value;
-    }
-
-    /**
-     * Run 'prism.js' command on the given file
-     */
-    private function execute(string $language, string $path): string
-    {
-        $process = Process::fromShellCommandline(sprintf('node %s %s "%s"', $this->executable, $language, $path));
+        $process = new Process(['node', $this->executable, $language, $value]);
 
         $process->run();
 

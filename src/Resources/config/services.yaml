@@ -32,6 +32,8 @@ services:
 
     Content\Highlighter\Pygments: ~
     Content\Highlighter\Prism: ~
+    Content\Highlighter\PrismApi:
+        $client: '@Symfony\Contracts\HttpClient\HttpClientInterface'
 
     Content\Service\Parsedown:
         $highlighter: '@Content\Highlighter\Prism'
