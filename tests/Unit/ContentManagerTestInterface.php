@@ -8,6 +8,8 @@
 
 namespace Content\Tests\Unit;
 
+use Content\Behaviour\ContentManagerAwareInterface;
+use Content\Behaviour\ProcessorInterface;
 use Content\Content;
 use Content\ContentManager;
 use Content\Provider\ContentProviderInterface;
@@ -28,7 +30,9 @@ class ContentManagerTest extends TestCase
                 ($provider2 = $this->prophesize(ContentProviderInterface::class))->reveal(),
                 ($provider3 = $this->prophesize(ContentProviderInterface::class))->reveal(),
             ],
-            [],
+            [
+                ($processor = $this->prophesize(ContentManagerAwareProcessorInterface::class))->reveal(),
+            ],
             null
         );
 
@@ -53,6 +57,13 @@ class ContentManagerTest extends TestCase
             ->will(fn ($args) => ['content' => $args[0]])
             ->shouldBeCalledTimes(3)
         ;
+
+        $processor
+            ->__invoke(Argument::type('array'), Argument::type('string'), Argument::type(Content::class))
+            ->shouldBeCalled()
+        ;
+
+        $processor->setContentManager($manager)->shouldBeCalledOnce();
 
         $orders = [2, 1, 3];
         $denormalizer
@@ -87,4 +98,8 @@ class ContentManagerTest extends TestCase
             'Foo 2',
         ], array_column($manager->getContents('App\Foo', ['order' => false]), 'content'), 'desc order');
     }
+}
+
+interface ContentManagerAwareProcessorInterface extends ProcessorInterface, ContentManagerAwareInterface
+{
 }
