@@ -3,7 +3,15 @@ const Prism = require('prismjs');
 const loadLanguages = require('prismjs/components/');
 const [host, port] = process.argv.slice(2);
 
-function requestHandler(request, response) {
+function onListening() {
+    process.stdout.write(`\x1b[42m Listening on http://${host}:${port}...\x1b[0m`);
+}
+
+function onError(error) {
+    process.stderr.write(`\x1b[41m ${error.toString()}\x1b[0m\n`, () => process.exit(1));
+}
+
+function onRequest(request, response) {
     const body = [];
 
     request.on('data', chunk => body.push(chunk))
@@ -26,8 +34,10 @@ function requestHandler(request, response) {
     })
 }
 
-const server = http.createServer(requestHandler);
+const server = http.createServer();
+
+server.on('listening', onListening);
+server.on('request', onRequest);
+server.on('error', onError);
 
 server.listen(port, host);
-
-console.info(`Listening on http://${host}:${port}.`);

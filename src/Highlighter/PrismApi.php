@@ -33,18 +33,23 @@ class PrismApi implements HighlighterInterface
         $this->executable = $executable;
         $this->host = $host;
         $this->port = $port;
-
-        $this->start();
     }
 
     public function start()
     {
         if (!$this->server) {
+            //dump('Create server');
             $this->server = new Process(['node', $this->executable, $this->host, $this->port]);
+            $this->server->disableOutput();
         }
 
-        $this->server->start();
-        //$this->server->wait();
+        if (!$this->server->isRunning()) {
+            //dump('start');
+            $this->server->start(/*fn ($output) => dump('started', $output)*/);
+            //dump(sprintf('started with pid %s', $this->server->getPid()));
+        } else {
+            //dump('Running');
+        }
     }
 
     public function stop()
@@ -61,6 +66,8 @@ class PrismApi implements HighlighterInterface
      */
     public function highlight(string $value, string $language): string
     {
+        $this->start();
+
         $response = $this->client->request(
             'POST',
             sprintf('http://%s:%s', $this->host, $this->port),
