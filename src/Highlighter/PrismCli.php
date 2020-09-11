@@ -62,7 +62,7 @@ class PrismCli implements HighlighterInterface
         );
 
         $this->server->waitUntil(function ($type, $output) {
-            return true;
+            return $type === Process::ERR && $output === 'DONE';
         });
 
         return $this->server->getIncrementalOutput();

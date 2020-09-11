@@ -11,8 +11,10 @@ function onInput(input) {
         const result = Prism.highlight(value, Prism.languages[language], language);
 
         process.stdout.write(result);
+        process.stderr.write('DONE');
     } catch (error) {
         process.stderr.write(error.toString());
+        process.stderr.write('DONE');
     }
 }
 
