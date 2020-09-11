@@ -31,7 +31,9 @@ services:
         tags: [kernel.event_subscriber]
 
     Content\Highlighter\Pygments: ~
-    Content\Highlighter\Prism: ~
+    Content\Highlighter\Prism:
+        tags:
+            - { name: kernel.event_listener, event: kernel.terminate, method: stop }
 
     Content\Service\Parsedown:
         $highlighter: '@Content\Highlighter\Prism'

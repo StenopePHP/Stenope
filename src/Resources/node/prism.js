@@ -1,9 +1,27 @@
-const { readFileSync } = require('fs');
+const readline = require('readline');
 const Prism = require('prismjs');
-const [language, path] = process.argv.slice(2);
+const loadLanguages = require('prismjs/components/');
 
-require('prismjs/components/')([language]);
+function onInput(input) {
+    try {
+        const { language, value } = JSON.parse(input);
 
-const result = Prism.highlight(readFileSync(path, 'utf8'), Prism.languages[language], language);
+        loadLanguages([language]);
 
-process.stdout.write(result, () => process.exit(0));
+        const result = Prism.highlight(value, Prism.languages[language], language);
+
+        process.stdout.write(result);
+        process.stderr.write('DONE');
+    } catch (error) {
+        process.stderr.write(error.toString());
+        process.stderr.write('DONE');
+    }
+}
+
+const server = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false,
+});
+
+server.on('line', onInput);

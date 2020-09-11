@@ -9,6 +9,7 @@
 namespace Content\Decoder;
 
 use Content\Behaviour\HighlighterInterface;
+use Content\Service\HtmlUtils;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 
@@ -48,10 +49,10 @@ class HtmlDecoder implements DecoderInterface
         $crawler->filter('code')->each(function (Crawler $node): void {
             if ($language = $node->attr('highlight')) {
                 $element = $node->getNode(0);
-                $this->setContent($element, $this->highlighter->highlight(trim($node->html()), $language));
+                HtmlUtils::setContent($element, $this->highlighter->highlight(trim($node->html()), $language));
 
                 $element->removeAttribute('highlight');
-                $this->addClass($element, $language);
+                HtmlUtils::addClass($element, $language);
             }
         });
 
@@ -70,30 +71,5 @@ class HtmlDecoder implements DecoderInterface
     public function supportsDecoding($format)
     {
         return self::FORMAT === $format;
-    }
-
-    /**
-     * Add class to the given element
-     */
-    private function addClass(\DomElement $element, string $class): void
-    {
-        $element->setAttribute('class', implode(' ', array_filter([
-            trim($element->getAttribute('class')),
-            $class,
-        ])));
-    }
-
-    /**
-     * Set element HTML content
-     */
-    private function setContent(\DomElement $element, string $content): void
-    {
-        $element->nodeValue = '';
-
-        $child = $element->ownerDocument->createDocumentFragment();
-
-        $child->appendXML($content);
-
-        $element->appendChild($child);
     }
 }
