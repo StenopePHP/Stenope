@@ -9,7 +9,6 @@
 namespace Content\Service;
 
 use Content\Behaviour\HighlighterInterface;
-use Content\Service\HtmlUtils;
 use Parsedown as BaseParsedown;
 use Symfony\Component\DomCrawler\Crawler;
 

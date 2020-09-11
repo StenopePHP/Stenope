@@ -1,15 +1,19 @@
 <?php
 
-namespace Content\Service;
+/*
+ * This file is part of the "Tom32i/Content" bundle.
+ *
+ * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ */
 
-use Symfony\Component\DomCrawler\Crawler;
+namespace Content\Service;
 
 class HtmlUtils
 {
     /**
      * Add class to the given element
      */
-    static public function addClass(\DomElement $element, string $class): void
+    public static function addClass(\DomElement $element, string $class): void
     {
         $element->setAttribute('class', implode(' ', array_filter([
             trim($element->getAttribute('class')),
@@ -20,7 +24,7 @@ class HtmlUtils
     /**
      * Set element HTML content
      */
-    static public function setContent(\DomElement $element, string $content): void
+    public static function setContent(\DomElement $element, string $content): void
     {
         $element->nodeValue = '';
 

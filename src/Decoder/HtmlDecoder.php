@@ -9,9 +9,9 @@
 namespace Content\Decoder;
 
 use Content\Behaviour\HighlighterInterface;
+use Content\Service\HtmlUtils;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
-use Content\Service\HtmlUtils;
 
 /**
  * Parse Html data

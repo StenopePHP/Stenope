@@ -31,13 +31,12 @@ services:
         tags: [kernel.event_subscriber]
 
     Content\Highlighter\Pygments: ~
-    Content\Highlighter\Prism: ~
-    Content\Highlighter\PrismCli: ~
-    Content\Highlighter\PrismApi:
-        $client: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+    Content\Highlighter\Prism:
+        tags:
+            - { name: kernel.event_listener, event: kernel.terminate, method: stop }
 
     Content\Service\Parsedown:
-        $highlighter: '@Content\Highlighter\PrismCli'
+        $highlighter: '@Content\Highlighter\Prism'
 
     Content\Processor\LastModifiedProcessor:
         tags: ['content.processor']
