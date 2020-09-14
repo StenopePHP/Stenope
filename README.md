@@ -28,5 +28,8 @@ Build the static site: `bin/console content:build`
 ## Advanced usage
 
 - [How to load static content](doc/loading-content.md)
+- [Supported formats](doc/supported-formats.md)
+- [Synthax Highlighting](doc/synthax-highlighting.md)
 - Decoders #TODO
 - Bonus: How to deploy and host a static site #TODO
+

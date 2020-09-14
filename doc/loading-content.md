@@ -174,3 +174,4 @@ class ArticleDenormalizer implements DenormalizerInterface
 ```
 
 _Note: Using autowiring, denormalizers are automaticaly registered in Symfony Serializer._
+
