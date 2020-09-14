@@ -6,8 +6,7 @@ Let's do a simple blog.
 
 ### Create the model
 
-Static content rely on model classes (just like Doctrine entities).
-This can be a simple DTO and doesn't need to follow any rule:
+Create a simple class that describe your model:
 
 ```php
 <?php
@@ -23,39 +22,33 @@ class Article {
 }
 ```
 
-### Register a content provider
+### Register content provider
 
-The content Provider is responsible for telling Content where to look for your content static sources files.
+Register your model in `config/packages/content.yaml`:
 
-Create a service that implements `Content\Behaviour\ContentProviderInterface` and support your model:
-
-```php
-<?php
-
-namespace App\Content\Provider;
-
-use App\Model\Article;
-use Content\Behaviour\ContentProviderInterface;
-
-class ArticleProvider implements ContentProviderInterface
-{
-    /**
-     * Must return true for supported models.
-     */
-    public function supports(string $className): bool
-    {
-        return is_a($className, Article::class, true);
-    }
-
-    /**
-     * Where to load content from root content directory (usually /content).
-     */
-    public function getDirectory(): string
-    {
-        return 'article';
-    }
-}
+```yaml
+content:
+  providers:
+    App\Model\Article: '%kernel.project_dir%/content/articles'
 ```
+
+### Write your first content
+
+Write your first article in `content/articles/how-to-train-your-dragon.md`:
+
+```markdown
+---
+title: "How to train your dragon"
+---
+
+# This is Berk
+
+It's twelve days north of Hopeless and a few degrees south of Freezing to Death. It's located solidly on the Meridian of Misery. My village. In a word, sturdy. It's been here for seven generations, but every single building is new. We've got hunting, fishing, and a charming view of the sunsets. The only problems are the pests. Most places have mice or mosquitoes. We have... dragons.
+````
+
+_Note: by default, the content of the source file are mapped on the `content` property and the name of the file is mapped on the `slug` property._
+
+Check out all [supported formats](supported-formats.md).
 
 ## Usage
 
@@ -90,11 +83,13 @@ class BlogController extends AbstractController
     }
 ```
 
+_Note: contents of the same type can very well be writen in different formats._
+
 ### Fetching a specific content
 
 The ContentManager uses slugs to identify your content. The `slug` argument must exactly matche the static file name in your content directory.
 
-Example: `$contentManager->getContent(Article::class, 'how-to-train-your-dragon');` will fetch the `content/article/how-to-train-your-dragon.md` article.
+Example: `$contentManager->getContent(Article::class, 'how-to-train-your-dragon');` will fetch the `content/articles/how-to-train-your-dragon.md` article.
 
 ```php
 <?php
@@ -163,7 +158,7 @@ class ArticleDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * Instanciate your model from the raw data array.
+     * Instanciate your model from the denormalized data array.
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
@@ -179,3 +174,4 @@ class ArticleDenormalizer implements DenormalizerInterface
 ```
 
 _Note: Using autowiring, denormalizers are automaticaly registered in Symfony Serializer._
+

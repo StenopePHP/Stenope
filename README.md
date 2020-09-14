@@ -28,4 +28,6 @@ Build the static site: `bin/console content:build`
 ## Advanced usage
 
 - [How to load static content](doc/loading-content.md)
+- Decoders #TODO
 - Bonus: How to deploy and host a static site #TODO
+
