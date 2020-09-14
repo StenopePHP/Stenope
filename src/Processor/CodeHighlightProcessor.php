@@ -15,7 +15,7 @@ use Content\Service\HtmlUtils;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Apply synthax coloration to code blocs
+ * Apply syntax coloration to code blocs
  */
 class CodeHighlightProcessor implements ProcessorInterface
 {
