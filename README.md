@@ -23,11 +23,10 @@ Then: `composer require tom32i/content`
 
 Build the static site: `bin/console content:build`
 
-✨ Your Symfony ap is now a static website in: `/build`!
+✨ Your Symfony app is now a static website in: `/build`!
 
 ## Advanced usage
 
 - [How to load static content](doc/loading-content.md)
 - Decoders #TODO
 - Bonus: How to deploy and host a static site #TODO
-

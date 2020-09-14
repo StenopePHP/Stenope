@@ -130,9 +130,9 @@ This argument accepts:
 - An array: `['title' => false]` (sort by descending values of the "title" property).
 - A comparison callable for the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function: `fn($a, $b) => $a->priority <=> $b->priority`.
 
-When provided, the ContentManager will list all content and sort the array with the corresponding sorting function before returning it.
+When provided, the ContentManager will list all contents and sort the array with the corresponding sorting function before returning it.
 
-## Advanced usage and extention
+## Advanced usage and extension
 
 ### Register a custom denormalizer
 
@@ -174,4 +174,3 @@ class ArticleDenormalizer implements DenormalizerInterface
 ```
 
 _Note: Using autowiring, denormalizers are automaticaly registered in Symfony Serializer._
-

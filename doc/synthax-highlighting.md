@@ -16,7 +16,7 @@ In Markdown, specify the language in the opening line will:
 
 ### HTML
 
-In HTML, specify the language in the `hightlight` attrbiute:
+In HTML, specify the language in the `language` attribute:
 
 ```html
 ​<code language="php">
@@ -38,7 +38,7 @@ _Note: providing a CSS theme that color the code is entirely up to you. There is
 
 ## Custom synthax highlighting
 
-The default Highlighter responsible for synthax highlighting is based on [Prism.js](https://prismjs.com/), but you can provide your own by implementing `Content\Behaviour\HighlighterInterface`:
+The default Highlighter responsible for syntax highlighting is based on [Prism.js](https://prismjs.com/), but you can provide your own by implementing `Content\Behaviour\HighlighterInterface`:
 
 ```php
 public function highlight(string $value, string $language): string;

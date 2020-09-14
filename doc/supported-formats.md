@@ -1,13 +1,13 @@
 # Supported formats
 
-Content supports many formats out of the box and you can add suport for any format.
+Content supports many formats out of the box and you can add support for any format.
 
 ## Mardown
 
 The Mardown format allow classic semantic writing, good for blog posts.
 
 Markdown source files will be decoded into HTML and passed as a `content` property for denormalization.
-An optional YAML formated header can be provided at the begining of the file to define a list of custom properties.
+An optional YAML formatted header can be provided at the beginning of the file to define a list of custom properties.
 
 ```markdown
 ---
