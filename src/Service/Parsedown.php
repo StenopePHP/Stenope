@@ -10,7 +10,6 @@ namespace Content\Service;
 
 use Content\Behaviour\HighlighterInterface;
 use Parsedown as BaseParsedown;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Improved Parsedown implementation
@@ -43,16 +42,13 @@ class Parsedown extends BaseParsedown
 
     protected function blockFencedCodeComplete($Block)
     {
-        $language = $this->getLanguage($Block);
-        $content = $Block['element']['text']['text'];
-
         // Drop the <pre> + highlight
         $Block['element'] = [
             'name' => 'code',
             'handler' => 'noescape',
-            'text' => $this->getCode($content, $language),
+            'text' => self::escape($Block['element']['text']['text']),
             'attributes' => [
-                'class' => $language,
+                'highlight' => $this->getLanguage($Block),
             ],
         ];
 
@@ -99,41 +95,6 @@ class Parsedown extends BaseParsedown
 
             return $Block;
         }
-    }
-
-    /**
-     * HTML content in markdown
-     */
-    protected function blockMarkupComplete($Block)
-    {
-        $crawler = new Crawler($Block['markup']);
-
-        // Apply code highlight to raw HTML code blocks:
-        $crawler->filter('code')->each(function (Crawler $node): void {
-            if ($language = $node->attr('highlight')) {
-                $element = $node->getNode(0);
-                HtmlUtils::setContent($element, $this->highlighter->highlight(trim($node->html()), $language));
-
-                $element->removeAttribute('highlight');
-                HtmlUtils::addClass($element, $language);
-            }
-        });
-
-        $Block['markup'] = $crawler->html();
-
-        return $Block;
-    }
-
-    /**
-     * Process code content
-     */
-    protected function getCode(string $text, ?string $language = null): string
-    {
-        if ($this->highlighter && $language) {
-            return $this->highlighter->highlight($text, $language);
-        }
-
-        return self::escape($text);
     }
 
     /**

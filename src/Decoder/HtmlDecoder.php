@@ -8,8 +8,6 @@
 
 namespace Content\Decoder;
 
-use Content\Behaviour\HighlighterInterface;
-use Content\Service\HtmlUtils;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 
@@ -24,16 +22,6 @@ class HtmlDecoder implements DecoderInterface
     public const FORMAT = 'html';
 
     /**
-     * Code highlighter
-     */
-    protected HighlighterInterface $highlighter;
-
-    public function __construct(HighlighterInterface $highlighter)
-    {
-        $this->highlighter = $highlighter;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function decode($data, $format, array $context = [])
@@ -44,16 +32,6 @@ class HtmlDecoder implements DecoderInterface
 
         $crawler->filterXPath('//head/meta')->each(function ($node) use (&$attributes): void {
             $attributes[$node->attr('name')] = $node->attr('content');
-        });
-
-        $crawler->filter('code')->each(function (Crawler $node): void {
-            if ($language = $node->attr('highlight')) {
-                $element = $node->getNode(0);
-                HtmlUtils::setContent($element, $this->highlighter->highlight(trim($node->html()), $language));
-
-                $element->removeAttribute('highlight');
-                HtmlUtils::addClass($element, $language);
-            }
         });
 
         return array_merge(
