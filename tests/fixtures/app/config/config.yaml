@@ -1,4 +1,5 @@
 framework:
+    test: true
     secret: '%env(APP_SECRET)%'
 
     php_errors:
