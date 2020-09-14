@@ -1,0 +1,39 @@
+name: Generate dist files
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - master
+
+jobs:
+    dist:
+        runs-on: ubuntu-latest
+        steps:
+            # https://github.com/actions/checkout
+            -   name: Checkout master
+                uses: actions/checkout@v2
+                with:
+                    ref: master
+
+            # https://github.com/actions/setup-node
+            -   name: Setup node
+                uses: actions/setup-node@v1
+
+            -   name: Generate dist
+                run: make dist-install dist
+
+            -   name: Git status
+                run: git status
+
+            # https://github.com/EndBug/add-and-commit
+            -   name: Commit & push changes
+                uses: EndBug/add-and-commit@v4
+                with:
+                    author_name: GitHub Actions Bot
+                    author_email: actions@github.com
+                    message: '[AUTO] By Github Actions: generate dist files'
+                    add: "src/Resources/dist"
+                    ref: master
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

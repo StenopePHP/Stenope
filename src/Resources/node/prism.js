@@ -1,12 +1,9 @@
-const readline = require('readline');
-const Prism = require('prismjs');
-const loadLanguages = require('prismjs/components/');
+import readline from 'readline';
+import Prism from 'prismjs';
 
 function onInput(input) {
     try {
         const { language, value } = JSON.parse(input);
-
-        loadLanguages([language]);
 
         const result = Prism.highlight(value, Prism.languages[language], language);
 

@@ -18,5 +18,10 @@
   "homepage": "https://github.com/Tom32i/content#readme",
   "dependencies": {
     "prismjs": "^1.21.0"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.31.0",
+    "babel-plugin-prismjs": "^2.0.1",
+    "webpack-notifier": "^1.8.0"
   }
 }
