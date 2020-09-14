@@ -14,8 +14,6 @@ services:
         tags: [serializer.encoder]
 
     Content\Decoder\HtmlDecoder:
-        arguments:
-            $highlighter: '@Content\Highlighter\Prism'
         tags: [serializer.encoder]
 
     Content\EventListener\Informator:
@@ -38,13 +36,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, method: stop }
 
-    Content\Service\Parsedown:
-        $highlighter: '@Content\Highlighter\Prism'
+    Content\Service\Parsedown: ~
 
     Content\Processor\LastModifiedProcessor:
         tags: ['content.processor']
 
     Content\Processor\SlugProcessor:
+        tags: ['content.processor']
+
+    Content\Processor\CodeHighlightProcessor:
+        arguments:
+            $highlighter: '@Content\Highlighter\Prism'
         tags: ['content.processor']
 
     Content\Processor\HtmlIdProcessor:
