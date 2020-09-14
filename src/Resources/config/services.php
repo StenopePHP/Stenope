@@ -29,6 +29,7 @@ use Content\Processor\SlugProcessor;
 use Content\Provider\Factory\ContentProviderFactory;
 use Content\Provider\Factory\LocalFilesystemProviderFactory;
 use Content\Routing\UrlGenerator;
+use Content\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Content\Service\Parsedown;
 use Content\Twig\ContentExtension;
 use Content\Twig\ContentRuntime;
@@ -94,6 +95,9 @@ return static function (ContainerConfigurator $container): void {
             '$executable' => null,
             '$stopwatch' => service('debug.stopwatch')->nullOnInvalid(),
         ])->tag('kernel.event_listener', ['event' => KernelEvents::TERMINATE, 'method' => 'stop'])
+
+        // Serializer
+        ->set(SkippingInstantiatedObjectDenormalizer::class)->tag('serializer.normalizer')
 
         // Decoders
         ->set(MarkdownDecoder::class)

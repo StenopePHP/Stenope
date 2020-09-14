@@ -11,6 +11,7 @@ namespace Content;
 use Content\Behaviour\ContentManagerAwareInterface;
 use Content\Behaviour\ProcessorInterface;
 use Content\Provider\ContentProviderInterface;
+use Content\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
@@ -146,7 +147,9 @@ class ContentManager
             $processor($data, $type, $content);
         }
 
-        $data = $this->denormalizer->denormalize($data, $type, $content->getFormat());
+        $data = $this->denormalizer->denormalize($data, $type, $content->getFormat(), [
+            SkippingInstantiatedObjectDenormalizer::SKIP => true,
+        ]);
 
         return $this->cache[$key] = $data;
     }

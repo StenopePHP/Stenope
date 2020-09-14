@@ -30,6 +30,6 @@ class LastModifiedProcessor implements ProcessorInterface
             return;
         }
 
-        $data[$this->property] = $content->getLastModified() ? $content->getLastModified()->format(\DateTimeInterface::RFC3339) : null;
+        $data[$this->property] = $content->getLastModified();
     }
 }
