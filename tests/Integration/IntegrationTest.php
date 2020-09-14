@@ -87,7 +87,6 @@ class IntegrationTest extends KernelTestCase
             'http://localhost/',
             'http://localhost/authors/ogi',
             'http://localhost/recipes/',
-            'http://localhost/recipes/optional-recipe',
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
         ], $crawler->filter('url > loc')->extract(['_text']));

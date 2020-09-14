@@ -43,7 +43,7 @@ class RecipesController extends AbstractController
     /**
      * Ensure {@link ContentArgumentResolver} handles nullable arguments properly.
      *
-     * @Route("/optional-recipe", name="optional-recipe", options={ "hidden": true })
+     * @Route("/optional-recipe", name="optional-recipe", options={ "visible": false })
      */
     public function optionalRecipe(?Recipe $recipe)
     {
