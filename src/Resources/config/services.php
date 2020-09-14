@@ -30,6 +30,8 @@ use Content\Provider\Factory\ContentProviderFactory;
 use Content\Provider\Factory\LocalFilesystemProviderFactory;
 use Content\Routing\UrlGenerator;
 use Content\Service\Parsedown;
+use Content\Twig\ContentExtension;
+use Content\Twig\ContentRuntime;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -113,6 +115,12 @@ return static function (ContainerConfigurator $container): void {
             ->tag('controller.argument_value_resolver', [
                 'priority' => 110, // Prior to RequestAttributeValueResolver to resolve from route attribute
             ])
+
+        // Twig
+        ->set(ContentExtension::class)->tag('twig.extension')
+        ->set(ContentRuntime::class)
+            ->args(['$contentManager' => service(ContentManager::class)])
+            ->tag('twig.runtime')
     ;
 
     // Tagged Property handlers:
