@@ -11,6 +11,7 @@ namespace Content\Highlighter;
 use Content\Behaviour\HighlighterInterface;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Prism code highlight
@@ -20,10 +21,12 @@ class Prism implements HighlighterInterface
     private string $executable;
     private ?Process $server = null;
     private ?InputStream $input = null;
+    private ?Stopwatch $stopwatch;
 
-    public function __construct(string $executable = __DIR__ . '/../Resources/node/prism.js')
+    public function __construct(?string $executable = null, ?Stopwatch $stopwatch = null)
     {
-        $this->executable = $executable;
+        $this->executable = $executable ?? __DIR__ . '/../Resources/node/prism.js';
+        $this->stopwatch = $stopwatch;
     }
 
     public function start(): void
@@ -53,6 +56,10 @@ class Prism implements HighlighterInterface
      */
     public function highlight(string $value, string $language): string
     {
+        if ($this->stopwatch) {
+            $event = $this->stopwatch->start('highlight', 'content');
+        }
+
         $this->start();
 
         $this->input->write(
@@ -63,6 +70,12 @@ class Prism implements HighlighterInterface
             return $type === Process::ERR && $output === 'DONE';
         });
 
-        return $this->server->getIncrementalOutput();
+        $output = $this->server->getIncrementalOutput();
+
+        if (isset($event)) {
+            $event->stop();
+        }
+
+        return $output;
     }
 }

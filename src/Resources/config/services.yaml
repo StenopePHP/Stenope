@@ -32,6 +32,9 @@ services:
 
     Content\Highlighter\Pygments: ~
     Content\Highlighter\Prism:
+        arguments:
+            $executable: ~
+            $stopwatch: '@?debug.stopwatch'
         tags:
             - { name: kernel.event_listener, event: kernel.terminate, method: stop }
 
@@ -75,6 +78,7 @@ services:
         $propertyAccessor: '@property_accessor'
         $contentProviders: !tagged_iterator 'content.content_provider'
         $processors: !tagged_iterator 'content.processor'
+        $stopwatch: '@?debug.stopwatch'
 
     Content\Provider\Factory\ContentProviderFactory:
         $factories: !tagged_iterator 'content.content_provider_factory'
