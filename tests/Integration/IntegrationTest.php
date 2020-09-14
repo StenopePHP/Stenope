@@ -83,8 +83,9 @@ class IntegrationTest extends KernelTestCase
 
         $crawler = new Crawler(file_get_contents(self::$kernel->getProjectDir() . '/build/sitemap.xml'));
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             'http://localhost/',
+            'http://localhost/authors/ogi',
             'http://localhost/recipes/',
             'http://localhost/recipes/optional-recipe',
             'http://localhost/recipes/cheesecake',
@@ -112,7 +113,7 @@ class IntegrationTest extends KernelTestCase
         self::assertFileExists($buildDir . '/recipes/ogito/index.html');
 
         $crawler = new Crawler(file_get_contents($buildDir . '/recipes/index.html'), 'http://localhost/recipes/');
-        $links = array_map(fn (Link $link) => $link->getUri(), $crawler->filter('main .container a')->links());
+        $links = array_map(fn (Link $link) => $link->getUri(), $crawler->filter('main .container a.recipe-link')->links());
 
         self::assertSame([
             'http://localhost/recipes/cheesecake',

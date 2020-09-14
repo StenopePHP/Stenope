@@ -8,14 +8,12 @@
 
 namespace App\Content\Model;
 
-class Recipe
+class Author
 {
-    public string $title;
-    public ?string $description = null;
     public string $slug;
-    public string $content;
-    public array $authors;
+    public string $firstname;
+    public string $lastname;
+    public string $nickname;
     public array $tags;
-    public \DateTimeInterface $date;
     public \DateTimeInterface $lastModified;
 }

@@ -6,4 +6,16 @@
     <div>
         <span>Hello</span>
     </div>
+
+    <h2>Our latest contributors</h2>
+
+    <ul>
+        {% for author in content_list('App\\Content\\Model\\Author', { lastModified: false })[0:5] %}
+            <li>
+                <a href="{{ path('author', { author: author.slug }) }}">
+                    {{ author.firstname }} {{ author.lastname }} (@{{ author.nickname }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock content %}

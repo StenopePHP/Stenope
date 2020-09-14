@@ -6,9 +6,21 @@
     <ul>
         {% for recipe in recipes %}
             <li>
-                <a href="{{ path('recipe', { recipe: recipe.slug }) }}">
-                    {{ recipe.title }}
-                </a>
+                <article>
+                    <a class="recipe-link" href="{{ path('recipe', { recipe: recipe.slug }) }}">
+                        {{ recipe.title }}
+                    </a>
+                    <div>
+                        {% for author_slug in recipe.authors %}
+                            <address class="author">
+                                {% set author = content_get('App\\Content\\Model\\Author', author_slug) %}
+                                <a href="{{ path('author', { author: author.slug }) }}">
+                                    {{ author.firstname }} {{ author.lastname }} (@{{ author.nickname }})
+                                </a>
+                            </address>
+                        {% endfor %}
+                    </div>
+                </article>
             </li>
         {% endfor %}
     </ul>

@@ -17,3 +17,4 @@ content:
 
     providers:
         App\Content\Model\Recipe: '%kernel.project_dir%/content/recipes'
+        App\Content\Model\Author: '%kernel.project_dir%/content/authors'
