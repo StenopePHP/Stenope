@@ -52,9 +52,6 @@ class CodeHighlightProcessor implements ProcessorInterface
         $data[$this->property] = $crawler->html();
     }
 
-    /**
-     * Set title id and add anchor
-     */
     private function highlight(\DOMElement $element): void
     {
         if ($language = $element->getAttribute('highlight')) {
