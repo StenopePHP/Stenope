@@ -48,7 +48,7 @@ class Parsedown extends BaseParsedown
             'handler' => 'noescape',
             'text' => self::escape($Block['element']['text']['text']),
             'attributes' => [
-                'highlight' => $this->getLanguage($Block),
+                'language' => $this->getLanguage($Block),
             ],
         ];
 
