@@ -28,6 +28,22 @@ lint-yaml:
 	php bin/lint.yaml.php --parse-tags src/Resources/config
 
 ########
+# Dist #
+########
+
+dist-update:
+	npm update --color=always
+
+dist-install:
+	npm install --color=always
+
+dist-watch:
+	npx encore dev --watch
+
+dist:
+	npx encore production --color=always --no-progress
+
+########
 # Demo #
 ########
 

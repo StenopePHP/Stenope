@@ -5,5 +5,9 @@
 /bin/lint.twig.php export-ignore
 /bin/lint.yaml.php export-ignore
 /link              export-ignore
+/package.json      export-ignore
+/package-lock.json export-ignore
+/phpstan.neon.dist export-ignore
 /phpunit.xml.dist  export-ignore
 /tests             export-ignore
+/webpack.config.js export-ignore
