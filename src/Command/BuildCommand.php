@@ -99,6 +99,13 @@ class BuildCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Building static site');
+        $io->definitionList(
+            ['buildDir' => $this->builder->getBuildDir()],
+            ['host' => $this->builder->getHost()],
+            ['scheme' => $this->builder->getScheme()],
+        );
+
+        $this->builder->setLogger(new BuildCommandLogger($io));
 
         $this->builder->build(!$input->getOption('no-sitemap'), !$input->getOption('no-expose'));
 

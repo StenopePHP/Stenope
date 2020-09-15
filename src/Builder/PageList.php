@@ -35,6 +35,11 @@ class PageList
         return current($this->getQueue());
     }
 
+    public function count(): int
+    {
+        return \count($this->urls);
+    }
+
     private function getQueue(): array
     {
         return array_keys(array_filter($this->urls));

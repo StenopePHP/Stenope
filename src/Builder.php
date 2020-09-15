@@ -62,6 +62,11 @@ class Builder
         $this->logger = $logger ?? new NullLogger();
     }
 
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * Build static site
      */
@@ -100,6 +105,11 @@ class Builder
         $this->router->getContext()->setHost($host);
     }
 
+    public function getHost(): string
+    {
+        return $this->router->getContext()->getHost();
+    }
+
     /**
      * Set HTTP Scheme
      */
@@ -108,11 +118,18 @@ class Builder
         $this->router->getContext()->setScheme($scheme);
     }
 
+    public function getScheme(): string
+    {
+        return $this->router->getContext()->getScheme();
+    }
+
     /**
      * Clear destination folder
      */
     private function clear(): void
     {
+        $this->logger->notice('Clearing build directory...');
+
         if ($this->files->exists($this->buildDir)) {
             $this->files->remove($this->buildDir);
         }
@@ -127,15 +144,21 @@ class Builder
     {
         $routes = RouteInfo::createFromRouteCollection($this->router->getRouteCollection());
 
+        $this->logger->notice('Scanning routes...', ['length' => \count($routes)]);
+
         foreach ($routes as $name => $route) {
             if ($route->isVisible() && $route->isGettable()) {
                 try {
                     $url = $this->router->generate($name, [], UrlGeneratorInterface::ABSOLUTE_URL);
                 } catch (\Exception $exception) {
+                    $this->logger->debug(sprintf('Route "%s" requires parameters, skipping.', $name));
                     continue;
                 }
 
                 $this->pageList->add($url);
+                $this->logger->debug(sprintf('Route "%s" is successufully listed.', $name));
+            } else {
+                $this->logger->debug(sprintf('Route "%s" is hidden, skipping.', $name));
             }
         }
     }
@@ -145,9 +168,12 @@ class Builder
      */
     private function buildPages(): void
     {
+        $this->logger->notice('Building pages...', ['length' => $this->pageList->count()]);
+
         while ($url = $this->pageList->getNext()) {
             $this->buildUrl($url);
             $this->pageList->markAsDone($url);
+            $this->logger->debug($url);
         }
     }
 
@@ -156,6 +182,8 @@ class Builder
      */
     private function buildSitemap(): void
     {
+        $this->logger->notice('Building sitemap...');
+
         $content = $this->templating->render('@Content/sitemap.xml.twig', ['sitemap' => $this->sitemap]);
 
         $this->write($content, '/', 'sitemap.xml');
