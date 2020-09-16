@@ -54,31 +54,55 @@ class ContentManager
     /**
      * List all content for the given type
      *
-     * @param class-string<object>  $type   Model FQCN e.g. "App/Model/Article"
-     * @param string|array|callable $sortBy String, array or callable
+     * @param class-string<object>  $type     Model FQCN e.g. "App/Model/Article"
+     * @param string|array|callable $sortBy   String, array or callable
+     * @param string|array|callable $filterBy String, array or callable
      *
      * @return object[] List of decoded contents
      */
-    public function getContents(string $type, $sortBy = null): array
+    public function getContents(string $type, $sortBy = null, $filterBy = null): array
     {
         $contents = [];
+
         foreach ($this->getProviders($type) as $provider) {
             foreach ($provider->listContents() as $content) {
                 $contents[] = $this->load($type, $content);
             }
         }
 
+        try {
+            $this->filterBy($contents, $filterBy);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException(sprintf('There was a problem filtering %s.', $type), 0, $exception);
+        }
+
+        try {
+            $this->sortBy($contents, $sortBy);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException(sprintf('There was a problem sorting %s.', $type), 0, $exception);
+        }
+
+        return $contents;
+    }
+
+    public function filterBy(array &$contents, $filterBy = null): void
+    {
+        if ($filter = $this->getFilterFunction($filterBy)) {
+            $contents = array_filter($contents, $filter);
+        }
+    }
+
+    public function sortBy(array &$contents, $sortBy = null): void
+    {
         if ($sorter = $this->getSortFunction($sortBy)) {
-            \set_error_handler(static function (int $severity, string $message, ?string $file, ?int $line) use ($type): void {
-                throw new \ErrorException(sprintf('There was a problem sorting %s: %s', $type, $message), $severity, $severity, $file, $line);
+            \set_error_handler(static function (int $severity, string $message, ?string $file, ?int $line): void {
+                throw new \ErrorException($message, $severity, $severity, $file, $line);
             });
 
             usort($contents, $sorter);
 
             \restore_error_handler();
         }
-
-        return $contents;
     }
 
     /**
@@ -169,18 +193,57 @@ class ContentManager
         }
 
         if (\is_array($sortBy)) {
-            $key = array_keys($sortBy)[0];
-            $asc = (bool) array_values($sortBy)[0];
+            return function ($a, $b) use ($sortBy) {
+                foreach ($sortBy as $key => $value) {
+                    $asc = (bool) $value;
+                    $valueA = $this->propertyAccessor->getValue($a, $key);
+                    $valueB = $this->propertyAccessor->getValue($b, $key);
 
-            return function ($a, $b) use ($key, $asc) {
-                $valueA = $this->propertyAccessor->getValue($a, $key);
-                $valueB = $this->propertyAccessor->getValue($b, $key);
+                    if ($valueA === $valueB) {
+                        continue;
+                    }
 
-                return ($valueA <=> $valueB) * ($asc ? 1 : -1);
+                    return ($valueA <=> $valueB) * ($asc ? 1 : -1);
+                }
+
+                return 0;
             };
         }
 
-        throw new \LogicException('Unknown sorter');
+        throw new \LogicException(sprintf('Unknown sorter "%s"', $sortBy));
+    }
+
+    private function getFilterFunction($filterBy): ?callable
+    {
+        if (!$filterBy) {
+            return null;
+        }
+
+        if (\is_string($filterBy)) {
+            return $this->getFilterFunction([$filterBy => true]);
+        }
+
+        if (\is_callable($filterBy)) {
+            return $filterBy;
+        }
+
+        if (\is_array($filterBy)) {
+            return function ($item) use ($filterBy) {
+                foreach ($filterBy as $key => $expectedValue) {
+                    $value = $this->propertyAccessor->getValue($item, $key);
+
+                    if ($value == $expectedValue) {
+                        continue;
+                    }
+
+                    return false;
+                }
+
+                return true;
+            };
+        }
+
+        throw new \LogicException(sprintf('Unknown filter "%s"', $filterBy));
     }
 
     public function supports(string $type): bool
