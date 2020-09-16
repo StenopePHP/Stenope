@@ -18,6 +18,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
@@ -150,15 +151,15 @@ class Builder
             if ($route->isVisible() && $route->isGettable()) {
                 try {
                     $url = $this->router->generate($name, [], UrlGeneratorInterface::ABSOLUTE_URL);
-                } catch (\Exception $exception) {
-                    $this->logger->debug(sprintf('Route "%s" requires parameters, skipping.', $name));
+                } catch (MissingMandatoryParametersException $exception) {
+                    $this->logger->debug('Route "{route}"" requires parameters, skipping.', ['route' => $name]);
                     continue;
                 }
 
                 $this->pageList->add($url);
-                $this->logger->debug(sprintf('Route "%s" is successufully listed.', $name));
+                $this->logger->debug('Route "{route}"" is successufully listed.', ['route' => $name]);
             } else {
-                $this->logger->debug(sprintf('Route "%s" is hidden, skipping.', $name));
+                $this->logger->debug('Route "{route}"" is hidden, skipping.', ['route' => $name]);
             }
         }
     }

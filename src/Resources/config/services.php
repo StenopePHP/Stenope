@@ -56,9 +56,11 @@ return static function (ContainerConfigurator $container): void {
         ->set(LocalFilesystemProviderFactory::class)->tag(tags\content_provider_factory)
 
         // Build
-        ->set(BuildCommand::class)
-            ->args(['$builder' => service(Builder::class)])
-            ->tag('console.command', ['command' => BuildCommand::getDefaultName()])
+        ->set(BuildCommand::class)->args([
+            '$builder' => service(Builder::class),
+            '$logger' => service(LoggerInterface::class),
+        ])
+        ->tag('console.command', ['command' => BuildCommand::getDefaultName()])
 
         ->set(Builder::class)->args([
             '$router' => service('router'),

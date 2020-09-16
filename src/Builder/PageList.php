@@ -11,7 +11,7 @@ namespace Content\Builder;
 /**
  * Page List
  */
-class PageList
+class PageList implements \Countable
 {
     /** @var array<string,bool> */
     private array $urls = [];

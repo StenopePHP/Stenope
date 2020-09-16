@@ -9,6 +9,7 @@
 namespace Content\Command;
 
 use Content\Builder;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,10 +25,12 @@ class BuildCommand extends Command
     protected static $defaultName = 'content:build';
 
     private Builder $builder;
+    private LoggerInterface $logger;
 
-    public function __construct(Builder $builder)
+    public function __construct(Builder $builder, LoggerInterface $logger)
     {
         $this->builder = $builder;
+        $this->logger = $logger;
 
         parent::__construct();
     }
@@ -105,7 +108,7 @@ class BuildCommand extends Command
             ['scheme' => $this->builder->getScheme()],
         );
 
-        $this->builder->setLogger(new BuildCommandLogger($io));
+        $this->builder->setLogger($this->logger);
 
         $this->builder->build(!$input->getOption('no-sitemap'), !$input->getOption('no-expose'));
 
