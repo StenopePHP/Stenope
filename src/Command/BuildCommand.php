@@ -9,13 +9,17 @@
 namespace Content\Command;
 
 use Content\Builder;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Terminal;
+use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Stopwatch\StopwatchEvent;
 
 /**
  * Build Command
@@ -25,12 +29,12 @@ class BuildCommand extends Command
     protected static $defaultName = 'content:build';
 
     private Builder $builder;
-    private LoggerInterface $logger;
+    private Stopwatch $stopwatch;
 
-    public function __construct(Builder $builder, LoggerInterface $logger)
+    public function __construct(Builder $builder, Stopwatch $stopwatch)
     {
         $this->builder = $builder;
-        $this->logger = $logger;
+        $this->stopwatch = $stopwatch;
 
         parent::__construct();
     }
@@ -108,12 +112,104 @@ class BuildCommand extends Command
             ['scheme' => $this->builder->getScheme()],
         );
 
-        $this->builder->setLogger($this->logger);
+        if (!$this->stopwatch->isStarted('build')) {
+            $this->stopwatch->start('build', 'content');
+        }
 
-        $this->builder->build(!$input->getOption('no-sitemap'), !$input->getOption('no-expose'));
+        if ($input->isInteractive() && $output->isDecorated() && $output->getVerbosity() <= OutputInterface::VERBOSITY_NORMAL) {
+            $progressBar = new ProgressBar($output);
+            $notifier = new ProgressNotifier($progressBar);
+        }
 
-        $io->success('Done.');
+        $count = $this->builder->build(
+            !$input->getOption('no-sitemap'),
+            !$input->getOption('no-expose'),
+            $notifier ?? null
+        );
+
+        if ($this->stopwatch->isStarted('build')) {
+            $this->stopwatch->stop('build');
+        }
+
+        if (isset($progressBar)) {
+            $progressBar->finish();
+            $progressBar->clear();
+        } else {
+            $io->newLine();
+        }
+
+        $io->success("Built $count pages.\n" . self::formatEvent($this->stopwatch->getEvent('build')));
 
         return Command::SUCCESS;
+    }
+
+    public static function formatEvent(StopwatchEvent $event): string
+    {
+        return sprintf(
+            'Start time: %s — End time: %s — Duration: %s — Memory used: %s',
+            date('H:i:s', ($event->getOrigin() + $event->getStartTime()) / 1000),
+            date('H:i:s', ($event->getOrigin() + $event->getEndTime()) / 1000),
+            Helper::formatTime($event->getDuration() / 1000),
+            Helper::formatMemory($event->getMemory())
+        );
+    }
+}
+
+class ProgressNotifier implements Builder\BuildNotifierInterface
+{
+    private ProgressBar $progressBar;
+
+    public function __construct(ProgressBar $progressBar)
+    {
+        $this->progressBar = $progressBar;
+        $this->progressBar->minSecondsBetweenRedraws(0.05);
+        $this->progressBar->maxSecondsBetweenRedraws(0.1);
+        $this->progressBar->setMessage('...', 'step');
+        $this->progressBar->setFormat(<<<TXT
+              <bg=green;fg=black>[%step%]</bg=green;fg=black> %current%/%max% [%bar%] %percent:3s%% <info>%elapsed:6s%/%estimated:-6s%</info> <fg=white;bg=blue>%memory:6s%</fg=white;bg=blue>
+               <comment>%message%</comment>
+
+            TXT
+        );
+
+        $this->progressBar->setBarCharacter('<fg=green>-</>');
+        $this->progressBar->setEmptyBarCharacter(' ');
+        $this->progressBar->setProgressCharacter('<fg=green>➤</>');
+    }
+
+    public function notify(
+        ?string $stepName = null,
+        ?int $advance = null,
+        ?int $maxStep = null,
+        ?string $message = null
+    ): void {
+        static $started = false;
+        static $messagePadding = null;
+        if (!$started) {
+            $this->progressBar->start($maxStep ?? 1);
+            $started = true;
+            // Fixup the progress bar %message% placeholder clearing according to terminal width
+            // (multi-line progress bars are a bit messed up)
+            $messagePadding = (new Terminal())->getWidth() - 3;
+        }
+
+        if ($maxStep) {
+            $this->progressBar->setMaxSteps($maxStep);
+        }
+
+        if ($advance) {
+            $this->progressBar->advance($advance);
+        }
+
+        if ($message) {
+            $this->progressBar->setMessage(str_pad($message, $messagePadding, ' '));
+        }
+
+        if ($stepName && $this->progressBar->getMessage('step') !== $stepName) {
+            $this->progressBar->setMessage($stepName, 'step');
+            // Reset message on changed step
+            $this->progressBar->setMessage(str_pad($message ?? '', $messagePadding, ' '));
+            $this->progressBar->display();
+        }
     }
 }

@@ -36,6 +36,7 @@ use Content\Twig\ContentRuntime;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 require_once __DIR__ . '/tags.php';
 
@@ -58,7 +59,7 @@ return static function (ContainerConfigurator $container): void {
         // Build
         ->set(BuildCommand::class)->args([
             '$builder' => service(Builder::class),
-            '$logger' => service(LoggerInterface::class),
+            '$stopwatch' => service('content.build.stopwatch'),
         ])
         ->tag('console.command', ['command' => BuildCommand::getDefaultName()])
 
@@ -71,7 +72,10 @@ return static function (ContainerConfigurator $container): void {
             '$buildDir' => 'The build dir, defined by the extension',
             '$filesToCopy' => 'The files to copy after build, defined by the extension',
             '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
+            '$stopwatch' => service('content.build.stopwatch'),
         ])
+
+        ->set('content.build.stopwatch', Stopwatch::class)->args([true])
 
         // Sitemap
         ->set(PageList::class)
