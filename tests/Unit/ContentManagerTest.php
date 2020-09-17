@@ -98,8 +98,18 @@ class ContentManagerTest extends TestCase
         ], array_column($manager->getContents('App\Foo', ['order' => false]), 'content'), 'desc order');
 
         self::assertSame([
+            'Foo 2',
             'Foo 1',
-        ], array_column($manager->getContents('App\Foo', [], ['content' => 'Foo 1']), 'content'), 'filtered');
+            'Foo 3',
+        ], array_column($manager->getContents('App\Foo', fn ($a, $b) => $a->order <=> $b->order), 'content'), 'ordered by function');
+
+        self::assertSame([
+            'Foo 1',
+        ], array_column($manager->getContents('App\Foo', null, ['content' => 'Foo 1']), 'content'), 'filtered by key');
+
+        self::assertSame([
+            'Foo 2',
+        ], array_column($manager->getContents('App\Foo', null, fn ($foo) => $foo->content === 'Foo 2'), 'content'), 'filtered by function');
     }
 }
 
