@@ -122,15 +122,66 @@ class BlogController extends AbstractController
 
 ### Sorting contents
 
-The `getContents` method have a second parameters `$sortBy` that allow sorting the content list.
+The `getContents` method have a second parameters `$sortBy` that allows sorting the content list.
 
-This argument accepts:
+It accepts:
 
-- An string: `'lastModified'` (sort by ascending values of the "lastModified" property).
-- An array: `['title' => false]` (sort by descending values of the "title" property).
-- A comparison callable for the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function: `fn($a, $b) => $a->priority <=> $b->priority`.
+#### A property name (string)
 
-When provided, the ContentManager will list all contents and sort the array with the corresponding sorting function before returning it.
+Alphabetically sorted categories:
+
+```php
+$categories = $contentManager->getContents(Category::class, 'title');
+```
+
+#### An array of properties and sorting mode
+
+All articles sorted by descending `date` (most recent first) and then by ascending `title` (Alphabetically):
+
+```php
+$latestArticles = $contentManager->getContents(Category::class, ['date' => false, 'title' => true]);
+```
+
+#### A custom callable supported by the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function
+
+```php
+$tasks = $contentManager->getContents(Task::class, fn($a, $b) => $a->priority <=> $b->priority);
+```
+
+### Filtering contents
+
+The `getContents` method have a third parameters `$filterBy` that allows filtering the content list.
+
+It accepts:
+
+#### An array of properties and values
+
+```php
+$articles = $contentManager->getContents(Article::class, null, ['category' => 'symfony']);
+```
+
+When passing multiple requirements, all must be met:
+
+```php
+$myDrafts = $this->manager->getContents(Article::class, null, ['author' => 'ogizanagi', 'draft' => true]);
+```
+
+#### A property name (string)
+
+```php
+// Equivalent to ['active' => true]
+$users = $contentManager->getContents(User::class, 'active');
+```
+
+#### A custom callable supported by the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function
+
+```php
+$tagedMobileArticles = $this->manager->getContents(
+    Article::class,
+    null,
+    fn (Article $article): bool => in_array('mobile', $article->tags)
+);
+```
 
 ## Advanced usage and extension
 
