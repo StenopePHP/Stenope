@@ -35,6 +35,8 @@ class ContentManager
     /** @var array<string,object> */
     private array $cache = [];
 
+    private bool $managerInjected = false;
+
     public function __construct(
         DecoderInterface $decoder,
         DenormalizerInterface $denormalizer,
@@ -259,15 +261,14 @@ class ContentManager
 
     private function initProcessors(): void
     {
-        static $managerInjected = false;
         // Lazy inject manager to processor on first need:
-        if (!$managerInjected) {
+        if (!$this->managerInjected) {
             foreach ($this->processors as $processor) {
                 if ($processor instanceof ContentManagerAwareInterface) {
                     $processor->setContentManager($this);
                 }
             }
-            $managerInjected = true;
+            $this->managerInjected = true;
         }
     }
 }

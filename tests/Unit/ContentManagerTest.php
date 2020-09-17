@@ -67,7 +67,7 @@ class ContentManagerTest extends TestCase
 
         $orders = [2, 1, 3];
         $denormalizer
-            ->denormalize(Argument::type('array'), 'App\Foo', Argument::any())
+            ->denormalize(Argument::type('array'), 'App\Foo', Argument::any(), Argument::any())
             ->will(function ($args) use (&$orders) {
                 [$data] = $args;
                 $std = new \stdClass();
@@ -79,7 +79,6 @@ class ContentManagerTest extends TestCase
             })
             ->shouldBeCalledTimes(3)
         ;
-
         self::assertSame([
             'Foo 1',
             'Foo 2',
@@ -97,6 +96,10 @@ class ContentManagerTest extends TestCase
             'Foo 1',
             'Foo 2',
         ], array_column($manager->getContents('App\Foo', ['order' => false]), 'content'), 'desc order');
+
+        self::assertSame([
+            'Foo 1',
+        ], array_column($manager->getContents('App\Foo', [], ['content' => 'Foo 1']), 'content'), 'filtered');
     }
 }
 
