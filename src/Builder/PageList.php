@@ -11,7 +11,7 @@ namespace Content\Builder;
 /**
  * Page List
  */
-class PageList
+class PageList implements \Countable
 {
     /** @var array<string,bool> */
     private array $urls = [];
@@ -33,6 +33,11 @@ class PageList
     public function getNext(): string
     {
         return current($this->getQueue());
+    }
+
+    public function count(): int
+    {
+        return \count($this->urls);
     }
 
     private function getQueue(): array

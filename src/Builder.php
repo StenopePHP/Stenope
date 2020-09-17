@@ -13,13 +13,16 @@ use Content\Builder\RouteInfo;
 use Content\Builder\Sitemap;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Twig\Environment;
 
 /**
@@ -40,6 +43,7 @@ class Builder
     /** Files to copy after build */
     private array $filesToCopy;
     private LoggerInterface $logger;
+    private Stopwatch $stopwatch;
 
     public function __construct(
         RouterInterface $router,
@@ -49,7 +53,8 @@ class Builder
         Sitemap $sitemap,
         string $buildDir,
         array $filesToCopy = [],
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
+        ?Stopwatch $stopwatch = null
     ) {
         $this->router = $router;
         $this->httpKernel = $httpKernel;
@@ -60,26 +65,67 @@ class Builder
         $this->filesToCopy = $filesToCopy;
         $this->files = new Filesystem();
         $this->logger = $logger ?? new NullLogger();
+        $this->stopwatch = $stopwatch ?? new Stopwatch(true);
+    }
+
+    public function iterate(bool $sitemap = true, bool $expose = true): \Generator
+    {
+        return yield from $this->doBuild($sitemap, $expose);
+    }
+
+    /**
+     * Build static site
+     *
+     * @return int Number of pages built
+     */
+    public function build(bool $sitemap = true, bool $expose = true): int
+    {
+        iterator_to_array($generator = $this->doBuild($sitemap, $expose));
+
+        return $generator->getReturn();
     }
 
     /**
      * Build static site
      */
-    public function build(bool $sitemap = true, bool $expose = true): void
+    private function doBuild(bool $sitemap = true, bool $expose = true): \Generator
     {
+        yield 'start' => $this->notifyContext('Start building');
+
+        if (!$this->stopwatch->isStarted('build')) {
+            $this->stopwatch->start('build', 'content');
+        }
+
+        yield 'clear' => $this->notifyContext('Clearing previous build');
+
         $this->clear();
+
+        yield 'scan' => $this->notifyContext('Scanning routes');
 
         $this->scanAllRoutes();
 
         if ($expose) {
+            yield 'copy' => $this->notifyContext('Copying files');
             $this->copyFiles();
         }
 
-        $this->buildPages();
+        yield 'build_pages' => $this->notifyContext('Building pages...');
+
+        $pagesCount = 0;
+        yield from $this->buildPages($pagesCount);
 
         if ($sitemap) {
+            yield 'build_sitemap' => $this->notifyContext('Building sitemap...');
             $this->buildSitemap();
         }
+
+        if ($this->stopwatch->isStarted('build')) {
+            $this->stopwatch->stop('build');
+        }
+
+        yield 'end' => $this->notifyContext();
+
+        return $pagesCount;
     }
 
     public function setBuildDir(string $buildDir): void
@@ -100,6 +146,11 @@ class Builder
         $this->router->getContext()->setHost($host);
     }
 
+    public function getHost(): string
+    {
+        return $this->router->getContext()->getHost();
+    }
+
     /**
      * Set HTTP Scheme
      */
@@ -108,16 +159,34 @@ class Builder
         $this->router->getContext()->setScheme($scheme);
     }
 
+    public function getScheme(): string
+    {
+        return $this->router->getContext()->getScheme();
+    }
+
     /**
      * Clear destination folder
      */
     private function clear(): void
     {
+        $this->stopwatch->openSection();
+        $this->stopwatch->start('clear');
+
+        $this->logger->notice('Clearing {build_dir} build directory...', ['build_dir' => $this->buildDir]);
+
         if ($this->files->exists($this->buildDir)) {
             $this->files->remove($this->buildDir);
         }
 
         $this->files->mkdir($this->buildDir);
+
+        $time = $this->stopwatch->lap('clear')->getDuration();
+        $this->stopwatch->stopSection('clear');
+
+        $this->logger->info('Cleared {build_dir} build directory! ({time})', [
+            'build_dir' => $this->buildDir,
+            'time' => self::formatTime($time),
+        ]);
     }
 
     /**
@@ -125,30 +194,76 @@ class Builder
      */
     private function scanAllRoutes(): void
     {
+        $this->stopwatch->openSection();
+        $this->stopwatch->start('scan_routes');
+
         $routes = RouteInfo::createFromRouteCollection($this->router->getRouteCollection());
 
-        foreach ($routes as $name => $route) {
-            if ($route->isVisible() && $route->isGettable()) {
-                try {
-                    $url = $this->router->generate($name, [], UrlGeneratorInterface::ABSOLUTE_URL);
-                } catch (\Exception $exception) {
-                    continue;
-                }
+        $this->logger->notice('Scanning {count} routes...', ['count' => \count($routes)]);
 
-                $this->pageList->add($url);
+        $skipped = 0;
+        foreach ($routes as $name => $route) {
+            if (!$route->isVisible() || !$route->isGettable()) {
+                $this->logger->debug('Route "{route}" is hidden, skipping.', ['route' => $name]);
+                continue;
             }
+
+            try {
+                $url = $this->router->generate($name, [], UrlGeneratorInterface::ABSOLUTE_URL);
+            } catch (MissingMandatoryParametersException $exception) {
+                ++$skipped;
+                $this->logger->debug('Route "{route}" requires parameters, skipping.', ['route' => $name]);
+                continue;
+            }
+
+            $this->pageList->add($url);
+            $this->logger->debug('Route "{route}" is successfully listed.', ['route' => $name]);
         }
+
+        $lap = $this->stopwatch->lap('scan_routes');
+        $time = $lap->getDuration();
+        $memory = $lap->getMemory();
+        $this->stopwatch->stopSection('scan_routes');
+
+        $this->logger->info('Scanned {scanned} routes ({skipped} skipped), discovered {count} entrypoint routes! ({time}, {memory})', [
+            'time' => self::formatTime($time),
+            'scanned' => \count($routes),
+            'skipped' => $skipped,
+            'count' => \count($this->pageList),
+            'memory' => self::formatMemory($memory),
+        ]);
     }
 
     /**
      * Build all pages
+     *
+     * @param int Number of pages built
      */
-    private function buildPages(): void
+    private function buildPages(int &$pagesCount): iterable
     {
+        $this->stopwatch->openSection();
+        $this->stopwatch->start('build_pages');
+
+        $this->logger->notice('Building pages...', ['entrypoints' => $this->pageList->count()]);
+
         while ($url = $this->pageList->getNext()) {
+            yield $this->notifyContext("Building $url", 1, \count($this->pageList));
+
             $this->buildUrl($url);
             $this->pageList->markAsDone($url);
         }
+
+        $memory = $this->stopwatch->lap('build_pages')->getMemory();
+        $this->stopwatch->stopSection('build_pages');
+        $events = $this->stopwatch->getSectionEvents('build_pages');
+
+        $this->logger->info('Built {count} pages! ({time}, {memory})', [
+            'time' => self::formatTime(end($events)->getDuration()),
+            'memory' => self::formatMemory($memory),
+            'count' => \count($this->pageList),
+        ]);
+
+        $pagesCount = \count($this->pageList);
     }
 
     /**
@@ -156,9 +271,22 @@ class Builder
      */
     private function buildSitemap(): void
     {
+        $this->stopwatch->openSection();
+        $this->stopwatch->start('build_sitemap');
+
+        $this->logger->notice('Building sitemap...');
+
         $content = $this->templating->render('@Content/sitemap.xml.twig', ['sitemap' => $this->sitemap]);
 
         $this->write($content, '/', 'sitemap.xml');
+
+        $lap = $this->stopwatch->lap('build_sitemap');
+        $this->stopwatch->stopSection('build_sitemap');
+
+        $this->logger->info('Built sitemap! ({time}, {memory})', [
+            'time' => self::formatTime($lap->getDuration()),
+            'memory' => self::formatMemory($lap->getMemory()),
+        ]);
     }
 
     private function copyFiles(): void
@@ -210,6 +338,11 @@ class Builder
      */
     private function buildUrl(string $url): void
     {
+        $periods = $this->stopwatch->lap('build_pages')->getPeriods();
+        $period = end($periods);
+        $time = $period->getDuration();
+        $memory = $period->getMemory();
+
         $request = Request::create($url, 'GET');
 
         try {
@@ -220,9 +353,15 @@ class Builder
 
         $this->httpKernel->terminate($request, $response);
 
-        list($path, $file) = $this->getFilePath($request->getPathInfo());
+        [$path, $file] = $this->getFilePath($request->getPathInfo());
 
         $this->write($response->getContent(), $path, $file);
+
+        $this->logger->debug('Page "{url}" built ({time}, {memory})', [
+            'time' => self::formatTime($time),
+            'memory' => self::formatMemory($memory),
+            'url' => $url,
+        ]);
     }
 
     /**
@@ -255,5 +394,31 @@ class Builder
         }
 
         $this->files->dumpFile(sprintf('%s/%s', $directory, $file), $content);
+    }
+
+    private static function formatTime(float $time): string
+    {
+        if ($time >= 1000) {
+            return number_format($time / 1000, 2) . ' s';
+        }
+
+        return number_format($time, 2) . ' ms';
+    }
+
+    private static function formatMemory(int $memory): string
+    {
+        return Helper::formatMemory($memory);
+    }
+
+    private function notifyContext(
+        ?string $message = null,
+        ?int $advance = null,
+        ?int $maxStep = null
+    ): array {
+        return [
+            'advance' => $advance,
+            'maxStep' => $maxStep,
+            'message' => $message,
+        ];
     }
 }
