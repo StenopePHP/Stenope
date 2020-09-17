@@ -8,7 +8,6 @@
 
 namespace Content;
 
-use Content\Builder\BuildNotifierInterface;
 use Content\Builder\PageList;
 use Content\Builder\RouteInfo;
 use Content\Builder\Sitemap;
@@ -69,38 +68,54 @@ class Builder
         $this->stopwatch = $stopwatch ?? new Stopwatch(true);
     }
 
+    public function iterate(bool $sitemap = true, bool $expose = true): \Generator
+    {
+        return yield from $this->doBuild($sitemap, $expose);
+    }
+
     /**
      * Build static site
      *
      * @return int Number of pages built
      */
-    public function build(bool $sitemap = true, bool $expose = true, ?BuildNotifierInterface $notifier = null): int
+    public function build(bool $sitemap = true, bool $expose = true): int
     {
-        $notifier && $notifier->notify('start', null, null, 'Start building');
+        iterator_to_array($generator = $this->doBuild($sitemap, $expose));
+
+        return $generator->getReturn();
+    }
+
+    /**
+     * Build static site
+     */
+    private function doBuild(bool $sitemap = true, bool $expose = true): \Generator
+    {
+        yield 'start' => $this->notifyContext('Start building');
 
         if (!$this->stopwatch->isStarted('build')) {
             $this->stopwatch->start('build', 'content');
         }
 
-        $notifier && $notifier->notify('clear', null, null, 'Clearing previous build');
+        yield 'clear' => $this->notifyContext('Clearing previous build');
 
         $this->clear();
 
-        $notifier && $notifier->notify('scan', null, null, 'Scanning routes');
+        yield 'scan' => $this->notifyContext('Scanning routes');
 
         $this->scanAllRoutes();
 
         if ($expose) {
-            $notifier && $notifier->notify('copy', null, null, 'Copying files');
+            yield 'copy' => $this->notifyContext('Copying files');
             $this->copyFiles();
         }
 
-        $notifier && $notifier->notify('build_pages', null, null, 'Building pages...');
+        yield 'build_pages' => $this->notifyContext('Building pages...');
 
-        $pages = $this->buildPages($notifier);
+        $pagesCount = 0;
+        yield from $this->buildPages($pagesCount);
 
         if ($sitemap) {
-            $notifier && $notifier->notify('build_sitemap', null, null, 'Building sitemap...');
+            yield 'build_sitemap' => $this->notifyContext('Building sitemap...');
             $this->buildSitemap();
         }
 
@@ -108,9 +123,9 @@ class Builder
             $this->stopwatch->stop('build');
         }
 
-        $notifier && $notifier->notify('end');
+        yield 'end' => $this->notifyContext();
 
-        return $pages;
+        return $pagesCount;
     }
 
     public function setBuildDir(string $buildDir): void
@@ -222,9 +237,9 @@ class Builder
     /**
      * Build all pages
      *
-     * @return int Number of pages built
+     * @param int Number of pages built
      */
-    private function buildPages(?BuildNotifierInterface $notifier = null): int
+    private function buildPages(int &$pagesCount): iterable
     {
         $this->stopwatch->openSection();
         $this->stopwatch->start('build_pages');
@@ -232,7 +247,7 @@ class Builder
         $this->logger->notice('Building pages...', ['entrypoints' => $this->pageList->count()]);
 
         while ($url = $this->pageList->getNext()) {
-            $notifier && $notifier->notify(null, 1, \count($this->pageList), "Building $url");
+            yield $this->notifyContext("Building $url", 1, \count($this->pageList));
 
             $this->buildUrl($url);
             $this->pageList->markAsDone($url);
@@ -248,7 +263,7 @@ class Builder
             'count' => \count($this->pageList),
         ]);
 
-        return \count($this->pageList);
+        $pagesCount = \count($this->pageList);
     }
 
     /**
@@ -393,5 +408,17 @@ class Builder
     private static function formatMemory(int $memory): string
     {
         return Helper::formatMemory($memory);
+    }
+
+    private function notifyContext(
+        ?string $message = null,
+        ?int $advance = null,
+        ?int $maxStep = null
+    ): array {
+        return [
+            'advance' => $advance,
+            'maxStep' => $maxStep,
+            'message' => $message,
+        ];
     }
 }
