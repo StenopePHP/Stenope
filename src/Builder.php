@@ -11,13 +11,13 @@ namespace Content;
 use Content\Builder\PageList;
 use Content\Builder\RouteInfo;
 use Content\Builder\Sitemap;
+use Content\HttpFoundation\ContentRequest;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -162,6 +162,16 @@ class Builder
     public function getScheme(): string
     {
         return $this->router->getContext()->getScheme();
+    }
+
+    public function setBaseUrl(string $baseUrl): void
+    {
+        $this->router->getContext()->setBaseUrl('/' . ltrim($baseUrl, '/'));
+    }
+
+    public function getBaseUrl(): string
+    {
+        return $this->router->getContext()->getBaseUrl();
     }
 
     /**
@@ -343,7 +353,7 @@ class Builder
         $time = $period->getDuration();
         $memory = $period->getMemory();
 
-        $request = Request::create($url, 'GET');
+        $request = ContentRequest::create($url, 'GET')->withBaseUrl($this->router->getContext()->getBaseUrl());
 
         try {
             $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);

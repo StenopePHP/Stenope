@@ -60,6 +60,12 @@ class BuildCommand extends Command
                 'What should be used as domain name for absolute url generation?'
             )
             ->addOption(
+                'base-url',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'What should be used as base-url for absolute url generation?'
+            )
+            ->addOption(
                 'scheme',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -96,6 +102,10 @@ class BuildCommand extends Command
         if ($scheme = $input->getOption('scheme')) {
             $this->builder->setScheme($scheme);
         }
+
+        if ($baseUrl = $input->getOption('base-url')) {
+            $this->builder->setBaseUrl($baseUrl);
+        }
     }
 
     /**
@@ -108,8 +118,9 @@ class BuildCommand extends Command
         $io->title('Building static site');
         $io->definitionList(
             ['buildDir' => $this->builder->getBuildDir()],
-            ['host' => $this->builder->getHost()],
             ['scheme' => $this->builder->getScheme()],
+            ['host' => $this->builder->getHost()],
+            ['baseUrl' => $this->builder->getBaseUrl()],
         );
 
         if (!$this->stopwatch->isStarted('build')) {
