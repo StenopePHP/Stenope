@@ -28,8 +28,8 @@ class ContentRuntime implements RuntimeExtensionInterface
     /**
      * @return object[]
      */
-    public function listContents(string $type, $sortBy): array
+    public function listContents(string $type, $sortBy = null, $filterBy = null): array
     {
-        return $this->contentManager->getContents($type, $sortBy);
+        return $this->contentManager->getContents($type, $sortBy, $filterBy);
     }
 }
