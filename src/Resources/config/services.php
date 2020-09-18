@@ -23,6 +23,7 @@ use Content\Highlighter\Pygments;
 use Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use Content\Processor\CodeHighlightProcessor;
 use Content\Processor\HtmlAnchorProcessor;
+use Content\Processor\HtmlExternalLinksProcessor;
 use Content\Processor\HtmlIdProcessor;
 use Content\Processor\LastModifiedProcessor;
 use Content\Processor\SlugProcessor;
@@ -100,6 +101,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(Prism::class)->args([
             '$executable' => null,
             '$stopwatch' => service('debug.stopwatch')->nullOnInvalid(),
+            '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
         ])->tag('kernel.event_listener', ['event' => KernelEvents::TERMINATE, 'method' => 'stop'])
 
         // Serializer
@@ -139,6 +141,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(SlugProcessor::class)
         ->set(HtmlIdProcessor::class)
         ->set(HtmlAnchorProcessor::class)
+        ->set(HtmlExternalLinksProcessor::class)
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
     ;
 };
