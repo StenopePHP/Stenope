@@ -10,6 +10,7 @@ namespace Content\Highlighter;
 
 use Content\Behaviour\HighlighterInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -23,13 +24,13 @@ class Prism implements HighlighterInterface
     private ?Process $server = null;
     private ?InputStream $input = null;
     private ?Stopwatch $stopwatch;
-    private ?LoggerInterface $logger;
+    private LoggerInterface $logger;
 
     public function __construct(?string $executable = null, ?Stopwatch $stopwatch = null, ?LoggerInterface $logger = null)
     {
         $this->executable = $executable ?? __DIR__ . '/../Resources/dist/bin/prism.js';
         $this->stopwatch = $stopwatch;
-        $this->logger = $logger;
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function start(): void
