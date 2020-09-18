@@ -9,6 +9,8 @@
 namespace Content\Highlighter;
 
 use Content\Behaviour\HighlighterInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -22,11 +24,13 @@ class Prism implements HighlighterInterface
     private ?Process $server = null;
     private ?InputStream $input = null;
     private ?Stopwatch $stopwatch;
+    private LoggerInterface $logger;
 
-    public function __construct(?string $executable = null, ?Stopwatch $stopwatch = null)
+    public function __construct(?string $executable = null, ?Stopwatch $stopwatch = null, ?LoggerInterface $logger = null)
     {
         $this->executable = $executable ?? __DIR__ . '/../Resources/dist/bin/prism.js';
         $this->stopwatch = $stopwatch;
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function start(): void
@@ -66,16 +70,36 @@ class Prism implements HighlighterInterface
             json_encode(['language' => $language, 'value' => $value]) . PHP_EOL
         );
 
-        $this->server->waitUntil(function ($type, $output) {
-            return $type === Process::ERR && $output === 'DONE';
-        });
+        $errors = [];
 
-        $output = $this->server->getIncrementalOutput();
+        $this->server->waitUntil(function ($type, $output) use (&$errors) {
+            $lines = array_filter(explode(PHP_EOL, $output));
+
+            if ($type === Process::ERR) {
+                foreach ($lines as $line) {
+                    if ($line === 'DONE') {
+                        return true;
+                    }
+
+                    $errors[] = $line;
+                }
+            }
+
+            return false;
+        });
 
         if (isset($event)) {
             $event->stop();
         }
 
-        return $output;
+        if (\count($errors) > 0) {
+            foreach ($errors as $error) {
+                $this->logger->error('Highlight error: {message}', ['message' => $error]);
+            }
+
+            return $value;
+        }
+
+        return $this->server->getIncrementalOutput();
     }
 }
