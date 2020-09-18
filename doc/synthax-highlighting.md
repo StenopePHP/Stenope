@@ -16,10 +16,10 @@ In Markdown, specify the language in the opening line will:
 
 ### HTML
 
-In HTML, specify the language in the `language` attribute:
+In HTML, specify the language in the `class` attribute, like this:
 
 ```html
-​<code language="php">
+​<code class="language-php">
 <?php $foo = true;
 <code>
 ```
@@ -31,10 +31,14 @@ _Note: since Markdown also supports embeded HMTL, the above code block will also
 This will result in the following HTML block in the parsed content:
 
 ```html
-<code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token variable">$foo</span> <span class="token operator">=</span> <span class="token boolean constant">true</span><span class="token punctuation">;</span></span></code>
+<pre class="code-multiline">
+    <code class="language-php" id="1b7716ebf50e565f2f76a0de64362190">
+        <span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token variable">$foo</span> <span class="token operator">=</span> <span class="token boolean constant">true</span><span class="token punctuation">;</span></span>
+    </code>
+</pre>
 ```
 
-_Note: providing a CSS theme that color the code is entirely up to you. There is one ready-to-use theme packaged if you need it._
+_Note: providing a CSS theme that color the code is entirely up to you. You can use any of the official [Prism.js](https://prismjs.com) theme out of the box just by loading the CSS file._
 
 ## Custom synthax highlighting
 
