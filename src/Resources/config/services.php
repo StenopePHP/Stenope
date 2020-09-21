@@ -25,16 +25,19 @@ use Content\Processor\CodeHighlightProcessor;
 use Content\Processor\HtmlAnchorProcessor;
 use Content\Processor\HtmlExternalLinksProcessor;
 use Content\Processor\HtmlIdProcessor;
+use Content\Processor\HtmlImageProcessor;
 use Content\Processor\LastModifiedProcessor;
 use Content\Processor\SlugProcessor;
 use Content\Provider\Factory\ContentProviderFactory;
 use Content\Provider\Factory\LocalFilesystemProviderFactory;
 use Content\Routing\UrlGenerator;
 use Content\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
+use Content\Service\ImageAssetUtils;
 use Content\Service\Parsedown;
 use Content\Twig\ContentExtension;
 use Content\Twig\ContentRuntime;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -133,6 +136,10 @@ return static function (ContainerConfigurator $container): void {
         ->set(ContentRuntime::class)
             ->args(['$contentManager' => service(ContentManager::class)])
             ->tag('twig.runtime')
+
+        // Assets
+        ->set(ImageAssetUtils::class)
+            ->args(['$assets' => service(Packages::class)])
     ;
 
     // Tagged Property handlers:
@@ -142,6 +149,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(HtmlIdProcessor::class)
         ->set(HtmlAnchorProcessor::class)
         ->set(HtmlExternalLinksProcessor::class)
+        ->set(HtmlImageProcessor::class)->args(['$imageAssetUtils' => service(ImageAssetUtils::class)])
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
     ;
 };
