@@ -152,7 +152,7 @@ class BuildCommand extends Command
     public static function formatTimePrecision($secs)
     {
         static $timeFormats = [
-            [1, 'sec', 1, 2],
+            [0, 'sec', 1, 2],
             [2, 'secs', 1, 2],
             [60, '1 min'],
             [120, 'mins', 60],
