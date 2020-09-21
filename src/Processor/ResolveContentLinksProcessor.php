@@ -34,26 +34,15 @@ class ResolveContentLinksProcessor implements ProcessorInterface, ContentManager
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property])) {
+        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return;
-        }
-
-        $crawler = new Crawler($data[$this->property]);
+        $crawler = $data[$this->property];
 
         foreach ($crawler->filter('a') as $link) {
             $this->processLink($link, $content);
         }
-
-        $data[$this->property] = $crawler->html();
     }
 
     private function processLink(\DOMElement $link, Content $currentContent): void

@@ -26,26 +26,15 @@ class HtmlAnchorProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property])) {
+        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return;
-        }
-
-        $crawler = new Crawler($data[$this->property]);
+        $crawler = $data[$this->property];
 
         foreach ($crawler->filter('h1, h2, h3, h4, h5') as $element) {
             $this->addAnchor($element);
         }
-
-        $data[$this->property] = $crawler->html();
     }
 
     /**

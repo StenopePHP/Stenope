@@ -33,6 +33,8 @@ use Stenope\Bundle\Processor\LastModifiedProcessor;
 use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
 use Stenope\Bundle\Processor\SlugProcessor;
 use Stenope\Bundle\Processor\TableOfContentProcessor;
+use Stenope\Bundle\Processor\HtmlStartProcessor;
+use Stenope\Bundle\Processor\HtmlEndProcessor;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Stenope\Bundle\Routing\ContentUrlResolver;
@@ -171,7 +173,12 @@ return static function (ContainerConfigurator $container): void {
         ->set(CrawlerTableOfContentGenerator::class)
         ;
 
-    // Tagged Property handlers:
+    // HTML Crawler processors
+    $container->services()
+        ->set(HtmlStartProcessor::class)->tag(tags\content_processor, ['priority' => 100])
+        ->set(HtmlEndProcessor::class)->tag(tags\content_processor, ['priority' => -100]);
+
+    // Tagged processors:
     $container->services()->defaults()->tag(tags\content_processor)
         ->set(LastModifiedProcessor::class)
         ->set(SlugProcessor::class)

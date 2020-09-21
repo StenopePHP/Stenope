@@ -18,6 +18,7 @@ interface ProcessorInterface
      * @param array   $data    The decoded data
      * @param string  $type    The model being processed (FQN)
      * @param Content $content The source content
+     * @param array   $context Context shared between processors
      */
-    public function __invoke(array &$data, string $type, Content $content): void;
+    public function __invoke(array &$data, string $type, Content $content, &array $context = []): void;
 }

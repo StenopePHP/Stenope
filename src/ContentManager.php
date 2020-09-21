@@ -215,10 +215,11 @@ class ContentManager
         $this->initProcessors();
 
         $data = $this->decoder->decode($content->getRawContent(), $content->getFormat());
+        $context = [];
 
         // Apply processors to decoded data
         foreach ($this->processors as $processor) {
-            $processor($data, $type, $content);
+            $processor($data, $type, $content, $context);
         }
 
         $data = $this->denormalizer->denormalize($data, $type, $content->getFormat(), [

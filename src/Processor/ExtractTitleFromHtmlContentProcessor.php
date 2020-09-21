@@ -29,20 +29,11 @@ class ExtractTitleFromHtmlContentProcessor implements ProcessorInterface
     public function __invoke(array &$data, string $type, Content $content): void
     {
         // Ignore if no content available, or if the title property is already set:
-        if (!\is_string($data[$this->contentProperty] ?? null) || isset($data[$this->titleProperty])) {
+        if (!\is_string($data[$this->contentProperty] ?? null) || isset($data[$this->titleProperty]) || !$data[$this->property] instanceof Crawler) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->contentProperty]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return;
-        }
-
-        $crawler = new Crawler($data[$this->contentProperty]);
+        $crawler = $data[$this->contentProperty];
 
         // Use the first h1 text as title:
         if (($title = $crawler->filter('h1')->first())->count() > 0) {

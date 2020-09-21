@@ -26,24 +26,15 @@ class HtmlExternalLinksProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property])) {
+        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $exception) {
-            // Content is not valid HTML.
-            return;
-        }
+        $crawler = $data[$this->property];
 
         foreach ($crawler->filter('a') as $element) {
             $this->processLink($element);
         }
-
-        $data[$this->property] = $crawler->html();
     }
 
     private function processLink(\DOMElement $element): void

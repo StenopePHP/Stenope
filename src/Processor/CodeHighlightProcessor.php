@@ -30,26 +30,15 @@ class CodeHighlightProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property])) {
+        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return;
-        }
-
-        $crawler = new Crawler($data[$this->property]);
+        $crawler = $data[$this->property];
 
         foreach ($crawler->filter('code') as $element) {
             $this->highlight($element);
         }
-
-        $data[$this->property] = $crawler->html();
     }
 
     private function highlight(\DOMElement $element): void

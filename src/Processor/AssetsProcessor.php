@@ -29,20 +29,11 @@ class AssetsProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property])) {
+        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return;
-        }
-
-        $crawler = new Crawler($data[$this->property]);
+        $crawler = $data[$this->property];
 
         foreach ($crawler->filter('img') as $element) {
             $element->setAttribute('src', $this->assetUtils->getUrl($element->getAttribute('src')));
@@ -51,7 +42,5 @@ class AssetsProcessor implements ProcessorInterface
         foreach ($crawler->filter('a') as $element) {
             $element->setAttribute('href', $this->assetUtils->getUrl($element->getAttribute('href')));
         }
-
-        $data[$this->property] = $crawler->html();
     }
 }

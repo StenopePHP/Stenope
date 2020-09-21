@@ -30,18 +30,11 @@ class HtmlIdProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property])) {
+        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $exception) {
-            // Content is not valid HTML.
-            return;
-        }
+        $crawler = $data[$this->property];
 
         foreach ($crawler->filter('h1, h2, h3, h4, h5, h6') as $element) {
             $this->setIdFromContent($element);
@@ -54,8 +47,6 @@ class HtmlIdProcessor implements ProcessorInterface
         foreach ($crawler->filter('img') as $element) {
             $this->setIdForImage($element);
         }
-
-        $data[$this->property] = $crawler->html();
     }
 
     private function setIdFromContent(\DOMElement $element): void
