@@ -34,4 +34,22 @@ class HtmlUtils
 
         $element->appendChild($child);
     }
+
+    /**
+     * Wrap content
+     */
+    public static function wrapContent(\DomElement $element, string $wrapTag, array $wrapAttributes = []): void
+    {
+        $wrapper = $element->ownerDocument->createElement($wrapTag);
+
+        foreach ($wrapAttributes as $key => $value) {
+            $wrapper->setAttribute($key, $value);
+        }
+
+        foreach ($element->childNodes as $child) {
+            $wrapper->appendChild($child);
+        }
+
+        $element->appendChild($wrapper);
+    }
 }

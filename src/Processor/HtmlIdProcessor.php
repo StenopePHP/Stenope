@@ -39,7 +39,7 @@ class HtmlIdProcessor implements ProcessorInterface
             return;
         }
 
-        foreach ($crawler->filter('h1, h2, h3, h4, h5') as $element) {
+        foreach ($crawler->filter('h1, h2, h3, h4, h5, h6') as $element) {
             $this->setIdFromContent($element);
         }
 
@@ -81,7 +81,7 @@ class HtmlIdProcessor implements ProcessorInterface
      */
     private function slugify(string $value, int $maxLength = 32): string
     {
-        return trim(preg_replace('#[^a-z]+#i', '-', strtolower(substr($value, 0, $maxLength))), '-');
+        return trim(preg_replace('#[^a-z0-9]+#i', '-', strtolower(substr($value, 0, $maxLength))), '-');
     }
 
     /**
