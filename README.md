@@ -19,9 +19,19 @@ Content is a static website building tool set for Symfony with specific goals:
 
 ## Usage
 
-Build the static site: `bin/console content:build`
+Build the static site: `bin/console -e prod content:build`
 
 ✨ Your Symfony app is now a static website in: `/build`!
+
+### In a makefile
+
+```make
+build: export APP_ENV = prod
+build:
+    #yarn encore production
+    bin/console cache:clear
+    bin/console content:build
+```
 
 ## Advanced usage
 

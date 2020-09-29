@@ -18,6 +18,8 @@ use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -355,6 +357,8 @@ class Builder
 
         $request = ContentRequest::create($url, 'GET')->withBaseUrl($this->router->getContext()->getBaseUrl());
 
+        ob_start();
+
         try {
             $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
         } catch (\Throwable $exception) {
@@ -363,9 +367,16 @@ class Builder
 
         $this->httpKernel->terminate($request, $response);
 
+        if ($response instanceof BinaryFileResponse || $response instanceof StreamedResponse) {
+            $response->sendContent();
+        }
+
+        $output = ob_get_clean();
+        $content = $response->getContent() ?: $output;
+
         [$path, $file] = $this->getFilePath($request->getPathInfo());
 
-        $this->write($response->getContent(), $path, $file);
+        $this->write($content, $path, $file);
 
         $this->logger->debug('Page "{url}" built ({time}, {memory})', [
             'time' => self::formatTime($time),
