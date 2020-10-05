@@ -1,8 +1,8 @@
-# Synthax highlighting
+# Syntax highlighting
 
 ## Setting the language attribute
 
-Any `code` block with a `language` attribute will be synthax highlighted.
+Any `code` block with a `language` attribute will be syntax highlighted.
 
 ### Markdown
 
@@ -40,7 +40,7 @@ This will result in the following HTML block in the parsed content:
 
 _Note: providing a CSS theme that color the code is entirely up to you. You can use any of the official [Prism.js](https://prismjs.com) theme out of the box just by loading the CSS file._
 
-## Custom synthax highlighting
+## Custom syntax highlighting
 
 The default Highlighter responsible for syntax highlighting is based on [Prism.js](https://prismjs.com/), but you can provide your own by implementing `Content\Behaviour\HighlighterInterface`:
 
