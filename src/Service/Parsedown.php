@@ -17,9 +17,75 @@ class Parsedown extends BaseParsedown
 {
     public function __construct()
     {
-        $this->BlockTypes = array_merge($this->BlockTypes, [
-            '!' => ['Image'],
-        ]);
+        $this->BlockTypes['!'][] = 'Image';
+        $this->BlockTypes['!'][] = 'Admonition';
+    }
+
+    protected function blockAdmonition($line, $block = null)
+    {
+        if (preg_match('#^!!! (?<types>[^"]{1,})( ?(\"(?<title>.*)\"))?#', $line['text'], $matches)) {
+            $types = array_filter(explode(' ', $matches['types']));
+            $type = $types[0];
+            $classes = implode(' ', array_map('trim', array_map('strtolower', $types)));
+            $title = $matches['title'] ?? $type;
+            $admonitionContentRef = null;
+
+            $block = [
+                '$admonitionContentRef' => &$admonitionContentRef,
+                'element' => [
+                    'name' => 'div',
+                    'handler' => 'elements',
+                    'attributes' => [
+                        'class' => "admonition $classes",
+                    ],
+                    'text' => [
+                        'title' => [
+                            'handler' => 'line',
+                            'name' => 'p',
+                            'attributes' => [
+                                'class' => 'admonition-title',
+                            ],
+                            'text' => $title,
+                        ],
+                        'content' => [
+                            'handler' => 'line',
+                            'name' => 'p',
+                            'text' => &$admonitionContentRef,
+                        ],
+                    ],
+                ],
+            ];
+
+            // Remove title if explicitly unset:
+            if ($title === '') {
+                unset($block['element']['text']['title']);
+            }
+
+            return $block;
+        }
+    }
+
+    protected function blockAdmonitionContinue($line, $block = null)
+    {
+        // A blank newline has occurred, or text without indent:
+        if (isset($block['interrupted']) || $line['indent'] < 4) {
+            return;
+        }
+
+        $previous = $block['$admonitionContentRef'] ?? "\n";
+        $indent = $line['indent'];
+        $current = str_repeat(' ', $indent) . $line['text'];
+        // Add the next admonition content line:
+        $block['$admonitionContentRef'] = "{$previous}{$current}\n";
+
+        return $block;
+    }
+
+    protected function blockAdmonitionComplete($block)
+    {
+        unset($block['$admonitionContentRef']);
+
+        return $block;
     }
 
     protected function blockFencedCodeComplete($Block)

@@ -40,6 +40,60 @@ The default MarkdownDecoder relies on [erusev/parsedown](https://github.com/erus
 - Multilign highligted code `` ```php `` (see [Synthax Highlighting](synthax-hightlighting.md))
 - Tables
 - Embed HTML
+- [Admonitions](#admonitions)
+
+### Admonitions
+
+Admonitions, also known as call-outs, are an excellent choice for including side
+content without significantly interrupting the document flow.
+
+Admonitions are supported as described in https://python-markdown.github.io/extensions/admonition/
+
+#### Usage
+
+```markdown
+!!! note
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.
+```
+
+will generate:
+
+```html
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.
+</p>
+</div>
+```
+
+Which with proper CSS, could result into something like:
+
+![admonition sample](./images/admonition.png)
+
+Writing CSS to render this is up to you.
+
+#### Changing the title
+
+```markdown
+!!! note "Phasellus posuere in sem ut cursus"
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.
+```    
+    
+### Removing the title
+
+```markdown
+!!! note ""
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.
+```
 
 ## HTML
 
