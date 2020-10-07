@@ -390,7 +390,9 @@ class Builder
     {
         $info = pathinfo($url);
 
-        if (!isset($info['extension'])) {
+        // Unless the content already ends with .html,
+        // ensures content with dot in slug generates an index.html file.
+        if ('html' !== ($info['extension'] ?? null)) {
             return [$url, 'index.html'];
         }
 

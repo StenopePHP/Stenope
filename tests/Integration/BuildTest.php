@@ -16,7 +16,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
 use Symfony\Component\Filesystem\Filesystem;
 
-class IntegrationTest extends KernelTestCase
+class BuildTest extends KernelTestCase
 {
     public static array $kernelOptions = [
         'environment' => 'prod',
@@ -61,6 +61,11 @@ class IntegrationTest extends KernelTestCase
     public function testBuildDirIsCreated(): void
     {
         self::assertDirectoryExists(self::$kernel->getProjectDir() . '/build');
+
+        self::assertFileExists(
+            self::$kernel->getProjectDir() . '/build/authors/john.doe/index.html',
+            'Ensures content with dot in slug generates an index.html file.',
+        );
     }
 
     /**
@@ -85,6 +90,7 @@ class IntegrationTest extends KernelTestCase
 
         self::assertEqualsCanonicalizing([
             'http://localhost/',
+            'http://localhost/authors/john.doe',
             'http://localhost/authors/ogi',
             'http://localhost/recipes/',
             'http://localhost/recipes/cheesecake',
