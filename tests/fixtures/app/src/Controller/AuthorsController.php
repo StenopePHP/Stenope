@@ -9,7 +9,6 @@
 namespace App\Controller;
 
 use App\Content\Model\Author;
-use Content\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,15 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AuthorsController extends AbstractController
 {
-    private ContentManager $manager;
-
-    public function __construct(ContentManager $manager)
-    {
-        $this->manager = $manager;
-    }
-
     /**
-     * @Route("/{author}", name="author")
+     * @Route("/{author}", name="author", options={
+     *     "content": {
+     *         "dots": true,
+     *     },
+     * })
      */
     public function show(Author $author)
     {

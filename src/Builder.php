@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Twig\Environment;
@@ -353,6 +354,8 @@ class Builder
         $time = $period->getDuration();
         $memory = $period->getMemory();
 
+        $routes = $this->router->getRouteCollection();
+
         $request = ContentRequest::create($url, 'GET')->withBaseUrl($this->router->getContext()->getBaseUrl());
 
         ob_start();
@@ -372,7 +375,13 @@ class Builder
         $output = ob_get_clean();
         $content = $response->getContent() ?: $output;
 
-        [$path, $file] = $this->getFilePath($request->getPathInfo());
+        if ($routeName = $request->attributes->get('_route')) {
+            /** @var Route $route */
+            $route = $routes->get($routeName);
+            $routeInfo = new RouteInfo($routeName, $route);
+        }
+
+        [$path, $file] = $this->getFilePath($request->getPathInfo(), $routeInfo ?? null);
 
         $this->write($content, $path, $file);
 
@@ -386,16 +395,21 @@ class Builder
     /**
      * Get file path from URL
      */
-    private function getFilePath(string $url): array
+    private function getFilePath(string $url, ?RouteInfo $routeInfo): array
     {
         $info = pathinfo($url);
 
-        // Unless the content already ends with .html,
-        // ensures content with dot in slug generates an index.html file.
-        if ('html' !== ($info['extension'] ?? null)) {
+        if (
+            // If it doesn't already has an extension
+            !isset($info['extension']) ||
+            // or if it's content url that might contains dots
+            ($routeInfo && $routeInfo->hasDotsSupport())
+        ) {
+            // we must generate an index.html file
             return [$url, 'index.html'];
         }
 
+        // otherwise, dump as is:
         return [$info['dirname'], $info['basename']];
     }
 

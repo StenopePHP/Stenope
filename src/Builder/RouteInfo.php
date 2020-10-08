@@ -71,6 +71,17 @@ class RouteInfo
     }
 
     /**
+     * Does the route relates to a content that might have dots in their slug?
+     *
+     * Set the `content.dots` option to true if some of the contents contains dots in their slug,
+     * which might wrongly be considered as an extension for the generated page.
+     */
+    public function hasDotsSupport(): bool
+    {
+        return $this->route->getOption('content')['dots'] ?? false;
+    }
+
+    /**
      * Get format
      */
     public function getFormat(): string
