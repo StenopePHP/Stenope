@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Provider;
+namespace Content\Tests\Unit\Provider;
 
 use Content\Content;
 use Content\Provider\LocalFilesystemProvider;
