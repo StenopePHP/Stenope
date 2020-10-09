@@ -37,7 +37,7 @@ The default MarkdownDecoder relies on [erusev/parsedown](https://github.com/erus
 - Quotes: `> Foo bar.`
 - Inline code `` `$foo` ``
 - Multilign code `` ``` ``
-- Multilign highligted code `` ```php `` (see [Synthax Highlighting](synthax-hightlighting.md))
+- Multilign highligted code `` ```php `` (see [Syntax Highlighting](syntax-hightlighting.md))
 - Tables
 - Embed HTML
 
