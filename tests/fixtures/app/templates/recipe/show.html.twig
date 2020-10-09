@@ -4,4 +4,6 @@
     <h1>{{ recipe.title }}</h1>
 
     {{ recipe.content|raw }}
+
+    <a href="{{ path('recipe_pdf', { 'recipe': recipe.slug }) }}">Download as PDF</a>
 {% endblock content %}

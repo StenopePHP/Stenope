@@ -1,4 +1,5 @@
-/var/
+/var/cache
+/var/log
 /node_modules/
 #/public/build/
 npm-debug.log

@@ -19,6 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
@@ -353,9 +354,6 @@ class Builder
         $period = end($periods);
         $time = $period->getDuration();
         $memory = $period->getMemory();
-
-        $routes = $this->router->getRouteCollection();
-
         $request = ContentRequest::create($url, 'GET')->withBaseUrl($this->router->getContext()->getBaseUrl());
 
         ob_start();
@@ -375,13 +373,7 @@ class Builder
         $output = ob_get_clean();
         $content = $response->getContent() ?: $output;
 
-        if ($routeName = $request->attributes->get('_route')) {
-            /** @var Route $route */
-            $route = $routes->get($routeName);
-            $routeInfo = new RouteInfo($routeName, $route);
-        }
-
-        [$path, $file] = $this->getFilePath($request->getPathInfo(), $routeInfo ?? null);
+        [$path, $file] = $this->getFilePath($request);
 
         $this->write($content, $path, $file);
 
@@ -395,16 +387,14 @@ class Builder
     /**
      * Get file path from URL
      */
-    private function getFilePath(string $url, ?RouteInfo $routeInfo): array
+    private function getFilePath(Request $request): array
     {
+        $url = $request->getPathInfo();
         $info = pathinfo($url);
+        $extension = $info['extension'] ?? null;
 
-        if (
-            // If it doesn't already has an extension
-            !isset($info['extension']) ||
-            // or if it's content url that might contains dots
-            ($routeInfo && $routeInfo->hasDotsSupport())
-        ) {
+        // If the request has html format, but the .html extension is not already part of the url
+        if ('html' === $request->getRequestFormat() && 'html' !== $extension) {
             // we must generate an index.html file
             return [$url, 'index.html'];
         }
