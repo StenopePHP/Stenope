@@ -4,6 +4,7 @@
 /.php_cs           export-ignore
 /bin/lint.twig.php export-ignore
 /bin/lint.yaml.php export-ignore
+/doc/images        export-ignore
 /link              export-ignore
 /package.json      export-ignore
 /package-lock.json export-ignore
