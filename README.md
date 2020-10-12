@@ -10,7 +10,7 @@ Content is a static website building tool set for Symfony with specific goals:
 
 - Content scans your Symfony app, like a search engine crawler would, and dumps every page to static HTML.
 - Content provides tools that you can use in _your_ Symfony code to load and parse static contents (such as Markdown files) into your custom PHP model objects.
-- Content gives you a lot of control by providing interfaces and default implementations that are entirely replacable to suit your custom needs.
+- Content gives you a lot of control by providing interfaces and default implementations that are entirely replaceable to suit your custom needs.
 
 ## Installation
 

@@ -45,8 +45,8 @@ class RecipesController extends AbstractController
      *
      * @Route("/optional-recipe", name="optional-recipe", options={
      *     "content": {
-     *         "visible": false
-     *     }
+     *         "ignore": true,
+     *     },
      * })
      */
     public function optionalRecipe(?Recipe $recipe)
@@ -55,7 +55,11 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/{recipe}.pdf", name="recipe_pdf", format="pdf", options={ "mapped": false })
+     * @Route("/{recipe}.pdf", name="recipe_pdf", format="pdf", options={
+     *     "content": {
+     *         "sitemap": false,
+     *     },
+     * })
      */
     public function downloadAsPdf(Recipe $recipe)
     {

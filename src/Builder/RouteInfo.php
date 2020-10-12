@@ -46,13 +46,13 @@ class RouteInfo
     }
 
     /**
-     * Whether it should be exposed to the static site builder or not.
-     * If not visible, the route will be ignored by the {@link Builder},
+     * Whether it should be be ignored by the static site builder or not.
+     * If true, the route will be ignored by the {@link Builder},
      * which won't generate a static file for matching urls.
      */
-    public function isVisible(): bool
+    public function isIgnored(): bool
     {
-        return $this->route->getOption('content')['visible'] ?? $this->name[0] !== '.';
+        return $this->route->getOption('content')['ignore'] ?? false;
     }
 
     /**
@@ -70,6 +70,6 @@ class RouteInfo
      */
     public function isMapped(): bool
     {
-        return $this->route->getOption('content')['sitemap'] ?? $this->isVisible();
+        return $this->route->getOption('content')['sitemap'] ?? !$this->isIgnored();
     }
 }

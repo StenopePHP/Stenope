@@ -5,20 +5,18 @@ This packages defines route options to control some of its features.
 ## Ignore a route
 
 You may want to exclude some routes from the static generated version of your site.
-In order to ignore such routes during the build, set the `content.visible` option to `false`:
+In order to ignore such routes during the build, set the `content.ignore` option to `true`:
 
 ```php
 /**
 * @Route("foo", name="foo", options={ 
 *     "content": { 
-*         "visible": false,
+*         "ignore": true,
 *     },
 * })
 */
 public function fooAction() { /* ... */ }
 ```
-
-Alternatively, a route name starting with a `.` is considered not visible to the static site builder.
 
 ## Exclude a route from sitemap
 
