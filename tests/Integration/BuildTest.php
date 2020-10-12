@@ -16,7 +16,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
 use Symfony\Component\Filesystem\Filesystem;
 
-class IntegrationTest extends KernelTestCase
+class BuildTest extends KernelTestCase
 {
     public static array $kernelOptions = [
         'environment' => 'prod',
@@ -85,6 +85,8 @@ class IntegrationTest extends KernelTestCase
 
         self::assertEqualsCanonicalizing([
             'http://localhost/',
+            'http://localhost/foo.html',
+            'http://localhost/authors/john.doe',
             'http://localhost/authors/ogi',
             'http://localhost/recipes/',
             'http://localhost/recipes/cheesecake',
@@ -118,5 +120,62 @@ class IntegrationTest extends KernelTestCase
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
         ], $links, 'all recipes links generated in right order');
+    }
+
+    /**
+     * We can have custom controllers rendering content in another format than html, with their own extension in url.
+     * For such routes, the Builder won't generate an index.html file as soon as the proper format
+     * is provided into the request (through the route `format` option or the request `_format` attribute).
+     *
+     * @depends testBuildApp
+     */
+    public function testRecipesAsPdf(): void
+    {
+        $buildDir = self::$kernel->getProjectDir() . '/build';
+        self::assertDirectoryExists($buildDir . '/recipes');
+
+        self::assertFileExists($path = $buildDir . '/recipes/cheesecake.pdf');
+        self::assertDirectoryDoesNotExist($path);
+
+        self::assertFileExists($path = $buildDir . '/recipes/ogito.pdf');
+        self::assertDirectoryDoesNotExist($path);
+    }
+
+    /**
+     * @depends testBuildApp
+     */
+    public function testAuthors(): void
+    {
+        self::assertFileExists(self::$kernel->getProjectDir() . '/build/authors/ogi/index.html');
+        self::assertFileExists(
+            self::$kernel->getProjectDir() . '/build/authors/john.doe/index.html',
+            'Ensures content with dot in slug generates an index.html file.',
+        );
+    }
+
+    /**
+     * In the same way as {@link self::testRecipesAsPdf},
+     * we can expose a micro API as plain JSON files for authors.
+     *
+     * @depends testBuildApp
+     */
+    public function testAuthorsAsJson(): void
+    {
+        self::assertFileExists($path = self::$kernel->getProjectDir() . '/build/authors/ogi.json');
+        self::assertDirectoryDoesNotExist($path);
+
+        self::assertFileExists($path = self::$kernel->getProjectDir() . '/build/authors/john.doe.json');
+        self::assertDirectoryDoesNotExist($path);
+    }
+
+    /**
+     * The builder should not generate a dir/index.html for an url already ending with ".html".
+     *
+     * @depends testBuildApp
+     */
+    public function testWithHtmlExtensionDoesNotGeneratesDir(): void
+    {
+        self::assertFileExists($path = self::$kernel->getProjectDir() . '/build/foo.html');
+        self::assertDirectoryDoesNotExist($path);
     }
 }

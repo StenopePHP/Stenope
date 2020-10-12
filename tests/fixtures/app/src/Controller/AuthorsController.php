@@ -9,7 +9,6 @@
 namespace App\Controller;
 
 use App\Content\Model\Author;
-use Content\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,11 +17,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AuthorsController extends AbstractController
 {
-    private ContentManager $manager;
-
-    public function __construct(ContentManager $manager)
+    /**
+     * @Route(
+     *     "/{author<[\w.]+>}.json",
+     *     name="author_json",
+     *     format="json",
+     *     options={ "mapped": false },
+     * )
+     */
+    public function showAsJson(Author $author)
     {
-        $this->manager = $manager;
+        return $this->json([
+            'slug' => $author->slug,
+            'firstname' => $author->firstname,
+            'lastname' => $author->lastname,
+            'nickname' => $author->nickname,
+            'tags' => $author->tags,
+        ]);
     }
 
     /**

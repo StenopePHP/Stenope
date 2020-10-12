@@ -2,4 +2,6 @@
 
 {% block content %}
     <h1>{{ author.firstname }} {{ author.lastname }}</h1>
+
+    <a href="{{ path('author_json', { 'author': author.slug }) }}">Get author info through our micro API</a>
 {% endblock content %}

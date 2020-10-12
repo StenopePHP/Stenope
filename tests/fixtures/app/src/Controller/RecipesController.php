@@ -51,6 +51,18 @@ class RecipesController extends AbstractController
     }
 
     /**
+     * @Route("/{recipe}.pdf", name="recipe_pdf", format="pdf", options={ "mapped": false })
+     */
+    public function downloadAsPdf(Recipe $recipe)
+    {
+        $response = $this->file(__DIR__ . '/../../var/pdf/dummy.pdf', "{$recipe->slug}.pdf");
+
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
+    }
+
+    /**
      * @Route("/{recipe}", name="recipe")
      */
     public function show(Recipe $recipe)

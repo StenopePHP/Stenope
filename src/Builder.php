@@ -19,10 +19,12 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Twig\Environment;
@@ -352,7 +354,6 @@ class Builder
         $period = end($periods);
         $time = $period->getDuration();
         $memory = $period->getMemory();
-
         $request = ContentRequest::create($url, 'GET')->withBaseUrl($this->router->getContext()->getBaseUrl());
 
         ob_start();
@@ -372,7 +373,7 @@ class Builder
         $output = ob_get_clean();
         $content = $response->getContent() ?: $output;
 
-        [$path, $file] = $this->getFilePath($request->getPathInfo());
+        [$path, $file] = $this->getFilePath($request);
 
         $this->write($content, $path, $file);
 
@@ -386,14 +387,19 @@ class Builder
     /**
      * Get file path from URL
      */
-    private function getFilePath(string $url): array
+    private function getFilePath(Request $request): array
     {
+        $url = $request->getPathInfo();
         $info = pathinfo($url);
+        $extension = $info['extension'] ?? null;
 
-        if (!isset($info['extension'])) {
+        // If the request has html format, but the .html extension is not already part of the url
+        if ('html' === $request->getRequestFormat() && 'html' !== $extension) {
+            // we must generate an index.html file
             return [$url, 'index.html'];
         }
 
+        // otherwise, dump as is:
         return [$info['dirname'], $info['basename']];
     }
 
