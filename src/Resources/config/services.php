@@ -22,6 +22,7 @@ use Content\Highlighter\Prism;
 use Content\Highlighter\Pygments;
 use Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use Content\Processor\CodeHighlightProcessor;
+use Content\Processor\ExtractTitleFromHtmlContentProcessor;
 use Content\Processor\HtmlAnchorProcessor;
 use Content\Processor\HtmlExternalLinksProcessor;
 use Content\Processor\HtmlIdProcessor;
@@ -149,6 +150,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(HtmlIdProcessor::class)
         ->set(HtmlAnchorProcessor::class)
         ->set(HtmlExternalLinksProcessor::class)
+        ->set(ExtractTitleFromHtmlContentProcessor::class)
         ->set(HtmlImageProcessor::class)->args(['$imageAssetUtils' => service(ImageAssetUtils::class)])
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
     ;
