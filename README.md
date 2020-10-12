@@ -38,6 +38,7 @@ build:
 - [How to load static content](doc/loading-content.md)
 - [Supported formats](doc/supported-formats.md)
 - [Syntax Highlighting](doc/syntax-highlighting.md)
+- [Route options](doc/route-options.md)
 - Decoders #TODO
 - Bonus: How to deploy and host a static site #TODO
 
