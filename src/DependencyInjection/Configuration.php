@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
                         'src' => '%kernel.project_dir%/public',
                         'dest' => '.',
                         'fail_if_missing' => true,
+                        'ignore_dot_files' => true,
                         'excludes' => ['*.php'],
                     ],
                 ])
@@ -47,6 +48,7 @@ class Configuration implements ConfigurationInterface
                         'dest' => 'to-another-dest-name',
                         'excludes' => ['*.php', '*.map'],
                         'fail_if_missing' => 'false',
+                        'ignore_dot_files' => 'false',
                     ],
                 ])
                 ->arrayPrototype()
@@ -82,6 +84,10 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('fail_if_missing')
                             ->defaultTrue()
                             ->info('Make the build fail if the source file is missing')
+                        ->end()
+                        ->scalarNode('ignore_dot_files')
+                            ->defaultTrue()
+                            ->info('Whether to ignore or not dotfiles')
                         ->end()
                     ->end()
                 ->end()

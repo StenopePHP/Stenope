@@ -307,20 +307,18 @@ class Builder
             'src' => $src,
             'dest' => $dest,
             'fail_if_missing' => $failIfMissing,
+            'ignore_dot_files' => $ignoreDotFiles,
             'excludes' => $excludes,
         ]) {
             $dest ??= basename($src);
 
             if (is_dir($src)) {
-                if (\count($excludes) > 0) {
-                    $iterator = (new Finder())
-                        ->in($src)
-                        ->files()
-                        ->notPath(array_map(fn ($exclude) => Glob::toRegex($exclude, true, false), $excludes))
-                    ;
-                }
-
-                $this->files->mirror($src, "$this->buildDir/$dest", $iterator ?? null);
+                $this->files->mirror($src, "$this->buildDir/$dest", (new Finder())
+                    ->in($src)
+                    ->ignoreDotFiles($ignoreDotFiles)
+                    ->notPath(array_map(fn ($exclude) => Glob::toRegex($exclude, true, false), $excludes))
+                    ->files()
+                );
 
                 continue;
             }
