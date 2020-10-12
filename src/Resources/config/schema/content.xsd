@@ -22,6 +22,7 @@
         <xsd:attribute name="src" type="xsd:string" use="required"/>
         <xsd:attribute name="dest" type="xsd:string"/>
         <xsd:attribute name="fail_if_missing" type="xsd:string"/>
+        <xsd:attribute name="ignore_dot_files" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="provider">

@@ -1,5 +1,5 @@
 content:
     copy:
-        - { src: '%kernel.project_dir%/public/build', dest: 'dist', excludes: '*.excluded' }
+        - { src: '%kernel.project_dir%/public/build', dest: 'dist', excludes: '*.excluded', ignore_dot_files: false }
         - '%kernel.project_dir%/public/robots.txt'
         - { src: '%kernel.project_dir%/public/missing-file', fail_if_missing: false }

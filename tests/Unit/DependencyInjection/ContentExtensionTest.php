@@ -30,6 +30,7 @@ abstract class ContentExtensionTest extends TestCase
                 'dest' => '.',
                 'excludes' => ['*.php'],
                 'fail_if_missing' => true,
+                'ignore_dot_files' => true,
             ],
         ], $container->getDefinition(Builder::class)->getArgument('$filesToCopy'));
     }
@@ -51,18 +52,21 @@ abstract class ContentExtensionTest extends TestCase
                 'dest' => 'dist',
                 'excludes' => ['*.excluded'],
                 'fail_if_missing' => true,
+                'ignore_dot_files' => false,
             ],
             [
                 'src' => 'PROJECT_DIR/public/robots.txt',
                 'dest' => 'robots.txt',
                 'excludes' => [],
                 'fail_if_missing' => true,
+                'ignore_dot_files' => true,
             ],
             [
                 'src' => 'PROJECT_DIR/public/missing-file',
                 'fail_if_missing' => false,
                 'excludes' => [],
                 'dest' => 'missing-file',
+                'ignore_dot_files' => true,
             ],
         ], $container->getDefinition(Builder::class)->getArgument('$filesToCopy'));
     }
