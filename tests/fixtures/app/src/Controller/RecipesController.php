@@ -43,7 +43,11 @@ class RecipesController extends AbstractController
     /**
      * Ensure {@link ContentArgumentResolver} handles nullable arguments properly.
      *
-     * @Route("/optional-recipe", name="optional-recipe", options={ "visible": false })
+     * @Route("/optional-recipe", name="optional-recipe", options={
+     *     "content": {
+     *         "ignore": true,
+     *     },
+     * })
      */
     public function optionalRecipe(?Recipe $recipe)
     {
@@ -51,7 +55,11 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/{recipe}.pdf", name="recipe_pdf", format="pdf", options={ "mapped": false })
+     * @Route("/{recipe}.pdf", name="recipe_pdf", format="pdf", options={
+     *     "content": {
+     *         "sitemap": false,
+     *     },
+     * })
      */
     public function downloadAsPdf(Recipe $recipe)
     {

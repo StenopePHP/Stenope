@@ -217,7 +217,7 @@ class Builder
 
         $skipped = 0;
         foreach ($routes as $name => $route) {
-            if (!$route->isVisible() || !$route->isGettable()) {
+            if ($route->isIgnored() || !$route->isGettable()) {
                 $this->logger->debug('Route "{route}" is hidden, skipping.', ['route' => $name]);
                 continue;
             }

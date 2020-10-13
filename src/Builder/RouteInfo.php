@@ -8,11 +8,12 @@
 
 namespace Content\Builder;
 
+use Content\Builder;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Route info
+ * Extracts content specific info from route definitions.
  */
 class RouteInfo
 {
@@ -45,15 +46,17 @@ class RouteInfo
     }
 
     /**
-     * Is visible?
+     * Whether it should be be ignored by the static site builder or not.
+     * If true, the route will be ignored by the {@link Builder},
+     * which won't generate a static file for matching urls.
      */
-    public function isVisible(): bool
+    public function isIgnored(): bool
     {
-        return $this->route->getOption('visible') ?? $this->name[0] !== '_';
+        return $this->route->getOption('content')['ignore'] ?? false;
     }
 
     /**
-     * Is Gettable
+     * Whether the route accepts GET requests or not.
      */
     public function isGettable(): bool
     {
@@ -63,18 +66,10 @@ class RouteInfo
     }
 
     /**
-     * Is route on sitemap?
+     * Whether to expose or not the route in the generated sitemap.
      */
     public function isMapped(): bool
     {
-        return $this->route->getOption('mapped') ?? $this->isVisible();
-    }
-
-    /**
-     * Get format
-     */
-    public function getFormat(): string
-    {
-        return $this->route->getOption('_format') ?: 'html';
+        return $this->route->getOption('content')['sitemap'] ?? !$this->isIgnored();
     }
 }

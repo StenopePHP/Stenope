@@ -18,12 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthorsController extends AbstractController
 {
     /**
-     * @Route(
-     *     "/{author<[\w.]+>}.json",
-     *     name="author_json",
-     *     format="json",
-     *     options={ "mapped": false },
-     * )
+     * @Route("/{author<[\w.]+>}.json", name="author_json", format="json", options={
+     *     "content": {
+     *         "sitemap": false,
+     *     },
+     * })
      */
     public function showAsJson(Author $author)
     {
