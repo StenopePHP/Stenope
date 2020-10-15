@@ -22,7 +22,7 @@ Encore
       .map(f => f.slice(6, -3));
 
     // Configure Prism for bundling:
-    babelConfig.plugins.push(["prismjs", { languages }]);
+    babelConfig.plugins.push(["prismjs", { languages, plugins: ['treeview'] }]);
   })
   .configureBabelPresetEnv((config) => {
     config.useBuiltIns = 'entry';
