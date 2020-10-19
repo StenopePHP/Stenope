@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title 'Content' %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('style') }}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            <header class="header">
+                <a href="{{ path('index') }}" class="logo">Content documentation</a>
+            </header>
+            <main>
+                <nav class="navigation">
+                </nav>
+                <div class="content">
+                    {% block content '' %}
+                </div>
+            </main>
+        {% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>
