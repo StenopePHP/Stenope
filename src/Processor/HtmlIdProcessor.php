@@ -11,6 +11,8 @@ namespace Content\Processor;
 use Content\Behaviour\ProcessorInterface;
 use Content\Content;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * Add ids to title in the content
@@ -18,10 +20,12 @@ use Symfony\Component\DomCrawler\Crawler;
 class HtmlIdProcessor implements ProcessorInterface
 {
     private string $property;
+    private SluggerInterface $slugger;
 
-    public function __construct(string $property = 'content')
+    public function __construct(string $property = 'content', ?SluggerInterface $slugger = null)
     {
         $this->property = $property;
+        $this->slugger = $slugger ?? new AsciiSlugger();
     }
 
     public function __invoke(array &$data, string $type, Content $content): void
@@ -81,7 +85,7 @@ class HtmlIdProcessor implements ProcessorInterface
      */
     private function slugify(string $value, int $maxLength = 32): string
     {
-        return trim(preg_replace('#[^a-z0-9]+#i', '-', strtolower(substr($value, 0, $maxLength))), '-');
+        return $this->slugger->slug($value)->truncate($maxLength, '', false)->lower();
     }
 
     /**
