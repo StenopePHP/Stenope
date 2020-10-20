@@ -1,12 +1,12 @@
-# Loading static content
+# Declaring and loading content
 
 Let's do a simple blog.
 
 ## Setup
 
-### Create the model
+### Create your model
 
-Create a simple class that describe your model:
+Create a simple class that describe your model, here a blog Article:
 
 ```php
 <?php
@@ -24,13 +24,17 @@ class Article {
 
 ### Register content provider
 
-Register your model in `config/packages/content.yaml`:
+Register your model in `config/packages/content.yaml` by attributing a _path_ to the model class:
 
 ```yaml
 content:
   providers:
     App\Model\Article: '%kernel.project_dir%/content/articles'
 ```
+
+Articles sources files are now expected to be found in the `content/articles` path.
+
+_Note: see [advanced provider configuration](#TODO)_
 
 ### Write your first content
 
@@ -44,7 +48,7 @@ title: "How to train your dragon"
 # This is Berk
 
 It's twelve days north of Hopeless and a few degrees south of Freezing to Death. It's located solidly on the Meridian of Misery. My village. In a word, sturdy. It's been here for seven generations, but every single building is new. We've got hunting, fishing, and a charming view of the sunsets. The only problems are the pests. Most places have mice or mosquitoes. We have... dragons.
-````
+```
 
 _Note: by default, the content of the source file are mapped on the `content` property and the name of the file is mapped on the `slug` property._
 
@@ -131,7 +135,10 @@ It accepts:
 Alphabetically sorted categories:
 
 ```php
-$categories = $contentManager->getContents(Category::class, 'title');
+$categories = $contentManager->getContents(
+    Category::class,
+    'title'
+);
 ```
 
 #### An array of properties and sorting mode
@@ -139,13 +146,19 @@ $categories = $contentManager->getContents(Category::class, 'title');
 All articles sorted by descending `date` (most recent first) and then by ascending `title` (Alphabetically):
 
 ```php
-$latestArticles = $contentManager->getContents(Category::class, ['date' => false, 'title' => true]);
+$latestArticles = $contentManager->getContents(
+    Category::class,
+    ['date' => false, 'title' => true]
+);
 ```
 
 #### A custom callable supported by the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function
 
 ```php
-$tasks = $contentManager->getContents(Task::class, fn($a, $b) => $a->priority <=> $b->priority);
+$tasks = $contentManager->getContents(
+    Task::class,
+    fn($a, $b) => $a->priority <=> $b->priority
+);
 ```
 
 ### Filtering contents
@@ -157,13 +170,21 @@ It accepts:
 #### An array of properties and values
 
 ```php
-$articles = $contentManager->getContents(Article::class, null, ['category' => 'symfony']);
+$articles = $contentManager->getContents(
+    Article::class,
+    null,
+    ['category' => 'symfony']
+);
 ```
 
 When passing multiple requirements, all must be met:
 
 ```php
-$myDrafts = $this->manager->getContents(Article::class, null, ['author' => 'ogizanagi', 'draft' => true]);
+$myDrafts = $this->manager->getContents(
+    Article::class,
+    null,
+    ['author' => 'ogizanagi', 'draft' => true]
+);
 ```
 
 #### A property name (string)

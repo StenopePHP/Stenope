@@ -1,23 +1,23 @@
 {
   "name": "content-doc",
   "version": "1.0.0",
-  "description": "Content bundle documentation",
+  "description": "Content documentation",
   "main": "assets/index.js",
-  "author": "elao (elao.com)",
+  "author": "Thomas Jarrand <thomas.jarrand@gmail.com> (https://thomas.jarrand.fr)",
   "license": "MIT",
   "scripts": {
-    "dev-server": "encore dev-server",
-    "dev": "encore dev",
     "watch": "encore dev --watch",
     "build": "encore production --progress"
   },
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.30.0",
+    "@symfony/webpack-encore": "^0.31.0",
     "core-js": "^3.0.0",
     "node-sass": "^4.14.1",
     "regenerator-runtime": "^0.13.2",
     "sass-loader": "^8.0.2",
     "webpack-notifier": "^1.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "milligram": "^1.4.1"
+  }
 }

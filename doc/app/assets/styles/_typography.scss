@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&display=swap');
+
+ul {
+    list-style: inside;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: 2rem;
+
+    .anchor {
+        margin-left: 10px;
+        line-height: 1em;
+        opacity: 0;
+        transition: opacity ease-in-out 100ms;
+        vertical-align: middle;
+
+        &:before {
+            content: '🔗';
+            font-size: 16px;
+        }
+    }
+
+    &:hover .anchor {
+        opacity: 1;
+    }
+}

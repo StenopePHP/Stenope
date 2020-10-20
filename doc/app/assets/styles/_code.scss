@@ -1,0 +1,85 @@
+code {
+    font-size: 1em;
+}
+
+.code-inline {
+    color: $code-green;
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: $code-mutted;
+}
+
+.token.property,
+.token.delimiter {
+    color:$code-white;
+}
+
+.token.punctuation {
+    color: $code-grey;
+}
+
+.token.tag,
+.token.attr-name,
+.token.namespace,
+.token.deleted {
+    color: $code-red;
+}
+
+.token.class-name,
+.token.function-name,
+.token.function {
+    color: $code-green;
+}
+
+.token.boolean,
+.token.number {
+    color: $code-purple;
+}
+
+.token.constant,
+.token.symbol,
+.token.variable {
+    color: $code-orange;
+}
+
+.token.selector,
+.token.important,
+.token.atrule,
+.token.keyword,
+.token.builtin {
+   color: $code-red;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex, {
+    color: $code-yellow;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+    color: $code-blue;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+.token.inserted {
+    color: $code-green;
+}

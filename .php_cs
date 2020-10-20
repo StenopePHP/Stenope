@@ -8,6 +8,7 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->in([__DIR__])
+    ->exclude('doc/app')
     ->exclude('tests/fixtures/app/var')
     ->exclude('tests/fixtures/app/build')
 ;

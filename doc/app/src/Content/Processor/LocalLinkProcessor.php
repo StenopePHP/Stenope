@@ -35,7 +35,6 @@ class LocalLinkProcessor implements ProcessorInterface
 
         $crawler = new Crawler($data[$this->property]);
 
-        // Detect links starting with "./", susceptible to be pointing to a Github resource:
         foreach ($crawler->filter('a') as $link) {
             $this->processLink($link, $content);
         }
@@ -54,9 +53,8 @@ class LocalLinkProcessor implements ProcessorInterface
 
         // Internal page link
         if (preg_match('/(doc\/)?(.+)\.md/', $href, $matches)) {
-            $url = $this->router->generate('page', ['name' => $matches[2]]);
+            $url = $this->router->generate('page', ['page' => $matches[2]]);
             $link->setAttribute('href', $url);
         }
-
     }
 }

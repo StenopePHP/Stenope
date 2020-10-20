@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/Tom32i/content#readme",
   "dependencies": {
-    "@elao/admin": "^0.1.0",
     "prismjs": "^1.21.0"
   },
   "devDependencies": {

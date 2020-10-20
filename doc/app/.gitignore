@@ -14,3 +14,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> tom32i/content ###
+/build/
+###< tom32i/content ###

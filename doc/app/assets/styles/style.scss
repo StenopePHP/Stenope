@@ -1,3 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap');
+@import './_variables.scss';
 
-@import './variables';
+@import '~milligram/src/milligram.sass';
+
+@import './layout';
+@import './navigation';
+@import './code';
+@import './typography';

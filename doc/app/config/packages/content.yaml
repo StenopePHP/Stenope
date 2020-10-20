@@ -1,15 +1,27 @@
 content:
   providers:
-    App\Model\Page:
+    App\Model\Index:
       type: files
       path: '%kernel.project_dir%/../../'
-      #excludes:
-      #  - /docs/app
+      excludes:
+        - doc/**
+        - node_modules/**
+        - vendor/**
+      patterns:
+        - '*.md'
 
-  #copy:
-  #  - src: '%kernel.project_dir%/public'
-  #    dest: .
-  #    fail_if_missing: true
-  #    ignore_dot_files: false
-  #    excludes:
-  #      - '*.php'
+    App\Model\Page:
+      type: files
+      path: '%kernel.project_dir%/../'
+      excludes:
+        - app/**
+      patterns:
+        - '*.md'
+
+  copy:
+    - src: '%kernel.project_dir%/public'
+      dest: .
+      excludes:
+        - '*.php'
+    - src: '%kernel.project_dir%/../images'
+      dest: './images'

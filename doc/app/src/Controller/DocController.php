@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Index;
 use App\Model\Page;
 use Content\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,18 +22,16 @@ class DocController extends AbstractController
      */
     public function index()
     {
-        $page = $this->contentManager->getContent(Page::class, 'README');
+        $page = $this->contentManager->getContent(Index::class, 'README');
 
         return $this->render('doc/index.html.twig', ['page' => $page]);
     }
 
     /**
-     * @Route("/{name}", name="page")
+     * @Route("/{page}", name="page")
      */
-    public function page(string $name)
+    public function page(Page $page)
     {
-        $page = $this->contentManager->getContent(Page::class, sprintf('doc/%s', $name));
-
         return $this->render('doc/page.html.twig', ['page' => $page]);
     }
 }

@@ -1,0 +1,15 @@
+# Content documentation
+
+## Development
+
+### Depenencies
+
+    make install
+
+### Server
+
+    make start
+
+### Watcher
+
+    make watch

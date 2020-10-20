@@ -9,8 +9,8 @@ In order to ignore such routes during the build, set the `content.ignore` option
 
 ```php
 /**
-* @Route("foo", name="foo", options={ 
-*     "content": { 
+* @Route("foo", name="foo", options={
+*     "content": {
 *         "ignore": true,
 *     },
 * })
@@ -25,8 +25,8 @@ set the `content.sitemap` route option to `false`:
 
 ```php
 /**
-* @Route("foo", name="foo", options={ 
-*     "content": { 
+* @Route("foo", name="foo", options={
+*     "content": {
 *         "sitemap": false,
 *     },
 * })

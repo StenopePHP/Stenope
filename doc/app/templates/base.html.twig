@@ -8,18 +8,36 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}
-            <header class="header">
-                <a href="{{ path('index') }}" class="logo">Content documentation</a>
-            </header>
-            <main>
-                <nav class="navigation">
-                </nav>
-                <div class="content">
-                    {% block content '' %}
+        <div class="main">
+            {% block body %}
+                <div class="columns">
+                    <aside class="sidebar">
+                        <a href="{{ path('index') }}" class="logo">
+                            Content
+                            {#<img src="{{ asset('../../logo.svg') }}">#}
+                        </a>
+                        <nav class="navigation">
+                            {% set current = app.request.attributes.get('_route_params').page|default(null) %}
+                            {% for page in content_list('App\\Model\\Page') %}
+                                <a href="{{ path('page', { page: page.slug }) }}" class="{{ page.slug == current ? 'active' : '' }}">
+                                    {{ page.title }}
+                                </a>
+                            {% endfor %}
+                        </nav>
+                    </aside>
+                    <main class="content">
+                        {% block content '' %}
+                    </main>
                 </div>
-            </main>
-        {% endblock %}
+                <footer class="footer">
+                    {% block footer %}
+                        <a href="https://github.com/Tom32i/content">
+                            Content on Github
+                        </a>
+                    {% endblock %}
+                </footer>
+            {% endblock %}
+        </div>
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}

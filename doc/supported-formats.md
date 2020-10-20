@@ -73,7 +73,7 @@ will generate:
 
 Which with proper CSS, could result into something like:
 
-![admonition sample](./images/admonition.png)
+![admonition sample](images/admonition.png)
 
 Writing CSS to render this is up to you.
 
