@@ -134,5 +134,35 @@ class LocalFilesystemProviderTest extends TestCase
               'bar/baz/baz (markdown)',
             ],
         ];
+
+        yield 'config excluding dir as glob' => [
+            new LocalFilesystemProvider(
+                'App\Foo',
+                self::FIXTURES_DIR . '/content/excluded_dirs',
+                null,
+                ['bar/*'],
+                ['*.md'],
+            ),
+            [
+                'bar (markdown)',
+                'foo/bar (markdown)',
+                'foo/bar/baz (markdown)',
+            ],
+        ];
+
+        yield 'config excluding explicit dir (not as a glob)' => [
+            new LocalFilesystemProvider(
+                'App\Foo',
+                self::FIXTURES_DIR . '/content/excluded_dirs',
+                null,
+                ['bar/'],
+                ['*.md'],
+            ),
+            [
+                'bar (markdown)',
+                'foo/bar (markdown)',
+                'foo/bar/baz (markdown)',
+            ],
+        ];
     }
 }

@@ -77,8 +77,8 @@ class LocalFilesystemProvider implements ContentProviderInterface
 
         $finder = (new Finder())
             ->in($this->path)
-            ->notPath(array_map(fn ($exclude) => Glob::toRegex($exclude, true, false), $this->excludes))
-            ->path(array_map(fn ($pattern) => Glob::toRegex($pattern, true, false), $this->patterns))
+            ->notPath(array_map(fn ($exclude) => $this->convertPattern($exclude), $this->excludes))
+            ->path(array_map(fn ($pattern) => $this->convertPattern($pattern), $this->patterns))
         ;
 
         if ($this->depth) {
@@ -86,6 +86,21 @@ class LocalFilesystemProvider implements ContentProviderInterface
         }
 
         return $finder->files();
+    }
+
+    /**
+     * Converts a pattern (which can either be a glob pattern or a simple path)
+     * for usage with {@link Finder::path()} and {@link Finder::notPath()}
+     */
+    private function convertPattern(string $pattern): string
+    {
+        if (str_ends_with($pattern, '/')) {
+            // If it ends with a "/", it was explicit as a directory,
+            // the user is very likely to mean "anything inside":
+            $pattern = "$pattern**";
+        }
+
+        return Glob::toRegex($pattern, true, false);
     }
 
     /**
