@@ -77,7 +77,6 @@ class LocalFilesystemProviderTest extends TestCase
         );
 
         self::assertSame('bar/bar', $provider->getContent('bar/bar')->getSlug());
-//        self::assertSame('bar/baz/baz', $provider->getContent('bar/baz/baz')->getSlug());
     }
 
     /**
