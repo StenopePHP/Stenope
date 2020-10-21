@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Supported formats</title>
+                    <link rel="stylesheet" href="/content/build/style.b0a63126.css">
+            </head>
+    <body>
+        <div class="main">
+                            <div class="columns">
+                    <aside class="sidebar">
+                        <a href="/content/" class="logo">
+                            Content
+                                                    </a>
+                        <nav class="navigation">
+                                                                                        <a href="/content/loading-content" class="">
+                                    Declaring and loading content
+                                </a>
+                                                            <a href="/content/syntax-highlighting" class="">
+                                    Syntax highlighting
+                                </a>
+                                                            <a href="/content/route-options" class="">
+                                    Route options
+                                </a>
+                                                            <a href="/content/troubleshooting" class="">
+                                    Troubleshooting
+                                </a>
+                                                            <a href="/content/supported-formats" class="active">
+                                    Supported formats
+                                </a>
+                                                    </nav>
+                    </aside>
+                    <main class="content">
+                        <body><h1 id="supported-formats">Supported formats<a href="#supported-formats" class="anchor"></a></h1>
+<p>Content supports many formats out of the box and you can add support for any format.</p>
+<h2 id="mardown">Mardown<a href="#mardown" class="anchor"></a></h2>
+<p>The Mardown format allow classic semantic writing, good for blog posts.</p>
+<p>Markdown source files will be decoded into HTML and passed as a <code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code> property for denormalization.
+An optional YAML formatted header can be provided at the beginning of the file to define a list of custom properties.</p>
+<pre class="code-multiline language-markdown"><code class="language-markdown" id="dc07ad954319a13730144807a2700c82"><span class="token hr punctuation">---</span>
+title: "Lorem Ipsum"
+publishDate: 2020-01-01
+<span class="token title important">foo: true
+<span class="token punctuation">---</span></span>
+
+<span class="token title important"><span class="token punctuation">#</span> Lorem ipsum dolor sit amet</span>
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas odio vitae sapien pharetra posuere. Aliquam pellentesque tortor hendrerit, tempor augue ut, vulputate libero. Nullam a lobortis nibh. Donec ac molestie tellus. Duis ac elit a odio sodales interdum. Cras venenatis augue sit amet lacinia ultrices. Duis gravida ac elit quis auctor.
+
+<span class="token list punctuation">-</span> Lorem
+<span class="token list punctuation">-</span> Ipsum
+<span class="token list punctuation">-</span> Dolor</code></pre>
+<p>The default MarkdownDecoder relies on <a href="https://github.com/erusev/parsedown" target="_blank">erusev/parsedown</a> and supports the standard Markdown features, with some additions:</p>
+<ul><li>Headers: <code class="code-inline" id="c0af82e6ea733d3a7aa0a0087ca8c381"># H1</code>, <code class="code-inline" id="3b0bcefd70561c722fa7ea33916d4e48">## H2</code>, ...</li>
+<li>Bold: <code class="code-inline" id="bc0c583b1ae32c4aa45a1476678a9239">**bold**</code></li>
+<li>Italic: <code class="code-inline" id="27832b682413ab6b9f4527bd28c76c51">_italic_</code></li>
+<li>Lists : <code class="code-inline" id="3bfac1bb500894dda0d41da20e00ab1e">* foo</code></li>
+<li>Numeroted lists: <code class="code-inline" id="9536c3be31f26fcf13647b9b07417b65">1. Foo</code></li>
+<li>Links: <code class="code-inline" id="d3a115bd8570d700cf5521cdcc9d6b2a">[links](https://..)</code></li>
+<li>Images:  <code class="code-inline" id="bfcf64e32412cf4600b49c44df4bedc4">![Foo](/images/foo.png)</code></li>
+<li>Quotes: <code class="code-inline" id="43f26a95d5ba4d5f21c8113e479aa18f">&gt; Foo bar.</code></li>
+<li>Inline code <code class="code-inline" id="fec304e7c41d8afc0ba18cd6b6262e9e">`$foo`</code></li>
+<li>Multilign code <code class="code-inline" id="3022884942eb05fa4b5034a8cf9a1fdd">```</code></li>
+<li>Multilign highligted code <code class="code-inline" id="2c307392a02bd1c41bc5b9cdeea067e4">```php</code> (see <a href="/content/syntax-highlighting">Syntax Highlighting</a>)</li>
+<li>Tables</li>
+<li>Embed HTML</li>
+<li><a href="#admonitions">Admonitions</a></li>
+</ul><h3 id="admonitions">Admonitions<a href="#admonitions" class="anchor"></a></h3>
+<p>Admonitions, also known as call-outs, are an excellent choice for including side
+content without significantly interrupting the document flow.</p>
+<p>Admonitions are supported as described in <a href="https://python-markdown.github.io/extensions/admonition/" target="_blank">https://python-markdown.github.io/extensions/admonition/</a></p>
+<h4 id="usage">Usage<a href="#usage" class="anchor"></a></h4>
+<pre class="code-multiline language-markdown"><code class="language-markdown" id="83b2b307cf5f50f42dd1edd1e689a168">!!! note
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.</code></pre>
+<p>will generate:</p>
+<pre class="code-multiline language-html"><code class="language-html" id="4579cbae8d6ce06c6405dd089d32f411"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>admonition note<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>admonition-title<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Note<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
+<p>Which with proper CSS, could result into something like:</p>
+<img src="/content/images/admonition.png" alt="admonition sample" title="admonition sample" id="admonition-sample"><p>Writing CSS to render this is up to you.</p>
+<h4 id="changing-the-title">Changing the title<a href="#changing-the-title" class="anchor"></a></h4>
+<pre class="code-multiline language-markdown"><code class="language-markdown" id="09e4abd573a355f8b10758c363c05f3e">!!! note "Phasellus posuere in sem ut cursus"
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.</code></pre>
+<h3 id="removing-the-title">Removing the title<a href="#removing-the-title" class="anchor"></a></h3>
+<pre class="code-multiline language-markdown"><code class="language-markdown" id="3d5ac28b5f16f8b2d4c45ca171186137">!!! note ""
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.</code></pre>
+<h2 id="html">HTML<a href="#html" class="anchor"></a></h2>
+<p>The HTML format gives you full control over your content's DOM tree and Javascript integration, while still defining a list of key/value properties:</p>
+<pre class="code-multiline language-html"><code class="language-html" id="ae87a6d7df78eec84573149130a84dfa"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">&gt;</span></span>Lorem Ipsum<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>date<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2019-05-25<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>language<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>description<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Understanding the difference between `const` and `let`.<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">&gt;</span></span>Lorem ipsum dolor sit amet<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">&gt;</span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>custom<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Donec egestas odio vitae sapien pharetra posuere.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">&gt;</span></span> Aliquam pellentesque tortor hendrerit, tempor augue ut, vulputate libero. Nullam a lobortis nibh. Donec ac molestie tellus. Duis ac elit a odio sodales interdum. Cras venenatis augue sit amet lacinia ultrices. Duis gravida ac elit quis auctor.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>toto<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span></span>Lorem<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>important<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Ipsum<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span></span>Dolor<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span></code></pre>
+<ul><li>The <code class="code-inline" id="267ea8cef2fe897f8533be19177163c4">&lt;title&gt;</code> is parsed as <code class="code-inline" id="d5d3db1765287eef77d7927cc956f50a">title</code> property.</li>
+<li>The <code class="code-inline" id="9327d1e4000f0dd2667f0bb2506f0942">&lt;meta&gt;</code> tags allow to define custom properties.</li>
+<li>The <code class="code-inline" id="bc1d3a136e6f54eff73adaf5669b9be3">&lt;body&gt;</code> will be passed as a <code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code> property.</li>
+</ul><h2 id="yaml">YAML<a href="#yaml" class="anchor"></a></h2>
+<p>The YAML format is usefull for simple straightforward key/value contents:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="183e5a4a142a274750f3cac04cbfe8ee"><span class="token key atrule">username</span><span class="token punctuation">:</span> ogizanagi
+<span class="token key atrule">name</span><span class="token punctuation">:</span> Maxime Steinhausser
+<span class="token key atrule">status</span><span class="token punctuation">:</span> awesome</code></pre>
+<h2 id="json">JSON<a href="#json" class="anchor"></a></h2>
+<p>The JSON format is an alternative the YAML format and can serve the same purpose:</p>
+<pre class="code-multiline language-json"><code class="language-json" id="34d687b9683a53c5adbaec1eee14a7be"><span class="token punctuation">{</span>
+    <span class="token property">"username"</span><span class="token operator">:</span> <span class="token string">"ogizanagi"</span><span class="token punctuation">,</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Maxime Steinhausser"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"awesome"</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="support-custom-formats">Support custom formats<a href="#support-custom-formats" class="anchor"></a></h2>
+<p>You can support any format by creating a custom Decoder that implements <code class="code-inline" id="6878fb2823bb30a240447b5a318f6561">Symfony\Component\Serializer\Encoder\DecoderInterface</code>.</p>
+<p>See Symfony's <a href="https://symfony.com/doc/current/serializer/custom_encoders.html" target="_blank">"How to Create your Custom Encoder"</a>.</p></body>                    </main>
+                </div>
+                <footer class="footer">
+                                            <a href="https://github.com/Tom32i/content">
+                            Content on Github
+                        </a>
+                                    </footer>
+                    </div>
+                    <script src="/content/build/runtime.787f842e.js"></script><script src="/content/build/app.cd00f577.js"></script>
+            </body>
+</html>

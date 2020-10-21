@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Declaring and loading content</title>
+                    <link rel="stylesheet" href="/content/build/style.b0a63126.css">
+            </head>
+    <body>
+        <div class="main">
+                            <div class="columns">
+                    <aside class="sidebar">
+                        <a href="/content/" class="logo">
+                            Content
+                                                    </a>
+                        <nav class="navigation">
+                                                                                        <a href="/content/loading-content" class="active">
+                                    Declaring and loading content
+                                </a>
+                                                            <a href="/content/syntax-highlighting" class="">
+                                    Syntax highlighting
+                                </a>
+                                                            <a href="/content/route-options" class="">
+                                    Route options
+                                </a>
+                                                            <a href="/content/troubleshooting" class="">
+                                    Troubleshooting
+                                </a>
+                                                            <a href="/content/supported-formats" class="">
+                                    Supported formats
+                                </a>
+                                                    </nav>
+                    </aside>
+                    <main class="content">
+                        <body><h1 id="declaring-and-loading-content">Declaring and loading content<a href="#declaring-and-loading-content" class="anchor"></a></h1>
+<p>Let's do a simple blog.</p>
+<h2 id="setup">Setup<a href="#setup" class="anchor"></a></h2>
+<h3 id="create-your-model">Create your model<a href="#create-your-model" class="anchor"></a></h3>
+<p>Create a simple class that describe your model, here a blog Article:</p>
+<pre class="code-multiline language-php"><code class="language-php" id="7e3248c896835bddc112f116d9687452"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Model</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Article</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> string <span class="token variable">$title</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> string <span class="token variable">$slug</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> string <span class="token variable">$content</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> \<span class="token package">DateTimeInterface</span> <span class="token variable">$created</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> \<span class="token package">DateTimeInterface</span> <span class="token variable">$lastModified</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></span></code></pre>
+<h3 id="register-content-provider">Register content provider<a href="#register-content-provider" class="anchor"></a></h3>
+<p>Register your model in <code class="code-inline" id="5d2d9059405335f5de7785f804b616ca">config/packages/content.yaml</code> by attributing a <em>path</em> to the model class:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="5b3df07009bd89b4176651257486172c"><span class="token key atrule">content</span><span class="token punctuation">:</span>
+  <span class="token key atrule">providers</span><span class="token punctuation">:</span>
+    <span class="token key atrule">App\Model\Article</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/articles'</span></code></pre>
+<p>Articles sources files are now expected to be found in the <code class="code-inline" id="f6ca3ea9feb268d247d32b7909c0efb8">content/articles</code> path.</p>
+<p><em>Note: see <a href="#TODO">advanced provider configuration</a></em></p>
+<h3 id="write-your-first-content">Write your first content<a href="#write-your-first-content" class="anchor"></a></h3>
+<p>Write your first article in <code class="code-inline" id="a3f6d98021342733f989d9354314b972">content/articles/how-to-train-your-dragon.md</code>:</p>
+<pre class="code-multiline language-markdown"><code class="language-markdown" id="35198f87de2e21cbf3528b984b00aa16"><span class="token hr punctuation">---</span>
+<span class="token title important">title: "How to train your dragon"
+<span class="token punctuation">---</span></span>
+
+<span class="token title important"><span class="token punctuation">#</span> This is Berk</span>
+
+It's twelve days north of Hopeless and a few degrees south of Freezing to Death. It's located solidly on the Meridian of Misery. My village. In a word, sturdy. It's been here for seven generations, but every single building is new. We've got hunting, fishing, and a charming view of the sunsets. The only problems are the pests. Most places have mice or mosquitoes. We have... dragons.</code></pre>
+<p><em>Note: by default, the content of the source file are mapped on the <code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code> property and the name of the file is mapped on the <code class="code-inline" id="2dbcba41b9ac4c5d22886ba672463cb4">slug</code> property.</em></p>
+<p>Check out all <a href="/content/supported-formats">supported formats</a>.</p>
+<h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
+<h3 id="listing-content">Listing content<a href="#listing-content" class="anchor"></a></h3>
+<p>In your controller (or service):</p>
+<pre class="code-multiline language-php"><code class="language-php" id="3dd5d4ea3e64dcf1e2a745433eec2778"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Content<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>FrameworkBundle<span class="token punctuation">\</span>Controller<span class="token punctuation">\</span>AbstractController</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Routing<span class="token punctuation">\</span>Annotation<span class="token punctuation">\</span>Route</span><span class="token punctuation">;</span>
+
+<span class="token doc-comment comment">/**
+ * @Route("/blog")
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">BlogController</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractController</span>
+<span class="token punctuation">{</span>
+    <span class="token doc-comment comment">/**
+     * @Route("/", name="blog")
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">index</span><span class="token punctuation">(</span>ContentManager <span class="token variable">$contentManager</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
+            <span class="token single-quoted-string string">'blog/index.html.twig'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span><span class="token single-quoted-string string">'articles'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token variable">$contentManager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></span></code></pre>
+<p><em>Note: contents of the same type can very well be writen in different formats.</em></p>
+<h3 id="fetching-a-specific-content">Fetching a specific content<a href="#fetching-a-specific-content" class="anchor"></a></h3>
+<p>The ContentManager uses slugs to identify your content. The <code class="code-inline" id="2dbcba41b9ac4c5d22886ba672463cb4">slug</code> argument must exactly matche the static file name in your content directory.</p>
+<p>Example: <code class="code-inline" id="f341a2e6f77ea7ae8f5b496db7c87605">$contentManager-&gt;getContent(Article::class, 'how-to-train-your-dragon');</code> will fetch the <code class="code-inline" id="a3f6d98021342733f989d9354314b972">content/articles/how-to-train-your-dragon.md</code> article.</p>
+<pre class="code-multiline language-php"><code class="language-php" id="e3931e57ccadd92e2d5731d17448dfbb"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Content<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>FrameworkBundle<span class="token punctuation">\</span>Controller<span class="token punctuation">\</span>AbstractController</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Routing<span class="token punctuation">\</span>Annotation<span class="token punctuation">\</span>Route</span><span class="token punctuation">;</span>
+
+<span class="token doc-comment comment">/**
+ * @Route("/blog")
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">BlogController</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractController</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+
+    <span class="token doc-comment comment">/**
+     * @Route("/<span class="token punctuation">{</span>slug<span class="token punctuation">}</span>", name="article")
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">article</span><span class="token punctuation">(</span>ContentManager <span class="token variable">$contentManager</span><span class="token punctuation">,</span> string <span class="token variable">$slug</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
+            <span class="token single-quoted-string string">'blog/article.html.twig'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span><span class="token single-quoted-string string">'article'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token variable">$contentManager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContent</span><span class="token punctuation">(</span><span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token variable">$slug</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></span></code></pre>
+<h3 id="sorting-contents">Sorting contents<a href="#sorting-contents" class="anchor"></a></h3>
+<p>The <code class="code-inline" id="38182794119a00cb3971971d3ed157b8">getContents</code> method have a second parameters <code class="code-inline" id="944148f79859002056a61e879db8340c">$sortBy</code> that allows sorting the content list.</p>
+<p>It accepts:</p>
+<h4 id="a-property-name-string">A property name (string)<a href="#a-property-name-string" class="anchor"></a></h4>
+<p>Alphabetically sorted categories:</p>
+<pre class="code-multiline language-php"><code class="language-php" id="74e8e003f74086c62b368ce8776407c6"><span class="token variable">$categories</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+    <span class="token scope">Category<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
+    <span class="token single-quoted-string string">'title'</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h4 id="an-array-of-properties-and-sorting-mode">An array of properties and sorting mode<a href="#an-array-of-properties-and-sorting-mode" class="anchor"></a></h4>
+<p>All articles sorted by descending <code class="code-inline" id="5fc732311905cb27e82d67f4f6511f7f">date</code> (most recent first) and then by ascending <code class="code-inline" id="d5d3db1765287eef77d7927cc956f50a">title</code> (Alphabetically):</p>
+<pre class="code-multiline language-php"><code class="language-php" id="ffc260b83256688efcf656a7b1ff8a73"><span class="token variable">$latestArticles</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+    <span class="token scope">Category<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token single-quoted-string string">'date'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token boolean constant">false</span><span class="token punctuation">,</span> <span class="token single-quoted-string string">'title'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token boolean constant">true</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h4 id="a-custom-callable-supported-by-the-php-usort-function">A custom callable supported by the PHP <a href="https://www.php.net/manual/fr/function.usort.php" target="_blank">usort</a> function<a href="#a-custom-callable-supported-by-the-php-usort-function" class="anchor"></a></h4>
+<pre class="code-multiline language-php"><code class="language-php" id="fca13add98ae7f92a2c1cf89b3365785"><span class="token variable">$tasks</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+    <span class="token scope">Task<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
+    <span class="token function">fn</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">,</span> <span class="token variable">$b</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token variable">$a</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">priority</span> <span class="token operator">&lt;=</span><span class="token operator">&gt;</span> <span class="token variable">$b</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">priority</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="filtering-contents">Filtering contents<a href="#filtering-contents" class="anchor"></a></h3>
+<p>The <code class="code-inline" id="38182794119a00cb3971971d3ed157b8">getContents</code> method have a third parameters <code class="code-inline" id="7981a5159468431c0fe44cac7c5654b7">$filterBy</code> that allows filtering the content list.</p>
+<p>It accepts:</p>
+<h4 id="an-array-of-properties-and-values">An array of properties and values<a href="#an-array-of-properties-and-values" class="anchor"></a></h4>
+<pre class="code-multiline language-php"><code class="language-php" id="88ca6f1f5441336b2c8ebbd0249168b7"><span class="token variable">$articles</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+    <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
+    <span class="token constant">null</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token single-quoted-string string">'category'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token single-quoted-string string">'symfony'</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>When passing multiple requirements, all must be met:</p>
+<pre class="code-multiline language-php"><code class="language-php" id="4870b3f76c54c7fef44b5aef43afd9b8"><span class="token variable">$myDrafts</span> <span class="token operator">=</span> <span class="token this">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">manager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+    <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
+    <span class="token constant">null</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token single-quoted-string string">'author'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token single-quoted-string string">'ogizanagi'</span><span class="token punctuation">,</span> <span class="token single-quoted-string string">'draft'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token boolean constant">true</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h4 id="a-property-name-string">A property name (string)<a href="#a-property-name-string" class="anchor"></a></h4>
+<pre class="code-multiline language-php"><code class="language-php" id="ccc0aeba81504c6d687761e1340ed5f6"><span class="token comment">// Equivalent to ['active' =&gt; true]</span>
+<span class="token variable">$users</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token scope">User<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token single-quoted-string string">'active'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h4 id="a-custom-callable-supported-by-the-php-usort-function">A custom callable supported by the PHP <a href="https://www.php.net/manual/fr/function.usort.php" target="_blank">usort</a> function<a href="#a-custom-callable-supported-by-the-php-usort-function" class="anchor"></a></h4>
+<pre class="code-multiline language-php"><code class="language-php" id="533117be2ed7bc68d7aa24d7aaa7772f"><span class="token variable">$tagedMobileArticles</span> <span class="token operator">=</span> <span class="token this">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">manager</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+    <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
+    <span class="token constant">null</span><span class="token punctuation">,</span>
+    fn <span class="token punctuation">(</span>Article <span class="token variable">$article</span><span class="token punctuation">)</span><span class="token punctuation">:</span> bool <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token function">in_array</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'mobile'</span><span class="token punctuation">,</span> <span class="token variable">$article</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">tags</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="advanced-usage-and-extension">Advanced usage and extension<a href="#advanced-usage-and-extension" class="anchor"></a></h2>
+<h3 id="register-a-custom-denormalizer">Register a custom denormalizer<a href="#register-a-custom-denormalizer" class="anchor"></a></h3>
+<p>For more control over your model denormalization, you can register your own Denormalizer.
+Simply, create a service that implements Symfony's <code class="code-inline" id="8a78566acd14bdf433665f4c91baa08a">DenormalizerInterface</code> and supports your model:</p>
+<pre class="code-multiline language-php"><code class="language-php" id="aeb3e69270abb5ac05fd7b60bf5dfa16"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Content<span class="token punctuation">\</span>Denormalizer</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Serializer<span class="token punctuation">\</span>Normalizer<span class="token punctuation">\</span>DenormalizerInterface</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ArticleDenormalizer</span> <span class="token keyword">implements</span> <span class="token class-name">DenormalizerInterface</span>
+<span class="token punctuation">{</span>
+    <span class="token doc-comment comment">/**
+     * Must return true for supported models.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">supportsDenormalization</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token variable">$type</span><span class="token punctuation">,</span> <span class="token variable">$format</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">is_a</span><span class="token punctuation">(</span><span class="token variable">$type</span><span class="token punctuation">,</span> <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token boolean constant">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token doc-comment comment">/**
+     * Instanciate your model from the denormalized data array.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">denormalize</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token variable">$class</span><span class="token punctuation">,</span> <span class="token variable">$format</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">,</span> <span class="token keyword">array</span> <span class="token variable">$context</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span>
+            <span class="token variable">$data</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'title'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token variable">$data</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'slug'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token variable">$data</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'content'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>DateTimeImmutable</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'date'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>DateTimeImmutable</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'lastModified'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span></code></pre>
+<p><em>Note: Using autowiring, denormalizers are automaticaly registered in Symfony Serializer.</em></p></body>                    </main>
+                </div>
+                <footer class="footer">
+                                            <a href="https://github.com/Tom32i/content">
+                            Content on Github
+                        </a>
+                                    </footer>
+                    </div>
+                    <script src="/content/build/runtime.787f842e.js"></script><script src="/content/build/app.cd00f577.js"></script>
+            </body>
+</html>

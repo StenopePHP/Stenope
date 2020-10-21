@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Content</title>
+                    <link rel="stylesheet" href="/content/build/style.b0a63126.css">
+            </head>
+    <body>
+        <div class="main">
+                            <div class="columns">
+                    <aside class="sidebar">
+                        <a href="/content/" class="logo">
+                            Content
+                                                    </a>
+                        <nav class="navigation">
+                                                                                        <a href="/content/loading-content" class="">
+                                    Declaring and loading content
+                                </a>
+                                                            <a href="/content/syntax-highlighting" class="">
+                                    Syntax highlighting
+                                </a>
+                                                            <a href="/content/route-options" class="">
+                                    Route options
+                                </a>
+                                                            <a href="/content/troubleshooting" class="">
+                                    Troubleshooting
+                                </a>
+                                                            <a href="/content/supported-formats" class="">
+                                    Supported formats
+                                </a>
+                                                    </nav>
+                    </aside>
+                    <main class="content">
+                        <body><h1 id="content">Content<a href="#content" class="anchor"></a></h1>
+<blockquote>
+<p>Export your Symfony app as a static website.</p>
+</blockquote>
+<p>Content is a <strong>static website building tool for Symfony</strong> with specific goals:</p>
+<ul><li>"You should adapt it to your need, don't adapt your needs to it".</li>
+<li>"It connects with standard Symfony components and feels natural to Symfony developers".</li>
+</ul><h2 id="how-it-works">How it works<a href="#how-it-works" class="anchor"></a></h2>
+<ul><li>🔍 Content scans your Symfony app, like a search engine crawler would, and dumps every page to static HTML.</li>
+<li>🛠 Content provides tools that you can use in <em>your</em> Symfony code to load and parse static contents (such as Markdown files) into custom PHP model objects.</li>
+<li>⚙️ Content gives you a lot of control by providing interfaces and default implementations that are entirely replaceable to suit your custom needs.</li>
+</ul><h2 id="installation">Installation<a href="#installation" class="anchor"></a></h2>
+<pre><code id="624bfdba14437c9ff88374d5c539de0e">composer config repositories.tom32i/content vcs https://github.com/Tom32i/content.git
+composer require "tom32i/content:^1.0-dev"</code></pre>
+<h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
+<p>Build the static site: <code class="code-inline" id="a7387b8e9e9ffd372858bdfbde2814c9">bin/console -e prod content:build</code></p>
+<p>✨ Your Symfony app is now a static website in: <code class="code-inline" id="7b7747ec045ae606eb720a1222f56098">/build</code>!</p>
+<h2 id="advanced-usage">Advanced usage<a href="#advanced-usage" class="anchor"></a></h2>
+<ul><li><a href="/content/loading-content">How to load static content</a></li>
+<li><a href="/content/supported-formats">Supported formats</a></li>
+<li><a href="/content/syntax-highlighting">Syntax Highlighting</a></li>
+<li><a href="/content/route-options">Route options</a></li>
+<li><a href="/content/troubleshooting">Troubleshooting and common misakes</a></li>
+<li>Decoders #TODO</li>
+<li>Bonus: How to deploy and host a static site #TODO</li>
+</ul></body>                    </main>
+                </div>
+                <footer class="footer">
+                                            <a href="https://github.com/Tom32i/content">
+                            Content on Github
+                        </a>
+                                    </footer>
+                    </div>
+                    <script src="/content/build/runtime.787f842e.js"></script><script src="/content/build/app.cd00f577.js"></script>
+            </body>
+</html>
