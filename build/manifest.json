@@ -1,6 +1,9 @@
 {
   "build/app.js": "/content/build/app.cd00f577.js",
   "build/runtime.js": "/content/build/runtime.787f842e.js",
-  "build/style.css": "/content/build/style.b0a63126.css",
-  "build/style.js": "/content/build/style.f7e6629e.js"
+  "build/style.css": "/content/build/style.989d9f9b.css",
+  "build/style.js": "/content/build/style.f7e6629e.js",
+  "build/fonts/icons.ttf": "/content/build/fonts/icons.54399e8f.ttf",
+  "build/fonts/icons.woff": "/content/build/fonts/icons.9087d62f.woff",
+  "build/images/icons.svg": "/content/build/images/icons.dddcda40.svg"
 }
