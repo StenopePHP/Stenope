@@ -1,16 +1,16 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Unit\Processor;
+namespace Stenope\Tests\Unit\Processor;
 
-use Content\Content;
-use Content\Processor\ExtractTitleFromHtmlContentProcessor;
 use PHPUnit\Framework\TestCase;
+use Stenope\Content;
+use Stenope\Processor\ExtractTitleFromHtmlContentProcessor;
 
 class ExtractTitleFromHtmlContentProcessorTest extends TestCase
 {

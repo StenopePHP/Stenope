@@ -1,43 +1,43 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Content\Builder;
-use Content\Builder\PageList;
-use Content\Builder\Sitemap;
-use Content\Command\BuildCommand;
-use Content\ContentManager;
-use Content\Decoder\HtmlDecoder;
-use Content\Decoder\MarkdownDecoder;
-use Content\DependencyInjection\tags;
-use Content\EventListener\Informator;
-use Content\EventListener\SitemapListener;
-use Content\Highlighter\Prism;
-use Content\Highlighter\Pygments;
-use Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
-use Content\Processor\CodeHighlightProcessor;
-use Content\Processor\ExtractTitleFromHtmlContentProcessor;
-use Content\Processor\HtmlAnchorProcessor;
-use Content\Processor\HtmlExternalLinksProcessor;
-use Content\Processor\HtmlIdProcessor;
-use Content\Processor\HtmlImageProcessor;
-use Content\Processor\LastModifiedProcessor;
-use Content\Processor\SlugProcessor;
-use Content\Provider\Factory\ContentProviderFactory;
-use Content\Provider\Factory\LocalFilesystemProviderFactory;
-use Content\Routing\UrlGenerator;
-use Content\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
-use Content\Service\ImageAssetUtils;
-use Content\Service\Parsedown;
-use Content\Twig\ContentExtension;
-use Content\Twig\ContentRuntime;
 use Psr\Log\LoggerInterface;
+use Stenope\Builder;
+use Stenope\Builder\PageList;
+use Stenope\Builder\Sitemap;
+use Stenope\Command\BuildCommand;
+use Stenope\ContentManager;
+use Stenope\Decoder\HtmlDecoder;
+use Stenope\Decoder\MarkdownDecoder;
+use Stenope\DependencyInjection\tags;
+use Stenope\EventListener\Informator;
+use Stenope\EventListener\SitemapListener;
+use Stenope\Highlighter\Prism;
+use Stenope\Highlighter\Pygments;
+use Stenope\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
+use Stenope\Processor\CodeHighlightProcessor;
+use Stenope\Processor\ExtractTitleFromHtmlContentProcessor;
+use Stenope\Processor\HtmlAnchorProcessor;
+use Stenope\Processor\HtmlExternalLinksProcessor;
+use Stenope\Processor\HtmlIdProcessor;
+use Stenope\Processor\HtmlImageProcessor;
+use Stenope\Processor\LastModifiedProcessor;
+use Stenope\Processor\SlugProcessor;
+use Stenope\Provider\Factory\ContentProviderFactory;
+use Stenope\Provider\Factory\LocalFilesystemProviderFactory;
+use Stenope\Routing\UrlGenerator;
+use Stenope\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
+use Stenope\Service\ImageAssetUtils;
+use Stenope\Service\Parsedown;
+use Stenope\Twig\ContentExtension;
+use Stenope\Twig\ContentRuntime;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -64,7 +64,7 @@ return static function (ContainerConfigurator $container): void {
         // Build
         ->set(BuildCommand::class)->args([
             '$builder' => service(Builder::class),
-            '$stopwatch' => service('content.build.stopwatch'),
+            '$stopwatch' => service('stenope.build.stopwatch'),
         ])
         ->tag('console.command', ['command' => BuildCommand::getDefaultName()])
 
@@ -77,10 +77,10 @@ return static function (ContainerConfigurator $container): void {
             '$buildDir' => 'The build dir, defined by the extension',
             '$filesToCopy' => 'The files to copy after build, defined by the extension',
             '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
-            '$stopwatch' => service('content.build.stopwatch'),
+            '$stopwatch' => service('stenope.build.stopwatch'),
         ])
 
-        ->set('content.build.stopwatch', Stopwatch::class)->args([true])
+        ->set('stenope.build.stopwatch', Stopwatch::class)->args([true])
 
         // Sitemap
         ->set(PageList::class)

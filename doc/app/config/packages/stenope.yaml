@@ -1,4 +1,4 @@
-content:
+stenope:
   providers:
     App\Model\Index:
       type: files

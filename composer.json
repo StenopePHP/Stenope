@@ -1,24 +1,29 @@
 {
-    "name": "tom32i/content",
+    "name": "stenope/stenope",
     "description": "Static site builder for Symfony",
     "keywords": ["static", "symfony", "blog"],
     "type": "symfony-bundle",
-    "homepage": "https://github.com/tom32i/content",
+    "homepage": "https://github.com/StenopePHP/Stenope",
     "license": "MIT",
     "authors": [
         {
             "name": "Thomas Jarrand",
-            "email": "thomas.jarrand@gmail.com"
+            "email": "thomas.jarrand@gmail.com",
+            "homepage": "https://thomas.jarrand.fr"
+        },
+        {
+            "name": "Maxime Steinhausser",
+            "homepage": "https://github.com/ogizanagi"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Content\\": "src"
+            "Stenope\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Content\\Tests\\": "tests",
+            "Stenope\\Tests\\": "tests",
             "App\\": "tests/fixtures/app/src"
         }
     },

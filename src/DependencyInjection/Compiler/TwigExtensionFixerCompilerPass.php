@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\DependencyInjection\Compiler;
+namespace Stenope\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

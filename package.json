@@ -1,21 +1,21 @@
 {
-  "name": "content",
-  "version": "0.1.0",
-  "description": "Content",
+  "name": "stenope",
+  "version": "1.0.0",
+  "description": "Stenope",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Tom32i/content.git"
+    "url": "git+https://github.com/StenopePHP/Stenope.git"
   },
   "author": "Thomas Jarrand <thomas.jarrand@gmail.com> (https://thomas.jarrand.fr)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Tom32i/content/issues"
+    "url": "https://github.com/StenopePHP/Stenope/issues"
   },
-  "homepage": "https://github.com/Tom32i/content#readme",
+  "homepage": "https://github.com/StenopePHP/Stenope#readme",
   "dependencies": {
     "prismjs": "^1.21.0"
   },

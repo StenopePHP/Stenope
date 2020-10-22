@@ -61,14 +61,14 @@ jobs:
           echo "::endgroup::"
         env:
           APP_ENV: prod
-          WEBPACK_PUBLIC_PATH: /content/build
+          WEBPACK_PUBLIC_PATH: /Stenope/build
 
       - name: Build static site
         working-directory: ./doc/app
-        run: bin/console content:build --no-interaction -vv --ansi
+        run: bin/console stenope:build --no-interaction -vv --ansi
         env:
           APP_ENV: prod
-          ROUTER_DEFAULT_URI: https://tom32i.github.io/content
+          ROUTER_DEFAULT_URI: https://stenopephp.github.io/Stenope
 
       # https://github.com/marketplace/actions/deploy-to-github-pages
       - name: 🚀 Deploy

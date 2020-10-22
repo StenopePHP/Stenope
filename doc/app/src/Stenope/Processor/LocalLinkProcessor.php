@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Content\Processor;
+namespace App\Stenope\Processor;
 
 use App\Model\Page;
-use Content\Behaviour\ProcessorInterface;
-use Content\Content;
+use Stenope\Behaviour\ProcessorInterface;
+use Stenope\Content;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

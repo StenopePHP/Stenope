@@ -1,17 +1,17 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content;
+namespace Stenope;
 
-use Content\Behaviour\ContentManagerAwareInterface;
-use Content\Behaviour\ProcessorInterface;
-use Content\Provider\ContentProviderInterface;
-use Content\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
+use Stenope\Behaviour\ContentManagerAwareInterface;
+use Stenope\Behaviour\ProcessorInterface;
+use Stenope\Provider\ContentProviderInterface;
+use Stenope\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
@@ -118,7 +118,7 @@ class ContentManager
     public function getContent(string $type, string $id): object
     {
         if ($this->stopwatch) {
-            $event = $this->stopwatch->start('get_content', 'content');
+            $event = $this->stopwatch->start('get_content', 'stenope');
         }
 
         foreach ($this->getProviders($type) as $provider) {

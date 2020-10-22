@@ -1,14 +1,14 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Builder;
+namespace Stenope\Builder;
 
-use Content\Builder;
+use Stenope\Builder;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -52,7 +52,7 @@ class RouteInfo
      */
     public function isIgnored(): bool
     {
-        return $this->route->getOption('content')['ignore'] ?? false;
+        return $this->route->getOption('stenope')['ignore'] ?? false;
     }
 
     /**
@@ -70,6 +70,6 @@ class RouteInfo
      */
     public function isMapped(): bool
     {
-        return $this->route->getOption('content')['sitemap'] ?? !$this->isIgnored();
+        return $this->route->getOption('stenope')['sitemap'] ?? !$this->isIgnored();
     }
 }

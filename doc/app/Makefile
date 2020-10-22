@@ -25,7 +25,7 @@ build-assets:
 build-content: export APP_ENV = prod
 build-content:
 	bin/console cache:clear
-	bin/console content:build
+	bin/console stenope:build
 
 ## Build the site and serve the static version
 serve-static: build-content

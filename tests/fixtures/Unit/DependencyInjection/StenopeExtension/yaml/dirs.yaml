@@ -1,2 +1,2 @@
-content:
+stenope:
     build_dir: '%kernel.project_dir%/site'

@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Decoder;
+namespace Stenope\Decoder;
 
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;

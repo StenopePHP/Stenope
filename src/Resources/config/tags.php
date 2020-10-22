@@ -1,13 +1,13 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\DependencyInjection\tags;
+namespace Stenope\DependencyInjection\tags;
 
-const content_processor = 'content.processor';
-const content_provider = 'content.content_provider';
-const content_provider_factory = 'content.content_provider_factory';
+const content_processor = 'stenope.processor';
+const content_provider = 'stenope.content_provider';
+const content_provider_factory = 'stenope.content_provider_factory';

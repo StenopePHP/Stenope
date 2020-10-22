@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Provider\Factory;
+namespace Stenope\Provider\Factory;
 
-use Content\Provider\ContentProviderInterface;
-use Content\Provider\LocalFilesystemProvider;
+use Stenope\Provider\ContentProviderInterface;
+use Stenope\Provider\LocalFilesystemProvider;
 
 class LocalFilesystemProviderFactory implements ContentProviderFactoryInterface
 {

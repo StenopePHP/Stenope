@@ -1,14 +1,14 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Provider\Factory;
+namespace Stenope\Provider\Factory;
 
-use Content\Provider\ContentProviderInterface;
+use Stenope\Provider\ContentProviderInterface;
 
 /**
  * A factory to instantiate content providers based on type and config

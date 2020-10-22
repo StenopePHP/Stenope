@@ -1,16 +1,16 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Highlighter;
+namespace Stenope\Highlighter;
 
-use Content\Behaviour\HighlighterInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Stenope\Behaviour\HighlighterInterface;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -61,7 +61,7 @@ class Prism implements HighlighterInterface
     public function highlight(string $value, string $language): string
     {
         if ($this->stopwatch) {
-            $event = $this->stopwatch->start('highlight', 'content');
+            $event = $this->stopwatch->start('highlight', 'stenope');
         }
 
         $this->start();

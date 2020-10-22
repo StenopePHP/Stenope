@@ -50,7 +50,7 @@ dist:
 demo:
 	cd tests/fixtures/app; \
 		bin/console c:c; \
-		bin/console content:build --no-expose; \
+		bin/console stenope:build --no-expose; \
 		open http://localhost:8000; \
 		php -S localhost:8000 -t build;
 

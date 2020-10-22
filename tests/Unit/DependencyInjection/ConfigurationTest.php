@@ -1,16 +1,16 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Unit\DependencyInjection;
+namespace Stenope\Tests\Unit\DependencyInjection;
 
-use Content\DependencyInjection\Configuration;
-use Content\Provider\Factory\LocalFilesystemProviderFactory;
 use PHPUnit\Framework\TestCase;
+use Stenope\DependencyInjection\Configuration;
+use Stenope\Provider\Factory\LocalFilesystemProviderFactory;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase

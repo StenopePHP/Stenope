@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<xsd:schema xmlns="http://tom32i.com/schema/dic/content"
+<xsd:schema xmlns="http://stenope.com/schema/dic/stenope"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://tom32i.com/schema/dic/content"
+            targetNamespace="http://stenope.com/schema/dic/stenope"
             elementFormDefault="qualified">
 
     <xsd:element name="config" type="config"/>

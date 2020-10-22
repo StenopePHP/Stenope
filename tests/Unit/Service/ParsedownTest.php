@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Unit\Service;
+namespace Stenope\Tests\Unit\Service;
 
-use Content\Service\Parsedown;
 use PHPUnit\Framework\TestCase;
+use Stenope\Service\Parsedown;
 
 class ParsedownTest extends TestCase
 {

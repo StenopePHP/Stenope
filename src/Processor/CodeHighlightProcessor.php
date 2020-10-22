@@ -1,17 +1,17 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Processor;
+namespace Stenope\Processor;
 
-use Content\Behaviour\HighlighterInterface;
-use Content\Behaviour\ProcessorInterface;
-use Content\Content;
-use Content\Service\HtmlUtils;
+use Stenope\Behaviour\HighlighterInterface;
+use Stenope\Behaviour\ProcessorInterface;
+use Stenope\Content;
+use Stenope\Service\HtmlUtils;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**

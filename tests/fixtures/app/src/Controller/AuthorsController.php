@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
@@ -19,7 +19,7 @@ class AuthorsController extends AbstractController
 {
     /**
      * @Route("/{author<[\w.]+>}.json", name="author_json", format="json", options={
-     *     "content": {
+     *     "stenope": {
      *         "sitemap": false,
      *     },
      * })

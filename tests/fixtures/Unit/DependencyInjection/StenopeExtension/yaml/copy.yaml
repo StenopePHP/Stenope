@@ -1,4 +1,4 @@
-content:
+stenope:
     copy:
         - { src: '%kernel.project_dir%/public/build', dest: 'dist', excludes: '*.excluded', ignore_dot_files: false }
         - '%kernel.project_dir%/public/robots.txt'

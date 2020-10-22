@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Model\Index;
 use App\Model\Page;
-use Content\ContentManager;
+use Stenope\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 

@@ -1,6 +1,6 @@
 # Supported formats
 
-Content supports many formats out of the box and you can add support for any format.
+Stenope supports many formats out of the box and you can add support for any format.
 
 ## Mardown
 

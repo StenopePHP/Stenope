@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:stenope="http://stenope.com/schema/dic/stenope"
+           xsi:schemaLocation="http://stenope.com/schema/dic/stenope http://stenope.com/schema/dic/stenope/stenope.xsd">
+
+    <stenope:config>
+        <stenope:provider type="files" class="Foo\Bar">
+            <stenope:config path="%kernel.project_dir%/foo/bar" depth="&lt; 2" >
+                <stenope:pattern>*.md</stenope:pattern>
+                <stenope:pattern>*.html</stenope:pattern>
+                <stenope:exclude>excluded.md</stenope:exclude>
+            </stenope:config>
+        </stenope:provider>
+
+        <stenope:provider type="custom" class="Foo\Custom">
+            <stenope:config custom_config_key="custom_value">
+                <stenope:custom_sequence>custom_sequence_value_1</stenope:custom_sequence>
+                <stenope:custom_sequence>custom_sequence_value_2</stenope:custom_sequence>
+            </stenope:config>
+        </stenope:provider>
+    </stenope:config>
+</container>

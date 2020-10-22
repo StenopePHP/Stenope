@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\EventListener;
+namespace Stenope\EventListener;
 
-use Content\Builder\RouteInfo;
-use Content\Builder\Sitemap;
+use Stenope\Builder\RouteInfo;
+use Stenope\Builder\Sitemap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

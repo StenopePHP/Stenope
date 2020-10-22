@@ -1,14 +1,14 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Command;
+namespace Stenope\Command;
 
-use Content\Builder;
+use Stenope\Builder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -26,7 +26,7 @@ use Symfony\Component\Stopwatch\StopwatchEvent;
  */
 class BuildCommand extends Command
 {
-    protected static $defaultName = 'content:build';
+    protected static $defaultName = 'stenope:build';
 
     private Builder $builder;
     private Stopwatch $stopwatch;
@@ -124,7 +124,7 @@ class BuildCommand extends Command
         );
 
         if (!$this->stopwatch->isStarted('build')) {
-            $this->stopwatch->start('build', 'content');
+            $this->stopwatch->start('build', 'stenope');
         }
 
         $sitemap = $input->getOption('no-sitemap');
