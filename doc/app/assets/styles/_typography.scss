@@ -6,16 +6,23 @@ ul {
 
 h1, h2, h3, h4, h5, h6 {
     scroll-margin-top: 2rem;
+    position: relative;
 
     .anchor {
-        margin-left: 10px;
-        line-height: 1em;
+        @extend .icon, .icon-link;
+
         opacity: 0;
         transition: opacity ease-in-out 100ms;
-        vertical-align: middle;
+        position: absolute;
+        right: 100%;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
 
         &:before {
-            content: '🔗';
             font-size: 16px;
         }
     }

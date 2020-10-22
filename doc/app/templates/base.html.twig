@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title 'Content' %}</title>
+        <meta name="description" content="{% block description 'Content documentation' %}">
         {% block stylesheets %}
             {{ encore_entry_link_tags('style') }}
         {% endblock %}
@@ -14,7 +15,6 @@
                     <aside class="sidebar">
                         <a href="{{ path('index') }}" class="logo">
                             Content
-                            {#<img src="{{ asset('../../logo.svg') }}">#}
                         </a>
                         <nav class="navigation">
                             {% set current = app.request.attributes.get('_route_params').page|default(null) %}
@@ -32,6 +32,7 @@
                 <footer class="footer">
                     {% block footer %}
                         <a href="https://github.com/Tom32i/content">
+                            <span class="icon-github"></span>
                             Content on Github
                         </a>
                     {% endblock %}

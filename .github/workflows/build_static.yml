@@ -46,6 +46,7 @@ jobs:
           echo "::group::composer install"
           composer install --no-progress --no-suggest --ansi
           echo "::endgroup::"
+
           echo "::group::npm install"
           npm install --color=always --no-progress
           echo "::endgroup::"

@@ -44,7 +44,7 @@ body {
 
 .content {
     flex: 1;
-    overflow: auto;
+    max-width: 100%;
 
     pre, code, blockquote, img {
         max-width: 100%;
