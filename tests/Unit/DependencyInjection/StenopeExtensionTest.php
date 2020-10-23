@@ -6,12 +6,12 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Tests\Unit\DependencyInjection;
+namespace Stenope\Bundle\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Stenope\Builder;
-use Stenope\DependencyInjection\StenopeExtension;
-use Stenope\Provider\Factory\LocalFilesystemProviderFactory;
+use Stenope\Bundle\Builder;
+use Stenope\Bundle\DependencyInjection\StenopeExtension;
+use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
 

@@ -6,11 +6,11 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Tests\Unit\DependencyInjection;
+namespace Stenope\Bundle\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Stenope\DependencyInjection\Configuration;
-use Stenope\Provider\Factory\LocalFilesystemProviderFactory;
+use Stenope\Bundle\DependencyInjection\Configuration;
+use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase

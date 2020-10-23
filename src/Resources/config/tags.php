@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\DependencyInjection\tags;
+namespace Stenope\Bundle\DependencyInjection\tags;
 
 const content_processor = 'stenope.processor';
 const content_provider = 'stenope.content_provider';

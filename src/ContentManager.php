@@ -6,12 +6,12 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope;
+namespace Stenope\Bundle;
 
-use Stenope\Behaviour\ContentManagerAwareInterface;
-use Stenope\Behaviour\ProcessorInterface;
-use Stenope\Provider\ContentProviderInterface;
-use Stenope\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
+use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Provider\ContentProviderInterface;
+use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;

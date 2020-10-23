@@ -6,13 +6,13 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\DependencyInjection;
+namespace Stenope\Bundle\DependencyInjection;
 
-use Stenope\Behaviour\ProcessorInterface;
-use Stenope\Builder;
-use Stenope\Provider\ContentProviderInterface;
-use Stenope\Provider\Factory\ContentProviderFactory;
-use Stenope\Provider\Factory\ContentProviderFactoryInterface;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Builder;
+use Stenope\Bundle\Provider\ContentProviderInterface;
+use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
+use Stenope\Bundle\Provider\Factory\ContentProviderFactoryInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;

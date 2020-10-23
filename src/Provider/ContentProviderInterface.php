@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Provider;
+namespace Stenope\Bundle\Provider;
 
-use Stenope\Content;
+use Stenope\Bundle\Content;
 
 interface ContentProviderInterface
 {

@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Builder;
+namespace Stenope\Bundle\Builder;
 
-use Stenope\Builder;
+use Stenope\Bundle\Builder;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 

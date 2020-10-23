@@ -6,12 +6,12 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Processor;
+namespace Stenope\Bundle\Processor;
 
-use Stenope\Behaviour\HighlighterInterface;
-use Stenope\Behaviour\ProcessorInterface;
-use Stenope\Content;
-use Stenope\Service\HtmlUtils;
+use Stenope\Bundle\Behaviour\HighlighterInterface;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Content;
+use Stenope\Bundle\Service\HtmlUtils;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**

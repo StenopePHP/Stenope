@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\HttpKernel\Controller\ArgumentResolver;
+namespace Stenope\Bundle\HttpKernel\Controller\ArgumentResolver;
 
-use Stenope\ContentManager;
+use Stenope\Bundle\ContentManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

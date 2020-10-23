@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope;
+namespace Stenope\Bundle;
 
 final class Content
 {

@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Behaviour;
+namespace Stenope\Bundle\Behaviour;
 
-use Stenope\ContentManager;
+use Stenope\Bundle\ContentManager;
 
 interface ContentManagerAwareInterface
 {

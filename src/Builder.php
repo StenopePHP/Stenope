@@ -6,14 +6,14 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope;
+namespace Stenope\Bundle;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Stenope\Builder\PageList;
-use Stenope\Builder\RouteInfo;
-use Stenope\Builder\Sitemap;
-use Stenope\HttpFoundation\ContentRequest;
+use Stenope\Bundle\Builder\PageList;
+use Stenope\Bundle\Builder\RouteInfo;
+use Stenope\Bundle\Builder\Sitemap;
+use Stenope\Bundle\HttpFoundation\ContentRequest;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;

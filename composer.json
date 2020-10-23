@@ -19,12 +19,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Stenope\\": "src"
+            "Stenope\\Bundle\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Stenope\\Tests\\": "tests",
+            "Stenope\\Bundle\\Tests\\": "tests",
             "App\\": "tests/fixtures/app/src"
         }
     },

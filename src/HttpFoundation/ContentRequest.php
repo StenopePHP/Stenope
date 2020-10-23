@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\HttpFoundation;
+namespace Stenope\Bundle\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Request;
 

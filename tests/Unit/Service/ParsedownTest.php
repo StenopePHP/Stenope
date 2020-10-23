@@ -6,10 +6,10 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Tests\Unit\Service;
+namespace Stenope\Bundle\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
-use Stenope\Service\Parsedown;
+use Stenope\Bundle\Service\Parsedown;
 
 class ParsedownTest extends TestCase
 {

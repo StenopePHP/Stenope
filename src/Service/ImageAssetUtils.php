@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Service;
+namespace Stenope\Bundle\Service;
 
 use Symfony\Component\Asset\Packages;
 

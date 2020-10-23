@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope;
+namespace Stenope\Bundle;
 
-use Stenope\DependencyInjection\Compiler\TwigExtensionFixerCompilerPass;
+use Stenope\Bundle\DependencyInjection\Compiler\TwigExtensionFixerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

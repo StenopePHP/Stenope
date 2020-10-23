@@ -13,7 +13,7 @@
                     <div>
                         {% for author_slug in recipe.authors %}
                             <address class="author">
-                                {% set author = content_get('App\\Content\\Model\\Author', author_slug) %}
+                                {% set author = content_get('App\\Model\\Author', author_slug) %}
                                 <a href="{{ path('author', { author: author.slug }) }}">
                                     {{ author.firstname }} {{ author.lastname }} (@{{ author.nickname }})
                                 </a>

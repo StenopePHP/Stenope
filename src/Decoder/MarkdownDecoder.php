@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Decoder;
+namespace Stenope\Bundle\Decoder;
 
-use Stenope\Service\Parsedown;
+use Stenope\Bundle\Service\Parsedown;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Yaml\Yaml;
 

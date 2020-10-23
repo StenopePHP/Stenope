@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Twig;
+namespace Stenope\Bundle\Twig;
 
-use Stenope\ContentManager;
+use Stenope\Bundle\ContentManager;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class ContentRuntime implements RuntimeExtensionInterface

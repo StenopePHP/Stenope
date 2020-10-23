@@ -6,11 +6,11 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Tests\Unit\Processor;
+namespace Stenope\Bundle\Tests\Unit\Processor;
 
 use PHPUnit\Framework\TestCase;
-use Stenope\Content;
-use Stenope\Processor\ExtractTitleFromHtmlContentProcessor;
+use Stenope\Bundle\Content;
+use Stenope\Bundle\Processor\ExtractTitleFromHtmlContentProcessor;
 
 class ExtractTitleFromHtmlContentProcessorTest extends TestCase
 {

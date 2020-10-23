@@ -6,10 +6,10 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Processor;
+namespace Stenope\Bundle\Processor;
 
-use Stenope\Behaviour\ProcessorInterface;
-use Stenope\Content;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Content;
 
 /**
  * Set "slug" property from file name if not specified

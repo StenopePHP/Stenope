@@ -6,10 +6,10 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\EventListener;
+namespace Stenope\Bundle\EventListener;
 
-use Stenope\Builder\RouteInfo;
-use Stenope\Builder\Sitemap;
+use Stenope\Bundle\Builder\RouteInfo;
+use Stenope\Bundle\Builder\Sitemap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

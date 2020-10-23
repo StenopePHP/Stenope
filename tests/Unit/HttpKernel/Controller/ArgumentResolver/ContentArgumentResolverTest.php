@@ -6,13 +6,13 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Tests\Unit\HttpKernel\Controller\ArgumentResolver;
+namespace Stenope\Bundle\Tests\Unit\HttpKernel\Controller\ArgumentResolver;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
-use Stenope\Content;
-use Stenope\ContentManager;
-use Stenope\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
+use Stenope\Bundle\Content;
+use Stenope\Bundle\ContentManager;
+use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 

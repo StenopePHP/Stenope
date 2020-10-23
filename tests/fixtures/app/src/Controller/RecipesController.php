@@ -8,9 +8,9 @@
 
 namespace App\Controller;
 
-use App\Content\Model\Recipe;
-use Stenope\ContentManager;
-use Stenope\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
+use App\Model\Recipe;
+use Stenope\Bundle\ContentManager;
+use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

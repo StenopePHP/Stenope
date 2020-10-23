@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Provider\Factory;
+namespace Stenope\Bundle\Provider\Factory;
 
-use Stenope\Provider\ContentProviderInterface;
+use Stenope\Bundle\Provider\ContentProviderInterface;
 
 /**
  * A factory to instantiate content providers based on type and config

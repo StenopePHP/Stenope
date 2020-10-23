@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace App\Content\Model;
+namespace App\Model;
 
 class Recipe
 {

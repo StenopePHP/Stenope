@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Serializer\Normalizer;
+namespace Stenope\Bundle\Serializer\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 

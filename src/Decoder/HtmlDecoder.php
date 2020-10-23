@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Decoder;
+namespace Stenope\Bundle\Decoder;
 
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;

@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use App\Content\Model\Author;
+use App\Model\Author;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 

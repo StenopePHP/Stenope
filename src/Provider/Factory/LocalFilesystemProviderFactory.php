@@ -6,10 +6,10 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Provider\Factory;
+namespace Stenope\Bundle\Provider\Factory;
 
-use Stenope\Provider\ContentProviderInterface;
-use Stenope\Provider\LocalFilesystemProvider;
+use Stenope\Bundle\Provider\ContentProviderInterface;
+use Stenope\Bundle\Provider\LocalFilesystemProvider;
 
 class LocalFilesystemProviderFactory implements ContentProviderFactoryInterface
 {

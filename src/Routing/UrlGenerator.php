@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Routing;
+namespace Stenope\Bundle\Routing;
 
-use Stenope\Builder\PageList;
+use Stenope\Bundle\Builder\PageList;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 

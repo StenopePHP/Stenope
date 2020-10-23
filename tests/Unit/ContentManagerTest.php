@@ -6,15 +6,15 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Tests\Unit;
+namespace Stenope\Bundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Stenope\Behaviour\ContentManagerAwareInterface;
-use Stenope\Behaviour\ProcessorInterface;
-use Stenope\Content;
-use Stenope\ContentManager;
-use Stenope\Provider\ContentProviderInterface;
+use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Content;
+use Stenope\Bundle\ContentManager;
+use Stenope\Bundle\Provider\ContentProviderInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 

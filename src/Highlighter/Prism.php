@@ -6,11 +6,11 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Highlighter;
+namespace Stenope\Bundle\Highlighter;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Stenope\Behaviour\HighlighterInterface;
+use Stenope\Bundle\Behaviour\HighlighterInterface;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;

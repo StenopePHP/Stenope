@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Behaviour;
+namespace Stenope\Bundle\Behaviour;
 
 interface HighlighterInterface
 {

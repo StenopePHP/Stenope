@@ -6,9 +6,9 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Highlighter;
+namespace Stenope\Bundle\Highlighter;
 
-use Stenope\Behaviour\HighlighterInterface;
+use Stenope\Bundle\Behaviour\HighlighterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
