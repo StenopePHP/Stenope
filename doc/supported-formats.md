@@ -37,7 +37,7 @@ The default MarkdownDecoder relies on [erusev/parsedown](https://github.com/erus
 - Quotes: `> Foo bar.`
 - Inline code `` `$foo` ``
 - Multilign code `` ``` ``
-- Multilign highligted code `` ```php `` (see [Syntax Highlighting](syntax-hightlighting.md))
+- Multilign highligted code `` ```php `` (see [Syntax Highlighting](syntax-highlighting.md))
 - Tables
 - Embed HTML
 - [Admonitions](#admonitions)
@@ -73,7 +73,7 @@ will generate:
 
 Which with proper CSS, could result into something like:
 
-![admonition sample](./images/admonition.png)
+![admonition sample](images/admonition.png)
 
 Writing CSS to render this is up to you.
 
@@ -84,8 +84,8 @@ Writing CSS to render this is up to you.
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
     nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
     massa, nec semper lorem quam in massa.
-```    
-    
+```
+
 ### Removing the title
 
 ```markdown

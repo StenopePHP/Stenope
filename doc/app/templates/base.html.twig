@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title 'Content' %}</title>
+        <meta name="description" content="{% block description 'Content documentation' %}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('style') }}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="main">
+            {% block body %}
+                <div class="columns">
+                    <aside class="sidebar">
+                        <a href="{{ path('index') }}" class="logo">
+                            Content
+                        </a>
+                        <nav class="navigation">
+                            {% set current = app.request.attributes.get('_route_params').page|default(null) %}
+                            {% for page in content_list('App\\Model\\Page') %}
+                                <a href="{{ path('page', { page: page.slug }) }}" class="{{ page.slug == current ? 'active' : '' }}">
+                                    {{ page.title }}
+                                </a>
+                            {% endfor %}
+                        </nav>
+                    </aside>
+                    <main class="content">
+                        {% block content '' %}
+                    </main>
+                </div>
+                <footer class="footer">
+                    {% block footer %}
+                        <a href="https://github.com/Tom32i/content">
+                            <span class="icon-github"></span>
+                            Content on Github
+                        </a>
+                    {% endblock %}
+                </footer>
+            {% endblock %}
+        </div>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>

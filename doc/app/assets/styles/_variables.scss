@@ -1,0 +1,30 @@
+$color-text: black;
+
+/* Miligram */
+$color-initial: #fff;
+$color-primary: #1499a9;
+$color-secondary: #393e46;
+$color-tertiary: #f4f5f6;
+$color-quaternary: #d1d1d1;
+$color-quinary: #e1e1e1;
+
+/* Size */
+$gutter: 20px;
+$screen: 960px;
+
+/* Code highlighting */
+$code-font: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+$code-background: $color-tertiary;
+$code-red: #c32949;
+$code-green: $color-primary;
+$code-yellow: #690;
+$code-orange: #e29100;
+$code-purple: #905;
+$code-blue: #07a;
+$code-white: $color-secondary;
+$code-grey: #8c8c8c;
+$code-mutted: #999;
+
+/** Icons */
+$icomoon-font-family: "icons" !default;
+$icomoon-font-path: "../fonts" !default;

@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&display=swap');
+
+ul {
+    list-style: inside;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: 2rem;
+    position: relative;
+
+    .anchor {
+        @extend .icon, .icon-link;
+
+        opacity: 0;
+        transition: opacity ease-in-out 100ms;
+        position: absolute;
+        right: 100%;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+
+        &:before {
+            font-size: 16px;
+        }
+    }
+
+    &:hover .anchor {
+        opacity: 1;
+    }
+}

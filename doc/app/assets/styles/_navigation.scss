@@ -1,0 +1,25 @@
+.navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    a, a:visited, a:active {
+        color: $color-primary;
+        font-size: 1.2em;
+        padding: 0.6rem 1.2rem;
+        margin: 0.5rem 0;
+        text-align: left;
+        height: auto;
+        line-height: 1em;
+        border-radius: 0.3rem;
+    }
+
+    a:hover {
+        background-color: $color-tertiary;
+    }
+
+    a.active {
+        color: white;
+        background-color: $color-primary;
+    }
+}

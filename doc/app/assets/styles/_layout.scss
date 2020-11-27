@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main {
+    width: 100%;
+    max-width: $screen;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.columns {
+    display: flex;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    margin-right: 4rem;
+    width: 200px;
+
+    .logo {
+        font-size: 2em;
+        text-decoration: none;
+        color: $color-secondary;
+        margin-bottom: 10px;
+        padding: 0 10px;
+
+        &:hover {
+            color: $color-primary;
+        }
+    }
+
+}
+
+.content {
+    flex: 1;
+    max-width: 100%;
+
+    pre, code, blockquote, img {
+        max-width: 100%;
+    }
+}
+
+.footer {
+    margin-top: 6rem;
+    padding: 6rem 0;
+    border-top: 0.1rem solid $color-quaternary;
+}

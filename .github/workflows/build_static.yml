@@ -1,0 +1,80 @@
+name: Build static
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+    name: 🚧  Build & Deploy  🚀
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # https://github.com/actions/setup-node
+      - name: Setup node
+        uses: actions/setup-node@v1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          extensions: "json"
+          ini-values: "memory_limit=-1"
+          php-version: "7.4"
+
+      - name: Determine composer cache directory
+        id: composer-cache
+        working-directory: ./doc/app
+        run: echo "::set-output name=directory::$(composer config cache-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.directory }}
+          key: composer-${{ hashFiles('./doc/app/**/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        working-directory: ./doc/app
+        run: |
+          echo "::group::composer install"
+          composer install --no-progress --no-suggest --ansi
+          echo "::endgroup::"
+
+          echo "::group::npm install"
+          npm install --color=always --no-progress
+          echo "::endgroup::"
+
+      - name: Warmup
+        working-directory: ./doc/app
+        run: |
+          echo "::group::warmup production env"
+          npx encore production --color=always --no-progress
+          bin/console cache:clear --ansi
+          bin/console cache:warmup --ansi
+          echo "::endgroup::"
+        env:
+          APP_ENV: prod
+          WEBPACK_PUBLIC_PATH: /content/build
+
+      - name: Build static site
+        working-directory: ./doc/app
+        run: bin/console content:build --no-interaction -vv --ansi
+        env:
+          APP_ENV: prod
+          ROUTER_DEFAULT_URI: https://tom32i.github.io/content
+
+      # https://github.com/marketplace/actions/deploy-to-github-pages
+      - name: 🚀 Deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          COMMIT_MESSAGE: "[AUTO] Static site update"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: doc/app/build # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch

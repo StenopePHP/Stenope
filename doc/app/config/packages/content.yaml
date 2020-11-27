@@ -1,0 +1,27 @@
+content:
+  providers:
+    App\Model\Index:
+      type: files
+      path: '%kernel.project_dir%/../../'
+      excludes:
+        - doc/**
+        - node_modules/**
+        - vendor/**
+      patterns:
+        - '*.md'
+
+    App\Model\Page:
+      type: files
+      path: '%kernel.project_dir%/../'
+      excludes:
+        - app/**
+      patterns:
+        - '*.md'
+
+  copy:
+    - src: '%kernel.project_dir%/public'
+      dest: .
+      excludes:
+        - '*.php'
+    - src: '%kernel.project_dir%/../images'
+      dest: './images'
