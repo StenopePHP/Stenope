@@ -1,16 +1,16 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
 namespace App\Controller;
 
-use App\Content\Model\Recipe;
-use Content\ContentManager;
-use Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
+use App\Model\Recipe;
+use Stenope\Bundle\ContentManager;
+use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,7 +44,7 @@ class RecipesController extends AbstractController
      * Ensure {@link ContentArgumentResolver} handles nullable arguments properly.
      *
      * @Route("/optional-recipe", name="optional-recipe", options={
-     *     "content": {
+     *     "stenope": {
      *         "ignore": true,
      *     },
      * })
@@ -56,7 +56,7 @@ class RecipesController extends AbstractController
 
     /**
      * @Route("/{recipe}.pdf", name="recipe_pdf", format="pdf", options={
-     *     "content": {
+     *     "stenope": {
      *         "sitemap": false,
      *     },
      * })

@@ -24,10 +24,10 @@ class Article {
 
 ### Register content provider
 
-Register your model in `config/packages/content.yaml` by attributing a _path_ to the model class:
+Register your model in `config/packages/stenope.yaml` by attributing a _path_ to the model class:
 
 ```yaml
-content:
+stenope:
   providers:
     App\Model\Article: '%kernel.project_dir%/content/articles'
 ```
@@ -66,7 +66,7 @@ In your controller (or service):
 namespace App\Controller;
 
 use App\Model\Article;
-use Content\ContentManager;
+use Stenope\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -101,7 +101,7 @@ Example: `$contentManager->getContent(Article::class, 'how-to-train-your-dragon'
 namespace App\Controller;
 
 use App\Model\Article;
-use Content\ContentManager;
+use Stenope\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -214,7 +214,7 @@ Simply, create a service that implements Symfony's `DenormalizerInterface` and s
 ```php
 <?php
 
-namespace App\Content\Denormalizer;
+namespace App\Stenope\Denormalizer;
 
 use App\Model\Article;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

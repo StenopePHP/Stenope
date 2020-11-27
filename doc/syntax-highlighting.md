@@ -42,7 +42,7 @@ _Note: providing a CSS theme that color the code is entirely up to you. You can 
 
 ## Custom syntax highlighting
 
-The default Highlighter responsible for syntax highlighting is based on [Prism.js](https://prismjs.com/), but you can provide your own by implementing `Content\Behaviour\HighlighterInterface`:
+The default Highlighter responsible for syntax highlighting is based on [Prism.js](https://prismjs.com/), but you can provide your own by implementing `Stenope\Behaviour\HighlighterInterface`:
 
 ```php
 public function highlight(string $value, string $language): string;

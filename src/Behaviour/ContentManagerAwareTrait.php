@@ -1,14 +1,14 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Behaviour;
+namespace Stenope\Bundle\Behaviour;
 
-use Content\ContentManager;
+use Stenope\Bundle\ContentManager;
 
 trait ContentManagerAwareTrait
 {

@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Integration;
+namespace Stenope\Bundle\Tests\Integration;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -44,7 +44,7 @@ class BuildTest extends KernelTestCase
         $application->setAutoExit(false);
 
         $tester = new ApplicationTester($application);
-        $tester->run(['content:build', '--ansi']);
+        $tester->run(['stenope:build', '--ansi']);
 
         self::assertSame(Command::SUCCESS, $tester->getStatusCode(), <<<TXT
         The site cannot be build properly.

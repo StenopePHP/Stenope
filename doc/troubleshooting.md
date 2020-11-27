@@ -3,7 +3,8 @@
 ## I have urls with an extension in their path which are rendered as `url/index.html` files
 
 If you have some routes with an extension in their path (e.g: foo.pdf),
-the static site builder may attempt to render it as html at `foo.pdf/index.html`.
+Stenope may attempt to render it as html at `foo.pdf/index.html`.
+
 For the builder to understand such urls should be handled differently,
 explicitly provide either the `format` option in your route definition:
 

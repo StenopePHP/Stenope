@@ -1,18 +1,18 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Unit\HttpKernel\Controller\ArgumentResolver;
+namespace Stenope\Bundle\Tests\Unit\HttpKernel\Controller\ArgumentResolver;
 
-use Content\Content;
-use Content\ContentManager;
-use Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use Stenope\Bundle\Content;
+use Stenope\Bundle\ContentManager;
+use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 

@@ -1,14 +1,14 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
 namespace App\Controller;
 
-use App\Content\Model\Author;
+use App\Model\Author;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +19,7 @@ class AuthorsController extends AbstractController
 {
     /**
      * @Route("/{author<[\w.]+>}.json", name="author_json", format="json", options={
-     *     "content": {
+     *     "stenope": {
      *         "sitemap": false,
      *     },
      * })

@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:content="http://tom32i.com/schema/dic/content"
-           xsi:schemaLocation="http://tom32i.com/schema/dic/content http://tom32i.com/schema/dic/content/content.xsd">
-
-    <content:config />
-</container>

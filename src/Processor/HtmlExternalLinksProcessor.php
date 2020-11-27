@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Processor;
+namespace Stenope\Bundle\Processor;
 
-use Content\Behaviour\ProcessorInterface;
-use Content\Content;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Content;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**

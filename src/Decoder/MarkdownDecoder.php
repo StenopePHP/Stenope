@@ -1,14 +1,14 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Decoder;
+namespace Stenope\Bundle\Decoder;
 
-use Content\Service\Parsedown;
+use Stenope\Bundle\Service\Parsedown;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Yaml\Yaml;
 

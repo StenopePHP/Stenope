@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content;
+namespace Stenope\Bundle;
 
-use Content\Builder\PageList;
-use Content\Builder\RouteInfo;
-use Content\Builder\Sitemap;
-use Content\HttpFoundation\ContentRequest;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Stenope\Bundle\Builder\PageList;
+use Stenope\Bundle\Builder\RouteInfo;
+use Stenope\Bundle\Builder\Sitemap;
+use Stenope\Bundle\HttpFoundation\ContentRequest;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -97,7 +97,7 @@ class Builder
         yield 'start' => $this->notifyContext('Start building');
 
         if (!$this->stopwatch->isStarted('build')) {
-            $this->stopwatch->start('build', 'content');
+            $this->stopwatch->start('build', 'stenope');
         }
 
         yield 'clear' => $this->notifyContext('Clearing previous build');
@@ -290,7 +290,7 @@ class Builder
 
         $this->logger->notice('Building sitemap...');
 
-        $content = $this->templating->render('@Content/sitemap.xml.twig', ['sitemap' => $this->sitemap]);
+        $content = $this->templating->render('@Stenope/sitemap.xml.twig', ['sitemap' => $this->sitemap]);
 
         $this->write($content, '/', 'sitemap.xml');
 

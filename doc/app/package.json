@@ -1,7 +1,7 @@
 {
-  "name": "content-doc",
+  "name": "stenope-doc",
   "version": "1.0.0",
-  "description": "Content documentation",
+  "description": "Stenope documentation",
   "main": "assets/index.js",
   "author": "Thomas Jarrand <thomas.jarrand@gmail.com> (https://thomas.jarrand.fr)",
   "license": "MIT",

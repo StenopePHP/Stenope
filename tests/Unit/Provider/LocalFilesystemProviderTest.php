@@ -1,16 +1,16 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Unit\Provider;
+namespace Stenope\Bundle\Tests\Unit\Provider;
 
-use Content\Content;
-use Content\Provider\LocalFilesystemProvider;
 use PHPUnit\Framework\TestCase;
+use Stenope\Bundle\Content;
+use Stenope\Bundle\Provider\LocalFilesystemProvider;
 use Symfony\Component\VarDumper\Cloner\Stub;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
@@ -59,7 +59,7 @@ class LocalFilesystemProviderTest extends TestCase
         );
 
         $this->assertDumpEquals(<<<'DUMP'
-            Content\Content {
+            Stenope\Bundle\Content {
               -slug: "foo"
               -rawContent: """
                 ---\n

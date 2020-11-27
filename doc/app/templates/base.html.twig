@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title 'Content' %}</title>
+        <title>{% block title 'Stenope Documentation' %}</title>
         <meta name="description" content="{% block description 'Content documentation' %}">
         {% block stylesheets %}
             {{ encore_entry_link_tags('style') }}
@@ -14,7 +14,7 @@
                 <div class="columns">
                     <aside class="sidebar">
                         <a href="{{ path('index') }}" class="logo">
-                            Content
+                            Stenope
                         </a>
                         <nav class="navigation">
                             {% set current = app.request.attributes.get('_route_params').page|default(null) %}
@@ -33,7 +33,7 @@
                     {% block footer %}
                         <a href="https://github.com/Tom32i/content">
                             <span class="icon-github"></span>
-                            Content on Github
+                            Stenope on Github
                         </a>
                     {% endblock %}
                 </footer>

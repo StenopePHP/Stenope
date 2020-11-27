@@ -1,23 +1,23 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Unit\DependencyInjection;
+namespace Stenope\Bundle\Tests\Unit\DependencyInjection;
 
-use Content\Builder;
-use Content\DependencyInjection\ContentExtension;
-use Content\Provider\Factory\LocalFilesystemProviderFactory;
 use PHPUnit\Framework\TestCase;
+use Stenope\Bundle\Builder;
+use Stenope\Bundle\DependencyInjection\StenopeExtension;
+use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
 
-abstract class ContentExtensionTest extends TestCase
+abstract class StenopeExtensionTest extends TestCase
 {
-    const FIXTURES_PATH = __DIR__ . '/../../fixtures/Unit/DependencyInjection/ContentExtension';
+    const FIXTURES_PATH = __DIR__ . '/../../fixtures/Unit/DependencyInjection/StenopeExtension';
 
     public function testDefaults(): void
     {
@@ -75,7 +75,7 @@ abstract class ContentExtensionTest extends TestCase
     {
         $container = $this->createContainerFromFile('providers');
 
-        $filesProviderFactory = $container->getDefinition('content.provider.files.Foo\Bar');
+        $filesProviderFactory = $container->getDefinition('stenope.provider.files.Foo\Bar');
         self::assertEquals(LocalFilesystemProviderFactory::TYPE, $filesProviderFactory->getArgument('$type'));
         self::assertEquals([
             'class' => 'Foo\Bar',
@@ -85,7 +85,7 @@ abstract class ContentExtensionTest extends TestCase
             'excludes' => ['excluded.md'],
         ], $filesProviderFactory->getArgument('$config'));
 
-        $customProviderFactory = $container->getDefinition('content.provider.custom.Foo\Custom');
+        $customProviderFactory = $container->getDefinition('stenope.provider.custom.Foo\Custom');
         self::assertEquals('custom', $customProviderFactory->getArgument('$type'));
         self::assertEquals([
             'class' => 'Foo\Custom',
@@ -97,7 +97,7 @@ abstract class ContentExtensionTest extends TestCase
     protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder
     {
         $container = $this->createContainer();
-        $container->registerExtension(new ContentExtension());
+        $container->registerExtension(new StenopeExtension());
         $this->loadFromFile($container, $file);
 
         $container->getCompilerPassConfig()->setOptimizationPasses([]);

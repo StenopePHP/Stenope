@@ -1,20 +1,20 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content\Tests\Unit;
+namespace Stenope\Bundle\Tests\Unit;
 
-use Content\Behaviour\ContentManagerAwareInterface;
-use Content\Behaviour\ProcessorInterface;
-use Content\Content;
-use Content\ContentManager;
-use Content\Provider\ContentProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Content;
+use Stenope\Bundle\ContentManager;
+use Stenope\Bundle\Provider\ContentProviderInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 

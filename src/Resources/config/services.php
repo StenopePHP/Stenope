@@ -1,43 +1,43 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Content\Builder;
-use Content\Builder\PageList;
-use Content\Builder\Sitemap;
-use Content\Command\BuildCommand;
-use Content\ContentManager;
-use Content\Decoder\HtmlDecoder;
-use Content\Decoder\MarkdownDecoder;
-use Content\DependencyInjection\tags;
-use Content\EventListener\Informator;
-use Content\EventListener\SitemapListener;
-use Content\Highlighter\Prism;
-use Content\Highlighter\Pygments;
-use Content\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
-use Content\Processor\CodeHighlightProcessor;
-use Content\Processor\ExtractTitleFromHtmlContentProcessor;
-use Content\Processor\HtmlAnchorProcessor;
-use Content\Processor\HtmlExternalLinksProcessor;
-use Content\Processor\HtmlIdProcessor;
-use Content\Processor\HtmlImageProcessor;
-use Content\Processor\LastModifiedProcessor;
-use Content\Processor\SlugProcessor;
-use Content\Provider\Factory\ContentProviderFactory;
-use Content\Provider\Factory\LocalFilesystemProviderFactory;
-use Content\Routing\UrlGenerator;
-use Content\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
-use Content\Service\ImageAssetUtils;
-use Content\Service\Parsedown;
-use Content\Twig\ContentExtension;
-use Content\Twig\ContentRuntime;
 use Psr\Log\LoggerInterface;
+use Stenope\Bundle\Builder;
+use Stenope\Bundle\Builder\PageList;
+use Stenope\Bundle\Builder\Sitemap;
+use Stenope\Bundle\Command\BuildCommand;
+use Stenope\Bundle\ContentManager;
+use Stenope\Bundle\Decoder\HtmlDecoder;
+use Stenope\Bundle\Decoder\MarkdownDecoder;
+use Stenope\Bundle\DependencyInjection\tags;
+use Stenope\Bundle\EventListener\Informator;
+use Stenope\Bundle\EventListener\SitemapListener;
+use Stenope\Bundle\Highlighter\Prism;
+use Stenope\Bundle\Highlighter\Pygments;
+use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
+use Stenope\Bundle\Processor\CodeHighlightProcessor;
+use Stenope\Bundle\Processor\ExtractTitleFromHtmlContentProcessor;
+use Stenope\Bundle\Processor\HtmlAnchorProcessor;
+use Stenope\Bundle\Processor\HtmlExternalLinksProcessor;
+use Stenope\Bundle\Processor\HtmlIdProcessor;
+use Stenope\Bundle\Processor\HtmlImageProcessor;
+use Stenope\Bundle\Processor\LastModifiedProcessor;
+use Stenope\Bundle\Processor\SlugProcessor;
+use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
+use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
+use Stenope\Bundle\Routing\UrlGenerator;
+use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
+use Stenope\Bundle\Service\ImageAssetUtils;
+use Stenope\Bundle\Service\Parsedown;
+use Stenope\Bundle\Twig\ContentExtension;
+use Stenope\Bundle\Twig\ContentRuntime;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -65,7 +65,7 @@ return static function (ContainerConfigurator $container): void {
         // Build
         ->set(BuildCommand::class)->args([
             '$builder' => service(Builder::class),
-            '$stopwatch' => service('content.build.stopwatch'),
+            '$stopwatch' => service('stenope.build.stopwatch'),
         ])
         ->tag('console.command', ['command' => BuildCommand::getDefaultName()])
 
@@ -78,10 +78,10 @@ return static function (ContainerConfigurator $container): void {
             '$buildDir' => 'The build dir, defined by the extension',
             '$filesToCopy' => 'The files to copy after build, defined by the extension',
             '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
-            '$stopwatch' => service('content.build.stopwatch'),
+            '$stopwatch' => service('stenope.build.stopwatch'),
         ])
 
-        ->set('content.build.stopwatch', Stopwatch::class)->args([true])
+        ->set('stenope.build.stopwatch', Stopwatch::class)->args([true])
 
         // Sitemap
         ->set(PageList::class)

@@ -1,4 +1,4 @@
-content:
+stenope:
     providers:
         Foo\Bar:
             type: files

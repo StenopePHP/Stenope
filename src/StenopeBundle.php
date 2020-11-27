@@ -1,18 +1,18 @@
 <?php
 
 /*
- * This file is part of the "Tom32i/Content" bundle.
+ * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Content;
+namespace Stenope\Bundle;
 
-use Content\DependencyInjection\Compiler\TwigExtensionFixerCompilerPass;
+use Stenope\Bundle\DependencyInjection\Compiler\TwigExtensionFixerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ContentBundle extends Bundle
+class StenopeBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
