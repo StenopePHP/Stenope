@@ -1,8 +1,8 @@
 {
-  "build/app.js": "/content/build/app.cd00f577.js",
-  "build/runtime.js": "/content/build/runtime.787f842e.js",
-  "build/style.css": "/content/build/style.c744a158.css",
-  "build/style.js": "/content/build/style.f7e6629e.js",
-  "build/fonts/icons.ttf": "/content/build/fonts/icons.54399e8f.ttf",
-  "build/fonts/icons.woff": "/content/build/fonts/icons.9087d62f.woff"
+  "build/app.js": "/Stenope/build/app.cd00f577.js",
+  "build/runtime.js": "/Stenope/build/runtime.d8b071ce.js",
+  "build/style.css": "/Stenope/build/style.6ac5f0d4.css",
+  "build/style.js": "/Stenope/build/style.f7e6629e.js",
+  "build/fonts/icons.ttf": "/Stenope/build/fonts/icons.54399e8f.ttf",
+  "build/fonts/icons.woff": "/Stenope/build/fonts/icons.9087d62f.woff"
 }

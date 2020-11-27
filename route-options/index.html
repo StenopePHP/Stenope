@@ -2,31 +2,31 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Route options | Content</title>
+        <title>Route options | Stenope Documentation</title>
         <meta name="description" content="Content documentation">
-                    <link rel="stylesheet" href="/content/build/style.c744a158.css">
+                    <link rel="stylesheet" href="/Stenope/build/style.6ac5f0d4.css">
             </head>
     <body>
         <div class="main">
                             <div class="columns">
                     <aside class="sidebar">
-                        <a href="/content/" class="logo">
-                            Content
+                        <a href="/Stenope/" class="logo">
+                            Stenope
                         </a>
                         <nav class="navigation">
-                                                                                        <a href="/content/troubleshooting" class="">
+                                                                                        <a href="/Stenope/troubleshooting" class="">
                                     Troubleshooting
                                 </a>
-                                                            <a href="/content/route-options" class="active">
+                                                            <a href="/Stenope/route-options" class="active">
                                     Route options
                                 </a>
-                                                            <a href="/content/loading-content" class="">
+                                                            <a href="/Stenope/loading-content" class="">
                                     Declaring and loading content
                                 </a>
-                                                            <a href="/content/supported-formats" class="">
+                                                            <a href="/Stenope/supported-formats" class="">
                                     Supported formats
                                 </a>
-                                                            <a href="/content/syntax-highlighting" class="">
+                                                            <a href="/Stenope/syntax-highlighting" class="">
                                     Syntax highlighting
                                 </a>
                                                     </nav>
@@ -36,10 +36,10 @@
 <p>This packages defines route options to control some of its features.</p>
 <h2 id="ignore-a-route">Ignore a route<a href="#ignore-a-route" class="anchor"></a></h2>
 <p>You may want to exclude some routes from the static generated version of your site.
-In order to ignore such routes during the build, set the <code class="code-inline" id="946f88aebeb7ef7cd3f8710e7ed3285b">content.ignore</code> option to <code class="code-inline" id="b326b5062b2f0e69046810717534cb09">true</code>:</p>
-<pre class="code-multiline language-php"><code class="language-php" id="ca25a8334833cbdefc1ad92e42e2b56a"><span class="token doc-comment comment">/**
+In order to ignore such routes during the build, set the <code class="code-inline" id="a7c8b0686e8f04f5ea4744ae624b1e44">stenope.ignore</code> option to <code class="code-inline" id="b326b5062b2f0e69046810717534cb09">true</code>:</p>
+<pre class="code-multiline language-php"><code class="language-php" id="14ad3b387a97f79c4040bb74cae305e0"><span class="token doc-comment comment">/**
 * @Route("foo", name="foo", options=<span class="token punctuation">{</span>
-*     "content": <span class="token punctuation">{</span>
+*     "stenope": <span class="token punctuation">{</span>
 *         "ignore": true,
 *     <span class="token punctuation">}</span>,
 * <span class="token punctuation">}</span>)
@@ -47,10 +47,10 @@ In order to ignore such routes during the build, set the <code class="code-inlin
 <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">fooAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span></code></pre>
 <h2 id="exclude-a-route-from-sitemap">Exclude a route from sitemap<a href="#exclude-a-route-from-sitemap" class="anchor"></a></h2>
 <p>If you need to exclude some routes from the generated sitemap,
-set the <code class="code-inline" id="cb517aaa210b3dc5ad24e335b6ae42ef">content.sitemap</code> route option to <code class="code-inline" id="68934a3e9455fa72420237eb05902327">false</code>:</p>
-<pre class="code-multiline language-php"><code class="language-php" id="de7bbe1e697ac3c1c7a8d7a8a4c02a16"><span class="token doc-comment comment">/**
+set the <code class="code-inline" id="065aa874099e5ea6d2e01875af87ea57">stenope.sitemap</code> route option to <code class="code-inline" id="68934a3e9455fa72420237eb05902327">false</code>:</p>
+<pre class="code-multiline language-php"><code class="language-php" id="75dcd147b26fc40022f3d307550e24bb"><span class="token doc-comment comment">/**
 * @Route("foo", name="foo", options=<span class="token punctuation">{</span>
-*     "content": <span class="token punctuation">{</span>
+*     "stenope": <span class="token punctuation">{</span>
 *         "sitemap": false,
 *     <span class="token punctuation">}</span>,
 * <span class="token punctuation">}</span>)
@@ -60,10 +60,10 @@ set the <code class="code-inline" id="cb517aaa210b3dc5ad24e335b6ae42ef">content.
                 <footer class="footer">
                                             <a href="https://github.com/Tom32i/content">
                             <span class="icon-github"></span>
-                            Content on Github
+                            Stenope on Github
                         </a>
                                     </footer>
                     </div>
-                    <script src="/content/build/runtime.787f842e.js"></script><script src="/content/build/app.cd00f577.js"></script>
+                    <script src="/Stenope/build/runtime.d8b071ce.js"></script><script src="/Stenope/build/app.cd00f577.js"></script>
             </body>
 </html>

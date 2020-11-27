@@ -2,31 +2,31 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Troubleshooting | Content</title>
+        <title>Troubleshooting | Stenope Documentation</title>
         <meta name="description" content="Content documentation">
-                    <link rel="stylesheet" href="/content/build/style.c744a158.css">
+                    <link rel="stylesheet" href="/Stenope/build/style.6ac5f0d4.css">
             </head>
     <body>
         <div class="main">
                             <div class="columns">
                     <aside class="sidebar">
-                        <a href="/content/" class="logo">
-                            Content
+                        <a href="/Stenope/" class="logo">
+                            Stenope
                         </a>
                         <nav class="navigation">
-                                                                                        <a href="/content/troubleshooting" class="active">
+                                                                                        <a href="/Stenope/troubleshooting" class="active">
                                     Troubleshooting
                                 </a>
-                                                            <a href="/content/route-options" class="">
+                                                            <a href="/Stenope/route-options" class="">
                                     Route options
                                 </a>
-                                                            <a href="/content/loading-content" class="">
+                                                            <a href="/Stenope/loading-content" class="">
                                     Declaring and loading content
                                 </a>
-                                                            <a href="/content/supported-formats" class="">
+                                                            <a href="/Stenope/supported-formats" class="">
                                     Supported formats
                                 </a>
-                                                            <a href="/content/syntax-highlighting" class="">
+                                                            <a href="/Stenope/syntax-highlighting" class="">
                                     Syntax highlighting
                                 </a>
                                                     </nav>
@@ -35,8 +35,8 @@
                         <body><h1 id="troubleshooting">Troubleshooting<a href="#troubleshooting" class="anchor"></a></h1>
 <h2 id="i-have-urls-with-an-extension-in-their-path-which-are-rendered-as-url-index-html-files">I have urls with an extension in their path which are rendered as <code class="code-inline" id="3fd4df4b38f7890ab8920a2a87470ce9">url/index.html</code> files<a href="#i-have-urls-with-an-extension-in-their-path-which-are-rendered-as-url-index-html-files" class="anchor"></a></h2>
 <p>If you have some routes with an extension in their path (e.g: foo.pdf),
-the static site builder may attempt to render it as html at <code class="code-inline" id="f19610a7943a2f871a6ff94666df4a48">foo.pdf/index.html</code>.
-For the builder to understand such urls should be handled differently,
+Stenope may attempt to render it as html at <code class="code-inline" id="f19610a7943a2f871a6ff94666df4a48">foo.pdf/index.html</code>.</p>
+<p>For the builder to understand such urls should be handled differently,
 explicitly provide either the <code class="code-inline" id="1ddcb92ade31c8fbd370001f9b29a7d9">format</code> option in your route definition:</p>
 <pre class="code-multiline language-php"><code class="language-php" id="73c4987c9a05ff60999484815696e500"><span class="token doc-comment comment">/**
 * @Route("foo.pdf", name="foo_pdf", format="pdf")
@@ -56,10 +56,10 @@ explicitly provide either the <code class="code-inline" id="1ddcb92ade31c8fbd370
                 <footer class="footer">
                                             <a href="https://github.com/Tom32i/content">
                             <span class="icon-github"></span>
-                            Content on Github
+                            Stenope on Github
                         </a>
                                     </footer>
                     </div>
-                    <script src="/content/build/runtime.787f842e.js"></script><script src="/content/build/app.cd00f577.js"></script>
+                    <script src="/Stenope/build/runtime.d8b071ce.js"></script><script src="/Stenope/build/app.cd00f577.js"></script>
             </body>
 </html>
