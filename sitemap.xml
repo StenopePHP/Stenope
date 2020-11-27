@@ -2,26 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
             <loc>https://tom32i.github.io/content/</loc>
-            <lastmod>2020-10-22T07:30:21+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T10:24:18+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://tom32i.github.io/content/loading-content</loc>
-            <lastmod>2020-10-22T07:30:21+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T10:24:19+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://tom32i.github.io/content/supported-formats</loc>
-            <lastmod>2020-10-22T07:30:22+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T10:24:19+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://tom32i.github.io/content/syntax-highlighting</loc>
-            <lastmod>2020-10-22T07:30:22+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T10:24:20+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://tom32i.github.io/content/route-options</loc>
-            <lastmod>2020-10-22T07:30:23+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T10:24:20+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://tom32i.github.io/content/troubleshooting</loc>
-            <lastmod>2020-10-22T07:30:23+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T10:24:21+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
     </urlset>
