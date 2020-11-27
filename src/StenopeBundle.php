@@ -20,4 +20,9 @@ class StenopeBundle extends Bundle
 
         $container->addCompilerPass(new TwigExtensionFixerCompilerPass());
     }
+
+    public function getPath()
+    {
+        return \dirname(__DIR__);
+    }
 }

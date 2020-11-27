@@ -33,7 +33,7 @@ jobs:
           author_name: GitHub Actions Bot
           author_email: actions@github.com
           message: '[AUTO] By Github Actions: generate dist files'
-          add: "src/Resources/dist"
+          add: "dist"
           ref: master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

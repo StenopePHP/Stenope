@@ -64,11 +64,11 @@ jobs:
 
       - name: 'Lint YAML'
         if: always() && steps.deps.outcome == 'success'
-        run: bin/lint.yaml.php --parse-tags src/Resources/config
+        run: vendor/bin/yaml-lint --parse-tags config tests/fixtures/app/config
 
       - name: 'Lint Twig'
         if: always() && steps.deps.outcome == 'success'
-        run: bin/lint.twig.php src/Resources/views
+        run: bin/lint.twig.php templates
 
       - name: Run tests
         run: vendor/bin/simple-phpunit --testdox

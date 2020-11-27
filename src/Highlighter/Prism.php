@@ -28,7 +28,7 @@ class Prism implements HighlighterInterface
 
     public function __construct(?string $executable = null, ?Stopwatch $stopwatch = null, ?LoggerInterface $logger = null)
     {
-        $this->executable = $executable ?? __DIR__ . '/../Resources/dist/bin/prism.js';
+        $this->executable = $executable ?? __DIR__ . '/../../dist/bin/prism.js';
         $this->stopwatch = $stopwatch;
         $this->logger = $logger ?? new NullLogger();
     }

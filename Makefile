@@ -1,19 +1,23 @@
+.PHONY: dist
 
 ###########
 # Install #
 ###########
 
 install:
-	composer install
+	composer update
 
 ########
 # Lint #
 ########
 
-lint: lint-phpcsfixer lint-phpstan lint-twig lint-yaml
+lint: lint-phpcsfixer lint-phpstan lint-twig lint-yaml lint-composer
 
 fix-phpcsfixer:
 	vendor/bin/php-cs-fixer fix
+
+lint-composer:
+	composer validate --strict
 
 lint-phpcsfixer:
 	vendor/bin/php-cs-fixer fix --dry-run --diff
@@ -22,10 +26,11 @@ lint-phpstan:
 	vendor/bin/phpstan analyse --memory-limit=-1
 
 lint-twig:
-	php bin/lint.twig.php src/Resources/views
+	php bin/lint.twig.php templates
+	cd tests/fixtures/app && bin/console lint:twig templates -vv
 
 lint-yaml:
-	php bin/lint.yaml.php --parse-tags src/Resources/config
+	vendor/bin/yaml-lint --parse-tags config tests/fixtures/app/config
 
 ########
 # Dist #

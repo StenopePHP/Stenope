@@ -23,7 +23,7 @@ class StenopeExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('services.php');
 
         $container->registerForAutoconfiguration(ContentProviderFactoryInterface::class)->addTag('stenope.content_provider_factory');
@@ -45,7 +45,7 @@ class StenopeExtension extends Extension
 
     public function getXsdValidationBasePath()
     {
-        return __DIR__ . '/../Resources/config/schema';
+        return __DIR__ . '/../../config/schema';
     }
 
     private function processProviders(ContainerBuilder $container, array $providersConfig): void
