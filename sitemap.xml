@@ -2,26 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
             <loc>https://stenopephp.github.io/Stenope/</loc>
-            <lastmod>2020-11-27T11:05:44+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T14:23:17+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/loading-content</loc>
-            <lastmod>2020-11-27T11:05:45+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T14:23:17+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/supported-formats</loc>
-            <lastmod>2020-11-27T11:05:45+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T14:23:18+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/syntax-highlighting</loc>
-            <lastmod>2020-11-27T11:05:46+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T14:23:18+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/route-options</loc>
-            <lastmod>2020-11-27T11:05:46+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T14:23:19+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/troubleshooting</loc>
-            <lastmod>2020-11-27T11:05:47+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2020-11-27T14:23:20+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
     </urlset>
