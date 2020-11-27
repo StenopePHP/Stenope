@@ -69,12 +69,12 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
 <h3 id="listing-content">Listing content<a href="#listing-content" class="anchor"></a></h3>
 <p>In your controller (or service):</p>
-<pre class="code-multiline language-php"><code class="language-php" id="65875b10a9c6f659beb8fe813c7d558b"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<pre class="code-multiline language-php"><code class="language-php" id="faae1f2589dad2d3e11f0a035248bd9d"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Controller</span><span class="token punctuation">;</span>
 
 <span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>FrameworkBundle<span class="token punctuation">\</span>Controller<span class="token punctuation">\</span>AbstractController</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Routing<span class="token punctuation">\</span>Annotation<span class="token punctuation">\</span>Route</span><span class="token punctuation">;</span>
 
@@ -97,12 +97,12 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <h3 id="fetching-a-specific-content">Fetching a specific content<a href="#fetching-a-specific-content" class="anchor"></a></h3>
 <p>The ContentManager uses slugs to identify your content. The <code class="code-inline" id="2dbcba41b9ac4c5d22886ba672463cb4">slug</code> argument must exactly matche the static file name in your content directory.</p>
 <p>Example: <code class="code-inline" id="f341a2e6f77ea7ae8f5b496db7c87605">$contentManager-&gt;getContent(Article::class, 'how-to-train-your-dragon');</code> will fetch the <code class="code-inline" id="a3f6d98021342733f989d9354314b972">content/articles/how-to-train-your-dragon.md</code> article.</p>
-<pre class="code-multiline language-php"><code class="language-php" id="46e2454d6120c2681ada48b565275fd2"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<pre class="code-multiline language-php"><code class="language-php" id="190033a78aa52bc34b7eb799436c6e96"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Controller</span><span class="token punctuation">;</span>
 
 <span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>FrameworkBundle<span class="token punctuation">\</span>Controller<span class="token punctuation">\</span>AbstractController</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Routing<span class="token punctuation">\</span>Annotation<span class="token punctuation">\</span>Route</span><span class="token punctuation">;</span>
 
