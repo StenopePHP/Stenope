@@ -59,6 +59,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "stenope/stenope": {
+        "version": "0.x-dev"
+    },
     "symfony/asset": {
         "version": "v5.1.7"
     },
@@ -313,9 +316,6 @@
     },
     "symfony/yaml": {
         "version": "v5.1.7"
-    },
-    "tom32i/content": {
-        "version": "1.x-dev"
     },
     "twig/extra-bundle": {
         "version": "v3.0.5"

@@ -2,9 +2,8 @@
 
 namespace App\Stenope\Processor;
 
-use App\Model\Page;
-use Stenope\Behaviour\ProcessorInterface;
-use Stenope\Content;
+use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Content;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -42,7 +41,7 @@ class LocalLinkProcessor implements ProcessorInterface
         $data[$this->property] = $crawler->html();
     }
 
-    private function processLink(\DOMElement $link, Content $content): void
+    private function processLink(\DOMElement $link): void
     {
         $href = $link->getAttribute('href');
 

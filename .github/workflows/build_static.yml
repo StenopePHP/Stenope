@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - fix-self-build
 
 jobs:
 
@@ -43,7 +44,7 @@ jobs:
         working-directory: ./doc/app
         run: |
           echo "::group::composer install"
-          composer install --no-progress --no-suggest --ansi
+          composer install --no-progress --ansi
           echo "::endgroup::"
 
           echo "::group::npm install"
