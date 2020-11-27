@@ -66,7 +66,7 @@ In your controller (or service):
 namespace App\Controller;
 
 use App\Model\Article;
-use Stenope\ContentManager;
+use Stenope\Bundle\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -101,7 +101,7 @@ Example: `$contentManager->getContent(Article::class, 'how-to-train-your-dragon'
 namespace App\Controller;
 
 use App\Model\Article;
-use Stenope\ContentManager;
+use Stenope\Bundle\ContentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
