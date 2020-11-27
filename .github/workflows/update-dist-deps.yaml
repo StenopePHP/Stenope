@@ -1,0 +1,47 @@
+name: Update dist dependencies
+
+on:
+  schedule:
+    - cron: '0 9 * * 1' # At 09:00 on Monday.
+
+jobs:
+  update-dist:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout master
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      # https://github.com/actions/setup-node
+      - name: Setup node
+        uses: actions/setup-node@v1
+
+      - name: Update dist dependencies
+        run: make dist-update
+
+      - name: Git status
+        run: git status
+
+      # https://github.com/EndBug/add-and-commit
+      - name: Commit & push changes
+        uses: EndBug/add-and-commit@v4
+        with:
+          author_name: GitHub Actions Bot
+          author_email: actions@github.com
+          message: '[AUTO] By Github Actions: update dist dependencies'
+          add: "package-lock.json"
+          ref: master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # https://github.com/benc-uk/workflow-dispatch
+      - name: Trigger dist workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Generate dist files
+          # The automatically provided token ${{ secrets.GITHUB_TOKEN }} can not be used,
+          # GitHub prevents this token from being able to fire events.
+          # See https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          token: ${{ secrets.ACCESS_TOKEN }}
