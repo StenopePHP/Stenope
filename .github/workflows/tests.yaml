@@ -8,13 +8,73 @@ on:
 
 jobs:
 
-  integration:
-    name: Integration
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          extensions: "json"
+          ini-values: "memory_limit=-1"
+          php-version: "7.4"
+
+      - name: Determine composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=directory::$(composer config cache-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.directory }}
+          key: 7.4-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        id: deps
+        run: |
+          echo "::group::composer update"
+            composer update --no-progress --ansi
+          echo "::endgroup::"
+
+          echo "::group::install phpunit"
+            # Required for PhpStan
+            vendor/bin/simple-phpunit install
+          echo "::endgroup::"
+
+      - name: 'Composer validate'
+        if: always() && steps.deps.outcome == 'success'
+        run: composer validate --strict
+
+      - name: 'PHP CS Fixer'
+        if: always() && steps.deps.outcome == 'success'
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+      - name: 'PhpStan'
+        if: always() && steps.deps.outcome == 'success'
+        run: vendor/bin/phpstan analyse
+
+      - name: 'Lint YAML'
+        if: always() && steps.deps.outcome == 'success'
+        run: vendor/bin/yaml-lint --parse-tags config tests/fixtures/app/config
+
+      - name: 'Lint Twig'
+        if: always() && steps.deps.outcome == 'success'
+        run: bin/lint.twig.php templates
+
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false # don't cancel other matrix jobs on failure
       matrix:
-        php: [ '7.4' ]
+        php: [ '7.4', '8.0' ]
 
     steps:
       - name: Checkout
@@ -39,36 +99,22 @@ jobs:
           key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ matrix.php }}-composer-
 
+      - name: Fixup Composer
+        if: matrix.php == 8.0
+        run: |
+          echo "::group::Fixup Composer platform config for third-parties deps not PHP 8 ready yet"
+            composer config platform.php 7.4.99
+          echo "::endgroup::"
+
       - name: Install dependencies
-        id: deps
         run: |
           echo "::group::composer update"
-          composer update --no-progress --ansi
+            composer update --no-progress --ansi
           echo "::endgroup::"
 
           echo "::group::install phpunit"
-          vendor/bin/simple-phpunit install
+            vendor/bin/simple-phpunit install
           echo "::endgroup::"
-
-      - name: 'Composer validate'
-        if: always() && steps.deps.outcome == 'success'
-        run: composer validate --strict
-
-      - name: 'PHP CS Fixer'
-        if: always() && steps.deps.outcome == 'success'
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff
-
-      - name: 'PhpStan'
-        if: always() && steps.deps.outcome == 'success'
-        run: vendor/bin/phpstan analyse
-
-      - name: 'Lint YAML'
-        if: always() && steps.deps.outcome == 'success'
-        run: vendor/bin/yaml-lint --parse-tags config tests/fixtures/app/config
-
-      - name: 'Lint Twig'
-        if: always() && steps.deps.outcome == 'success'
-        run: bin/lint.twig.php templates
 
       - name: Run tests
         run: vendor/bin/simple-phpunit --testdox

@@ -71,7 +71,7 @@ class BuildTest extends KernelTestCase
         self::assertDirectoryExists(self::$kernel->getProjectDir() . '/build/build');
         self::assertFileExists(self::$kernel->getProjectDir() . '/build/build/app.css');
         self::assertFileExists(self::$kernel->getProjectDir() . '/build/robots.txt');
-        self::assertFileNotExists(self::$kernel->getProjectDir() . '/build/index.php');
+        self::assertFileDoesNotExist(self::$kernel->getProjectDir() . '/build/index.php');
     }
 
     /**

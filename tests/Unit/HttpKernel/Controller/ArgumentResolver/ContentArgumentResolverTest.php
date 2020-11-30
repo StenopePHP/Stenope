@@ -9,6 +9,7 @@
 namespace Stenope\Bundle\Tests\Unit\HttpKernel\Controller\ArgumentResolver;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\ContentManager;
@@ -18,6 +19,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class ContentArgumentResolverTest extends TestCase
 {
+    use ProphecyTrait;
+
     private ContentArgumentResolver $resolver;
 
     /** @var ContentManager|ObjectProphecy */

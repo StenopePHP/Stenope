@@ -10,6 +10,7 @@ namespace Stenope\Bundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
@@ -20,6 +21,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ContentManagerTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testGetContents(): void
     {
         $manager = new ContentManager(
