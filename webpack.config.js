@@ -8,9 +8,9 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-  .setOutputPath('./src/Resources/dist/bin/')
-  .setPublicPath('/src/Resources/dist/bin/')
-  .addEntry('prism', './src/Resources/node/prism.js')
+  .setOutputPath('./dist/bin/')
+  .setPublicPath('/dist/bin/')
+  .addEntry('prism', './node/prism.js')
   .disableSingleRuntimeChunk()
   .cleanupOutputBeforeBuild()
   .enableBuildNotifications()
