@@ -16,6 +16,7 @@ use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\ContentManager;
 use Stenope\Bundle\Provider\ContentProviderInterface;
+use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -41,18 +42,18 @@ class ContentManagerTest extends TestCase
 
         $provider1->supports('App\Foo')->willReturn(true);
         $provider1->listContents()->willReturn([
-            new Content('foo1', 'Foo 1', 'markdown'),
-            new Content('foo2', 'Foo 2', 'html'),
+            new Content('foo1', 'App\Foo', 'Foo 1', 'markdown'),
+            new Content('foo2', 'App\Foo', 'Foo 2', 'html'),
         ]);
 
         $provider2->supports('App\Foo')->willReturn(false);
         $provider2->listContents()->willReturn([
-            new Content('bar1', 'Bar 1', 'markdown'),
+            new Content('bar1', 'App\Foo', 'Bar 1', 'markdown'),
         ]);
 
         $provider3->supports('App\Foo')->willReturn(true);
         $provider3->listContents()->willReturn([
-            new Content('foo3', 'Foo 3', 'markdown'),
+            new Content('foo3', 'App\Foo', 'Foo 3', 'markdown'),
         ]);
 
         $decoder
@@ -113,6 +114,43 @@ class ContentManagerTest extends TestCase
         self::assertSame([
             'Foo 2',
         ], array_column($manager->getContents('App\Foo', null, fn ($foo) => $foo->content === 'Foo 2'), 'content'), 'filtered by function');
+    }
+
+    public function testReverseContent(): void
+    {
+        $manager = new ContentManager(
+            ($decoder = $this->prophesize(DecoderInterface::class))->reveal(),
+            ($denormalizer = $this->prophesize(DenormalizerInterface::class))->reveal(),
+            [
+                ($provider = $this->prophesize(ContentProviderInterface::class))->reveal(),
+                ($reversibleProvider = $this->prophesize(ReversibleContentProviderInterface::class))->reveal(),
+            ],
+            [],
+        );
+
+        $provider->supports(Argument::any())->shouldNotBeCalled();
+        $decoder->decode(Argument::any())->shouldNotBeCalled();
+        $denormalizer->denormalize(Argument::any())->shouldNotBeCalled();
+
+        $context = [
+            'current_path' => '/workspace/project/bar/baz/baz.md',
+            'target_path' => '../../foo.md',
+        ];
+
+        $reversibleProvider->reverse($context)->shouldBeCalledOnce()
+            ->willReturn($content = new Content('bar1', 'App\Foo', 'Bar 1', 'markdown'))
+        ;
+
+        self::assertSame($content, $manager->reverseContent($context), 'content found');
+
+        $context = [
+            'current_path' => '/workspace/project/bar/baz/baz.md',
+            'target_path' => '../../will-not-find.md',
+        ];
+
+        $reversibleProvider->reverse($context)->shouldBeCalledOnce()->willReturn(null);
+
+        self::assertNull($manager->reverseContent($context), 'content not found');
     }
 }
 

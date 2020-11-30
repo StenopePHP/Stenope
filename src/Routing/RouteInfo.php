@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Bundle\Builder;
+namespace Stenope\Bundle\Routing;
 
 use Stenope\Bundle\Builder;
 use Symfony\Component\Routing\Route;
@@ -66,10 +66,57 @@ class RouteInfo
     }
 
     /**
+     * Whether the route is used as the main route to render a specific content.
+     */
+    public function isMainContentRoute(?string $type = null): bool
+    {
+        if (null === $class = $this->route->getOption('stenope')['show']['class'] ?? null) {
+            return false;
+        }
+
+        if (!$this->isGettable()) {
+            throw new \LogicException(sprintf(
+                'Route "%s" is defined as the main route to render contents of type "%s", but the GET method is not allowed.',
+                $this->name,
+                $class
+            ));
+        }
+
+        return $type ? $class === $type : true;
+    }
+
+    /**
+     * Get the name of the route variable in which should be injected the content slug.
+     */
+    public function getMainContentRouteSlugVariable()
+    {
+        if (!$this->isMainContentRoute()) {
+            throw new \LogicException(sprintf(
+                'Route "%s" is not defined as a main route to render contents.',
+                $this->name
+            ));
+        }
+
+        if (!$slugVariable = $this->route->getOption('stenope')['show']['slug'] ?? null) {
+            throw new \LogicException(sprintf(
+                'Route "%s" is defined as a main route to render contents but does not provide the variable used in path to inject the slug.',
+                $this->name
+            ));
+        }
+
+        return $slugVariable;
+    }
+
+    /**
      * Whether to expose or not the route in the generated sitemap.
      */
     public function isMapped(): bool
     {
         return $this->route->getOption('stenope')['sitemap'] ?? !$this->isIgnored();
+    }
+
+    public function getRoute(): Route
+    {
+        return $this->route;
     }
 }

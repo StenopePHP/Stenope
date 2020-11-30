@@ -11,28 +11,39 @@ namespace Stenope\Bundle;
 final class Content
 {
     private string $slug;
+    private string $type;
     private string $rawContent;
     private string $format;
     private ?\DateTime $lastModified;
     private ?\DateTime $createdAt;
+    private array $metadata;
 
     public function __construct(
         string $slug,
+        string $type,
         string $rawContent,
         string $format,
         ?\DateTime $lastModified = null,
-        ?\DateTime $createdAt = null
+        ?\DateTime $createdAt = null,
+        array $metadata = []
     ) {
         $this->slug = $slug;
+        $this->type = $type;
         $this->rawContent = $rawContent;
         $this->format = $format;
         $this->lastModified = $lastModified;
         $this->createdAt = $createdAt;
+        $this->metadata = $metadata;
     }
 
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     public function getRawContent(): string
@@ -53,5 +64,10 @@ final class Content
     public function getFormat(): string
     {
         return $this->format;
+    }
+
+    public function getMetadata(): array
+    {
+        return $this->metadata;
     }
 }

@@ -12,7 +12,7 @@ use Stenope\Bundle\Content;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 
-class LocalFilesystemProvider implements ContentProviderInterface
+class LocalFilesystemProvider implements ReversibleContentProviderInterface
 {
     private string $supportedClass;
     private string $path;
@@ -58,6 +58,25 @@ class LocalFilesystemProvider implements ContentProviderInterface
         return ($file = current(iterator_to_array($files))) ? $this->fromFile($file) : null;
     }
 
+    public function reverse(array $context): ?Content
+    {
+        $currentPath = $context['current_path'] ?? null; // current Content path
+        $target = $context['target_path'] ?? null; // relative path (to current) of the target we want to resolve
+        $expectedPath = \dirname($currentPath) . '/' . $target;
+
+        if (false === $expectedPath = realpath($expectedPath)) {
+            return null;
+        }
+
+        foreach ($this->files() as $file) {
+            if ($file->getRealPath() === $expectedPath) {
+                return $this->fromFile($file);
+            }
+        }
+
+        return null;
+    }
+
     public function supports(string $className): bool
     {
         return $this->supportedClass === $className;
@@ -67,10 +86,14 @@ class LocalFilesystemProvider implements ContentProviderInterface
     {
         return new Content(
             $this->getSlug($file),
+            $this->supportedClass,
             file_get_contents($file->getPathname()),
             self::getFormat($file),
             new \DateTime("@{$file->getMTime()}"),
             null,
+            [
+                'path' => $file->getRealPath(),
+            ]
         );
     }
 

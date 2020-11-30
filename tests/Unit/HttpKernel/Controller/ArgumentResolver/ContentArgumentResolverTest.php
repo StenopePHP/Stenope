@@ -73,7 +73,7 @@ class ContentArgumentResolverTest extends TestCase
 
     public function testResolve(): void
     {
-        $this->manager->getContent('App\Foo', 'foo-1')->willReturn($content = new Content('foo-1', 'Foo 1', 'markdown'));
+        $this->manager->getContent('App\Foo', 'foo-1')->willReturn($content = new Content('foo-1', 'App\Foo', 'Foo 1', 'markdown'));
 
         $request = new Request([], [], ['foo' => 'foo-1']);
         $argument = new ArgumentMetadata('foo', 'App\Foo', false, false, null, false);

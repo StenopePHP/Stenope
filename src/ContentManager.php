@@ -11,6 +11,7 @@ namespace Stenope\Bundle;
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Provider\ContentProviderInterface;
+use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -34,6 +35,9 @@ class ContentManager
 
     /** @var array<string,object> */
     private array $cache = [];
+
+    /** @var array<string,object> */
+    private array $reversedCache = [];
 
     private bool $managerInjected = false;
 
@@ -134,6 +138,36 @@ class ContentManager
         }
 
         throw new \RuntimeException(sprintf('Content not found for type "%s" and id "%s".', $type, $id));
+    }
+
+    public function reverseContent(array $context): ?Content
+    {
+        $key = md5(serialize($context));
+        if (\array_key_exists($key, $this->reversedCache)) {
+            return $this->reversedCache[$key];
+        }
+
+        if ($this->stopwatch) {
+            $event = $this->stopwatch->start('reverse_content', 'stenope');
+        }
+
+        try {
+            foreach ($this->providers as $provider) {
+                if (!$provider instanceof ReversibleContentProviderInterface) {
+                    continue;
+                }
+
+                if ($result = $provider->reverse($context)) {
+                    return $this->reversedCache[$key] = $result;
+                }
+            }
+        } finally {
+            if (isset($event)) {
+                $event->stop();
+            }
+        }
+
+        return $this->reversedCache[$key] = null;
     }
 
     /**

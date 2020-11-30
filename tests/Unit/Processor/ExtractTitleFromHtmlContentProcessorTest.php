@@ -96,6 +96,6 @@ class ExtractTitleFromHtmlContentProcessorTest extends TestCase
 
     private function getDummyContent(): Content
     {
-        return new Content('slug', 'content', 'markdown');
+        return new Content('slug', \stdClass::class, 'content', 'markdown');
     }
 }
