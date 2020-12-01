@@ -150,19 +150,22 @@ class LocalFilesystemProviderTest extends TestCase
             ],
         ];
 
-        yield 'config excluding explicit dir (not as a glob)' => [
-            new LocalFilesystemProvider(
-                'App\Foo',
-                self::FIXTURES_DIR . '/content/excluded_dirs',
-                null,
-                ['bar/'],
-                ['*.md'],
-            ),
-            [
-                'bar (markdown)',
-                'foo/bar (markdown)',
-                'foo/bar/baz (markdown)',
-            ],
-        ];
+        // This one cannot be resolved until https://github.com/symfony/symfony/issues/28158 is.
+        // If one really needs to exclude a dir but not subdirs with the same name, they must use the glob pattern
+        // as in the previous test case sample, despite it may have a big performances impact
+        //yield 'config excluding explicit dir (not as a glob)' => [
+        //    new LocalFilesystemProvider(
+        //        'App\Foo',
+        //        self::FIXTURES_DIR . '/content/excluded_dirs',
+        //        null,
+        //        ['bar/'],
+        //        ['*.md'],
+        //    ),
+        //    [
+        //        'bar (markdown)',
+        //        'foo/bar (markdown)',
+        //        'foo/bar/baz (markdown)',
+        //    ],
+        //];
     }
 }
