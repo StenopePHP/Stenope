@@ -13,7 +13,7 @@
     <php>
         <server name="KERNEL_CLASS" value="App\Kernel" />
         <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="8.3" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9.4" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[self]=0&amp;max[total]=9999&amp;verbose=1" />
     </php>

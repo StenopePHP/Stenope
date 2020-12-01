@@ -5,7 +5,7 @@ parameters:
     bootstrapFiles:
         - tests/bootstrap.php
         - config/tags.php
-        - vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php
+        - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
     excludes_analyse:
         - vendor/

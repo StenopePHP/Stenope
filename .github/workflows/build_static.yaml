@@ -43,20 +43,20 @@ jobs:
         working-directory: ./doc/app
         run: |
           echo "::group::composer install"
-          composer install --no-progress --ansi
+            composer install --no-progress --ansi
           echo "::endgroup::"
 
           echo "::group::npm install"
-          npm install --color=always --no-progress
+            npm install --color=always --no-progress
           echo "::endgroup::"
 
       - name: Warmup
         working-directory: ./doc/app
         run: |
           echo "::group::warmup production env"
-          npx encore production --color=always --no-progress
-          bin/console cache:clear --ansi
-          bin/console cache:warmup --ansi
+            npx encore production --color=always --no-progress
+            bin/console cache:clear --ansi
+            bin/console cache:warmup --ansi
           echo "::endgroup::"
         env:
           APP_ENV: prod
