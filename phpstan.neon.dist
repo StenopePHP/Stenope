@@ -3,14 +3,15 @@ includes:
 
 parameters:
     bootstrapFiles:
-        - tests/bootstrap.php
         - config/tags.php
+        - tests/bootstrap.php
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
     excludes_analyse:
-        - vendor/
         - doc/app/
+        - node_modules/
         - tests/fixtures/app/var/
+        - vendor/
 
     level: 1
 

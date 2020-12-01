@@ -11,7 +11,6 @@ namespace Stenope\Bundle\Provider;
 use Stenope\Bundle\Content;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
-use Symfony\Component\Finder\SplFileInfo;
 
 class LocalFilesystemProvider implements ContentProviderInterface
 {
@@ -37,6 +36,9 @@ class LocalFilesystemProvider implements ContentProviderInterface
         $this->patterns = $patterns;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function listContents(): iterable
     {
         foreach ($this->files() as $file) {
@@ -44,10 +46,13 @@ class LocalFilesystemProvider implements ContentProviderInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getContent(string $slug): ?Content
     {
         $files = $this->files()->filter(
-            fn (SplFileInfo $fileInfo) => trim("{$fileInfo->getRelativePath()}/{$fileInfo->getFilenameWithoutExtension()}", '/') === trim($slug, '/')
+            fn (\SplFileInfo $fileInfo) => trim("{$fileInfo->getRelativePath()}/{$fileInfo->getFilenameWithoutExtension()}", '/') === trim($slug, '/')
         );
 
         return ($file = current(iterator_to_array($files))) ? $this->fromFile($file) : null;
@@ -58,7 +63,7 @@ class LocalFilesystemProvider implements ContentProviderInterface
         return $this->supportedClass === $className;
     }
 
-    private function fromFile(SplFileInfo $file): Content
+    private function fromFile(\SplFileInfo $file): Content
     {
         return new Content(
             $this->getSlug($file),
@@ -75,9 +80,20 @@ class LocalFilesystemProvider implements ContentProviderInterface
             throw new \LogicException(sprintf('Path "%s" is not a directory.', $this->path));
         }
 
+        // Speedup filtering dirs by using `Finder::exclude()` when we identify a dir:
+        $excludedDirs = array_filter($this->excludes, fn (string $pattern) => is_dir("{$this->path}/$pattern"));
+        // Remaining files to exclude can either:
+        // - be an exact file path with same name as an excluded dir
+        // - or the ones from the excluded patterns, minus the previously directories matched.
+        $excludedPatterns = array_diff(
+            $this->excludes,
+            array_filter($excludedDirs, fn (string $pattern) => !is_file("{$this->path}/$pattern"))
+        );
+
         $finder = (new Finder())
             ->in($this->path)
-            ->notPath(array_map(fn ($exclude) => $this->convertPattern($exclude), $this->excludes))
+            ->exclude($excludedDirs)
+            ->notPath(array_map(fn ($exclude) => $this->convertPattern($exclude), $excludedPatterns))
             ->path(array_map(fn ($pattern) => $this->convertPattern($pattern), $this->patterns))
         ;
 
@@ -106,7 +122,7 @@ class LocalFilesystemProvider implements ContentProviderInterface
     /**
      * Get the format of a file from its extension
      */
-    private static function getFormat(SplFileInfo $file): string
+    private static function getFormat(\SplFileInfo $file): string
     {
         $ext = $file->getExtension();
 
@@ -123,7 +139,7 @@ class LocalFilesystemProvider implements ContentProviderInterface
         }
     }
 
-    private function getSlug(SplFileInfo $file): string
+    private function getSlug(\SplFileInfo $file): string
     {
         return substr($file->getRelativePathname(), 0, -(\strlen($file->getExtension()) + 1));
     }
