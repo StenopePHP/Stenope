@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - master
+    paths:
+      - node/
+      - webpack.config.js
+      - package.*
 
 jobs:
   dist:
