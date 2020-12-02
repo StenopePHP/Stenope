@@ -16,7 +16,7 @@
         "symfony/twig-bundle": "^5.1",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.1.*",
-        "stenope/stenope": "0.x-dev",
+        "stenope/stenope": "dev-master",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },
@@ -76,8 +76,8 @@
     },
     "repositories": {
         "stenope/stenope": {
-            "type": "vcs",
-            "url": "https://github.com/StenopePHP/Stenope.git"
+            "type": "path",
+            "url": "../../"
         }
     }
 }
