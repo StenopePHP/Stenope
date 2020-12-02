@@ -1,4 +1,4 @@
-name: Build static
+name: 'Build static'
 
 on:
   push:
@@ -8,18 +8,19 @@ on:
 jobs:
 
   build:
-    name: 🚧  Build & Deploy  🚀
+    name: '🚧  Build & Deploy  🚀'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v2
 
       # https://github.com/actions/setup-node
-      - name: Setup node
+      - name: 'Setup node'
         uses: actions/setup-node@v1
 
-      - name: Setup PHP
+      - name: 'Setup PHP'
         uses: shivammathur/setup-php@v2
         with:
           coverage: "none"
@@ -27,19 +28,19 @@ jobs:
           ini-values: "memory_limit=-1"
           php-version: "7.4"
 
-      - name: Determine composer cache directory
+      - name: 'Determine composer cache directory'
         id: composer-cache
         working-directory: ./doc/app
         run: echo "::set-output name=directory::$(composer config cache-dir)"
 
-      - name: Cache composer dependencies
+      - name: 'Cache composer dependencies'
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.directory }}
           key: composer-${{ hashFiles('./doc/app/**/composer.lock') }}
           restore-keys: composer-
 
-      - name: Install dependencies
+      - name: 'Install dependencies'
         working-directory: ./doc/app
         run: |
           echo "::group::composer install"
@@ -50,7 +51,7 @@ jobs:
             npm install --color=always --no-progress
           echo "::endgroup::"
 
-      - name: Warmup
+      - name: 'Warmup'
         working-directory: ./doc/app
         run: |
           echo "::group::warmup production env"
@@ -62,7 +63,7 @@ jobs:
           APP_ENV: prod
           WEBPACK_PUBLIC_PATH: /Stenope/build
 
-      - name: Build static site
+      - name: 'Build static site'
         working-directory: ./doc/app
         run: bin/console stenope:build --no-interaction -vv --ansi
         env:
@@ -70,7 +71,7 @@ jobs:
           ROUTER_DEFAULT_URI: https://stenopephp.github.io/Stenope
 
       # https://github.com/marketplace/actions/deploy-to-github-pages
-      - name: 🚀 Deploy
+      - name: '🚀 Deploy'
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           COMMIT_MESSAGE: "[AUTO] Static site update"

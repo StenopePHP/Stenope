@@ -1,4 +1,4 @@
-name: Generate dist files
+name: 'Generate dist files'
 
 on:
   workflow_dispatch:
@@ -9,25 +9,27 @@ on:
 jobs:
   dist:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     steps:
       # https://github.com/actions/checkout
-      - name: Checkout master
+      - name: 'Checkout master'
         uses: actions/checkout@v2
         with:
           ref: master
 
       # https://github.com/actions/setup-node
-      - name: Setup node
+      - name: 'Setup node'
         uses: actions/setup-node@v1
 
-      - name: Generate dist
+      - name: 'Generate dist'
         run: make dist-install dist
 
-      - name: Git status
+      - name: 'Git status'
         run: git status
 
       # https://github.com/EndBug/add-and-commit
-      - name: Commit & push changes
+      - name: 'Commit & push changes'
         uses: EndBug/add-and-commit@v4
         with:
           author_name: GitHub Actions Bot
