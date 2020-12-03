@@ -6,7 +6,7 @@ Any `code` block with a `language` attribute will be syntax highlighted.
 
 ### Markdown
 
-In Markdown, specify the language in the opening line will:
+In Markdown, specify the language in the opening line with:
 
 ```markdown
 ​```php
