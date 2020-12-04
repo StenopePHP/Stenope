@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfdb58af48e100d4ecb85c9e8b1248a7",
+    "content-hash": "fff7832afbe26de7fec2d0468fb913e2",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -727,16 +727,10 @@
         {
             "name": "stenope/stenope",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/StenopePHP/Stenope.git",
-                "reference": "945c85a089fc3640c04ec95589947243d665820d"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/StenopePHP/Stenope/zipball/945c85a089fc3640c04ec95589947243d665820d",
-                "reference": "945c85a089fc3640c04ec95589947243d665820d",
-                "shasum": ""
+                "type": "path",
+                "url": "../..",
+                "reference": "b77849adbcb6426293f005f5d3e8ba5915e66f46"
             },
             "require": {
                 "erusev/parsedown": "^1.7.4",
@@ -764,6 +758,7 @@
             "require-dev": {
                 "ekino/phpstan-banned-code": "^0.3.1",
                 "friendsofphp/php-cs-fixer": "^2.16",
+                "phpspec/prophecy-phpunit": "^2.0",
                 "phpstan/phpstan": "^0.12.32",
                 "symfony/browser-kit": "^5.1",
                 "symfony/framework-bundle": "^5.1",
@@ -771,7 +766,6 @@
                 "symfony/twig-bridge": "^5.1",
                 "symfony/twig-bundle": "^5.1"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -811,11 +805,9 @@
                 "static",
                 "symfony"
             ],
-            "support": {
-                "source": "https://github.com/StenopePHP/Stenope/tree/master",
-                "issues": "https://github.com/StenopePHP/Stenope/issues"
-            },
-            "time": "2020-11-27T10:29:47+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "symfony/asset",
