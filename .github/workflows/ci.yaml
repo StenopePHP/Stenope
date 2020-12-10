@@ -1,4 +1,4 @@
-name: 'Tests'
+name: 'CI'
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.directory }}
           key: 7.4-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ matrix.php }}-composer-
+          restore-keys: 7.4-composer-
 
       - name: 'Install dependencies'
         id: deps
