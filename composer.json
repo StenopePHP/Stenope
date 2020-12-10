@@ -31,7 +31,7 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "ext-dom": "*",
         "erusev/parsedown": "^1.7.4",
         "symfony/asset": "^5.1",
