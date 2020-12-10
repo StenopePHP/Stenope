@@ -9,18 +9,16 @@ For the builder to understand such urls should be handled differently,
 explicitly provide either the `format` option in your route definition:
 
 ```php
-/**
-* @Route("foo.pdf", name="foo_pdf", format="pdf")
-*/
+#[Route('foo.pdf', name: 'foo', format: 'pdf')]
 public function renderAsPdf() { /* ... */ }
 ```
 
 or the `_format` request attribute / route default:
 
 ```php
-/**
-* @Route("foo.pdf", name="foo_pdf", defaults={ "_format": "pdf" })
-*/
+#[Route('foo.pdf', name: 'foo', defaults: [
+    '_format' => 'pdf',
+])]
 public function renderAsPdf(Request $request)
 {
    // or directly through request attributes:
