@@ -38,14 +38,12 @@
 Stenope may attempt to render it as html at <code class="code-inline" id="f19610a7943a2f871a6ff94666df4a48">foo.pdf/index.html</code>.</p>
 <p>For the builder to understand such urls should be handled differently,
 explicitly provide either the <code class="code-inline" id="1ddcb92ade31c8fbd370001f9b29a7d9">format</code> option in your route definition:</p>
-<pre class="code-multiline language-php"><code class="language-php" id="73c4987c9a05ff60999484815696e500"><span class="token doc-comment comment">/**
-* @Route("foo.pdf", name="foo_pdf", format="pdf")
-*/</span>
+<pre class="code-multiline language-php"><code class="language-php" id="9146a2569839b32ec0a81fad604e4e1c"><span class="token shell-comment comment">#[Route('foo.pdf', name: 'foo', format: 'pdf')]</span>
 <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">renderAsPdf</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span></code></pre>
 <p>or the <code class="code-inline" id="3d1ae637d16af43051375585b9b019e5">_format</code> request attribute / route default:</p>
-<pre class="code-multiline language-php"><code class="language-php" id="93d293d76fa320a0c423bbbf13735560"><span class="token doc-comment comment">/**
-* @Route("foo.pdf", name="foo_pdf", defaults=<span class="token punctuation">{</span> "_format": "pdf" <span class="token punctuation">}</span>)
-*/</span>
+<pre class="code-multiline language-php"><code class="language-php" id="b8ffe9a9380b33fc33f7fe44d8411918"><span class="token shell-comment comment">#[Route('foo.pdf', name: 'foo', defaults: [</span>
+    <span class="token single-quoted-string string">'_format'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token single-quoted-string string">'pdf'</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
 <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">renderAsPdf</span><span class="token punctuation">(</span>Request <span class="token variable">$request</span><span class="token punctuation">)</span>
 <span class="token punctuation">{</span>
    <span class="token comment">// or directly through request attributes:</span>
