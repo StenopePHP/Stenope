@@ -8,15 +8,13 @@ parameters:
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
     excludes_analyse:
-        - doc/app/
-        - node_modules/
         - tests/fixtures/app/var/
-        - vendor/
 
     level: 1
 
     paths:
-        - '.'
+        - 'src'
+        - 'tests'
 
     banned_code:
         nodes:
