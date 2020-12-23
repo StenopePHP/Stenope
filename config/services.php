@@ -29,11 +29,11 @@ use Stenope\Bundle\Processor\HtmlExternalLinksProcessor;
 use Stenope\Bundle\Processor\HtmlIdProcessor;
 use Stenope\Bundle\Processor\HtmlImageProcessor;
 use Stenope\Bundle\Processor\LastModifiedProcessor;
-use Stenope\Bundle\Processor\LocalLinksProcessor;
+use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
 use Stenope\Bundle\Processor\SlugProcessor;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
-use Stenope\Bundle\Routing\ContentUrlGenerator;
+use Stenope\Bundle\Routing\ContentUrlResolver;
 use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Stenope\Bundle\Service\ImageAssetUtils;
@@ -127,7 +127,10 @@ return static function (ContainerConfigurator $container): void {
                 '$urlGenerator' => service(UrlGenerator::class . '.inner'),
                 '$pageList' => service(PageList::class),
             ])
-        ->set(ContentUrlGenerator::class)->args(['$router' => service('router')])
+        ->set(ContentUrlResolver::class)->args([
+            '$router' => service('router'),
+            '$routes' => 'The routes to resolve types, defined by the extension',
+        ])
 
         // Symfony HttpKernel controller argument resolver
         ->set(ContentArgumentResolver::class)
@@ -160,6 +163,6 @@ return static function (ContainerConfigurator $container): void {
         ->set(ExtractTitleFromHtmlContentProcessor::class)
         ->set(HtmlImageProcessor::class)->args(['$imageAssetUtils' => service(ImageAssetUtils::class)])
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
-        ->set(LocalLinksProcessor::class)->args(['$urlGenerator' => service(ContentUrlGenerator::class)])
+        ->set(ResolveContentLinksProcessor::class)->args(['$resolver' => service(ContentUrlResolver::class)])
     ;
 };

@@ -11,6 +11,7 @@
         <xsd:sequence minOccurs="0">
             <xsd:element name="copy" type="copy_entry" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="provider" type="provider" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="resolve_link" type="resolve_link" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="build_dir" type="xsd:string"/>
     </xsd:complexType>
@@ -23,6 +24,12 @@
         <xsd:attribute name="dest" type="xsd:string"/>
         <xsd:attribute name="fail_if_missing" type="xsd:string"/>
         <xsd:attribute name="ignore_dot_files" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="resolve_link">
+        <xsd:attribute name="route" type="xsd:string" use="required"/>
+        <xsd:attribute name="slug" type="xsd:string" use="required"/>
+        <xsd:attribute name="class" type="xsd:string" use="required"/>
     </xsd:complexType>
 
     <xsd:complexType name="provider">

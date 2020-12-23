@@ -95,8 +95,42 @@ class Configuration implements ConfigurationInterface
         ->end();
 
         $this->addProvidersSection($rootNode);
+        $this->addResolveLinksSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    private function addResolveLinksSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->fixXmlConfig('resolve_link')
+            ->children()
+                ->arrayNode('resolve_links')
+                    ->info('Indicates of to resolve a content type when a link to it is encountered inside anotehr content')
+                    ->example([
+                        'App\Content\Model\Recipe' => [
+                            'route' => 'show_recipe',
+                            'slug' => 'recipe',
+                        ],
+                    ])
+                    ->useAttributeAsKey('class')
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('route')
+                                ->example('show_recipe')
+                                ->info('The name of the route to generate the URL')
+                                ->isRequired()
+                            ->end()
+                            ->scalarNode('slug')
+                                ->example('recipe')
+                                ->info('The name of the route argument in which will be injected the content\'s slug')
+                                ->isRequired()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
     }
 
     private function addProvidersSection(ArrayNodeDefinition $rootNode): void

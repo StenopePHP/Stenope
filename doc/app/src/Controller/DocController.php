@@ -28,14 +28,7 @@ class DocController extends AbstractController
     }
 
     /**
-     * @Route("/{page}", name="page", options={
-     *     "stenope": {
-     *         "show": {
-     *              "class": \App\Model\Page::class,
-     *              "slug": "page",
-     *         },
-     *     },
-     * })
+     * @Route("/{page}", name="page")
      */
     public function page(Page $page)
     {

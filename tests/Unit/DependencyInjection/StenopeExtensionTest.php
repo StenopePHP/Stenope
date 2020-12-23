@@ -12,8 +12,10 @@ use PHPUnit\Framework\TestCase;
 use Stenope\Bundle\Builder;
 use Stenope\Bundle\DependencyInjection\StenopeExtension;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
+use Stenope\Bundle\Routing\ContentUrlResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
+use Symfony\Component\DependencyInjection\Reference;
 
 abstract class StenopeExtensionTest extends TestCase
 {
@@ -92,6 +94,16 @@ abstract class StenopeExtensionTest extends TestCase
             'custom_config_key' => 'custom_value',
             'custom_sequence' => ['custom_sequence_value_1', 'custom_sequence_value_2'],
         ], $customProviderFactory->getArgument('$config'));
+    }
+
+    public function testResolveLinks(): void
+    {
+        $container = $this->createContainerFromFile('resolve_links');
+
+        $resolver = $container->getDefinition(ContentUrlResolver::class);
+        self::assertCount(1, $routes = $resolver->getArgument('$routes'));
+        self::assertInstanceOf(Reference::class, $ref = $routes['Foo\Bar']);
+        self::assertSame(['foo_bar', 'foo', []], $container->getDefinition($ref)->getArguments());
     }
 
     protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder

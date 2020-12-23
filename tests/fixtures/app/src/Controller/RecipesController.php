@@ -71,14 +71,7 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/{recipe}", name="recipe", options={
-     *     "stenope": {
-     *         "show": {
-     *              "class": \App\Model\Recipe::class,
-     *              "slug": "recipe",
-     *         },
-     *     },
-     * })
+     * @Route("/{recipe}", name="recipe")
      */
     public function show(Recipe $recipe)
     {

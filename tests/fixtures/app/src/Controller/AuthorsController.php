@@ -36,14 +36,7 @@ class AuthorsController extends AbstractController
     }
 
     /**
-     * @Route("/{author}", name="author", options={
-     *     "stenope": {
-     *         "show": {
-     *              "class": \App\Model\Author::class,
-     *              "slug": "author",
-     *         },
-     *     },
-     * }))
+     * @Route("/{author}", name="author")
      */
     public function show(Author $author)
     {

@@ -16,6 +16,10 @@ stenope:
         - { src: '%kernel.project_dir%/public/', dest: '.', excludes: 'index.php' }
         - { src: '%kernel.project_dir%/foo/missing-file', fail_if_missing: false }
 
+    resolve_links:
+        App\Model\Author: { route: author, slug: author }
+        App\Model\Recipe: { route: recipe, slug: recipe }
+
     providers:
         App\Model\Recipe: '%kernel.project_dir%/content/recipes'
         App\Model\Author: '%kernel.project_dir%/content/authors'

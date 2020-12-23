@@ -17,6 +17,7 @@ use Stenope\Bundle\Content;
 use Stenope\Bundle\ContentManager;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
+use Stenope\Bundle\ReverseContent\RelativeLinkContext;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -132,10 +133,10 @@ class ContentManagerTest extends TestCase
         $decoder->decode(Argument::any())->shouldNotBeCalled();
         $denormalizer->denormalize(Argument::any())->shouldNotBeCalled();
 
-        $context = [
-            'current_path' => '/workspace/project/bar/baz/baz.md',
-            'target_path' => '../../foo.md',
-        ];
+        $context = new RelativeLinkContext(
+            ['path' => '/workspace/project/bar/baz/baz.md'],
+            '../../foo.md',
+        );
 
         $reversibleProvider->reverse($context)->shouldBeCalledOnce()
             ->willReturn($content = new Content('bar1', 'App\Foo', 'Bar 1', 'markdown'))
@@ -143,10 +144,10 @@ class ContentManagerTest extends TestCase
 
         self::assertSame($content, $manager->reverseContent($context), 'content found');
 
-        $context = [
-            'current_path' => '/workspace/project/bar/baz/baz.md',
-            'target_path' => '../../will-not-find.md',
-        ];
+        $context = new RelativeLinkContext(
+            ['path' => '/workspace/project/bar/baz/baz.md'],
+            '../../will-not-find.md',
+        );
 
         $reversibleProvider->reverse($context)->shouldBeCalledOnce()->willReturn(null);
 

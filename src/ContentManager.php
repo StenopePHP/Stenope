@@ -12,6 +12,7 @@ use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
+use Stenope\Bundle\ReverseContent\Context;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -140,7 +141,7 @@ class ContentManager
         throw new \RuntimeException(sprintf('Content not found for type "%s" and id "%s".', $type, $id));
     }
 
-    public function reverseContent(array $context): ?Content
+    public function reverseContent(Context $context): ?Content
     {
         $key = md5(serialize($context));
         if (\array_key_exists($key, $this->reversedCache)) {

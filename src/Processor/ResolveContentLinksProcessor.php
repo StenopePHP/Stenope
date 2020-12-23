@@ -12,22 +12,23 @@ use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
 use Stenope\Bundle\Behaviour\ContentManagerAwareTrait;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
-use Stenope\Bundle\Routing\ContentUrlGenerator;
+use Stenope\Bundle\ReverseContent\RelativeLinkContext;
+use Stenope\Bundle\Routing\ContentUrlResolver;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Converts relative contents links to urls
+ * Resolve relative links between contents using the route declared in config.
  */
-class LocalLinksProcessor implements ProcessorInterface, ContentManagerAwareInterface
+class ResolveContentLinksProcessor implements ProcessorInterface, ContentManagerAwareInterface
 {
     use ContentManagerAwareTrait;
 
-    private ContentUrlGenerator $urlGenerator;
+    private ContentUrlResolver $resolver;
     private string $property;
 
-    public function __construct(ContentUrlGenerator $urlGenerator, string $property = 'content')
+    public function __construct(ContentUrlResolver $resolver, string $property = 'content')
     {
-        $this->urlGenerator = $urlGenerator;
+        $this->resolver = $resolver;
         $this->property = $property;
     }
 
@@ -77,11 +78,9 @@ class LocalLinksProcessor implements ProcessorInterface, ContentManagerAwareInte
         }
 
         // Internal content link
-        if ($resolved = $this->contentManager->reverseContent([
-            'current_path' => $currentContent->getMetadata()['path'],
-            'target_path' => $href,
-        ])) {
-            $url = $this->urlGenerator->generate($resolved);
+        $context = new RelativeLinkContext($currentContent->getMetadata(), $href);
+        if ($content = $this->contentManager->reverseContent($context)) {
+            $url = $this->resolver->resolveUrl($content);
             $link->setAttribute('href', $url);
         }
     }

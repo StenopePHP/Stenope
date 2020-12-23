@@ -9,6 +9,9 @@
 namespace Stenope\Bundle\Provider;
 
 use Stenope\Bundle\Content;
+use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
+use Stenope\Bundle\ReverseContent\Context;
+use Stenope\Bundle\ReverseContent\RelativeLinkContext;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 
@@ -58,10 +61,19 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
         return ($file = current(iterator_to_array($files))) ? $this->fromFile($file) : null;
     }
 
-    public function reverse(array $context): ?Content
+    public function reverse(Context $context): ?Content
     {
-        $currentPath = $context['current_path'] ?? null; // current Content path
-        $target = $context['target_path'] ?? null; // relative path (to current) of the target we want to resolve
+        if (!$context instanceof RelativeLinkContext) {
+            return null;
+        }
+
+        if (LocalFilesystemProviderFactory::TYPE !== ($context->getCurrentMetadata()['provider'] ?? null)) {
+            // Cannot resolve relative to a non local filesystem content.
+            return null;
+        }
+
+        $currentPath = $context->getCurrentMetadata()['path'] ?? null; // current Content path
+        $target = $context->getTargetPath(); // relative path (to current) of the target we want to resolve
         $expectedPath = \dirname($currentPath) . '/' . $target;
 
         if (false === $expectedPath = realpath($expectedPath)) {
@@ -93,6 +105,7 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
             null,
             [
                 'path' => $file->getRealPath(),
+                'provider' => LocalFilesystemProviderFactory::TYPE,
             ]
         );
     }

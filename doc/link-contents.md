@@ -28,23 +28,25 @@ Cheers [Ogi](../authors/ogi.md) for this recipe.
 attempts to reference another content entry in order to display an HTML link to it.
 
 Stenope is natively able to resolve such relative links, but requires you to 
-provide a main route for the targeted type:
+provide a main route for the targeted type to resolve.
+
+Considering you want to use this route:
 
 ```php
-# AuthorController.php
-
-#[Route('author/{author}', name: 'show_author', options: [
-    'stenope' => [
-        'show' => [
-            'class' => Author::class,
-            'slug' => 'author',
-        ],
-    ],
-])]
+#[Route('author/{author}', name: 'show_author')]
 public function showAuthorAction(Author $author) { /* ... */ }
+```
+
+the config allowing to resolve such links will be:
+
+```php
+# config/packages/stenope.yaml
+stenope:
+    resolve_links:
+        App\Model\Author: { route: 'show_author', slug: 'author' }
 ```
 
 where:
 
-- `stenope.show.class` is the content type being handled.
-- `stenope.show.slug` is the controller argument name in which the slug should be injected.
+- `route` is the route to use for resolving the link.
+- `slug` is the name of the controller argument in which the content slug should be injected.

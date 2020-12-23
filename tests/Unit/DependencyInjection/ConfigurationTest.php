@@ -73,6 +73,24 @@ class ConfigurationTest extends TestCase
         ] + $this->getDefaultConfig(), $config);
     }
 
+    public function testResolveLinksConfig(): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'resolve_links' => [
+                'Foo\Bar' => ['route' => 'show_bar', 'slug' => 'bar'],
+                'Foo\Baz' => ['route' => 'show_baz', 'slug' => 'slug'],
+            ],
+        ]]);
+
+        self::assertEquals([
+            'resolve_links' => [
+                'Foo\Bar' => ['route' => 'show_bar', 'slug' => 'bar'],
+                'Foo\Baz' => ['route' => 'show_baz', 'slug' => 'slug'],
+            ],
+        ] + $this->getDefaultConfig(), $config);
+    }
+
     /**
      * @dataProvider providerProvidersConfig
      */
@@ -254,6 +272,7 @@ class ConfigurationTest extends TestCase
                 ],
             ],
             'providers' => [],
+            'resolve_links' => [],
         ];
     }
 }

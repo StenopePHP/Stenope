@@ -9,8 +9,9 @@
 namespace Stenope\Bundle\Provider;
 
 use Stenope\Bundle\Content;
+use Stenope\Bundle\ReverseContent\Context;
 
 interface ReversibleContentProviderInterface extends ContentProviderInterface
 {
-    public function reverse(array $context): ?Content;
+    public function reverse(Context $context): ?Content;
 }

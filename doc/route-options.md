@@ -29,21 +29,3 @@ set the `stenope.sitemap` route option to `false`:
 ])]
 public function fooAction() { /* ... */ }
 ```
-
-## Declare a main route for showing a content type
-
-You can declare a route as being the main one to use for rendering contents when creating links to them:
-
-```php
-#[Route('recipe/{recipe}', name: 'show_recipe', options: [
-    'stenope' => [
-        'show' => [
-            'class' => Recipe::class,
-            'slug' => 'recipe',
-        ],
-    ],
-])]
-public function showRecipeAction() { /* ... */ }
-```
-
-See [link static contents between them](./link-contents.md)

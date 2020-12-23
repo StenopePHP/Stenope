@@ -9,14 +9,18 @@
 namespace Stenope\Bundle\Tests\Unit\Provider;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\Provider\LocalFilesystemProvider;
+use Stenope\Bundle\ReverseContent\Context;
+use Stenope\Bundle\ReverseContent\RelativeLinkContext;
 use Symfony\Component\VarDumper\Cloner\Stub;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 
 class LocalFilesystemProviderTest extends TestCase
 {
+    use ProphecyTrait;
     use VarDumperTestTrait {
         setUpVarDumper as setUpVarDumperParent;
     }
@@ -75,6 +79,7 @@ class LocalFilesystemProviderTest extends TestCase
               -createdAt: null
               -metadata: [
                 "path" => "$basePath/content/foo/foo.md",
+                "provider" => "files",
               ]
             }
             DUMP,
@@ -102,16 +107,32 @@ class LocalFilesystemProviderTest extends TestCase
             $basePath = self::FIXTURES_DIR . '/content/foo',
         );
 
-        self::assertInstanceOf(Content::class, $resolved = $provider->reverse([
-            'current_path' => "$basePath/bar/baz/baz.md",
-            'target_path' => '../../foo.md',
-        ]), 'target found');
+        self::assertInstanceOf(Content::class, $resolved = $provider->reverse(new RelativeLinkContext(
+            [
+                'path' => "$basePath/bar/baz/baz.md",
+                'provider' => 'files',
+            ],
+            '../../foo.md',
+        )), 'target found');
         self::assertSame('foo', $resolved->getSlug());
 
-        self::assertNull($provider->reverse([
-            'current_path' => "$basePath/bar/baz/baz.md",
-            'target_path' => '../non-existing-file.md',
-        ]), 'target not found');
+        self::assertNull($provider->reverse(new RelativeLinkContext(
+            [
+                'path' => "$basePath/bar/baz/baz.md",
+                'provider' => 'files',
+            ],
+            '../non-existing-file.md',
+        )), 'target not found');
+
+        self::assertNull($provider->reverse(new RelativeLinkContext(
+            [
+                'path' => "$basePath/bar/baz/baz.md",
+                'provider' => 'not-files',
+            ],
+            '../non-existing-file.md',
+        )), 'current content not provided by a filesystem provider');
+
+        self::assertNull($provider->reverse($this->prophesize(Context::class)->reveal()), 'Not a relative link context');
     }
 
     public function provideListContentsData(): iterable

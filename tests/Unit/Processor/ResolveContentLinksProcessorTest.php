@@ -12,10 +12,11 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\ContentManager;
-use Stenope\Bundle\Processor\LocalLinksProcessor;
-use Stenope\Bundle\Routing\ContentUrlGenerator;
+use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
+use Stenope\Bundle\ReverseContent\RelativeLinkContext;
+use Stenope\Bundle\Routing\ContentUrlResolver;
 
-class LocalLinksProcessorTest extends TestCase
+class ResolveContentLinksProcessorTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -34,25 +35,26 @@ class LocalLinksProcessorTest extends TestCase
 
         $currentContent = new Content('some-content', 'SomeContent', 'rawContent', 'markdown', null, null, [
             'path' => '/workspace/project/content/current.md',
+            'provider' => 'files',
         ]);
 
-        $urlGenerator = $this->prophesize(ContentUrlGenerator::class);
+        $urlGenerator = $this->prophesize(ContentUrlResolver::class);
 
-        $processor = new LocalLinksProcessor($urlGenerator->reveal());
+        $processor = new ResolveContentLinksProcessor($urlGenerator->reveal());
 
         $manager = $this->prophesize(ContentManager::class);
         $processor->setContentManager($manager->reveal());
 
-        $manager->reverseContent([
-            'current_path' => $currentContent->getMetadata()['path'],
-            'target_path' => '../other-contents/another-content.md',
-        ])->shouldBeCalledOnce()->willReturn(
+        $manager->reverseContent(new RelativeLinkContext(
+            $currentContent->getMetadata(),
+            '../other-contents/another-content.md',
+        ))->shouldBeCalledOnce()->willReturn(
             $resolvedContent = new Content('some-content', 'AnotherContent', 'rawContent', 'markdown', null, null, [
                 'path' => '/workspace/project/other-contents/another-content.md',
             ])
         );
 
-        $urlGenerator->generate($resolvedContent)->shouldBeCalledOnce()->willReturn('/other-contents-route-path/another-contents');
+        $urlGenerator->resolveUrl($resolvedContent)->shouldBeCalledOnce()->willReturn('/other-contents-route-path/another-contents');
 
         $processor->__invoke($data, \stdClass::class, $currentContent);
 
