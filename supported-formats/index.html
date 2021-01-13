@@ -14,17 +14,17 @@
                             Stenope
                         </a>
                         <nav class="navigation">
-                                                                                        <a href="/Stenope/loading-content" class="">
-                                    Declaring and loading content
-                                </a>
-                                                            <a href="/Stenope/troubleshooting" class="">
-                                    Troubleshooting
+                                                                                        <a href="/Stenope/syntax-highlighting" class="">
+                                    Syntax highlighting
                                 </a>
                                                             <a href="/Stenope/supported-formats" class="active">
                                     Supported formats
                                 </a>
-                                                            <a href="/Stenope/syntax-highlighting" class="">
-                                    Syntax highlighting
+                                                            <a href="/Stenope/troubleshooting" class="">
+                                    Troubleshooting
+                                </a>
+                                                            <a href="/Stenope/loading-content" class="">
+                                    Declaring and loading content
                                 </a>
                                                             <a href="/Stenope/route-options" class="">
                                     Route options
@@ -38,10 +38,10 @@
 <p>The Mardown format allow classic semantic writing, good for blog posts.</p>
 <p>Markdown source files will be decoded into HTML and passed as a <code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code> property for denormalization.
 An optional YAML formatted header can be provided at the beginning of the file to define a list of custom properties.</p>
-<pre class="code-multiline language-markdown"><code class="language-markdown" id="dc07ad954319a13730144807a2700c82"><span class="token hr punctuation">---</span>
-title: "Lorem Ipsum"
-publishDate: 2020-01-01
-<span class="token title important">foo: true
+<pre class="code-multiline language-markdown"><code class="language-markdown" id="dc07ad954319a13730144807a2700c82"><span class="token front-matter-block"><span class="token punctuation">---</span>
+<span class="token font-matter yaml language-yaml"><span class="token key atrule">title</span><span class="token punctuation">:</span> <span class="token string">"Lorem Ipsum"</span>
+<span class="token key atrule">publishDate</span><span class="token punctuation">:</span> <span class="token datetime number">2020-01-01</span>
+<span class="token key atrule">foo</span><span class="token punctuation">:</span> <span class="token boolean important">true</span></span>
 <span class="token punctuation">---</span></span>
 
 <span class="token title important"><span class="token punctuation">#</span> Lorem ipsum dolor sit amet</span>
