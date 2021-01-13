@@ -56,11 +56,13 @@ class ContentManager
     /**
      * List all content for the given type
      *
-     * @param class-string<object>  $type     Model FQCN e.g. "App/Model/Article"
+     * @template T
+     *
+     * @param class-string<T>       $type     Model FQCN e.g. "App/Model/Article"
      * @param string|array|callable $sortBy   String, array or callable
      * @param string|array|callable $filterBy String, array or callable
      *
-     * @return object[] List of decoded contents
+     * @return array<T> List of decoded contents
      */
     public function getContents(string $type, $sortBy = null, $filterBy = null): array
     {
@@ -110,10 +112,12 @@ class ContentManager
     /**
      * Fetch a specific content
      *
-     * @param class-string<object> $type Model FQCN e.g. "App/Model/Article"
-     * @param string               $id   Unique identifier (slug)
+     * @template T
      *
-     * @return object An object of the given type.
+     * @param class-string<T> $type Model FQCN e.g. "App/Model/Article"
+     * @param string          $id   Unique identifier (slug)
+     *
+     * @return T An object of the given type.
      */
     public function getContent(string $type, string $id): object
     {
