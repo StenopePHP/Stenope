@@ -10,6 +10,7 @@ namespace Stenope\Bundle;
 
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
+use Stenope\Bundle\Exception\ContentNotFoundException;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
 use Stenope\Bundle\ReverseContent\Context;
@@ -142,7 +143,7 @@ class ContentManager
             }
         }
 
-        throw new \RuntimeException(sprintf('Content not found for type "%s" and id "%s".', $type, $id));
+        throw new ContentNotFoundException($type, $id);
     }
 
     public function reverseContent(Context $context): ?Content

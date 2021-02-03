@@ -12,6 +12,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Stenope\Bundle\Builder\PageList;
 use Stenope\Bundle\Builder\Sitemap;
+use Stenope\Bundle\Exception\ContentNotFoundException;
 use Stenope\Bundle\HttpFoundation\ContentRequest;
 use Stenope\Bundle\Routing\RouteInfo;
 use Symfony\Component\Console\Helper\Helper;
@@ -72,9 +73,12 @@ class Builder
         $this->stopwatch = $stopwatch ?? new Stopwatch(true);
     }
 
-    public function iterate(bool $sitemap = true, bool $expose = true): \Generator
-    {
-        return yield from $this->doBuild($sitemap, $expose);
+    public function iterate(
+        bool $sitemap = true,
+        bool $expose = true,
+        bool $ignoreContentNotFoundErrors = false
+    ): \Generator {
+        return yield from $this->doBuild($sitemap, $expose, $ignoreContentNotFoundErrors);
     }
 
     /**
@@ -82,9 +86,9 @@ class Builder
      *
      * @return int Number of pages built
      */
-    public function build(bool $sitemap = true, bool $expose = true): int
+    public function build(bool $sitemap = true, bool $expose = true, bool $ignoreContentNotFoundErrors = false): int
     {
-        iterator_to_array($generator = $this->doBuild($sitemap, $expose));
+        iterator_to_array($generator = $this->doBuild($sitemap, $expose, $ignoreContentNotFoundErrors));
 
         return $generator->getReturn();
     }
@@ -92,8 +96,11 @@ class Builder
     /**
      * Build static site
      */
-    private function doBuild(bool $sitemap = true, bool $expose = true): \Generator
-    {
+    private function doBuild(
+        bool $sitemap = true,
+        bool $expose = true,
+        bool $ignoreContentNotFoundErrors = false
+    ): \Generator {
         yield 'start' => $this->notifyContext('Start building');
 
         if (!$this->stopwatch->isStarted('build')) {
@@ -116,7 +123,7 @@ class Builder
         yield 'build_pages' => $this->notifyContext('Building pages...');
 
         $pagesCount = 0;
-        yield from $this->buildPages($pagesCount);
+        yield from $this->buildPages($pagesCount, $ignoreContentNotFoundErrors);
 
         if ($sitemap) {
             yield 'build_sitemap' => $this->notifyContext('Building sitemap...');
@@ -253,7 +260,7 @@ class Builder
      *
      * @param int Number of pages built
      */
-    private function buildPages(int &$pagesCount): iterable
+    private function buildPages(int &$pagesCount, bool $ignoreContentNotFoundErrors = false): iterable
     {
         $this->stopwatch->openSection();
         $this->stopwatch->start('build_pages');
@@ -263,7 +270,7 @@ class Builder
         while ($url = $this->pageList->getNext()) {
             yield $this->notifyContext("Building $url", 1, \count($this->pageList));
 
-            $this->buildUrl($url);
+            $this->buildUrl($url, $ignoreContentNotFoundErrors);
             $this->pageList->markAsDone($url);
         }
 
@@ -348,7 +355,7 @@ class Builder
     /**
      * Build the given Route into a file
      */
-    private function buildUrl(string $url): void
+    private function buildUrl(string $url, bool $ignoreContentNotFoundErrors = false): void
     {
         $periods = $this->stopwatch->lap('build_pages')->getPeriods();
         $period = end($periods);
@@ -361,6 +368,15 @@ class Builder
         try {
             $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
         } catch (\Throwable $exception) {
+            if ($ignoreContentNotFoundErrors && $exception instanceof ContentNotFoundException) {
+                $this->logger->warning('Could not build url "{url}": {exception}', [
+                    'exception' => $exception->getMessage(),
+                    'url' => $url,
+                ]);
+
+                return;
+            }
+
             throw new \Exception(sprintf('Could not build url "%s".', $url), 0, $exception);
         }
 
