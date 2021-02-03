@@ -2,26 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
             <loc>https://stenopephp.github.io/Stenope/</loc>
-            <lastmod>2021-01-13T13:36:48+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
-        </url>
-            <url>
-            <loc>https://stenopephp.github.io/Stenope/loading-content</loc>
-            <lastmod>2021-01-13T13:36:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
-        </url>
-            <url>
-            <loc>https://stenopephp.github.io/Stenope/supported-formats</loc>
-            <lastmod>2021-01-13T13:36:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2021-02-03T15:15:27+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/syntax-highlighting</loc>
-            <lastmod>2021-01-13T13:36:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2021-02-03T15:15:27+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
-            <loc>https://stenopephp.github.io/Stenope/route-options</loc>
-            <lastmod>2021-01-13T13:36:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <loc>https://stenopephp.github.io/Stenope/supported-formats</loc>
+            <lastmod>2021-02-03T15:15:27+00:00</lastmod>                        <changefreq>monthly</changefreq>
+        </url>
+            <url>
+            <loc>https://stenopephp.github.io/Stenope/loading-content</loc>
+            <lastmod>2021-02-03T15:15:27+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/troubleshooting</loc>
-            <lastmod>2021-01-13T13:36:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2021-02-03T15:15:27+00:00</lastmod>                        <changefreq>monthly</changefreq>
+        </url>
+            <url>
+            <loc>https://stenopephp.github.io/Stenope/link-contents</loc>
+            <lastmod>2021-02-03T15:15:27+00:00</lastmod>                        <changefreq>monthly</changefreq>
+        </url>
+            <url>
+            <loc>https://stenopephp.github.io/Stenope/route-options</loc>
+            <lastmod>2021-02-03T15:15:27+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
     </urlset>
