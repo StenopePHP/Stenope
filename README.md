@@ -28,6 +28,7 @@ Build the static site: `bin/console -e prod stenope:build`
 - [How to load static content](doc/loading-content.md)
 - [Supported formats](doc/supported-formats.md)
 - [Syntax Highlighting](doc/syntax-highlighting.md)
+- [Link static contents between them](doc/link-contents.md)
 - [Route options](doc/route-options.md)
 - [Troubleshooting and common mistakes](doc/troubleshooting.md)
 - Decoders #TODO

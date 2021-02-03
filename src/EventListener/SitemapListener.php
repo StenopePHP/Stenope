@@ -8,8 +8,8 @@
 
 namespace Stenope\Bundle\EventListener;
 
-use Stenope\Bundle\Builder\RouteInfo;
 use Stenope\Bundle\Builder\Sitemap;
+use Stenope\Bundle\Routing\RouteInfo;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

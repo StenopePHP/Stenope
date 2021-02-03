@@ -9,10 +9,13 @@
 namespace Stenope\Bundle\Provider;
 
 use Stenope\Bundle\Content;
+use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
+use Stenope\Bundle\ReverseContent\Context;
+use Stenope\Bundle\ReverseContent\RelativeLinkContext;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 
-class LocalFilesystemProvider implements ContentProviderInterface
+class LocalFilesystemProvider implements ReversibleContentProviderInterface
 {
     private string $supportedClass;
     private string $path;
@@ -58,6 +61,34 @@ class LocalFilesystemProvider implements ContentProviderInterface
         return ($file = current(iterator_to_array($files))) ? $this->fromFile($file) : null;
     }
 
+    public function reverse(Context $context): ?Content
+    {
+        if (!$context instanceof RelativeLinkContext) {
+            return null;
+        }
+
+        if (LocalFilesystemProviderFactory::TYPE !== ($context->getCurrentMetadata()['provider'] ?? null)) {
+            // Cannot resolve relative to a non local filesystem content.
+            return null;
+        }
+
+        $currentPath = $context->getCurrentMetadata()['path'] ?? null; // current Content path
+        $target = $context->getTargetPath(); // relative path (to current) of the target we want to resolve
+        $expectedPath = \dirname($currentPath) . '/' . $target;
+
+        if (false === $expectedPath = realpath($expectedPath)) {
+            return null;
+        }
+
+        foreach ($this->files() as $file) {
+            if ($file->getRealPath() === $expectedPath) {
+                return $this->fromFile($file);
+            }
+        }
+
+        return null;
+    }
+
     public function supports(string $className): bool
     {
         return $this->supportedClass === $className;
@@ -67,10 +98,15 @@ class LocalFilesystemProvider implements ContentProviderInterface
     {
         return new Content(
             $this->getSlug($file),
+            $this->supportedClass,
             file_get_contents($file->getPathname()),
             self::getFormat($file),
             new \DateTime("@{$file->getMTime()}"),
             null,
+            [
+                'path' => $file->getRealPath(),
+                'provider' => LocalFilesystemProviderFactory::TYPE,
+            ]
         );
     }
 

@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Bundle\Builder;
+namespace Stenope\Bundle\Routing;
 
 use Stenope\Bundle\Builder;
 use Symfony\Component\Routing\Route;
@@ -71,5 +71,10 @@ class RouteInfo
     public function isMapped(): bool
     {
         return $this->route->getOption('stenope')['sitemap'] ?? !$this->isIgnored();
+    }
+
+    public function getRoute(): Route
+    {
+        return $this->route;
     }
 }

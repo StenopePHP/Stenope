@@ -1,0 +1,3 @@
+stenope:
+    resolve_links:
+        Foo\Bar: { route: foo_bar, slug: foo }

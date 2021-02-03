@@ -1,4 +1,7 @@
 stenope:
+    resolve_links:
+        App\Model\Page: { route: page, slug: page }
+
     providers:
         App\Model\Index:
             type: files

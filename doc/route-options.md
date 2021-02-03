@@ -1,6 +1,6 @@
 # Route options
 
-This packages defines route options to control some of its features.
+This package defines route options to control some of its features.
 
 ## Ignore a route
 

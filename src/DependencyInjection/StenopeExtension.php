@@ -13,6 +13,8 @@ use Stenope\Bundle\Builder;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactoryInterface;
+use Stenope\Bundle\Routing\ContentUrlResolver;
+use Stenope\Bundle\Routing\ResolveContentRoute;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -36,6 +38,7 @@ class StenopeExtension extends Extension
         $container->getDefinition(Builder::class)->replaceArgument('$filesToCopy', $config['copy']);
 
         $this->processProviders($container, $config['providers']);
+        $this->processLinkResolvers($container, $config['resolve_links']);
     }
 
     public function getNamespace()
@@ -58,5 +61,23 @@ class StenopeExtension extends Extension
                 ->addTag('stenope.content_provider')
             ;
         }
+    }
+
+    private function processLinkResolvers(ContainerBuilder $container, $links): void
+    {
+        $references = [];
+        foreach ($links as $class => $link) {
+            $id = sprintf(".%s.$class", ResolveContentRoute::class);
+
+            $container->register($id, ResolveContentRoute::class)->setArguments([
+                $link['route'],
+                $link['slug'],
+                $link['defaults'] ?? [],
+            ]);
+
+            $references[$class] = new Reference($id);
+        }
+
+        $container->getDefinition(ContentUrlResolver::class)->replaceArgument('$routes', $references);
     }
 }

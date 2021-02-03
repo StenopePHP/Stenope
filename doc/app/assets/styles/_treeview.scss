@@ -1,0 +1,13 @@
+@import "~prismjs/plugins/treeview/prism-treeview.css";
+
+.token.treeview-part .entry-name:before {
+  filter: invert(0.5);
+}
+
+.token.treeview-part .entry-name.dotfile {
+  opacity: 0.7;
+}
+
+.token.treeview-part .entry-name.dir {
+  color: $color-primary;
+}
