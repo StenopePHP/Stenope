@@ -30,6 +30,7 @@ Build the static site: `bin/console -e prod stenope:build`
 - [Syntax Highlighting](doc/syntax-highlighting.md)
 - [Link static contents between them](doc/link-contents.md)
 - [Route options](doc/route-options.md)
-- [Troubleshooting and common mistakes](doc/troubleshooting.md)
+- [Twig](doc/twig.md)
 - Decoders #TODO
 - Bonus: How to deploy and host a static site #TODO
+- [Troubleshooting and common mistakes](doc/troubleshooting.md)
