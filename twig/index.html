@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Stenope Documentation</title>
+        <title>Twig | Stenope Documentation</title>
         <meta name="description" content="Content documentation">
                     <link rel="stylesheet" href="/Stenope/build/style.67a893fc.css">
             </head>
@@ -17,7 +17,7 @@
                                                                                         <a href="/Stenope/syntax-highlighting" class="">
                                     Syntax highlighting
                                 </a>
-                                                            <a href="/Stenope/twig" class="">
+                                                            <a href="/Stenope/twig" class="active">
                                     Twig
                                 </a>
                                                             <a href="/Stenope/supported-formats" class="">
@@ -38,32 +38,12 @@
                                                     </nav>
                     </aside>
                     <main class="content">
-                        <body><h1 id="stenope">Stenope<a href="#stenope" class="anchor"></a></h1>
-<blockquote>
-<p>Export your Symfony app as a static website.</p>
-</blockquote>
-<p>Stenope is a <strong>static website building tool for Symfony</strong> with specific goals:</p>
-<ul><li>"You should adapt it to your need, don't adapt your needs to it".</li>
-<li>"It connects with standard Symfony components and feels natural to Symfony developers".</li>
-</ul><h2 id="how-it-works">How it works<a href="#how-it-works" class="anchor"></a></h2>
-<ul><li>🔍 Stenope scans your Symfony app, like a search engine crawler would, and dumps every page to static HTML.</li>
-<li>🛠 Stenope provides tools that you can use in <em>your</em> Symfony code to load and parse static contents (such as Markdown files) into custom PHP model objects.</li>
-<li>⚙️ Stenope gives you a lot of control by providing interfaces and default implementations that are entirely replaceable to suit your custom needs.</li>
-</ul><h2 id="installation">Installation<a href="#installation" class="anchor"></a></h2>
-<pre><code id="121ee92f1a0912cf2f9760b05593601a">composer require stenope/stenope</code></pre>
-<h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
-<p>Build the static site: <code class="code-inline" id="d63ba08274722a27b50af4f8c6f9cf3d">bin/console -e prod stenope:build</code></p>
-<p>✨ Your Symfony app is now a static website in: <code class="code-inline" id="7b7747ec045ae606eb720a1222f56098">/build</code>!</p>
-<h2 id="advanced-usage">Advanced usage<a href="#advanced-usage" class="anchor"></a></h2>
-<ul><li><a href="/Stenope/loading-content">How to load static content</a></li>
-<li><a href="/Stenope/supported-formats">Supported formats</a></li>
-<li><a href="/Stenope/syntax-highlighting">Syntax Highlighting</a></li>
-<li><a href="/Stenope/link-contents">Link static contents between them</a></li>
-<li><a href="/Stenope/route-options">Route options</a></li>
-<li><a href="/Stenope/twig">Twig</a></li>
-<li>Decoders #TODO</li>
-<li>Bonus: How to deploy and host a static site #TODO</li>
-<li><a href="/Stenope/troubleshooting">Troubleshooting and common mistakes</a></li>
+                        <body><h1 id="twig">Twig<a href="#twig" class="anchor"></a></h1>
+<p>Stenope provides a Twig extension to help you interact with the <code class="code-inline" id="8cb155c3cf316c1cbabf961cdcac7159">ContentManager</code>
+from your templates.</p>
+<h2 id="functions">Functions<a href="#functions" class="anchor"></a></h2>
+<ul><li><code class="code-inline" id="685493f794b84a5688fc4dc85b032f44">content_get(type, id)</code>: Fetch a specific content</li>
+<li><code class="code-inline" id="3ac60cf2de6704ea53832c39085f9b55">content_list(type, sortBy, filterBy)</code>: List all contents for a given type</li>
 </ul></body>                    </main>
                 </div>
                 <footer class="footer">
