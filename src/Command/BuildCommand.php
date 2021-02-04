@@ -83,6 +83,12 @@ class BuildCommand extends Command
                 InputOption::VALUE_NONE,
                 'Don\'t expose the public directory'
             )
+            ->addOption(
+                'ignore-content-not-found',
+                null,
+                InputOption::VALUE_NONE,
+                'Ignore content not found errors'
+            )
         ;
     }
 
@@ -129,14 +135,19 @@ class BuildCommand extends Command
 
         $sitemap = $input->getOption('no-sitemap');
         $expose = $input->getOption('no-expose');
+        $ignoreContentNotFoundErrors = $input->getOption('ignore-content-not-found');
 
         if ($input->isInteractive() && $output->isDecorated() && $output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
             // In interactive, ansi compatible envs with normal verbosity, use a progress bar
-            iterator_to_array($progressIterator = new BuildProgressIterator($output, $this->builder->iterate(!$sitemap, !$expose)));
+            iterator_to_array($progressIterator = new BuildProgressIterator($output, $this->builder->iterate(
+                !$sitemap,
+                !$expose,
+                $ignoreContentNotFoundErrors,
+            )));
             $count = \count($progressIterator);
         } else {
             // Otherwise, let the user controls shown information in logs through verbosity
-            $count = $this->builder->build(!$sitemap, !$expose);
+            $count = $this->builder->build(!$sitemap, !$expose, $ignoreContentNotFoundErrors);
             $io->newLine();
         }
 
