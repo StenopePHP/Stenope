@@ -22,12 +22,12 @@ use Stenope\Bundle\EventListener\SitemapListener;
 use Stenope\Bundle\Highlighter\Prism;
 use Stenope\Bundle\Highlighter\Pygments;
 use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
+use Stenope\Bundle\Processor\AssetsProcessor;
 use Stenope\Bundle\Processor\CodeHighlightProcessor;
 use Stenope\Bundle\Processor\ExtractTitleFromHtmlContentProcessor;
 use Stenope\Bundle\Processor\HtmlAnchorProcessor;
 use Stenope\Bundle\Processor\HtmlExternalLinksProcessor;
 use Stenope\Bundle\Processor\HtmlIdProcessor;
-use Stenope\Bundle\Processor\HtmlImageProcessor;
 use Stenope\Bundle\Processor\LastModifiedProcessor;
 use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
 use Stenope\Bundle\Processor\SlugProcessor;
@@ -36,7 +36,7 @@ use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Stenope\Bundle\Routing\ContentUrlResolver;
 use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
-use Stenope\Bundle\Service\ImageAssetUtils;
+use Stenope\Bundle\Service\AssetUtils;
 use Stenope\Bundle\Service\Parsedown;
 use Stenope\Bundle\Twig\ContentExtension;
 use Stenope\Bundle\Twig\ContentRuntime;
@@ -146,7 +146,7 @@ return static function (ContainerConfigurator $container): void {
             ->tag('twig.runtime')
 
         // Assets
-        ->set(ImageAssetUtils::class)
+        ->set(AssetUtils::class)
             ->args(['$assets' => service(Packages::class)])
     ;
 
@@ -161,8 +161,8 @@ return static function (ContainerConfigurator $container): void {
         ->set(HtmlAnchorProcessor::class)
         ->set(HtmlExternalLinksProcessor::class)
         ->set(ExtractTitleFromHtmlContentProcessor::class)
-        ->set(HtmlImageProcessor::class)->args(['$imageAssetUtils' => service(ImageAssetUtils::class)])
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
         ->set(ResolveContentLinksProcessor::class)->args(['$resolver' => service(ContentUrlResolver::class)])
+        ->set(AssetsProcessor::class)->args(['$assetUtils' => service(AssetUtils::class)])
     ;
 };
