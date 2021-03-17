@@ -29,7 +29,7 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => true,
         'simplified_null_return' => false,
         'header_comment' => ['header' => $header],
-        'yoda_style' => null,
+        'yoda_style' => [],
         'no_superfluous_phpdoc_tags' => true,
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'void_return' => true,
