@@ -200,7 +200,7 @@ class ContentManager
 
     private function load(string $type, Content $content)
     {
-        if ($data = $this->cache[$key = $content->getSlug()] ?? false) {
+        if ($data = $this->cache[$key = "$type:{$content->getSlug()}"] ?? false) {
             return $data;
         }
 
