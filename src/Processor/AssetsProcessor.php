@@ -10,17 +10,20 @@ namespace Stenope\Bundle\Processor;
 
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
-use Stenope\Bundle\Service\ImageAssetUtils;
+use Stenope\Bundle\Service\AssetUtils;
 use Symfony\Component\DomCrawler\Crawler;
 
-class HtmlImageProcessor implements ProcessorInterface
+/**
+ * Attempt to resolve local assets URLs using the Asset component for images and links.
+ */
+class AssetsProcessor implements ProcessorInterface
 {
-    private ImageAssetUtils $imageAssetUtils;
+    private AssetUtils $assetUtils;
     private string $property;
 
-    public function __construct(ImageAssetUtils $imageAssetUtils, string $property = 'content')
+    public function __construct(AssetUtils $assetUtils, string $property = 'content')
     {
-        $this->imageAssetUtils = $imageAssetUtils;
+        $this->assetUtils = $assetUtils;
         $this->property = $property;
     }
 
@@ -42,7 +45,11 @@ class HtmlImageProcessor implements ProcessorInterface
         $crawler = new Crawler($data[$this->property]);
 
         foreach ($crawler->filter('img') as $element) {
-            $element->setAttribute('src', $this->imageAssetUtils->getUrl($element->getAttribute('src')));
+            $element->setAttribute('src', $this->assetUtils->getUrl($element->getAttribute('src')));
+        }
+
+        foreach ($crawler->filter('a') as $element) {
+            $element->setAttribute('href', $this->assetUtils->getUrl($element->getAttribute('href')));
         }
 
         $data[$this->property] = $crawler->html();
