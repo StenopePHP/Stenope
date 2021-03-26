@@ -34,6 +34,7 @@ use Stenope\Bundle\Processor\SlugProcessor;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Stenope\Bundle\Routing\ContentUrlResolver;
+use Stenope\Bundle\Routing\RouteInfoCollection;
 use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Stenope\Bundle\Service\AssetUtils;
@@ -73,6 +74,7 @@ return static function (ContainerConfigurator $container): void {
 
         ->set(Builder::class)->args([
             '$router' => service('router'),
+            '$routesInfo' => service(RouteInfoCollection::class),
             '$httpKernel' => service('kernel'),
             '$templating' => service('twig'),
             '$pageList' => service(PageList::class),
@@ -90,7 +92,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(Sitemap::class)
         ->set(SitemapListener::class)
             ->args([
-                '$router' => service('router'),
+                '$routesInfo' => service(RouteInfoCollection::class),
                 '$sitemap' => service(Sitemap::class),
             ])
             ->tag('kernel.event_subscriber')
@@ -124,9 +126,13 @@ return static function (ContainerConfigurator $container): void {
         ->set(UrlGenerator::class)
             ->decorate(UrlGeneratorInterface::class)
             ->args([
+                '$routesInfo' => service(RouteInfoCollection::class),
                 '$urlGenerator' => service(UrlGenerator::class . '.inner'),
                 '$pageList' => service(PageList::class),
             ])
+        ->set(RouteInfoCollection::class)->args([
+            '$router' => service('router'),
+        ])
         ->set(ContentUrlResolver::class)->args([
             '$router' => service('router'),
             '$routes' => 'The routes to resolve types, defined by the extension',

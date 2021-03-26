@@ -27,7 +27,7 @@ class RouteInfo
     }
 
     /**
-     * @return RouteInfo[]
+     * @return array<string,RouteInfo>
      */
     public static function createFromRouteCollection(RouteCollection $collection): array
     {

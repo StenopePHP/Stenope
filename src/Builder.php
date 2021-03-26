@@ -14,7 +14,7 @@ use Stenope\Bundle\Builder\PageList;
 use Stenope\Bundle\Builder\Sitemap;
 use Stenope\Bundle\Exception\ContentNotFoundException;
 use Stenope\Bundle\HttpFoundation\ContentRequest;
-use Stenope\Bundle\Routing\RouteInfo;
+use Stenope\Bundle\Routing\RouteInfoCollection;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -36,6 +36,7 @@ use Twig\Environment;
 class Builder
 {
     private RouterInterface $router;
+    private RouteInfoCollection $routesInfo;
     private HttpKernelInterface $httpKernel;
     private Environment $templating;
     private PageList $pageList;
@@ -52,6 +53,7 @@ class Builder
 
     public function __construct(
         RouterInterface $router,
+        RouteInfoCollection $routesInfo,
         HttpKernelInterface $httpKernel,
         Environment $templating,
         PageList $pageList,
@@ -62,6 +64,7 @@ class Builder
         ?Stopwatch $stopwatch = null
     ) {
         $this->router = $router;
+        $this->routesInfo = $routesInfo;
         $this->httpKernel = $httpKernel;
         $this->templating = $templating;
         $this->pageList = $pageList;
@@ -218,7 +221,7 @@ class Builder
         $this->stopwatch->openSection();
         $this->stopwatch->start('scan_routes');
 
-        $routes = RouteInfo::createFromRouteCollection($this->router->getRouteCollection());
+        $routes = $this->routesInfo;
 
         $this->logger->notice('Scanning {count} routes...', ['count' => \count($routes)]);
 
