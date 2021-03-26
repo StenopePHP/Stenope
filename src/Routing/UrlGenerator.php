@@ -19,18 +19,22 @@ class UrlGenerator implements UrlGeneratorInterface
 {
     private UrlGeneratorInterface $urlGenerator;
     private PageList $pageList;
+    private RouteInfoCollection $routesInfo;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, PageList $pageList)
+    public function __construct(RouteInfoCollection $routesInfo, UrlGeneratorInterface $urlGenerator, PageList $pageList)
     {
         $this->urlGenerator = $urlGenerator;
         $this->pageList = $pageList;
+        $this->routesInfo = $routesInfo;
     }
 
     public function generate($name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        $this->pageList->add(
-            $this->urlGenerator->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL)
-        );
+        if (($routeInfo = $this->routesInfo[$name] ?? null) && !$routeInfo->isIgnored()) {
+            $this->pageList->add(
+                $this->urlGenerator->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL)
+            );
+        }
 
         return $this->urlGenerator->generate($name, $parameters, $referenceType);
     }

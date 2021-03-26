@@ -9,23 +9,22 @@
 namespace Stenope\Bundle\EventListener;
 
 use Stenope\Bundle\Builder\Sitemap;
-use Stenope\Bundle\Routing\RouteInfo;
+use Stenope\Bundle\Routing\RouteInfoCollection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Map all routes into a Sitemap
  */
 class SitemapListener implements EventSubscriberInterface
 {
-    private array $routes;
+    private RouteInfoCollection $routesInfo;
     private Sitemap $sitemap;
 
-    public function __construct(RouterInterface $router, Sitemap $sitemap)
+    public function __construct(RouteInfoCollection $routesInfo, Sitemap $sitemap)
     {
-        $this->routes = RouteInfo::createFromRouteCollection($router->getRouteCollection());
+        $this->routesInfo = $routesInfo;
         $this->sitemap = $sitemap;
     }
 
@@ -38,7 +37,7 @@ class SitemapListener implements EventSubscriberInterface
             return;
         }
 
-        $route = $this->routes[$routeName];
+        $route = $this->routesInfo[$routeName];
 
         if ($route && $route->isMapped() && $request->attributes->get('_canonical')) {
             $this->sitemap->add(
