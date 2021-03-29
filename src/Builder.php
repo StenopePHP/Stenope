@@ -118,15 +118,15 @@ class Builder
 
         $this->scanAllRoutes();
 
-        if ($expose) {
-            yield 'copy' => $this->notifyContext('Copying files');
-            $this->copyFiles();
-        }
-
         yield 'build_pages' => $this->notifyContext('Building pages...');
 
         $pagesCount = 0;
         yield from $this->buildPages($pagesCount, $ignoreContentNotFoundErrors);
+
+        if ($expose) {
+            yield 'copy' => $this->notifyContext('Copying files');
+            $this->copyFiles();
+        }
 
         if ($sitemap) {
             yield 'build_sitemap' => $this->notifyContext('Building sitemap...');
