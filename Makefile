@@ -46,7 +46,7 @@ dist-watch:
 	npx encore dev --watch
 
 dist:
-	npx encore production --color=always --no-progress
+	npx encore production --color
 
 ########
 # Demo #

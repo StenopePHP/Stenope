@@ -1,11 +1,8 @@
 {
   "name": "stenope",
-  "version": "1.0.0",
-  "description": "Stenope",
+  "version": "0.1.0",
+  "description": "Stenope front-end dependencies",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/StenopePHP/Stenope.git"
@@ -17,11 +14,11 @@
   },
   "homepage": "https://github.com/StenopePHP/Stenope#readme",
   "dependencies": {
-    "prismjs": "^1.21.0"
+    "prismjs": "^1.23.0"
   },
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.31.0",
+    "@symfony/webpack-encore": "^1.1.0",
     "babel-plugin-prismjs": "^2.0.1",
-    "webpack-notifier": "^1.8.0"
+    "webpack-notifier": "^1.13.0"
   }
 }
