@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthorsController extends AbstractController
 {
     /**
-     * @Route("/{author<[\w.]+>}.json", name="author_json", format="json", options={
+     * @Route("/{author<[\w.]+>}.json", name="author_json", options={
      *     "stenope": {
      *         "sitemap": false,
      *     },
