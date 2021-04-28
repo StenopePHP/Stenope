@@ -21,8 +21,10 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Route;
@@ -45,6 +47,7 @@ class Builder
     /** Path to output the static site */
     private string $buildDir;
     private FileSystem $files;
+    private MimeTypes $mimeTypes;
 
     /** Files to copy after build */
     private array $filesToCopy;
@@ -72,6 +75,7 @@ class Builder
         $this->buildDir = $buildDir;
         $this->filesToCopy = $filesToCopy;
         $this->files = new Filesystem();
+        $this->mimeTypes = new MimeTypes();
         $this->logger = $logger ?? new NullLogger();
         $this->stopwatch = $stopwatch ?? new Stopwatch(true);
     }
@@ -392,7 +396,7 @@ class Builder
         $output = ob_get_clean();
         $content = $response->getContent() ?: $output;
 
-        [$path, $file] = $this->getFilePath($request);
+        [$path, $file] = $this->getFilePath($request, $response);
 
         $this->write($content, $path, $file);
 
@@ -406,20 +410,27 @@ class Builder
     /**
      * Get file path from URL
      */
-    private function getFilePath(Request $request): array
+    private function getFilePath(Request $request, Response $response): array
     {
         $url = $request->getPathInfo();
         $info = pathinfo($url);
         $extension = $info['extension'] ?? null;
 
         // If the request has html format, but the .html extension is not already part of the url
-        if ('html' === $request->getRequestFormat() && 'html' !== $extension) {
+        if ('html' !== $extension && $this->isHtml($request, $response)) {
             // we must generate an index.html file
             return [$url, 'index.html'];
         }
 
         // otherwise, dump as is:
         return [$info['dirname'], $info['basename']];
+    }
+
+    private function isHtml(Request $request, Response $response): bool
+    {
+        $contentType = explode(';', $response->headers->get('Content-Type'))[0];
+
+        return \in_array('html', $this->mimeTypes->getExtensions($contentType)) || 'html' === $request->getRequestFormat(null);
     }
 
     /**
