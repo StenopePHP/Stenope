@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Route;
@@ -47,7 +47,7 @@ class Builder
     /** Path to output the static site */
     private string $buildDir;
     private FileSystem $files;
-    private MimeTypes $mimeTypes;
+    private MimeTypesInterface $mimeTypes;
 
     /** Files to copy after build */
     private array $filesToCopy;
@@ -59,6 +59,7 @@ class Builder
         RouteInfoCollection $routesInfo,
         HttpKernelInterface $httpKernel,
         Environment $templating,
+        MimeTypesInterface $mimeTypes,
         PageList $pageList,
         Sitemap $sitemap,
         string $buildDir,
@@ -70,12 +71,12 @@ class Builder
         $this->routesInfo = $routesInfo;
         $this->httpKernel = $httpKernel;
         $this->templating = $templating;
+        $this->mimeTypes = $mimeTypes;
         $this->pageList = $pageList;
         $this->sitemap = $sitemap;
         $this->buildDir = $buildDir;
         $this->filesToCopy = $filesToCopy;
         $this->files = new Filesystem();
-        $this->mimeTypes = new MimeTypes();
         $this->logger = $logger ?? new NullLogger();
         $this->stopwatch = $stopwatch ?? new Stopwatch(true);
     }
@@ -428,9 +429,13 @@ class Builder
 
     private function isHtml(Request $request, Response $response): bool
     {
-        $contentType = explode(';', $response->headers->get('Content-Type'))[0];
+        if ('html' === $request->getRequestFormat(null)) {
+            return true;
+        }
 
-        return \in_array('html', $this->mimeTypes->getExtensions($contentType)) || 'html' === $request->getRequestFormat(null);
+        $contentType = explode(';', $response->headers->get('Content-Type', 'text/html'))[0];
+
+        return \in_array('html', $this->mimeTypes->getExtensions($contentType));
     }
 
     /**
