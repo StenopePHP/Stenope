@@ -43,6 +43,7 @@ use Stenope\Bundle\Twig\ContentExtension;
 use Stenope\Bundle\Twig\ContentRuntime;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -77,6 +78,7 @@ return static function (ContainerConfigurator $container): void {
             '$routesInfo' => service(RouteInfoCollection::class),
             '$httpKernel' => service('kernel'),
             '$templating' => service('twig'),
+            '$mimeTypes' => service(MimeTypesInterface::class),
             '$pageList' => service(PageList::class),
             '$sitemap' => service(Sitemap::class),
             '$buildDir' => 'The build dir, defined by the extension',

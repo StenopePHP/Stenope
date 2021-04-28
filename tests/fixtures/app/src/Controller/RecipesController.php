@@ -55,7 +55,7 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/{recipe}.pdf", name="recipe_pdf", format="pdf", options={
+     * @Route("/{recipe}.pdf", name="recipe_pdf", options={
      *     "stenope": {
      *         "sitemap": false,
      *     },
