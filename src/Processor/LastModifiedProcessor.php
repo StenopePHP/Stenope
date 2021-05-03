@@ -25,7 +25,7 @@ class LastModifiedProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (isset($data[$this->property])) {
+        if (\array_key_exists($this->property, $data)) {
             // Last modified already set.
             return;
         }
