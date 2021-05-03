@@ -8,33 +8,41 @@
 
 namespace Stenope\Bundle\Processor;
 
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Add target="_blank" to external links
  */
 class HtmlExternalLinksProcessor implements ProcessorInterface
 {
+    private HtmlCrawlerManagerInterface $crawlers;
     private string $property;
 
-    public function __construct(string $property = 'content')
+    public function __construct(HtmlCrawlerManagerInterface $crawlers, string $property = 'content')
     {
+        $this->crawlers = $crawlers;
         $this->property = $property;
     }
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
+        if (!isset($data[$this->property])) {
             return;
         }
 
-        $crawler = $data[$this->property];
+        $crawler = $this->crawlers->get($data, $this->property);
+
+        if (!$crawler) {
+            return;
+        }
 
         foreach ($crawler->filter('a') as $element) {
             $this->processLink($element);
         }
+
+        $this->crawlers->save($data, $this->property);
     }
 
     private function processLink(\DOMElement $element): void

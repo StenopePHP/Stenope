@@ -9,6 +9,7 @@
 namespace Stenope\Bundle;
 
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Exception\ContentNotFoundException;
 use Stenope\Bundle\Exception\RuntimeException;
@@ -27,6 +28,7 @@ class ContentManager
     private DecoderInterface $decoder;
     private DenormalizerInterface $denormalizer;
     private PropertyAccessorInterface $propertyAccessor;
+    private HtmlCrawlerManagerInterface $crawlers;
 
     /** @var iterable<ContentProviderInterface>|ContentProviderInterface[] */
     private iterable $providers;
@@ -47,6 +49,7 @@ class ContentManager
     public function __construct(
         DecoderInterface $decoder,
         DenormalizerInterface $denormalizer,
+        HtmlCrawlerManagerInterface $crawlers,
         iterable $contentProviders,
         iterable $processors,
         ?PropertyAccessorInterface $propertyAccessor = null,
@@ -54,6 +57,7 @@ class ContentManager
     ) {
         $this->decoder = $decoder;
         $this->denormalizer = $denormalizer;
+        $this->crawlers = $crawlers;
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->providers = $contentProviders;
         $this->processors = $processors;
@@ -215,12 +219,13 @@ class ContentManager
         $this->initProcessors();
 
         $data = $this->decoder->decode($content->getRawContent(), $content->getFormat());
-        $context = [];
 
         // Apply processors to decoded data
         foreach ($this->processors as $processor) {
-            $processor($data, $type, $content, $context);
+            $processor($data, $type, $content);
         }
+
+        $this->crawlers->saveAll($data);
 
         $data = $this->denormalizer->denormalize($data, $type, $content->getFormat(), [
             SkippingInstantiatedObjectDenormalizer::SKIP => true,

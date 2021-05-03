@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\ContentManager;
@@ -30,6 +31,7 @@ class ContentManagerTest extends TestCase
         $manager = new ContentManager(
             ($decoder = $this->prophesize(DecoderInterface::class))->reveal(),
             ($denormalizer = $this->prophesize(DenormalizerInterface::class))->reveal(),
+            ($crawlers = $this->prophesize(HtmlCrawlerManagerInterface::class))->reveal(),
             [
                 ($provider1 = $this->prophesize(ContentProviderInterface::class))->reveal(),
                 ($provider2 = $this->prophesize(ContentProviderInterface::class))->reveal(),
@@ -133,6 +135,7 @@ class ContentManagerTest extends TestCase
         $manager = new ContentManager(
             ($decoder = $this->prophesize(DecoderInterface::class))->reveal(),
             ($denormalizer = $this->prophesize(DenormalizerInterface::class))->reveal(),
+            ($crawlers = $this->prophesize(HtmlCrawlerManagerInterface::class))->reveal(),
             [
                 ($provider = $this->prophesize(ContentProviderInterface::class))->reveal(),
                 ($reversibleProvider = $this->prophesize(ReversibleContentProviderInterface::class))->reveal(),

@@ -273,6 +273,7 @@ class ConfigurationTest extends TestCase
             ],
             'providers' => [],
             'resolve_links' => [],
+            'shared_html_crawlers' => false,
         ];
     }
 }

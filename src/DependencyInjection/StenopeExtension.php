@@ -8,6 +8,7 @@
 
 namespace Stenope\Bundle\DependencyInjection;
 
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Builder;
 use Stenope\Bundle\Provider\ContentProviderInterface;
@@ -15,6 +16,7 @@ use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactoryInterface;
 use Stenope\Bundle\Routing\ContentUrlResolver;
 use Stenope\Bundle\Routing\ResolveContentRoute;
+use Stenope\Bundle\Service\SharedHtmlCrawlerManager;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -36,6 +38,10 @@ class StenopeExtension extends Extension
 
         $container->getDefinition(Builder::class)->replaceArgument('$buildDir', $config['build_dir']);
         $container->getDefinition(Builder::class)->replaceArgument('$filesToCopy', $config['copy']);
+
+        if ($config['shared_html_crawlers']) {
+            $container->setAlias(HtmlCrawlerManagerInterface::class, SharedHtmlCrawlerManager::class);
+        }
 
         $this->processProviders($container, $config['providers']);
         $this->processLinkResolvers($container, $config['resolve_links']);

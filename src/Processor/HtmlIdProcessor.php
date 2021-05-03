@@ -8,9 +8,9 @@
 
 namespace Stenope\Bundle\Processor;
 
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -19,22 +19,31 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class HtmlIdProcessor implements ProcessorInterface
 {
+    private HtmlCrawlerManagerInterface $crawlers;
     private string $property;
     private SluggerInterface $slugger;
 
-    public function __construct(string $property = 'content', ?SluggerInterface $slugger = null)
-    {
+    public function __construct(
+        HtmlCrawlerManagerInterface $crawlers,
+        string $property = 'content',
+        ?SluggerInterface $slugger = null
+    ) {
+        $this->crawlers = $crawlers;
         $this->property = $property;
         $this->slugger = $slugger ?? new AsciiSlugger();
     }
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        if (!isset($data[$this->property]) || !$data[$this->property] instanceof Crawler) {
+        if (!isset($data[$this->property])) {
             return;
         }
 
-        $crawler = $data[$this->property];
+        $crawler = $this->crawlers->get($data, $this->property);
+
+        if (!$crawler) {
+            return;
+        }
 
         foreach ($crawler->filter('h1, h2, h3, h4, h5, h6') as $element) {
             $this->setIdFromContent($element);
@@ -47,6 +56,8 @@ class HtmlIdProcessor implements ProcessorInterface
         foreach ($crawler->filter('img') as $element) {
             $this->setIdForImage($element);
         }
+
+        $this->crawlers->save($data, $this->property);
     }
 
     private function setIdFromContent(\DOMElement $element): void
