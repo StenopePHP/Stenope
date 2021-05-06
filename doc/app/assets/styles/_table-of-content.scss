@@ -1,0 +1,23 @@
+.table-of-content {
+    margin-top: $gutter;
+    border-top: 0.1rem solid $color-quaternary;
+    padding: $gutter 1rem 0;
+
+    .title {
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .list, .sub-list {
+        list-style: none;
+
+        li {
+            margin: 0.8rem 0;
+            line-height: 1.2;
+        }
+    }
+
+    .sub-list {
+        margin: 0 1.4rem;
+    }
+}

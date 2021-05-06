@@ -15,24 +15,26 @@
             {% block body %}
                 <div class="columns">
                     <aside class="sidebar">
-                        <a href="{{ path('index') }}" class="logo">
-                            Stenope
-                        </a>
-                        <nav class="navigation">
-                            <a href="{{ path('index') }}" class="{{ 'index' == app.request.get('_route') ? 'active' : '' }}">
-                                About
+                        {% block sidebar %}
+                            <a href="{{ path('index') }}" class="logo">
+                                Stenope
                             </a>
-                            {% set current = app.request.attributes.get('_route_params').page|default(null) %}
-                            {% for page in content_list('App\\Model\\Page') %}
-                                <a href="{{ path('page', { page: page.slug }) }}" class="{{ page.slug == current ? 'active' : '' }}">
-                                    {{ page.title }}
+                            <nav class="navigation">
+                                <a href="{{ path('index') }}" class="{{ 'index' == app.request.get('_route') ? 'active' : '' }}">
+                                    About
                                 </a>
-                            {% endfor %}
-                            <a href="https://github.com/StenopePHP/Stenope">
-                                <span class="icon-github"></span>
-                                Github
-                            </a>
-                        </nav>
+                                {% set current = app.request.attributes.get('_route_params').page|default(null) %}
+                                {% for page in content_list('App\\Model\\Page') %}
+                                    <a href="{{ path('page', { page: page.slug }) }}" class="{{ page.slug == current ? 'active' : '' }}">
+                                        {{ page.title }}
+                                    </a>
+                                {% endfor %}
+                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Github
+                                </a>
+                            </nav>
+                        {% endblock %}
                     </aside>
                     <main class="content">
                         {% block content '' %}

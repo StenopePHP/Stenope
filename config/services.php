@@ -31,6 +31,7 @@ use Stenope\Bundle\Processor\HtmlIdProcessor;
 use Stenope\Bundle\Processor\LastModifiedProcessor;
 use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
 use Stenope\Bundle\Processor\SlugProcessor;
+use Stenope\Bundle\Processor\TableOfContentProcessor;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Stenope\Bundle\Routing\ContentUrlResolver;
@@ -172,5 +173,6 @@ return static function (ContainerConfigurator $container): void {
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
         ->set(ResolveContentLinksProcessor::class)->args(['$resolver' => service(ContentUrlResolver::class)])
         ->set(AssetsProcessor::class)->args(['$assetUtils' => service(AssetUtils::class)])
+        ->set(TableOfContentProcessor::class)->tag(tags\content_processor, ['priority' => -100])
     ;
 };

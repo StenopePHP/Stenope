@@ -1,4 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title page.title ~ ' | ' ~ parent() %}
+
 {% block content page.content|raw %}
+
+{% block sidebar %}
+    {{ parent() }}
+    {% include 'component/table_of_content.html.twig' with { tableOfContent: page.tableOfContent } %}
+{% endblock %}
