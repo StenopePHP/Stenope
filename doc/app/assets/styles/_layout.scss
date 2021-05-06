@@ -10,8 +10,8 @@ body {
 
 .main {
     width: 100%;
-    max-width: $screen;
-    padding: 2rem;
+    max-width: 1400px;
+    padding: 2 * $gutter;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -24,16 +24,17 @@ body {
 
 .sidebar {
     display: flex;
+    position: relative;
     flex-direction: column;
-    margin-right: 4rem;
-    width: 200px;
+    margin-right: $gutter * 2;
+    flex-basis: 20rem;
 
     .logo {
         font-size: 2em;
         text-decoration: none;
         color: $color-secondary;
-        margin-bottom: 10px;
-        padding: 0 10px;
+        margin-bottom: $gutter/2;
+        padding: 0 $gutter/2;
 
         &:hover {
             color: $color-primary;
@@ -46,13 +47,17 @@ body {
     flex: 1;
     max-width: 100%;
 
+    *:last-child {
+        margin-bottom: 0;
+    }
+
     pre, code, blockquote, img {
         max-width: 100%;
     }
 }
 
 .footer {
-    margin-top: 6rem;
-    padding: 6rem 0;
+    margin-top: 3 * $gutter;
+    padding-top: 3 * $gutter;
     border-top: 0.1rem solid $color-quaternary;
 }

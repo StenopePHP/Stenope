@@ -1,0 +1,53 @@
+// Mobile + Tablet
+@media (max-width: $screen-m) {
+    .code-inline {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .columns {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        margin-right: 0;
+        margin-bottom: 2 * $gutter;
+        flex-basis: initial;
+
+        .logo {
+            margin-bottom: 0;
+        }
+
+        .navigation {
+            display: none;
+        }
+
+        &:after {
+            content: "\2630";
+            position: absolute;
+            right: 0;
+            font-size: 1.2em;
+            padding: 0.4em;
+            cursor: pointer;
+            width: 2em;
+            text-align: right;
+        }
+
+        &.active {
+            &:after {
+                content: "\2715";
+            }
+            .navigation {
+                display: flex;
+            }
+        }
+    }
+}
+
+// Mobile
+@media (max-width: $screen-s) {
+    .footer {
+        margin-top: 2 * $gutter;
+        padding-top: 2 * $gutter;
+    }
+}

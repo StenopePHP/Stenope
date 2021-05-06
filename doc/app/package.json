@@ -10,13 +10,13 @@
     "build": "encore production --progress"
   },
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.31.0",
-    "core-js": "^3.0.0",
+    "@symfony/webpack-encore": "^1.1.2",
+    "core-js": "^3.12.0",
     "node-sass": "^4.14.1",
     "prismjs": "^1.23.0",
     "regenerator-runtime": "^0.13.2",
     "sass-loader": "^8.0.2",
-    "webpack-notifier": "^1.6.0"
+    "webpack-notifier": "^1.13.0"
   },
   "dependencies": {
     "milligram": "^1.4.1"

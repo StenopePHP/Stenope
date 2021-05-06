@@ -1,14 +1,14 @@
 .SILENT:
 .PHONY: test
 
-# Start server
-start:
-	symfony server:start
-
 # Install dependencies
 install:
 	composer install
 	npm install
+
+# Start server
+start:
+	symfony server:start --no-tls
 
 #########
 # Build #

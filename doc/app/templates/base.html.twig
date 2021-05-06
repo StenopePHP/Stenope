@@ -2,6 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title 'Stenope Documentation' %}</title>
         <meta name="description" content="{% block description 'Content documentation' %}">
         {% block stylesheets %}
@@ -17,26 +19,33 @@
                             Stenope
                         </a>
                         <nav class="navigation">
+                            <a href="{{ path('index') }}" class="{{ 'index' == app.request.get('_route') ? 'active' : '' }}">
+                                About
+                            </a>
                             {% set current = app.request.attributes.get('_route_params').page|default(null) %}
                             {% for page in content_list('App\\Model\\Page') %}
                                 <a href="{{ path('page', { page: page.slug }) }}" class="{{ page.slug == current ? 'active' : '' }}">
                                     {{ page.title }}
                                 </a>
                             {% endfor %}
+                            <a href="https://github.com/StenopePHP/Stenope">
+                                <span class="icon-github"></span>
+                                Github
+                            </a>
                         </nav>
                     </aside>
                     <main class="content">
                         {% block content '' %}
+                        <footer class="footer">
+                            {% block footer %}
+                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Stenope on Github
+                                </a>
+                            {% endblock %}
+                        </footer>
                     </main>
                 </div>
-                <footer class="footer">
-                    {% block footer %}
-                        <a href="https://github.com/StenopePHP/Stenope">
-                            <span class="icon-github"></span>
-                            Stenope on Github
-                        </a>
-                    {% endblock %}
-                </footer>
             {% endblock %}
         </div>
         {% block javascripts %}
