@@ -1,6 +1,7 @@
-@import './_variables.scss';
+@import './_variables';
+@import './_normalize';
 
-@import '~milligram/src/milligram.sass';
+@import '~milligram/src/milligram';
 
 @import './layout';
 @import './navigation';
@@ -8,3 +9,4 @@
 @import './typography';
 @import './treeview';
 @import './icons';
+@import './responsive';

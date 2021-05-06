@@ -9,8 +9,12 @@ $color-quaternary: #d1d1d1;
 $color-quinary: #e1e1e1;
 
 /* Size */
-$gutter: 20px;
+$gutter: 2rem;
 $screen: 960px;
+
+// Breakpoints
+$screen-m: 1200px; // desktop
+$screen-s: 768px;  // phone
 
 /* Code highlighting */
 $code-font: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
