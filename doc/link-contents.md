@@ -1,4 +1,4 @@
-# Link static contents between them
+# Linking contents
 
 Given the following structure:
 
@@ -12,7 +12,7 @@ content/
     └── tom32i.md
 ```
 
-where the recipes and authors contents are respectively handled with `Recipe` 
+where the recipes and authors contents are respectively handled with `Recipe`
 and `Authors` types and rendered by their own controllers.
 
 Such an `ogito.md` recipe
@@ -27,7 +27,7 @@ Cheers [Ogi](../authors/ogi.md) for this recipe.
 
 attempts to reference another content entry in order to display an HTML link to it.
 
-Stenope is natively able to resolve such relative links, but requires you to 
+Stenope is natively able to resolve such relative links, but requires you to
 provide a main route for the targeted type to resolve.
 
 Considering you want to use this route:

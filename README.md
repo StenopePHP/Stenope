@@ -1,29 +1,54 @@
 # Stenope
 
-> Export your Symfony app as a static website.
+> The static website generation tool for Symfony.
 
-Stenope is a **static website building tool for Symfony** with specific goals:
-- "You should adapt it to your need, don't adapt your needs to it".
-- "It connects with standard Symfony components and feels natural to Symfony developers".
+## Why another static site generator?
 
-## How it works
+We're Symfony developers that couldn't find a static website generator that bended to our needs.
 
-- 🔍 Stenope scans your Symfony app, like a search engine crawler would, and dumps every page to static HTML.
-- 🛠 Stenope provides tools that you can use in _your_ Symfony code to load and parse static contents (such as Markdown files) into custom PHP model objects.
-- ⚙️ Stenope gives you a lot of control by providing interfaces and default implementations that are entirely replaceable to suit your custom needs.
+We needed a way of generatating static websites that:
+
+- Doesn't impose a format, a structure or a location for the data.
+- Runs in a [Symfony](symfony.com) environement.
+- Allow us to develop virtually any feature we might need.
+
+Stenope does that.
 
 ## Installation
+
+In your Symfony app:
 
     composer require stenope/stenope
 
 ## Usage
 
-Build the static site: `bin/console -e prod stenope:build`
+Just [install Stenope](#installation) and run:
 
-✨ Your Symfony app is now a static website in: `/build`!
+    bin/console -e prod stenope:build ./static
 
+Your Symfony app is now a static website in: `./static`! ✨
 
-## Advanced usage
+## Phylosophy and goals
+
+Stenope was designed with these goals in mind:
+
+- Stenope meets your needs, not the other way around.
+- Stenope runs in any Symfony project out of the box, connects with standard Symfony components and feels natural to Symfony developers.
+- Stenope is highly extensible: features can be replaced, added or removed.
+
+## How it works
+
+- 🔍 Stenope scans your Symfony app (like a search engine crawler would) and dumps every page into a static HTML file.
+- 🛠 Stenope provides tools for loading and parsing various data sources (like local Markdown files or distant headless CMS).
+- 🖌 Stenope enriches the parsed data by applying a serie of modificators (like Syntax Highlinting, slug generation, etc.).
+- 🧲 Stenope finally hydrate your custom PHP objects with the enriched data and provides interfaces for listing and retrieving them (like an ORM would).
+- ⚙️ Stenope gives you a lot of control over the whole process by providing entry points, interfaces and default implementations that are entirely replaceable.
+
+## What Stenope is not
+
+Stenope is not a ready-to-use bloging system: but you could quickly _write your own_ blog system with it!
+
+## In-depth documentation
 
 - [How to load static content](doc/loading-content.md)
 - [Supported formats](doc/supported-formats.md)

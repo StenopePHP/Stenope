@@ -5,6 +5,7 @@ This package defines route options to control some of its features.
 ## Ignore a route
 
 You may want to exclude some routes from the static generated version of your site.
+
 In order to ignore such routes during the build, set the `stenope.ignore` option to `true`:
 
 ```php

@@ -1,4 +1,6 @@
-# Declaring and loading content
+# Loading content
+
+Stenope offers tools to fetch contents from local or distant sources, parse them and hydrate them as domain PHP objects.
 
 Let's do a simple blog.
 
@@ -29,12 +31,12 @@ Register your model in `config/packages/stenope.yaml` by attributing a _path_ to
 ```yaml
 stenope:
   providers:
-    App\Model\Article: '%kernel.project_dir%/content/articles'
+    App\Model\Article: '%kernel.project_dir%/content/articles' # Local directory
 ```
 
 Articles sources files are now expected to be found in the `content/articles` path.
 
-_Note: see [advanced provider configuration](#TODO)_
+<!-- _Note: see [advanced provider configuration](#TODO)_ -->
 
 ### Write your first content
 
@@ -50,13 +52,13 @@ title: "How to train your dragon"
 It's twelve days north of Hopeless and a few degrees south of Freezing to Death. It's located solidly on the Meridian of Misery. My village. In a word, sturdy. It's been here for seven generations, but every single building is new. We've got hunting, fishing, and a charming view of the sunsets. The only problems are the pests. Most places have mice or mosquitoes. We have... dragons.
 ```
 
-_Note: by default, the content of the source file are mapped on the `content` property and the name of the file is mapped on the `slug` property._
+By default, the content of the source file are mapped on the `content` property and the name of the file is mapped on the `slug` property._
 
-Check out all [supported formats](supported-formats.md).
+_Note: Check out all [supported formats](supported-formats.md)._
 
 ## Usage
 
-### Listing content
+### Listing contents
 
 In your controller (or service):
 
@@ -91,7 +93,9 @@ _Note: contents of the same type can very well be writen in different formats._
 
 ### Fetching a specific content
 
-The ContentManager uses slugs to identify your content. The `slug` argument must exactly matche the static file name in your content directory.
+The ContentManager uses slugs to identify your content.
+
+The `slug` argument must exactly matche the static file name in your content directory.
 
 Example: `$contentManager->getContent(Article::class, 'how-to-train-your-dragon');` will fetch the `content/articles/how-to-train-your-dragon.md` article.
 
@@ -209,6 +213,7 @@ $tagedMobileArticles = $this->manager->getContents(
 ### Register a custom denormalizer
 
 For more control over your model denormalization, you can register your own Denormalizer.
+
 Simply, create a service that implements Symfony's `DenormalizerInterface` and supports your model:
 
 ```php
