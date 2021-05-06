@@ -28,3 +28,5 @@ stenope:
               - '*.php'
         - src: '%kernel.project_dir%/../images'
           dest: './images'
+        - src: '%kernel.project_dir%/../../cli.png'
+          dest: './cli.png'

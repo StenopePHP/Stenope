@@ -2,6 +2,8 @@
 
 > The static website generation tool for Symfony.
 
+![CLI](cli.png)
+
 ## Why another static site generator?
 
 We're Symfony developers that couldn't find a static website generator that bended to our needs.
