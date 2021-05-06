@@ -52,11 +52,22 @@ Stenope is not a ready-to-use bloging system: but you could quickly _write your 
 
 ## In-depth documentation
 
-- [How to load static content](doc/loading-content.md)
+### Features
+
+- [CLI usage](doc/cli.md)
+- [Loading and parsing content](doc/loading-content.md)
 - [Supported formats](doc/supported-formats.md)
-- [Syntax Highlighting](doc/syntax-highlighting.md)
-- [Link static contents between them](doc/link-contents.md)
-- [Route options](doc/route-options.md)
-- [Twig](doc/twig.md)
-- Decoders #TODO
-- Bonus: How to deploy and host a static site #TODO
+- [Supported sources](doc/supported-sources.md) #TODO
+- [Syntax highlighting](doc/syntax-highlighting.md)
+- [Linking contents](doc/link-contents.md)
+- [Configuring the build](doc/build-configuration.md)
+- [Twig integration](doc/twig.md)
+
+### Cookbooks
+
+- [Specifying host and base url]() #TODO
+- [Adding custom files to the build]() #TODO
+- [Data source: writing a custom Provider]() #TODO
+- [Data format: writing a custom Decoder]() #TODO
+- [Data manipulation: writing a custom Processor]() #TODO
+- [How to automatically deploy and host a static site]() #TODO

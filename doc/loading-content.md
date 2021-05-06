@@ -2,7 +2,7 @@
 
 Stenope offers tools to fetch contents from local or distant sources, parse them and hydrate them as domain PHP objects.
 
-Let's do a simple blog.
+To illustrate how that works, let's code a simple blog.
 
 ## Setup
 
@@ -16,8 +16,8 @@ Create a simple class that describe your model, here a blog Article:
 namespace App\Model;
 
 class Article {
-    public string $title;
     public string $slug;
+    public string $title;
     public string $content;
     public \DateTimeInterface $created;
     public \DateTimeInterface $lastModified;
@@ -36,7 +36,7 @@ stenope:
 
 Articles sources files are now expected to be found in the `content/articles` path.
 
-<!-- _Note: see [advanced provider configuration](#TODO)_ -->
+_Note: See other possible [type of sources](supported-sources.md)._
 
 ### Write your first content
 
@@ -52,9 +52,9 @@ title: "How to train your dragon"
 It's twelve days north of Hopeless and a few degrees south of Freezing to Death. It's located solidly on the Meridian of Misery. My village. In a word, sturdy. It's been here for seven generations, but every single building is new. We've got hunting, fishing, and a charming view of the sunsets. The only problems are the pests. Most places have mice or mosquitoes. We have... dragons.
 ```
 
-By default, the content of the source file are mapped on the `content` property and the name of the file is mapped on the `slug` property._
+By default, the content of the source file are mapped on the `content` property (Stenope supports Markdown out of the box) and the name of the file is mapped on the `slug` property._
 
-_Note: Check out all [supported formats](supported-formats.md)._
+_Note: Check out all the natively [supported formats](supported-formats.md)._
 
 ## Usage
 
@@ -212,6 +212,8 @@ $tagedMobileArticles = $this->manager->getContents(
 
 ### Register a custom denormalizer
 
+Unless specified otherwise, Stenope will denormalize your objects using the [default Symfony serializer](https://symfony.com/doc/current/components/serializer.html#deserializing-an-object).
+
 For more control over your model denormalization, you can register your own Denormalizer.
 
 Simply, create a service that implements Symfony's `DenormalizerInterface` and supports your model:
@@ -250,5 +252,5 @@ class ArticleDenormalizer implements DenormalizerInterface
 }
 ```
 
-_Note: Using autowiring, denormalizers are automaticaly registered in Symfony Serializer._
+_Note: Using autowiring, denormalizers are automaticaly registered in Symfony serializer._
 
