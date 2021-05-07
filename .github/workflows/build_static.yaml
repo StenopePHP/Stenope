@@ -26,7 +26,7 @@ jobs:
           coverage: "none"
           extensions: "json"
           ini-values: "memory_limit=-1"
-          php-version: "7.4"
+          php-version: "8.0"
 
       - name: 'Determine composer cache directory'
         id: composer-cache
@@ -55,7 +55,7 @@ jobs:
         working-directory: ./doc/app
         run: |
           echo "::group::warmup production env"
-            npx encore production --color=always --no-progress
+            npx encore production --color
             bin/console cache:clear --ansi
             bin/console cache:warmup --ansi
           echo "::endgroup::"
