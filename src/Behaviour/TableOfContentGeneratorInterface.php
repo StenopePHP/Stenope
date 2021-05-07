@@ -11,9 +11,9 @@ namespace Stenope\Bundle\Behaviour;
 interface TableOfContentGeneratorInterface
 {
     /**
-     * @param string $content An HTML DOM
+     * @param string   $content   An HTML DOM
      * @param int|null $fromDepth Minimum title to include (default H1)
-     * @param int|null $toDepth Maximum title to include (default H6)
+     * @param int|null $toDepth   Maximum title to include (default H6)
      *
      * @return Headline[]
      */

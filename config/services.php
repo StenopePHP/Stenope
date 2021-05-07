@@ -163,7 +163,6 @@ return static function (ContainerConfigurator $container): void {
         // Table of content
         ->set(CrawlerTableOfContentGenerator::class)
         ->alias(TableOfContentGeneratorInterface::class, CrawlerTableOfContentGenerator::class);
-    ;
 
     // Tagged Property handlers:
     $container->services()->defaults()->tag(tags\content_processor)

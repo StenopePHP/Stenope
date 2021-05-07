@@ -21,7 +21,6 @@ class CrawlerTableOfContentGenerator implements TableOfContentGeneratorInterface
      */
     public function getTableOfContent(string $content, ?int $fromDepth = null, ?int $toDepth = null): array
     {
-
         $crawler = new Crawler($content);
 
         try {

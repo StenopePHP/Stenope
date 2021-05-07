@@ -11,9 +11,8 @@ declare(strict_types=1);
 namespace Stenope\Bundle\Processor;
 
 use Stenope\Bundle\Behaviour\ProcessorInterface;
-use Stenope\Bundle\Content;
 use Stenope\Bundle\Behaviour\TableOfContentGeneratorInterface;
-use Symfony\Component\DomCrawler\Crawler;
+use Stenope\Bundle\Content;
 
 /**
  * Build a table of content from the content titles

@@ -84,7 +84,7 @@ class CrawlerTableOfContentGeneratorTest extends TestCase
                         ]),
                     ]),
                 ]),
-            ]
+            ],
         ];
 
         yield 'subset' => [
@@ -100,7 +100,7 @@ class CrawlerTableOfContentGeneratorTest extends TestCase
                 ]),
                 new Headline(2, 'AB', 'Nam sed neque'),
                 new Headline(2, 'AC', 'Donec laoreet'),
-            ]
+            ],
         ];
     }
 }
