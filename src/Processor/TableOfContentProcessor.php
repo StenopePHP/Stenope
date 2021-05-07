@@ -12,7 +12,7 @@ namespace Stenope\Bundle\Processor;
 
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
-use Stenope\Bundle\TableOfContent\TableOfContentGenerator;
+use Stenope\Bundle\Behaviour\TableOfContentGeneratorInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -20,52 +20,28 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class TableOfContentProcessor implements ProcessorInterface
 {
+    private TableOfContentGeneratorInterface $generator;
     private string $tableOfContentProperty;
     private string $contentProperty;
-
-    /** Default depth when using `tableOfContent: true` */
-    private int $defaultDepth;
+    private int $minDepth;
+    private int $maxDepth;
 
     public function __construct(
+        TableOfContentGeneratorInterface $generator,
         string $tableOfContentProperty = 'tableOfContent',
         string $contentProperty = 'content',
-        int $defaultDepth = TableOfContentGenerator::MAX_DEPTH
+        int $minDepth = 1,
+        int $maxDepth = 6
     ) {
+        $this->generator = $generator;
         $this->tableOfContentProperty = $tableOfContentProperty;
         $this->contentProperty = $contentProperty;
-        $this->defaultDepth = $defaultDepth;
+        $this->minDepth = $minDepth;
+        $this->maxDepth = $maxDepth;
     }
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        $depth = $this->getDepth($data);
-
-        if ($depth === 0) {
-            return;
-        }
-
-        $crawler = new Crawler($data[$this->contentProperty]);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return;
-        }
-
-        $data[$this->tableOfContentProperty] = TableOfContentGenerator::getTableOfContent($crawler, $depth);
-    }
-
-    private function getDepth(array $data): int
-    {
-        if (!\array_key_exists($this->tableOfContentProperty, $data)) {
-            return 0;
-        }
-
-        if (\is_bool($data[$this->tableOfContentProperty]) && $data[$this->tableOfContentProperty]) {
-            return $this->defaultDepth;
-        }
-
-        return \intval($data[$this->tableOfContentProperty]);
+        $data[$this->tableOfContentProperty] = $this->generator->getTableOfContent($data[$this->contentProperty], $this->minDepth, $this->maxDepth);
     }
 }

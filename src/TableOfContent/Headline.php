@@ -8,7 +8,7 @@
 
 namespace Stenope\Bundle\TableOfContent;
 
-class Headline
+class Headline implements \JsonSerializable
 {
     public int $level;
     public ?string $content;
@@ -17,11 +17,15 @@ class Headline
     public array $children = [];
     public ?Headline $parent = null;
 
-    public function __construct(int $level, ?string $id, ?string $content)
+    public function __construct(int $level, ?string $id, ?string $content, array $children = [])
     {
         $this->level = $level;
         $this->content = $content;
         $this->id = $id;
+
+        foreach ($children as $child) {
+            $this->addChild($child);
+        }
     }
 
     public function addChild(Headline $headline): void
@@ -86,5 +90,15 @@ class Headline
         }
 
         return $this->parent->getParentForLevel($level);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'level' => $this->level,
+            'content' => $this->content,
+            'children' => array_map(fn ($child) => $child->jsonSerialize(), $this->children),
+        ];
     }
 }

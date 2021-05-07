@@ -9,6 +9,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Psr\Log\LoggerInterface;
+use Stenope\Bundle\Behaviour\TableOfContentGeneratorInterface;
 use Stenope\Bundle\Builder;
 use Stenope\Bundle\Builder\PageList;
 use Stenope\Bundle\Builder\Sitemap;
@@ -40,6 +41,7 @@ use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Stenope\Bundle\Service\AssetUtils;
 use Stenope\Bundle\Service\Parsedown;
+use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 use Stenope\Bundle\Twig\ContentExtension;
 use Stenope\Bundle\Twig\ContentRuntime;
 use Symfony\Component\Asset\Packages;
@@ -157,6 +159,10 @@ return static function (ContainerConfigurator $container): void {
         // Assets
         ->set(AssetUtils::class)
             ->args(['$assets' => service(Packages::class)])
+
+        // Table of content
+        ->set(CrawlerTableOfContentGenerator::class)
+        ->alias(TableOfContentGeneratorInterface::class, CrawlerTableOfContentGenerator::class);
     ;
 
     // Tagged Property handlers:
@@ -173,6 +179,10 @@ return static function (ContainerConfigurator $container): void {
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
         ->set(ResolveContentLinksProcessor::class)->args(['$resolver' => service(ContentUrlResolver::class)])
         ->set(AssetsProcessor::class)->args(['$assetUtils' => service(AssetUtils::class)])
-        ->set(TableOfContentProcessor::class)->tag(tags\content_processor, ['priority' => -100])
+        ->set(TableOfContentProcessor::class)
+            ->args([
+                '$generator' => service(TableOfContentGeneratorInterface::class),
+            ])
+            ->tag(tags\content_processor, ['priority' => -100])
     ;
 };
