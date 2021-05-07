@@ -33,3 +33,5 @@ services:
         arguments:
             $minDepth: 2
             $maxDepth: 3
+        tags:
+         - { name: 'stenope.processor', priority: '-100' }

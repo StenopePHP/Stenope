@@ -168,10 +168,11 @@ return static function (ContainerConfigurator $container): void {
     $container->services()->defaults()->tag(tags\content_processor)
         ->set(LastModifiedProcessor::class)
         ->set(SlugProcessor::class)
-        ->set(HtmlIdProcessor::class)->args([
-            '$property' => 'content',
-            '$slugger' => service(SluggerInterface::class),
-        ])
+        ->set(HtmlIdProcessor::class)
+            ->args([
+                '$property' => 'content',
+                '$slugger' => service(SluggerInterface::class),
+            ])
         ->set(HtmlAnchorProcessor::class)
         ->set(HtmlExternalLinksProcessor::class)
         ->set(ExtractTitleFromHtmlContentProcessor::class)

@@ -20,4 +20,12 @@
     .sub-list {
         margin: 0 1.4rem;
     }
+
+    a, a:visited {
+        color: lighten($color-secondary, 20);
+    }
+
+    a:hover, a:active {
+        color: $color-secondary;
+    }
 }
