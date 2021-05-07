@@ -121,9 +121,8 @@ jobs:
       - name: 'Run tests'
         run: vendor/bin/simple-phpunit --testdox
 
-
   build-doc:
-    name: 'Check doc build'
+    name: 'Check documentation build'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
