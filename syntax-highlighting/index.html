@@ -2,9 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Syntax highlighting | Stenope Documentation</title>
         <meta name="description" content="Content documentation">
-                    <link rel="stylesheet" href="/Stenope/build/style.f44fdc75.css">
+                    <link rel="stylesheet" href="/Stenope/build/style.8331126b.css">
             </head>
     <body>
         <div class="main">
@@ -14,14 +16,11 @@
                             Stenope
                         </a>
                         <nav class="navigation">
+                            <a href="/Stenope/" class="">
+                                About
+                            </a>
                                                                                         <a href="/Stenope/supported-formats" class="">
                                     Supported formats
-                                </a>
-                                                            <a href="/Stenope/link-contents" class="">
-                                    Link static contents between them
-                                </a>
-                                                            <a href="/Stenope/syntax-highlighting" class="active">
-                                    Syntax highlighting
                                 </a>
                                                             <a href="/Stenope/route-options" class="">
                                     Route options
@@ -29,10 +28,20 @@
                                                             <a href="/Stenope/twig" class="">
                                     Twig
                                 </a>
+                                                            <a href="/Stenope/link-contents" class="">
+                                    Link static contents between them
+                                </a>
                                                             <a href="/Stenope/loading-content" class="">
                                     Declaring and loading content
                                 </a>
-                                                    </nav>
+                                                            <a href="/Stenope/syntax-highlighting" class="active">
+                                    Syntax highlighting
+                                </a>
+                                                        <a href="https://github.com/StenopePHP/Stenope">
+                                <span class="icon-github"></span>
+                                Github
+                            </a>
+                        </nav>
                     </aside>
                     <main class="content">
                         <body><h1 id="syntax-highlighting">Syntax highlighting<a href="/Stenope/#syntax-highlighting" class="anchor"></a></h1>
@@ -59,15 +68,15 @@
 <p><em>Note: providing a CSS theme that color the code is entirely up to you. You can use any of the official <a href="https://prismjs.com" target="_blank">Prism.js</a> theme out of the box just by loading the CSS file.</em></p>
 <h2 id="custom-syntax-highlighting">Custom syntax highlighting<a href="/Stenope/#custom-syntax-highlighting" class="anchor"></a></h2>
 <p>The default Highlighter responsible for syntax highlighting is based on <a href="https://prismjs.com/" target="_blank">Prism.js</a>, but you can provide your own by implementing <code class="code-inline" id="4a893ca8e5982eca338483e3f09f18cd">Stenope\Behaviour\HighlighterInterface</code>:</p>
-<pre class="code-multiline language-php"><code class="language-php" id="4f0e0c0e03bc7069392f3851e5aa2110"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">highlight</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$value</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$language</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">string</span><span class="token punctuation">;</span></code></pre></body>                    </main>
+<pre class="code-multiline language-php"><code class="language-php" id="4f0e0c0e03bc7069392f3851e5aa2110"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">highlight</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$value</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$language</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">string</span><span class="token punctuation">;</span></code></pre></body>                        <footer class="footer">
+                                                            <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Stenope on Github
+                                </a>
+                                                    </footer>
+                    </main>
                 </div>
-                <footer class="footer">
-                                            <a href="https://github.com/StenopePHP/Stenope">
-                            <span class="icon-github"></span>
-                            Stenope on Github
-                        </a>
-                                    </footer>
                     </div>
-                    <script src="/Stenope/build/runtime.d8b071ce.js"></script><script src="/Stenope/build/app.cd00f577.js"></script>
+                    <script src="/Stenope/build/runtime.a2069aab.js"></script><script src="/Stenope/build/app.4c1a4699.js"></script>
             </body>
 </html>

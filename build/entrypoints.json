@@ -2,17 +2,17 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/Stenope/build/runtime.d8b071ce.js",
-        "/Stenope/build/app.cd00f577.js"
+        "/Stenope/build/runtime.a2069aab.js",
+        "/Stenope/build/app.4c1a4699.js"
       ]
     },
     "style": {
       "js": [
-        "/Stenope/build/runtime.d8b071ce.js",
-        "/Stenope/build/style.ad546ab2.js"
+        "/Stenope/build/runtime.a2069aab.js",
+        "/Stenope/build/style.a779eb1e.js"
       ],
       "css": [
-        "/Stenope/build/style.f44fdc75.css"
+        "/Stenope/build/style.8331126b.css"
       ]
     }
   }
