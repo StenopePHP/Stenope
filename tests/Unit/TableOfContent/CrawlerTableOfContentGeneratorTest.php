@@ -95,7 +95,7 @@ class CrawlerTableOfContentGeneratorTest extends TestCase
                 new Headline(2, 'AA', 'Suspendisse', [
                     new Headline(3, 'AAA', 'Dolor'),
                     new Headline(3, 'AAB', 'Sit amet'),
-                    new Headline(3, 'AAC', 'Magna non rhoncus', ),
+                    new Headline(3, 'AAC', 'Magna non rhoncus'),
                     new Headline(3, 'AAD', 'Sit amet'),
                 ]),
                 new Headline(2, 'AB', 'Nam sed neque'),
