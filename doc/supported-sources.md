@@ -23,6 +23,7 @@ stenope:
     providers:
         App\Model\Recipe: '%kernel.project_dir%/content/recipes'
         App\Model\Cook: '%kernel.project_dir%/content/cooks'
+```
 
 ## Load same content from different sources
 
@@ -46,8 +47,8 @@ stenope:
     providers:
         App\Model\Recipe:
             path: '%kernel.project_dir%/content/recipes'
-            patterns: '*.md' // Only load .md files
-            depth: '< 2' // https://symfony.com/doc/current/components/finder.html#directory-depth
+            patterns: '*.md' # Only load .md files
+            depth: '< 2' # https://symfony.com/doc/current/components/finder.html#directory-depth
         App\Model\Cook:
             path: '%kernel.project_dir%/content/recipes'
             exclude:
