@@ -30,7 +30,7 @@ Just [install Stenope](#installation) and run:
 
 Your Symfony app is now a static website in: `./static`! ✨
 
-## Phylosophy and goals
+## Philosophy and goals
 
 Stenope was designed with these goals in mind:
 
