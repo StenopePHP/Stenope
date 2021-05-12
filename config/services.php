@@ -31,6 +31,7 @@ use Stenope\Bundle\Processor\HtmlIdProcessor;
 use Stenope\Bundle\Processor\LastModifiedProcessor;
 use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
 use Stenope\Bundle\Processor\SlugProcessor;
+use Stenope\Bundle\Processor\TableOfContentProcessor;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Stenope\Bundle\Routing\ContentUrlResolver;
@@ -39,6 +40,7 @@ use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Stenope\Bundle\Service\AssetUtils;
 use Stenope\Bundle\Service\Parsedown;
+use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 use Stenope\Bundle\Twig\ContentExtension;
 use Stenope\Bundle\Twig\ContentRuntime;
 use Symfony\Component\Asset\Packages;
@@ -156,21 +158,30 @@ return static function (ContainerConfigurator $container): void {
         // Assets
         ->set(AssetUtils::class)
             ->args(['$assets' => service(Packages::class)])
-    ;
+
+        // Table of content
+        ->set(CrawlerTableOfContentGenerator::class)
+        ;
 
     // Tagged Property handlers:
     $container->services()->defaults()->tag(tags\content_processor)
         ->set(LastModifiedProcessor::class)
         ->set(SlugProcessor::class)
-        ->set(HtmlIdProcessor::class)->args([
-            '$property' => 'content',
-            '$slugger' => service(SluggerInterface::class),
-        ])
+        ->set(HtmlIdProcessor::class)
+            ->args([
+                '$property' => 'content',
+                '$slugger' => service(SluggerInterface::class),
+            ])
         ->set(HtmlAnchorProcessor::class)
         ->set(HtmlExternalLinksProcessor::class)
         ->set(ExtractTitleFromHtmlContentProcessor::class)
         ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
         ->set(ResolveContentLinksProcessor::class)->args(['$resolver' => service(ContentUrlResolver::class)])
         ->set(AssetsProcessor::class)->args(['$assetUtils' => service(AssetUtils::class)])
+        ->set(TableOfContentProcessor::class)
+            ->args([
+                '$generator' => service(CrawlerTableOfContentGenerator::class),
+            ])
+            ->tag(tags\content_processor, ['priority' => -100])
     ;
 };

@@ -18,12 +18,8 @@
             margin-bottom: 0;
         }
 
-        .navigation {
-            display: none;
-        }
-
         &:after {
-            content: "\2630";
+            content: "\2715";
             position: absolute;
             right: 0;
             font-size: 1.2em;
@@ -33,12 +29,13 @@
             text-align: right;
         }
 
-        &.active {
-            &:after {
-                content: "\2715";
+        &:not(.active) {
+            .navigation, .table-of-content {
+                display: none;
             }
-            .navigation {
-                display: flex;
+
+            &:after {
+                content: "\2630";
             }
         }
     }
