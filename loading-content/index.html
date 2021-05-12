@@ -6,43 +6,72 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Declaring and loading content | Stenope Documentation</title>
         <meta name="description" content="Content documentation">
-                    <link rel="stylesheet" href="/Stenope/build/style.8331126b.css">
+                    <link rel="stylesheet" href="/Stenope/build/style.3d9f53e6.css">
             </head>
     <body>
         <div class="main">
                             <div class="columns">
                     <aside class="sidebar">
-                        <a href="/Stenope/" class="logo">
-                            Stenope
-                        </a>
-                        <nav class="navigation">
-                            <a href="/Stenope/" class="">
-                                About
+                                                        <a href="/Stenope/" class="logo">
+                                Stenope
                             </a>
-                                                                                        <a href="/Stenope/supported-formats" class="">
-                                    Supported formats
+                            <nav class="navigation">
+                                <a href="/Stenope/" class="">
+                                    About
                                 </a>
-                                                            <a href="/Stenope/route-options" class="">
-                                    Route options
+                                                                                                    <a href="/Stenope/supported-formats" class="">
+                                        Supported formats
+                                    </a>
+                                                                    <a href="/Stenope/route-options" class="">
+                                        Route options
+                                    </a>
+                                                                    <a href="/Stenope/twig" class="">
+                                        Twig
+                                    </a>
+                                                                    <a href="/Stenope/link-contents" class="">
+                                        Link static contents between them
+                                    </a>
+                                                                    <a href="/Stenope/loading-content" class="active">
+                                        Declaring and loading content
+                                    </a>
+                                                                    <a href="/Stenope/syntax-highlighting" class="">
+                                        Syntax highlighting
+                                    </a>
+                                                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Github
                                 </a>
-                                                            <a href="/Stenope/twig" class="">
-                                    Twig
-                                </a>
-                                                            <a href="/Stenope/link-contents" class="">
-                                    Link static contents between them
-                                </a>
-                                                            <a href="/Stenope/loading-content" class="active">
-                                    Declaring and loading content
-                                </a>
-                                                            <a href="/Stenope/syntax-highlighting" class="">
-                                    Syntax highlighting
-                                </a>
-                                                        <a href="https://github.com/StenopePHP/Stenope">
-                                <span class="icon-github"></span>
-                                Github
-                            </a>
-                        </nav>
-                    </aside>
+                            </nav>
+                        
+                <div class="table-of-content">
+            <p class="title">Table of content</p>
+            <ol class="list">
+                                    <li>
+                        <a href="#setup">Setup</a>
+                                                    <ol class="sub-list">
+                                                                    <li><a href="#create-your-model">Create your model</a></li>
+                                                                    <li><a href="#register-content-provider">Register content provider</a></li>
+                                                                    <li><a href="#write-your-first-content">Write your first content</a></li>
+                                                            </ol>
+                                            </li>
+                                    <li>
+                        <a href="#usage">Usage</a>
+                                                    <ol class="sub-list">
+                                                                    <li><a href="#listing-content">Listing content</a></li>
+                                                                    <li><a href="#fetching-a-specific-content">Fetching a specific content</a></li>
+                                                                    <li><a href="#sorting-contents">Sorting contents</a></li>
+                                                                    <li><a href="#filtering-contents">Filtering contents</a></li>
+                                                            </ol>
+                                            </li>
+                                    <li>
+                        <a href="#advanced-usage-and-extension">Advanced usage and extension</a>
+                                                    <ol class="sub-list">
+                                                                    <li><a href="#register-a-custom-denormalizer">Register a custom denormalizer</a></li>
+                                                            </ol>
+                                            </li>
+                            </ol>
+        </div>
+                        </aside>
                     <main class="content">
                         <body><h1 id="declaring-and-loading-content">Declaring and loading content<a href="/Stenope/#declaring-and-loading-content" class="anchor"></a></h1>
 <p>Let's do a simple blog.</p>
