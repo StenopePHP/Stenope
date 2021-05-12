@@ -1,6 +1,6 @@
 # Supported sources
 
-## Embeded probiders
+## Embeded providers
 
 ### Local file system
 
