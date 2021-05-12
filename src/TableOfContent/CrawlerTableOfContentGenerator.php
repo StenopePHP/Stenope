@@ -8,10 +8,9 @@
 
 namespace Stenope\Bundle\TableOfContent;
 
-use Stenope\Bundle\Behaviour\TableOfContentGeneratorInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
-class CrawlerTableOfContentGenerator implements TableOfContentGeneratorInterface
+class CrawlerTableOfContentGenerator
 {
     public const MIN_DEPTH = 1;
     public const MAX_DEPTH = 6;

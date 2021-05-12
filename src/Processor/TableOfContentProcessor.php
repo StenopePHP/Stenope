@@ -11,22 +11,22 @@ declare(strict_types=1);
 namespace Stenope\Bundle\Processor;
 
 use Stenope\Bundle\Behaviour\ProcessorInterface;
-use Stenope\Bundle\Behaviour\TableOfContentGeneratorInterface;
 use Stenope\Bundle\Content;
+use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 
 /**
  * Build a table of content from the content titles
  */
 class TableOfContentProcessor implements ProcessorInterface
 {
-    private TableOfContentGeneratorInterface $generator;
+    private CrawlerTableOfContentGenerator $generator;
     private string $tableOfContentProperty;
     private string $contentProperty;
     private int $minDepth;
     private int $maxDepth;
 
     public function __construct(
-        TableOfContentGeneratorInterface $generator,
+        CrawlerTableOfContentGenerator $generator,
         string $tableOfContentProperty = 'tableOfContent',
         string $contentProperty = 'content',
         int $minDepth = 1,
