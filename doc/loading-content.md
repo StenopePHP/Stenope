@@ -95,7 +95,7 @@ _Note: contents of the same type can very well be writen in different formats._
 
 The ContentManager uses slugs to identify your content.
 
-The `slug` argument must exactly matche the static file name in your content directory.
+The `slug` argument must exactly match the static file name in your content directory.
 
 Example: `$contentManager->getContent(Article::class, 'how-to-train-your-dragon');` will fetch the `content/articles/how-to-train-your-dragon.md` article.
 
@@ -253,4 +253,3 @@ class ArticleDenormalizer implements DenormalizerInterface
 ```
 
 _Note: Using autowiring, denormalizers are automaticaly registered in Symfony serializer._
-

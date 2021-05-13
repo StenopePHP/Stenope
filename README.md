@@ -8,10 +8,10 @@
 
 We're Symfony developers that couldn't find a static website generator that bended to our needs.
 
-We needed a way of generatating static websites that:
+We needed a way of generating static websites that:
 
 - Doesn't impose a format, a structure or a location for the data.
-- Runs in a [Symfony](symfony.com) environement.
+- Runs in a [Symfony](symfony.com) environment.
 - Allow us to develop virtually any feature we might need.
 
 Stenope does that.
@@ -42,9 +42,9 @@ Stenope was designed with these goals in mind:
 
 - 🔍 Stenope scans your Symfony app (like a search engine crawler would) and dumps every page into a static HTML file.
 - 🛠 Stenope provides tools for loading and parsing various data sources (like local Markdown files or distant headless CMS).
-- 🖌 Stenope enriches the parsed data by applying a serie of modificators (like Syntax Highlinting, slug generation, etc.).
-- 🧲 Stenope finally hydrate your custom PHP objects with the enriched data and provides interfaces for listing and retrieving them (like an ORM would).
-- ⚙️ Stenope gives you a lot of control over the whole process by providing entry points, interfaces and default implementations that are entirely replaceable.
+- 🖌 Stenope enriches the parsed data by applying a series of processors (like Syntax Highlighting, slug generation, etc.).
+- 🧲 Stenope finally hydrates your custom PHP objects with the enriched data and provides interfaces for listing and retrieving them (like an ORM would).
+- ⚙️ Stenope gives you a lot of control over the whole process by providing entrypoints, interfaces and default implementations that are entirely replaceable.
 
 ## What Stenope is not
 

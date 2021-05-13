@@ -4,7 +4,7 @@
 
 ### Local file system
 
-The `LocalFilesystemProvider` is based on Symfony's Finder component and allow you to load contents from the local file system by attributing a path to a content type.
+The `LocalFilesystemProvider` is based on Symfony's Finder component and allows you to load contents from the local file system by attributing a path to a content type.
 
 To use it, specify a provider of type `files`:
 

@@ -4,7 +4,7 @@
 
 The build directory is the folder in which all the static content gets dumped.
 
-Their's several way to tell Stenope where to dump the static files:
+There are several way to tell Stenope where to dump the static files:
 
 ### In global configuration
 
@@ -20,7 +20,7 @@ stenope:
 bin/console stenope:build ./path/to/the/build
 ```
 
-## Controlling wich content gets in the build
+## Controlling which content gets in the build
 
 This package defines route options to control some of its features.
 
@@ -41,7 +41,7 @@ public function fooAction() { /* ... */ }
 
 ### Excluding a route from the sitemap
 
-If you need to exclude some routes from the generated sitemap, but keep them in the build anyway, set the `stenope.sitemap` route option to `false`:
+If you need to exclude some routes from the generated sitemap, but still keep them in the build, set the `stenope.sitemap` route option to `false`:
 
 ```php
 #[Route('foo', name: 'foo', options: [
