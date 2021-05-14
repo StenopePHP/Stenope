@@ -4,9 +4,9 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Syntax highlighting | Stenope Documentation</title>
-        <meta name="description" content="Content documentation">
-                    <link rel="stylesheet" href="/Stenope/build/style.3d9f53e6.css">
+        <title>Syntax highlighting | Stenope, the static website generation tool for Symfony</title>
+        <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
+                    <link rel="stylesheet" href="/Stenope/build/style.3db1639c.css">
             </head>
     <body>
         <div class="main">
@@ -22,20 +22,29 @@
                                                                                                     <a href="/Stenope/supported-formats" class="">
                                         Supported formats
                                     </a>
-                                                                    <a href="/Stenope/route-options" class="">
-                                        Route options
-                                    </a>
                                                                     <a href="/Stenope/twig" class="">
-                                        Twig
+                                        Twig integration
+                                    </a>
+                                                                    <a href="/Stenope/build-configuration" class="">
+                                        Configuring the build
                                     </a>
                                                                     <a href="/Stenope/link-contents" class="">
-                                        Link static contents between them
+                                        Linking contents
+                                    </a>
+                                                                    <a href="/Stenope/supported-sources" class="">
+                                        Supported sources
                                     </a>
                                                                     <a href="/Stenope/loading-content" class="">
-                                        Declaring and loading content
+                                        Loading content
                                     </a>
                                                                     <a href="/Stenope/syntax-highlighting" class="active">
                                         Syntax highlighting
+                                    </a>
+                                                                    <a href="/Stenope/processors" class="">
+                                        Content processors
+                                    </a>
+                                                                    <a href="/Stenope/cli" class="">
+                                        CLI
                                     </a>
                                                                 <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>
@@ -88,7 +97,8 @@
 <h2 id="custom-syntax-highlighting">Custom syntax highlighting<a href="/Stenope/#custom-syntax-highlighting" class="anchor"></a></h2>
 <p>The default Highlighter responsible for syntax highlighting is based on <a href="https://prismjs.com/" target="_blank">Prism.js</a>, but you can provide your own by implementing <code class="code-inline" id="4a893ca8e5982eca338483e3f09f18cd">Stenope\Behaviour\HighlighterInterface</code>:</p>
 <pre class="code-multiline language-php"><code class="language-php" id="4f0e0c0e03bc7069392f3851e5aa2110"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">highlight</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$value</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$language</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">string</span><span class="token punctuation">;</span></code></pre></body>                        <footer class="footer">
-                                                            <a href="https://github.com/StenopePHP/Stenope">
+                                                            <p class="note">Stenope, the static website generation tool for Symfony.</p>
+                                <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>
                                     Stenope on Github
                                 </a>

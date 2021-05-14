@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Supported sources | Stenope, the static website generation tool for Symfony</title>
+        <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
+                    <link rel="stylesheet" href="/Stenope/build/style.3db1639c.css">
+            </head>
+    <body>
+        <div class="main">
+                            <div class="columns">
+                    <aside class="sidebar">
+                                                        <a href="/Stenope/" class="logo">
+                                Stenope
+                            </a>
+                            <nav class="navigation">
+                                <a href="/Stenope/" class="">
+                                    About
+                                </a>
+                                                                                                    <a href="/Stenope/supported-formats" class="">
+                                        Supported formats
+                                    </a>
+                                                                    <a href="/Stenope/twig" class="">
+                                        Twig integration
+                                    </a>
+                                                                    <a href="/Stenope/build-configuration" class="">
+                                        Configuring the build
+                                    </a>
+                                                                    <a href="/Stenope/link-contents" class="">
+                                        Linking contents
+                                    </a>
+                                                                    <a href="/Stenope/supported-sources" class="active">
+                                        Supported sources
+                                    </a>
+                                                                    <a href="/Stenope/loading-content" class="">
+                                        Loading content
+                                    </a>
+                                                                    <a href="/Stenope/syntax-highlighting" class="">
+                                        Syntax highlighting
+                                    </a>
+                                                                    <a href="/Stenope/processors" class="">
+                                        Content processors
+                                    </a>
+                                                                    <a href="/Stenope/cli" class="">
+                                        CLI
+                                    </a>
+                                                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Github
+                                </a>
+                            </nav>
+                        
+                <div class="table-of-content">
+            <p class="title">Table of content</p>
+            <ol class="list">
+                                    <li>
+                        <a href="#embeded-providers">Embeded providers</a>
+                                                    <ol class="sub-list">
+                                                                    <li><a href="#local-file-system">Local file system</a></li>
+                                                            </ol>
+                                            </li>
+                                    <li>
+                        <a href="#load-same-content-from-different-sources">Load same content from different sources</a>
+                                            </li>
+                            </ol>
+        </div>
+                        </aside>
+                    <main class="content">
+                        <body><h1 id="supported-sources">Supported sources<a href="/Stenope/#supported-sources" class="anchor"></a></h1>
+<h2 id="embeded-providers">Embeded providers<a href="/Stenope/#embeded-providers" class="anchor"></a></h2>
+<h3 id="local-file-system">Local file system<a href="/Stenope/#local-file-system" class="anchor"></a></h3>
+<p>The <code class="code-inline" id="3c7107c8f7cc41a999bbe3572f94f4cd">LocalFilesystemProvider</code> is based on Symfony's Finder component and allows you to load contents from the local file system by attributing a path to a content type.</p>
+<p>To use it, specify a provider of type <code class="code-inline" id="45b963397aa40d4a0063e0d85e4fe7a1">files</code>:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="c76099e6895d42fd3e84836b3caba3c7"><span class="token key atrule">stenope</span><span class="token punctuation">:</span>
+    <span class="token key atrule">providers</span><span class="token punctuation">:</span>
+        <span class="token key atrule">App\Model\Recipe</span><span class="token punctuation">:</span>
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> <span class="token string">'files'</span>
+            <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/recipes'</span></code></pre>
+<p>Since the local file system provider is the default provider, you can ommit it in configuration like this:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="ca25b37fe5488baec27dbfc858438e54"><span class="token key atrule">stenope</span><span class="token punctuation">:</span>
+    <span class="token key atrule">providers</span><span class="token punctuation">:</span>
+        <span class="token key atrule">App\Model\Recipe</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/recipes'</span>
+        <span class="token key atrule">App\Model\Cook</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/cooks'</span></code></pre>
+<h2 id="load-same-content-from-different-sources">Load same content from different sources<a href="/Stenope/#load-same-content-from-different-sources" class="anchor"></a></h2>
+<p>Same kind of content can come from different sources, you just have to declare several names providers for this model:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="561a1ff4f365aa5bd95b4e841c38569a"><span class="token key atrule">stenope</span><span class="token punctuation">:</span>
+    <span class="token key atrule">providers</span><span class="token punctuation">:</span>
+        <span class="token key atrule">local_recipes</span><span class="token punctuation">:</span>
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> <span class="token string">'files'</span>
+            <span class="token key atrule">class</span><span class="token punctuation">:</span> <span class="token string">'App\Model\Recipe'</span>
+        <span class="token key atrule">distant_recipes</span><span class="token punctuation">:</span>
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> <span class="token string">'my_distant_provider'</span>
+            <span class="token key atrule">class</span><span class="token punctuation">:</span> <span class="token string">'App\Model\Recipe'</span></code></pre>
+<p>Advanced configuration:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="ef85e849476455e296cb8d1f87f6d458"><span class="token key atrule">stenope</span><span class="token punctuation">:</span>
+    <span class="token key atrule">providers</span><span class="token punctuation">:</span>
+        <span class="token key atrule">App\Model\Recipe</span><span class="token punctuation">:</span>
+            <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/recipes'</span>
+            <span class="token key atrule">patterns</span><span class="token punctuation">:</span> <span class="token string">'*.md'</span> <span class="token comment"># Only load .md files</span>
+            <span class="token key atrule">depth</span><span class="token punctuation">:</span> <span class="token string">'&lt; 2'</span> <span class="token comment"># https://symfony.com/doc/current/components/finder.html#directory-depth</span>
+        <span class="token key atrule">App\Model\Cook</span><span class="token punctuation">:</span>
+            <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/recipes'</span>
+            <span class="token key atrule">exclude</span><span class="token punctuation">:</span>
+                <span class="token punctuation">-</span> sample.*
+                <span class="token punctuation">-</span> <span class="token important">*.php</span></code></pre></body>                        <footer class="footer">
+                                                            <p class="note">Stenope, the static website generation tool for Symfony.</p>
+                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Stenope on Github
+                                </a>
+                                                    </footer>
+                    </main>
+                </div>
+                    </div>
+                    <script src="/Stenope/build/runtime.a2069aab.js"></script><script src="/Stenope/build/app.4c1a4699.js"></script>
+            </body>
+</html>

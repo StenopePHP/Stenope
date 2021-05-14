@@ -4,9 +4,9 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Stenope Documentation</title>
-        <meta name="description" content="Content documentation">
-                    <link rel="stylesheet" href="/Stenope/build/style.3d9f53e6.css">
+        <title>Stenope, the static website generation tool for Symfony</title>
+        <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
+                    <link rel="stylesheet" href="/Stenope/build/style.3db1639c.css">
             </head>
     <body>
         <div class="main">
@@ -22,20 +22,29 @@
                                                                                                     <a href="/Stenope/supported-formats" class="">
                                         Supported formats
                                     </a>
-                                                                    <a href="/Stenope/route-options" class="">
-                                        Route options
-                                    </a>
                                                                     <a href="/Stenope/twig" class="">
-                                        Twig
+                                        Twig integration
+                                    </a>
+                                                                    <a href="/Stenope/build-configuration" class="">
+                                        Configuring the build
                                     </a>
                                                                     <a href="/Stenope/link-contents" class="">
-                                        Link static contents between them
+                                        Linking contents
+                                    </a>
+                                                                    <a href="/Stenope/supported-sources" class="">
+                                        Supported sources
                                     </a>
                                                                     <a href="/Stenope/loading-content" class="">
-                                        Declaring and loading content
+                                        Loading content
                                     </a>
                                                                     <a href="/Stenope/syntax-highlighting" class="">
                                         Syntax highlighting
+                                    </a>
+                                                                    <a href="/Stenope/processors" class="">
+                                        Content processors
+                                    </a>
+                                                                    <a href="/Stenope/cli" class="">
+                                        CLI
                                     </a>
                                                                 <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>
@@ -46,36 +55,65 @@
                     <main class="content">
                         <body><h1 id="stenope">Stenope<a href="/Stenope/#stenope" class="anchor"></a></h1>
 <blockquote>
-<p>Export your Symfony app as a static website.</p>
+<p>The static website generation tool for Symfony.</p>
 </blockquote>
-<p>Stenope is a <strong>static website building tool for Symfony</strong> with specific goals:</p>
+<img src="/Stenope/cli.png" alt="CLI" title="CLI" id="cli">
+<h2 id="why-another-static-site-generator">Why another static site generator?<a href="/Stenope/#why-another-static-site-generator" class="anchor"></a></h2>
+<p>We're Symfony developers that couldn't find a static website generator that bended to our needs.</p>
+<p>We needed a way of generating static websites that:</p>
 <ul>
-<li>"You should adapt it to your need, don't adapt your needs to it".</li>
-<li>"It connects with standard Symfony components and feels natural to Symfony developers".</li>
+<li>Doesn't impose a format, a structure or a location for the data.</li>
+<li>Runs in a <a href="/Stenope/symfony.com">Symfony</a> environment.</li>
+<li>Allow us to develop virtually any feature we might need.</li>
+</ul>
+<p>Stenope does that.</p>
+<h2 id="installation">Installation<a href="/Stenope/#installation" class="anchor"></a></h2>
+<p>In your Symfony app:</p>
+<pre><code id="121ee92f1a0912cf2f9760b05593601a">composer require stenope/stenope</code></pre>
+<h2 id="usage">Usage<a href="/Stenope/#usage" class="anchor"></a></h2>
+<p>Just <a href="/Stenope/#installation">install Stenope</a> and run:</p>
+<pre><code id="c5f098124ffc747a4823401a94fbde11">bin/console -e prod stenope:build ./static</code></pre>
+<p>Your Symfony app is now a static website in: <code class="code-inline" id="209f7da3fb816679a3bb26c62daaaa74">./static</code>! ✨</p>
+<h2 id="philosophy-and-goals">Philosophy and goals<a href="/Stenope/#philosophy-and-goals" class="anchor"></a></h2>
+<p>Stenope was designed with these goals in mind:</p>
+<ul>
+<li>Stenope meets your needs, not the other way around.</li>
+<li>Stenope runs in any Symfony project out of the box, connects with standard Symfony components and feels natural to Symfony developers.</li>
+<li>Stenope is highly extensible: features can be replaced, added or removed.</li>
 </ul>
 <h2 id="how-it-works">How it works<a href="/Stenope/#how-it-works" class="anchor"></a></h2>
 <ul>
-<li>🔍 Stenope scans your Symfony app, like a search engine crawler would, and dumps every page to static HTML.</li>
-<li>🛠 Stenope provides tools that you can use in <em>your</em> Symfony code to load and parse static contents (such as Markdown files) into custom PHP model objects.</li>
-<li>⚙️ Stenope gives you a lot of control by providing interfaces and default implementations that are entirely replaceable to suit your custom needs.</li>
+<li>🔍 Stenope scans your Symfony app (like a search engine crawler would) and dumps every page into a static HTML file.</li>
+<li>🛠 Stenope provides tools for loading and parsing various data sources (like local Markdown files or distant headless CMS).</li>
+<li>🖌 Stenope enriches the parsed data by applying a series of processors (like Syntax Highlighting, slug generation, etc.).</li>
+<li>🧲 Stenope finally hydrates your custom PHP objects with the enriched data and provides interfaces for listing and retrieving them (like an ORM would).</li>
+<li>⚙️ Stenope gives you a lot of control over the whole process by providing entrypoints, interfaces and default implementations that are entirely replaceable.</li>
 </ul>
-<h2 id="installation">Installation<a href="/Stenope/#installation" class="anchor"></a></h2>
-<pre><code id="121ee92f1a0912cf2f9760b05593601a">composer require stenope/stenope</code></pre>
-<h2 id="usage">Usage<a href="/Stenope/#usage" class="anchor"></a></h2>
-<p>Build the static site: <code class="code-inline" id="d63ba08274722a27b50af4f8c6f9cf3d">bin/console -e prod stenope:build</code></p>
-<p>✨ Your Symfony app is now a static website in: <code class="code-inline" id="7b7747ec045ae606eb720a1222f56098">/build</code>!</p>
-<h2 id="advanced-usage">Advanced usage<a href="/Stenope/#advanced-usage" class="anchor"></a></h2>
+<h2 id="what-stenope-is-not">What Stenope is not<a href="/Stenope/#what-stenope-is-not" class="anchor"></a></h2>
+<p>Stenope is not a ready-to-use bloging system: but you could quickly <em>write your own</em> blog system with it!</p>
+<h2 id="in-depth-documentation">In-depth documentation<a href="/Stenope/#in-depth-documentation" class="anchor"></a></h2>
+<h3 id="features">Features<a href="/Stenope/#features" class="anchor"></a></h3>
 <ul>
-<li><a href="/Stenope/loading-content">How to load static content</a></li>
+<li><a href="/Stenope/cli">CLI usage</a></li>
+<li><a href="/Stenope/loading-content">Loading and parsing content</a></li>
 <li><a href="/Stenope/supported-formats">Supported formats</a></li>
-<li><a href="/Stenope/syntax-highlighting">Syntax Highlighting</a></li>
-<li><a href="/Stenope/link-contents">Link static contents between them</a></li>
-<li><a href="/Stenope/route-options">Route options</a></li>
-<li><a href="/Stenope/twig">Twig</a></li>
-<li>Decoders #TODO</li>
-<li>Bonus: How to deploy and host a static site #TODO</li>
+<li><a href="/Stenope/supported-sources">Supported sources</a></li>
+<li><a href="/Stenope/syntax-highlighting">Syntax highlighting</a></li>
+<li><a href="/Stenope/link-contents">Linking contents</a></li>
+<li><a href="/Stenope/build-configuration">Configuring the build</a></li>
+<li><a href="/Stenope/twig">Twig integration</a></li>
+</ul>
+<h3 id="cookbooks">Cookbooks<a href="/Stenope/#cookbooks" class="anchor"></a></h3>
+<!-- TODO - [Specifying host and base url]() -->
+<!-- TODO - [Adding custom files to the build]() -->
+<!-- TODO - [Data source: writing a custom Provider]() -->
+<!-- TODO - [Data format: writing a custom Decoder]() -->
+<ul>
+<li><a href="/Stenope/processors">Data manipulation: writing a custom Processor</a>
+<!-- TODO - [How to automatically deploy and host a static site]() --></li>
 </ul></body>                        <footer class="footer">
-                                                            <a href="https://github.com/StenopePHP/Stenope">
+                                                            <p class="note">Stenope, the static website generation tool for Symfony.</p>
+                                <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>
                                     Stenope on Github
                                 </a>

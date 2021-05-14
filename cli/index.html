@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Twig integration | Stenope, the static website generation tool for Symfony</title>
+        <title>CLI | Stenope, the static website generation tool for Symfony</title>
         <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
                     <link rel="stylesheet" href="/Stenope/build/style.3db1639c.css">
             </head>
@@ -22,7 +22,7 @@
                                                                                                     <a href="/Stenope/supported-formats" class="">
                                         Supported formats
                                     </a>
-                                                                    <a href="/Stenope/twig" class="active">
+                                                                    <a href="/Stenope/twig" class="">
                                         Twig integration
                                     </a>
                                                                     <a href="/Stenope/build-configuration" class="">
@@ -43,7 +43,7 @@
                                                                     <a href="/Stenope/processors" class="">
                                         Content processors
                                     </a>
-                                                                    <a href="/Stenope/cli" class="">
+                                                                    <a href="/Stenope/cli" class="active">
                                         CLI
                                     </a>
                                                                 <a href="https://github.com/StenopePHP/Stenope">
@@ -56,44 +56,62 @@
             <p class="title">Table of content</p>
             <ol class="list">
                                     <li>
-                        <a href="#functions">Functions</a>
+                        <a href="#building-into-a-specific-directory">Building into a specific directory</a>
                                             </li>
                                     <li>
-                        <a href="#usage">Usage</a>
+                        <a href="#options">Options</a>
                                             </li>
                             </ol>
         </div>
                         </aside>
                     <main class="content">
-                        <body><h1 id="twig-integration">Twig integration<a href="/Stenope/#twig-integration" class="anchor"></a></h1>
-<p>Stenope provides a Twig extension to help you interact with the <code class="code-inline" id="8cb155c3cf316c1cbabf961cdcac7159">ContentManager</code>
-from your templates.</p>
-<h2 id="functions">Functions<a href="/Stenope/#functions" class="anchor"></a></h2>
+                        <body><h1 id="cli">CLI<a href="/Stenope/#cli" class="anchor"></a></h1>
+<p>The build command:</p>
+<pre class="code-multiline language-shell"><code class="language-shell" id="dc301e200e8240db22a2b207ec0fab50">bin/console stenope:build <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token punctuation">[</span>--<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>buildDir<span class="token operator">&gt;</span><span class="token punctuation">]</span></code></pre>
+<h2 id="building-into-a-specific-directory">Building into a specific directory<a href="/Stenope/#building-into-a-specific-directory" class="anchor"></a></h2>
+<p>Use the <code class="code-inline" id="42ed0f9b85c5a487b1f0dc321384210c">buildDir</code> argument:</p>
+<pre class="code-multiline language-shell"><code class="language-shell" id="9d921127c6e942d0fd5005611aa76290">bin/console stenope:build ./static</code></pre>
+<h2 id="options">Options<a href="/Stenope/#options" class="anchor"></a></h2>
 <table>
 <thead>
 <tr>
-<th>Function</th>
+<th>Option</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code class="code-inline" id="685493f794b84a5688fc4dc85b032f44">content_get(type, id)</code></td>
-<td>Fetch a specific content</td>
+<td><code class="code-inline" id="28c1cbfbe8549614d294c9f73f2d35d1">--host=stenopephp.github.io</code></td>
+<td>What should be used as domain name for absolute url generation?</td>
+<td></td>
 </tr>
 <tr>
-<td><code class="code-inline" id="3ac60cf2de6704ea53832c39085f9b55">content_list(type, sortBy, filterBy)</code></td>
-<td>List all contents for a given type</td>
+<td><code class="code-inline" id="f653142f8e72712090dc85c45293690e">--base-url=/Stenope</code></td>
+<td>What should be used as base-url for absolute url generation?</td>
+<td></td>
+</tr>
+<tr>
+<td><code class="code-inline" id="7056f2a28c29082857acff1eeeac7b1f">--scheme=https</code></td>
+<td>What should be used as scheme for absolute url generation?</td>
+<td></td>
+</tr>
+<tr>
+<td><code class="code-inline" id="9c735369a3ffe8523813e3735837dd55">--no-sitemap</code></td>
+<td>Don't build the sitemap</td>
+<td></td>
+</tr>
+<tr>
+<td><code class="code-inline" id="f2a07af5f7dd85ab92512747b407d627">--no-expose</code></td>
+<td>Don't expose the public directory</td>
+<td></td>
+</tr>
+<tr>
+<td><code class="code-inline" id="091baa8f32fc1a209b86a63d9d9ebd15">--ignore-content-not-found</code></td>
+<td>Ignore content not found errors</td>
+<td></td>
 </tr>
 </tbody>
-</table>
-<h2 id="usage">Usage<a href="/Stenope/#usage" class="anchor"></a></h2>
-<p>Fetch the auhtor of the article:</p>
-<pre class="code-multiline language-twig"><code class="language-twig" id="750d5839d13ca207dbb77f8f50ccddf0"><span class="token tag"><span class="token ld"><span class="token punctuation">{%</span> <span class="token keyword">set</span></span> <span class="token property">author</span> <span class="token operator">=</span> <span class="token property">content_get</span><span class="token punctuation">(</span><span class="token string"><span class="token punctuation">'</span>App\\Model\\Member<span class="token punctuation">'</span></span><span class="token punctuation">,</span> <span class="token property">article</span><span class="token punctuation">.</span><span class="token property">author</span><span class="token punctuation">)</span> <span class="token rd"><span class="token punctuation">%}</span></span></span></code></pre>
-<p>Get all active job offers:</p>
-<pre class="code-multiline language-twig"><code class="language-twig" id="a8d181874111186bdbd79d90a46fd2e4"><span class="token tag"><span class="token ld"><span class="token punctuation">{%</span> <span class="token keyword">for</span></span> <span class="token property">offer</span> <span class="token operator">in</span> <span class="token property">content_list</span><span class="token punctuation">(</span><span class="token string"><span class="token punctuation">'</span>App\\Model\\JobOffer<span class="token punctuation">'</span></span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token property">date</span><span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token property">active</span><span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token rd"><span class="token punctuation">%}</span></span></span>
-    <span class="token other"><span class="token comment">&lt;!-- ... --&gt;</span></span>
-<span class="token tag"><span class="token ld"><span class="token punctuation">{%</span> <span class="token keyword">endfor</span></span> <span class="token rd"><span class="token punctuation">%}</span></span></span></code></pre></body>                        <footer class="footer">
+</table></body>                        <footer class="footer">
                                                             <p class="note">Stenope, the static website generation tool for Symfony.</p>
                                 <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>
