@@ -1,0 +1,8 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+
+    .note {
+        color: rgba($color-secondary, 0.66);
+    }
+}
