@@ -21,7 +21,7 @@ class AssetUtils
 
     public function getUrl(string $url): string
     {
-        if (null === parse_url($url, PHP_URL_SCHEME) && !str_starts_with($url, '//')) {
+        if (null === parse_url($url, PHP_URL_SCHEME) && !str_starts_with($url, '//') && !str_starts_with($url, '#')) {
             // Only process local assets (ignoring urls starting by a scheme or "//").
             return $this->assets->getUrl($url);
         }
