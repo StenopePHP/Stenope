@@ -73,19 +73,19 @@
         </div>
                         </aside>
                     <main class="content">
-                        <body><h1 id="configuring-the-build">Configuring the build<a href="/Stenope/#configuring-the-build" class="anchor"></a></h1>
-<h2 id="setting-the-build-directory">Setting the build directory<a href="/Stenope/#setting-the-build-directory" class="anchor"></a></h2>
+                        <body><h1 id="configuring-the-build">Configuring the build<a href="#configuring-the-build" class="anchor"></a></h1>
+<h2 id="setting-the-build-directory">Setting the build directory<a href="#setting-the-build-directory" class="anchor"></a></h2>
 <p>The build directory is the folder in which all the static content gets dumped.</p>
 <p>There are several way to tell Stenope where to dump the static files:</p>
-<h3 id="in-global-configuration">In global configuration<a href="/Stenope/#in-global-configuration" class="anchor"></a></h3>
+<h3 id="in-global-configuration">In global configuration<a href="#in-global-configuration" class="anchor"></a></h3>
 <pre class="code-multiline language-yaml"><code class="language-yaml" id="e17b44bb315846fbadc65cda24582d15"><span class="token comment"># config/packages/stenope.yaml</span>
 <span class="token key atrule">stenope</span><span class="token punctuation">:</span>
     <span class="token key atrule">build_dir</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/build'</span></code></pre>
-<h3 id="from-command-line-argument">From command line argument<a href="/Stenope/#from-command-line-argument" class="anchor"></a></h3>
+<h3 id="from-command-line-argument">From command line argument<a href="#from-command-line-argument" class="anchor"></a></h3>
 <pre class="code-multiline language-shell"><code class="language-shell" id="d48921e358568d9f2dbd922a476b713a">bin/console stenope:build ./path/to/the/build</code></pre>
-<h2 id="controlling-which-content-gets-in-the-build">Controlling which content gets in the build<a href="/Stenope/#controlling-which-content-gets-in-the-build" class="anchor"></a></h2>
+<h2 id="controlling-which-content-gets-in-the-build">Controlling which content gets in the build<a href="#controlling-which-content-gets-in-the-build" class="anchor"></a></h2>
 <p>This package defines route options to control some of its features.</p>
-<h3 id="ignoring-a-route">Ignoring a route<a href="/Stenope/#ignoring-a-route" class="anchor"></a></h3>
+<h3 id="ignoring-a-route">Ignoring a route<a href="#ignoring-a-route" class="anchor"></a></h3>
 <p>You may want to exclude some routes from the static generated version of your site.</p>
 <p>In order to ignore such routes during the build, set the <code class="code-inline" id="a7c8b0686e8f04f5ea4744ae624b1e44">stenope.ignore</code> option to <code class="code-inline" id="b326b5062b2f0e69046810717534cb09">true</code>:</p>
 <pre class="code-multiline language-php"><code class="language-php" id="1bbc31ee38c9eef87dce78f952cbfe36"><span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">Route</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'foo'</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">name</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">'foo'</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">options</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
@@ -94,7 +94,7 @@
     <span class="token punctuation">]</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
 <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">fooAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span></code></pre>
-<h3 id="excluding-a-route-from-the-sitemap">Excluding a route from the sitemap<a href="/Stenope/#excluding-a-route-from-the-sitemap" class="anchor"></a></h3>
+<h3 id="excluding-a-route-from-the-sitemap">Excluding a route from the sitemap<a href="#excluding-a-route-from-the-sitemap" class="anchor"></a></h3>
 <p>If you need to exclude some routes from the generated sitemap, but still keep them in the build, set the <code class="code-inline" id="065aa874099e5ea6d2e01875af87ea57">stenope.sitemap</code> route option to <code class="code-inline" id="68934a3e9455fa72420237eb05902327">false</code>:</p>
 <pre class="code-multiline language-php"><code class="language-php" id="f8159223b75a99f70c8e043133ceec4d"><span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">Route</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'foo'</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">name</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">'foo'</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">options</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
     <span class="token string single-quoted-string">'stenope'</span> <span class="token operator">=&gt;</span> <span class="token punctuation">[</span>

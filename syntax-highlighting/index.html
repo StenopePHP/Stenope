@@ -72,21 +72,21 @@
         </div>
                         </aside>
                     <main class="content">
-                        <body><h1 id="syntax-highlighting">Syntax highlighting<a href="/Stenope/#syntax-highlighting" class="anchor"></a></h1>
-<h2 id="setting-the-language-attribute">Setting the language attribute<a href="/Stenope/#setting-the-language-attribute" class="anchor"></a></h2>
+                        <body><h1 id="syntax-highlighting">Syntax highlighting<a href="#syntax-highlighting" class="anchor"></a></h1>
+<h2 id="setting-the-language-attribute">Setting the language attribute<a href="#setting-the-language-attribute" class="anchor"></a></h2>
 <p>Any <code class="code-inline" id="c13367945d5d4c91047b3b50234aa7ab">code</code> block with a <code class="code-inline" id="8512ae7d57b1396273f76fe6ed341a23">language</code> attribute will be syntax highlighted.</p>
-<h3 id="markdown">Markdown<a href="/Stenope/#markdown" class="anchor"></a></h3>
+<h3 id="markdown">Markdown<a href="#markdown" class="anchor"></a></h3>
 <p>In Markdown, specify the language in the opening line with:</p>
 <pre class="code-multiline language-markdown"><code class="language-markdown" id="61d1e2b8f744969bf4fe5551dc480d77">​```php
 &lt;?php $foo = true;
 ​```</code></pre>
-<h3 id="html">HTML<a href="/Stenope/#html" class="anchor"></a></h3>
+<h3 id="html">HTML<a href="#html" class="anchor"></a></h3>
 <p>In HTML, specify the language in the <code class="code-inline" id="a2f2ed4f8ebc2cbb4c21a29dc40ab61d">class</code> attribute, like this:</p>
 <pre class="code-multiline language-html"><code class="language-html" id="ab05c9b6a16234ad12f6fead0d162dcd">​<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>language-php<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>?php</span> <span class="token attr-name">$foo</span> <span class="token attr-value"><span class="token punctuation attr-equals">=</span> true;</span>
 <span class="token attr-name">&lt;code</span><span class="token punctuation">&gt;</span></span></code></pre>
 <p><em>Note: since Markdown also supports embeded HMTL, the above code block will also work in a markdown source file.</em></p>
-<h2 id="result">Result<a href="/Stenope/#result" class="anchor"></a></h2>
+<h2 id="result">Result<a href="#result" class="anchor"></a></h2>
 <p>This will result in the following HTML block in the parsed content:</p>
 <pre class="code-multiline language-html"><code class="language-html" id="35748be37dfd6f46edb0a64d0a4093a1"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pre</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>code-multiline<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>language-php<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1b7716ebf50e565f2f76a0de64362190<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
@@ -94,7 +94,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pre</span><span class="token punctuation">&gt;</span></span></code></pre>
 <p><em>Note: providing a CSS theme that color the code is entirely up to you. You can use any of the official <a href="https://prismjs.com" target="_blank">Prism.js</a> theme out of the box just by loading the CSS file.</em></p>
-<h2 id="custom-syntax-highlighting">Custom syntax highlighting<a href="/Stenope/#custom-syntax-highlighting" class="anchor"></a></h2>
+<h2 id="custom-syntax-highlighting">Custom syntax highlighting<a href="#custom-syntax-highlighting" class="anchor"></a></h2>
 <p>The default Highlighter responsible for syntax highlighting is based on <a href="https://prismjs.com/" target="_blank">Prism.js</a>, but you can provide your own by implementing <code class="code-inline" id="4a893ca8e5982eca338483e3f09f18cd">Stenope\Behaviour\HighlighterInterface</code>:</p>
 <pre class="code-multiline language-php"><code class="language-php" id="4f0e0c0e03bc7069392f3851e5aa2110"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">highlight</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$value</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$language</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">string</span><span class="token punctuation">;</span></code></pre></body>                        <footer class="footer">
                                                             <p class="note">Stenope, the static website generation tool for Symfony.</p>

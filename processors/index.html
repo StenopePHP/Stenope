@@ -68,9 +68,9 @@
         </div>
                         </aside>
                     <main class="content">
-                        <body><h1 id="content-processors">Content processors<a href="/Stenope/#content-processors" class="anchor"></a></h1>
+                        <body><h1 id="content-processors">Content processors<a href="#content-processors" class="anchor"></a></h1>
 <p>Content processor are the main entry point for custom behaviours in Stenope.</p>
-<h2 id="what-are-processors">What are processors<a href="/Stenope/#what-are-processors" class="anchor"></a></h2>
+<h2 id="what-are-processors">What are processors<a href="#what-are-processors" class="anchor"></a></h2>
 <p>A processor acts on the raw content loaded from your sources as an array, before denormalization into its model.</p>
 <p>Writing a custom processor allow you to apply virtually any modification to the decoded content before denormalization.</p>
 <p>Internally, Stenope registers default processors for:</p>
@@ -80,7 +80,7 @@
 <li>Providing a <code class="code-inline" id="56d4ce3addd9e0185b21eb938ea5bc79">lastModified</code> property to contents based on their source last modification.</li>
 <li>...</li>
 </ul>
-<h2 id="writing-a-custom-processor">Writing a custom processor<a href="/Stenope/#writing-a-custom-processor" class="anchor"></a></h2>
+<h2 id="writing-a-custom-processor">Writing a custom processor<a href="#writing-a-custom-processor" class="anchor"></a></h2>
 <p>To write your own processor, just implements the <code class="code-inline" id="9f55ee1fb6055d910ff7a3498baecb63">Stenope\Bundle\Behaviour\ProcessorInterface</code> interface:</p>
 <pre class="code-multiline language-php"><code class="language-php" id="d149c8920cce4acd157a99aee8ec8a60"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
@@ -120,7 +120,7 @@
 <span class="token punctuation">}</span></span></code></pre>
 <p>That's it!</p>
 <p><em>Note: See Stenope's <a href="https://github.com/StenopePHP/Stenope/tree/master/src/Processor" target="_blank">own processors</a> for more examples.</em></p>
-<h2 id="ordering-processor">Ordering processor<a href="/Stenope/#ordering-processor" class="anchor"></a></h2>
+<h2 id="ordering-processor">Ordering processor<a href="#ordering-processor" class="anchor"></a></h2>
 <p>Processor are applied one after another, and a Processor <strong>A</strong> can modify the <code class="code-inline" id="7318a606a3118d468dae7078098fba7b">$data</code> that will then be used by a processor <strong>B</strong>.</p>
 <p>To control processor execution order, use the <code class="code-inline" id="b988295c268025b49dfb3df26171ddc3">priority</code> tag property:</p>
 <pre class="code-multiline language-yaml"><code class="language-yaml" id="cca01b99e7edd442696f3c2942b4bcc2"><span class="token key atrule">App\Stenope\Processor\TableOfContentProcessor</span><span class="token punctuation">:</span>

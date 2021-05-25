@@ -68,9 +68,9 @@
         </div>
                         </aside>
                     <main class="content">
-                        <body><h1 id="supported-sources">Supported sources<a href="/Stenope/#supported-sources" class="anchor"></a></h1>
-<h2 id="embeded-providers">Embeded providers<a href="/Stenope/#embeded-providers" class="anchor"></a></h2>
-<h3 id="local-file-system">Local file system<a href="/Stenope/#local-file-system" class="anchor"></a></h3>
+                        <body><h1 id="supported-sources">Supported sources<a href="#supported-sources" class="anchor"></a></h1>
+<h2 id="embeded-providers">Embeded providers<a href="#embeded-providers" class="anchor"></a></h2>
+<h3 id="local-file-system">Local file system<a href="#local-file-system" class="anchor"></a></h3>
 <p>The <code class="code-inline" id="3c7107c8f7cc41a999bbe3572f94f4cd">LocalFilesystemProvider</code> is based on Symfony's Finder component and allows you to load contents from the local file system by attributing a path to a content type.</p>
 <p>To use it, specify a provider of type <code class="code-inline" id="45b963397aa40d4a0063e0d85e4fe7a1">files</code>:</p>
 <pre class="code-multiline language-yaml"><code class="language-yaml" id="c76099e6895d42fd3e84836b3caba3c7"><span class="token key atrule">stenope</span><span class="token punctuation">:</span>
@@ -83,7 +83,7 @@
     <span class="token key atrule">providers</span><span class="token punctuation">:</span>
         <span class="token key atrule">App\Model\Recipe</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/recipes'</span>
         <span class="token key atrule">App\Model\Cook</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/cooks'</span></code></pre>
-<h2 id="load-same-content-from-different-sources">Load same content from different sources<a href="/Stenope/#load-same-content-from-different-sources" class="anchor"></a></h2>
+<h2 id="load-same-content-from-different-sources">Load same content from different sources<a href="#load-same-content-from-different-sources" class="anchor"></a></h2>
 <p>Same kind of content can come from different sources, you just have to declare several names providers for this model:</p>
 <pre class="code-multiline language-yaml"><code class="language-yaml" id="561a1ff4f365aa5bd95b4e841c38569a"><span class="token key atrule">stenope</span><span class="token punctuation">:</span>
     <span class="token key atrule">providers</span><span class="token punctuation">:</span>
