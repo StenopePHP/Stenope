@@ -49,5 +49,6 @@ class AssetsUtilsTest extends TestCase
         yield ['//example.com/bar', '//example.com/bar'];
         yield ['https://example.com/bar', 'https://example.com/bar'];
         yield ['foo.png', 'https://cnd.example.com/foo.png'];
+        yield ['#an-anchor-to-current-page', '#an-anchor-to-current-page'];
     }
 }
