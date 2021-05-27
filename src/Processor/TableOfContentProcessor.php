@@ -15,7 +15,8 @@ use Stenope\Bundle\Content;
 use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 
 /**
- * Build a table of content from the content titles
+ * Build a table of content from the content titles if it exposes a tableOfContent value as true.
+ * If the content exposes a tableOfContent value as int, it'll be used as the max depth for this specific content.
  */
 class TableOfContentProcessor implements ProcessorInterface
 {
@@ -41,6 +42,27 @@ class TableOfContentProcessor implements ProcessorInterface
 
     public function __invoke(array &$data, string $type, Content $content): void
     {
-        $data[$this->tableOfContentProperty] = $this->generator->getTableOfContent($data[$this->contentProperty], $this->minDepth, $this->maxDepth);
+        if (!isset($data[$this->contentProperty], $data[$this->tableOfContentProperty])) {
+            // Skip on unavailable content property or no TOC property configured
+            return;
+        }
+
+        $tocValue = $data[$this->tableOfContentProperty];
+
+        if (!\is_int($tocValue) && true !== $tocValue) {
+            // if it's neither an int or true,
+            // disable the TOC generation for this specific content and unset the value,
+            // so denormalization can rely on a default value.
+            unset($data[$this->tableOfContentProperty]);
+
+            return;
+        }
+
+        $data[$this->tableOfContentProperty] = $this->generator->getTableOfContent(
+            $data[$this->contentProperty],
+            $this->minDepth,
+            // Use the int value as max depth if specified, or fallback to default max depth otherwise:
+            \is_int($tocValue) ? $tocValue : $this->maxDepth
+        );
     }
 }

@@ -102,5 +102,16 @@ class CrawlerTableOfContentGeneratorTest extends TestCase
                 new Headline(2, 'AC', 'Donec laoreet'),
             ],
         ];
+
+        yield 'single level' => [
+            $content,
+            2,
+            2,
+            [
+                new Headline(2, 'AA', 'Suspendisse'),
+                new Headline(2, 'AB', 'Nam sed neque'),
+                new Headline(2, 'AC', 'Donec laoreet'),
+            ],
+        ];
     }
 }

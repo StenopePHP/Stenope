@@ -88,9 +88,11 @@ class BuildTest extends KernelTestCase
             'http://localhost/foo.html',
             'http://localhost/authors/john.doe',
             'http://localhost/authors/ogi',
+            'http://localhost/authors/tom32i',
             'http://localhost/recipes/',
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
+            'http://localhost/recipes/tomiritsu',
         ], $crawler->filter('url > loc')->extract(['_text']));
     }
 
@@ -119,6 +121,7 @@ class BuildTest extends KernelTestCase
         self::assertSame([
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
+            'http://localhost/recipes/tomiritsu',
         ], $links, 'all recipes links generated in right order');
     }
 

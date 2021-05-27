@@ -720,7 +720,7 @@
             "dist": {
                 "type": "path",
                 "url": "../..",
-                "reference": "434e9daf6e8dc3486865064aa70df277da48a43d"
+                "reference": "c6e9045b83bad156d0a7fe5e16da4b7a775ddb97"
             },
             "require": {
                 "erusev/parsedown": "^1.7.4",

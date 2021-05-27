@@ -29,9 +29,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    Stenope\Bundle\Processor\TableOfContentProcessor:
-        arguments:
-            $minDepth: 2
-            $maxDepth: 3
+    App\Processor\DefaultTocProcessor:
         tags:
-         - { name: 'stenope.processor', priority: '-100' }
+          - name: 'stenope.processor'
+            priority: '-90' # before the TableOfContentProcessor
