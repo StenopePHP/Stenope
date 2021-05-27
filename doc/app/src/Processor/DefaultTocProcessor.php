@@ -10,7 +10,7 @@ class DefaultTocProcessor implements ProcessorInterface
 {
     private string $tableOfContentProperty;
 
-    public function __construct($tableOfContentProperty = 'tableOfContent')
+    public function __construct(string $tableOfContentProperty = 'tableOfContent')
     {
         $this->tableOfContentProperty = $tableOfContentProperty;
     }
