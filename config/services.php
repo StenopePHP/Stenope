@@ -181,6 +181,9 @@ return static function (ContainerConfigurator $container): void {
         ->set(TableOfContentProcessor::class)
             ->args([
                 '$generator' => service(CrawlerTableOfContentGenerator::class),
+                '$tableOfContentProperty' => 'tableOfContent',
+                '$contentProperty' => 'content',
+                '$minDepth' => 2,
             ])
             ->tag(tags\content_processor, ['priority' => -100])
     ;

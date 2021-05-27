@@ -8,12 +8,16 @@
 
 namespace App\Model;
 
+use Stenope\Bundle\TableOfContent\Headline;
+
 class Recipe
 {
     public string $title;
     public ?string $description = null;
     public string $slug;
     public string $content;
+    /** @var Headline[] */
+    public array $tableOfContent = [];
     public array $authors;
     public array $tags;
     public \DateTimeInterface $date;

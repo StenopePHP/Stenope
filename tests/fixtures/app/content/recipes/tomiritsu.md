@@ -1,14 +1,14 @@
 ---
-description: Craft your own cheesecake!
-title: The cheesecake
-authors: ["ogi"]
+description: The best tiramitsu by Tom
+title: The Tomiritsu
+authors: ["tom32i"]
 tags: ["cooking", "dessert"]
 categories: ["awesome"]
-date: 2020/06/18 
-tableOfContent: 2
+date: 2019/10/22
+tableOfContent: false
 ---
 
-Craft your own cheese cake with the following recipe!
+When grilling aged ghees, be sure they are room temperature.
 
 ## First step
 

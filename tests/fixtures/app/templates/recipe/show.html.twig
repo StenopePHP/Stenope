@@ -1,6 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+
+    {% if recipe.tableOfContent is not empty %}
+        <div class="table-of-content">
+            <p class="title">Table of content</p>
+            <ol class="list">
+                {% for headline in recipe.tableOfContent %}
+                    <li>
+                        <a href="#{{ headline.id }}">{{ headline.content }}</a>
+                        {% if headline.children is not empty %}
+                            <ol class="sub-list">
+                                {% for child in headline.children %}
+                                    <li><a href="#{{ child.id }}">{{ child.content }}</a></li>
+                                {% endfor %}
+                            </ol>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    {% endif %}
+
     <h1>{{ recipe.title }}</h1>
 
     {{ recipe.content|raw }}
