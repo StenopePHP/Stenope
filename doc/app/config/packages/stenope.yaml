@@ -12,6 +12,7 @@ stenope:
                 - vendor
             patterns:
                 - '*.md'
+            depth: <=1
 
         App\Model\Page:
             type: files

@@ -2,7 +2,7 @@
 
 ## Development
 
-### Depenencies
+### Dependencies
 
     make install
 

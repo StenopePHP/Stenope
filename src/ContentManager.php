@@ -11,6 +11,7 @@ namespace Stenope\Bundle;
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Exception\ContentNotFoundException;
+use Stenope\Bundle\Exception\RuntimeException;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
 use Stenope\Bundle\ReverseContent\Context;
@@ -68,7 +69,7 @@ class ContentManager
      * @param string|array|callable $sortBy   String, array or callable
      * @param string|array|callable $filterBy String, array or callable
      *
-     * @return array<T> List of decoded contents
+     * @return array<string,T> List of decoded contents with their slug as key
      */
     public function getContents(string $type, $sortBy = null, $filterBy = null): array
     {
@@ -76,20 +77,27 @@ class ContentManager
 
         foreach ($this->getProviders($type) as $provider) {
             foreach ($provider->listContents() as $content) {
-                $contents[] = $this->load($type, $content);
+                if (isset($contents[$content->getSlug()])) {
+                    throw new RuntimeException(sprintf(
+                        'Found multiple contents of type "%s" with the same "%s" identifier.',
+                        $type,
+                        $content->getSlug()
+                    ));
+                }
+                $contents[$content->getSlug()] = $this->load($type, $content);
             }
         }
 
         try {
             $this->filterBy($contents, $filterBy);
         } catch (\Throwable $exception) {
-            throw new \RuntimeException(sprintf('There was a problem filtering %s.', $type), 0, $exception);
+            throw new RuntimeException(sprintf('There was a problem filtering %s.', $type), 0, $exception);
         }
 
         try {
             $this->sortBy($contents, $sortBy);
         } catch (\Throwable $exception) {
-            throw new \RuntimeException(sprintf('There was a problem sorting %s.', $type), 0, $exception);
+            throw new RuntimeException(sprintf('There was a problem sorting %s.', $type), 0, $exception);
         }
 
         return $contents;
@@ -109,7 +117,7 @@ class ContentManager
                 throw new \ErrorException($message, $severity, $severity, $file, $line);
             });
 
-            usort($contents, $sorter);
+            uasort($contents, $sorter);
 
             \restore_error_handler();
         }
@@ -273,6 +281,15 @@ class ContentManager
             return function ($item) use ($filterBy) {
                 foreach ($filterBy as $key => $expectedValue) {
                     $value = $this->propertyAccessor->getValue($item, $key);
+
+                    if (\is_callable($expectedValue)) {
+                        // if the expected value is a callable, call it with the current content property value:
+                        if ($expectedValue($value)) {
+                            continue;
+                        }
+
+                        return false;
+                    }
 
                     if ($value == $expectedValue) {
                         continue;

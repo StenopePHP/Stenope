@@ -84,37 +84,48 @@ class ContentManagerTest extends TestCase
             })
             ->shouldBeCalledTimes(3)
         ;
-        self::assertSame([
-            'Foo 1',
-            'Foo 2',
-            'Foo 3',
-        ], array_column($manager->getContents('App\Foo'), 'content'), 'no sort');
+
+        $getResults = static fn (array $results): array => array_combine(array_keys($results), array_column($results, 'content'));
 
         self::assertSame([
-            'Foo 2',
-            'Foo 1',
-            'Foo 3',
-        ], array_column($manager->getContents('App\Foo', 'order'), 'content'), 'asc order, directly as string');
+            'foo1' => 'Foo 1',
+            'foo2' => 'Foo 2',
+            'foo3' => 'Foo 3',
+        ], $getResults($manager->getContents('App\Foo')), 'no sort');
 
         self::assertSame([
-            'Foo 3',
-            'Foo 1',
-            'Foo 2',
-        ], array_column($manager->getContents('App\Foo', ['order' => false]), 'content'), 'desc order');
+            'foo2' => 'Foo 2',
+            'foo1' => 'Foo 1',
+            'foo3' => 'Foo 3',
+        ], $getResults($manager->getContents('App\Foo', 'order')), 'asc order, directly as string');
 
         self::assertSame([
-            'Foo 2',
-            'Foo 1',
-            'Foo 3',
-        ], array_column($manager->getContents('App\Foo', fn ($a, $b) => $a->order <=> $b->order), 'content'), 'ordered by function');
+            'foo3' => 'Foo 3',
+            'foo1' => 'Foo 1',
+            'foo2' => 'Foo 2',
+        ], $getResults($manager->getContents('App\Foo', ['order' => false])), 'desc order');
 
         self::assertSame([
-            'Foo 1',
-        ], array_column($manager->getContents('App\Foo', null, ['content' => 'Foo 1']), 'content'), 'filtered by key');
+            'foo2' => 'Foo 2',
+            'foo1' => 'Foo 1',
+            'foo3' => 'Foo 3',
+        ], $getResults($manager->getContents('App\Foo', fn ($a, $b) => $a->order <=> $b->order)), 'ordered by function');
 
         self::assertSame([
-            'Foo 2',
-        ], array_column($manager->getContents('App\Foo', null, fn ($foo) => $foo->content === 'Foo 2'), 'content'), 'filtered by function');
+            'foo1' => 'Foo 1',
+        ], $getResults($manager->getContents('App\Foo', null, ['content' => 'Foo 1'])), 'filtered by key');
+
+        self::assertSame([
+            'foo1' => 'Foo 1',
+        ], $getResults($manager->getContents(
+            'App\Foo',
+            null,
+            ['content' => static fn ($content) => $content === 'Foo 1'],
+        )), 'filtered with a property function');
+
+        self::assertSame([
+            'foo2' => 'Foo 2',
+        ], $getResults($manager->getContents('App\Foo', null, fn ($foo) => $foo->content === 'Foo 2')), 'filtered by function');
     }
 
     public function testReverseContent(): void

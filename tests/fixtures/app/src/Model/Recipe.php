@@ -8,7 +8,7 @@
 
 namespace App\Model;
 
-use Stenope\Bundle\TableOfContent\Headline;
+use Stenope\Bundle\TableOfContent\TableOfContent;
 
 class Recipe
 {
@@ -16,8 +16,7 @@ class Recipe
     public ?string $description = null;
     public string $slug;
     public string $content;
-    /** @var Headline[] */
-    public array $tableOfContent = [];
+    public ?TableOfContent $tableOfContent = null;
     public array $authors;
     public array $tags;
     public \DateTimeInterface $date;

@@ -15,5 +15,6 @@ class Author
     public string $lastname;
     public string $nickname;
     public array $tags;
+    public bool $core = false;
     public \DateTimeInterface $lastModified;
 }
