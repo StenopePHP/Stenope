@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Stenope\Bundle\Builder\PageList;
 use Stenope\Bundle\Builder\Sitemap;
-use Stenope\Bundle\Exception\ContentNotFoundException;
+use Stenope\Bundle\Exception\RuntimeException;
 use Stenope\Bundle\HttpFoundation\ContentRequest;
 use Stenope\Bundle\Routing\RouteInfoCollection;
 use Symfony\Component\Console\Helper\Helper;
@@ -376,7 +376,7 @@ class Builder
         try {
             $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
         } catch (\Throwable $exception) {
-            if ($ignoreContentNotFoundErrors && $exception instanceof ContentNotFoundException) {
+            if ($ignoreContentNotFoundErrors && $exception instanceof RuntimeException) {
                 $this->logger->warning('Could not build url "{url}": {exception}', [
                     'exception' => $exception->getMessage(),
                     'url' => $url,

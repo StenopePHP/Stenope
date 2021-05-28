@@ -78,10 +78,15 @@ class ResolveContentLinksProcessor implements ProcessorInterface, ContentManager
         }
 
         // Internal content link
-        $context = new RelativeLinkContext($currentContent->getMetadata(), $href);
+        $path = parse_url($href, PHP_URL_PATH);
+        // Extract fragment (hash / anchor, if any)
+        $fragment = parse_url($href, PHP_URL_FRAGMENT);
+
+        $context = new RelativeLinkContext($currentContent->getMetadata(), $path);
         if ($content = $this->contentManager->reverseContent($context)) {
             $url = $this->resolver->resolveUrl($content);
-            $link->setAttribute('href', $url);
+            // redirect to proper content, with specified anchor:
+            $link->setAttribute('href', $fragment ? "$url#$fragment" : $url);
         }
     }
 }

@@ -13,6 +13,7 @@ use Stenope\Bundle\Builder;
 use Stenope\Bundle\Builder\PageList;
 use Stenope\Bundle\Builder\Sitemap;
 use Stenope\Bundle\Command\BuildCommand;
+use Stenope\Bundle\Command\DebugCommand;
 use Stenope\Bundle\ContentManager;
 use Stenope\Bundle\Decoder\HtmlDecoder;
 use Stenope\Bundle\Decoder\MarkdownDecoder;
@@ -67,6 +68,13 @@ return static function (ContainerConfigurator $container): void {
         // Content providers factories
         ->set(ContentProviderFactory::class)->args(['$factories' => tagged_iterator(tags\content_provider_factory)])
         ->set(LocalFilesystemProviderFactory::class)->tag(tags\content_provider_factory)
+
+        // Debug
+        ->set(DebugCommand::class)->args([
+            '$manager' => service(ContentManager::class),
+            '$stopwatch' => service('stenope.build.stopwatch'),
+        ])
+        ->tag('console.command', ['command' => DebugCommand::getDefaultName()])
 
         // Build
         ->set(BuildCommand::class)->args([
