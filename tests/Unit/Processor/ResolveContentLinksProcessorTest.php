@@ -30,6 +30,7 @@ class ResolveContentLinksProcessorTest extends TestCase
             <a href="#anchor">Don't change this</a>
 
             <a href="../other-contents/another-content.md">Another content</a>
+            <a href="../other-contents/another-content.md#some-anchor">Another content with anchor</a>
             HTML,
         ];
 
@@ -48,13 +49,13 @@ class ResolveContentLinksProcessorTest extends TestCase
         $manager->reverseContent(new RelativeLinkContext(
             $currentContent->getMetadata(),
             '../other-contents/another-content.md',
-        ))->shouldBeCalledOnce()->willReturn(
+        ))->shouldBeCalledTimes(2)->willReturn(
             $resolvedContent = new Content('some-content', 'AnotherContent', 'rawContent', 'markdown', null, null, [
                 'path' => '/workspace/project/other-contents/another-content.md',
             ])
         );
 
-        $urlGenerator->resolveUrl($resolvedContent)->shouldBeCalledOnce()->willReturn('/other-contents-route-path/another-contents');
+        $urlGenerator->resolveUrl($resolvedContent)->shouldBeCalledTimes(2)->willReturn('/other-contents-route-path/another-contents');
 
         $processor->__invoke($data, \stdClass::class, $currentContent);
 
@@ -65,6 +66,7 @@ class ResolveContentLinksProcessorTest extends TestCase
                 <a href="//external.com">Don't change this</a>
                 <a href="#anchor">Don't change this</a>
                 <a href="/other-contents-route-path/another-contents">Another content</a>
+                <a href="/other-contents-route-path/another-contents#some-anchor">Another content with anchor</a>
             </body>
             HTML,
             $data['content']

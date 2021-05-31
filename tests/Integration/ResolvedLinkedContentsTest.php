@@ -25,7 +25,8 @@ class ResolvedLinkedContentsTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertStringContainsString(
             <<<HTML
-            Cheers <a href="/authors/ogi">Ogi</a> for this recipe
+            Cheers <a href="/authors/ogi">Ogi</a> for this recipe.
+            Check his <a href="/authors/ogi#recipes">other recipes</a>.
             HTML,
             $client->getResponse()->getContent(),
             'Response contains proper link to author'

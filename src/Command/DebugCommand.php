@@ -74,6 +74,10 @@ class DebugCommand extends Command
 
                 <info>php %command.full_name% "App\Model\Author" --order="desc:integrationDate"</info>
 
+                same as:
+
+                <info>php %command.full_name% "App\Model\Author" --order="-integrationDate"</info>
+
             You can order by multiple fields:
 
                 <info>php %command.full_name% "App\Model\Author" --order="desc:active" --order="integrationDate"</info>
@@ -90,7 +94,7 @@ class DebugCommand extends Command
 
                 same as:
 
-                <info>php %command.full_name% "App\Model\Author" --filter="-active"</info>
+                <info>php %command.full_name% "App\Model\Author" --filter="!active"</info>
 
             Contains:
 
@@ -143,6 +147,10 @@ class DebugCommand extends Command
                 $orders[substr($field, 5)] = false;
                 continue;
             }
+            if (\str_starts_with($field, '-')) {
+                $orders[substr($field, 1)] = false;
+                continue;
+            }
 
             $orders[$field] = true;
         }
@@ -157,20 +165,14 @@ class DebugCommand extends Command
             $matches = [];
             if (preg_match('#^(\w+) contains:(.*)$#', $field, $matches)) {
                 $searched = $matches[2];
-                $filters[$matches[1]] = static function ($value) use ($searched) {
-                    if (!\is_string($value)) {
-                        return false;
-                    }
-
-                    return str_contains($value, $searched);
-                };
+                $filters[$matches[1]] = static fn ($value) => \is_string($value) ? str_contains($value, $searched) : false;
                 continue;
             }
             if (\str_starts_with($field, 'not:')) {
                 $filters[substr($field, 4)] = false;
                 continue;
             }
-            if (\str_starts_with($field, '-')) {
+            if (\str_starts_with($field, '!')) {
                 $filters[substr($field, 1)] = false;
                 continue;
             }
