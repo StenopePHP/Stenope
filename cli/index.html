@@ -56,22 +56,27 @@
             <p class="title">Table of content</p>
             <ol class="list">
                                     <li>
-                        <a href="#building-into-a-specific-directory">Building into a specific directory</a>
+                        <a href="#build">Build</a>
+                                                    <ol class="sub-list">
+                                                                    <li><a href="#building-into-a-specific-directory">Building into a specific directory</a></li>
+                                                                    <li><a href="#options">Options</a></li>
+                                                            </ol>
                                             </li>
                                     <li>
-                        <a href="#options">Options</a>
+                        <a href="#debug">Debug</a>
                                             </li>
                             </ol>
         </div>
                         </aside>
                     <main class="content">
                         <body><h1 id="cli">CLI<a href="#cli" class="anchor"></a></h1>
+<h2 id="build">Build<a href="#build" class="anchor"></a></h2>
 <p>The build command:</p>
 <pre class="code-multiline language-shell"><code class="language-shell" id="dc301e200e8240db22a2b207ec0fab50">bin/console stenope:build <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token punctuation">[</span>--<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>buildDir<span class="token operator">&gt;</span><span class="token punctuation">]</span></code></pre>
-<h2 id="building-into-a-specific-directory">Building into a specific directory<a href="#building-into-a-specific-directory" class="anchor"></a></h2>
+<h3 id="building-into-a-specific-directory">Building into a specific directory<a href="#building-into-a-specific-directory" class="anchor"></a></h3>
 <p>Use the <code class="code-inline" id="42ed0f9b85c5a487b1f0dc321384210c">buildDir</code> argument:</p>
 <pre class="code-multiline language-shell"><code class="language-shell" id="9d921127c6e942d0fd5005611aa76290">bin/console stenope:build ./static</code></pre>
-<h2 id="options">Options<a href="#options" class="anchor"></a></h2>
+<h3 id="options">Options<a href="#options" class="anchor"></a></h3>
 <table>
 <thead>
 <tr>
@@ -111,7 +116,14 @@
 <td></td>
 </tr>
 </tbody>
-</table></body>                        <footer class="footer">
+</table>
+<h2 id="debug">Debug<a href="#debug" class="anchor"></a></h2>
+<p>There is a command to list, filter, sort out and display content managed by Stenope:</p>
+<pre class="code-multiline language-shell"><code class="language-shell" id="1103fdfd33110822521c1a0bbbc50253">bin/console debug:stenope:content <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token punctuation">[</span>--<span class="token punctuation">]</span> <span class="token operator">&lt;</span>class<span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>id<span class="token operator">&gt;</span><span class="token punctuation">]</span></code></pre>
+<p>E.g:</p>
+<pre class="code-multiline language-shell"><code class="language-shell" id="df8b876c8679dfc971d71f5b526999c7">bin/console debug:stenope:content <span class="token string">"App\Model\Article"</span> --filter<span class="token operator">=</span><span class="token string">"not:outdated"</span> --filter<span class="token operator">=</span><span class="token string">"slug contains:symfony"</span> --order<span class="token operator">=</span><span class="token string">"desc:publishedAt"</span></code></pre>
+<pre class="code-multiline language-shell"><code class="language-shell" id="b2d01d345930473a93a449a72db36edf">bin/console debug:stenope:content <span class="token string">"App\Model\Author"</span> ogi</code></pre>
+<p>Use <code class="code-inline" id="0c113ca6d57519b559ba5a426be3c6b6">--help</code> for more details and usage samples.</p></body>                        <footer class="footer">
                                                             <p class="note">Stenope, the static website generation tool for Symfony.</p>
                                 <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>

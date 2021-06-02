@@ -73,6 +73,9 @@
                                                             </ol>
                                             </li>
                                     <li>
+                        <a href="#debug">Debug</a>
+                                            </li>
+                                    <li>
                         <a href="#advanced-usage-and-extension">Advanced usage and extension</a>
                                                     <ol class="sub-list">
                                                                     <li><a href="#register-a-custom-denormalizer">Register a custom denormalizer</a></li>
@@ -219,6 +222,8 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
     <span class="token constant">null</span><span class="token punctuation">,</span>
     <span class="token function">fn </span><span class="token punctuation">(</span><span class="token class-name type-declaration">Article</span> <span class="token variable">$article</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">bool</span> <span class="token operator">=&gt;</span> <span class="token function">in_array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'mobile'</span><span class="token punctuation">,</span> <span class="token variable">$article</span><span class="token operator">-&gt;</span><span class="token property">tags</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="debug">Debug<a href="#debug" class="anchor"></a></h2>
+<p>See <a href="/Stenope/cli#debug">CLI - Debug</a></p>
 <h2 id="advanced-usage-and-extension">Advanced usage and extension<a href="#advanced-usage-and-extension" class="anchor"></a></h2>
 <h3 id="register-a-custom-denormalizer">Register a custom denormalizer<a href="#register-a-custom-denormalizer" class="anchor"></a></h3>
 <p>Unless specified otherwise, Stenope will denormalize your objects using the <a href="https://symfony.com/doc/current/components/serializer.html#deserializing-an-object" target="_blank">default Symfony serializer</a>.</p>
