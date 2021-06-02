@@ -18,7 +18,7 @@ class CrawlerTableOfContentGenerator
     /**
      * @return Headline[]
      */
-    public function getTableOfContent(string $content, ?int $fromDepth = null, ?int $toDepth = null): array
+    public function getTableOfContent(string $content, ?int $fromDepth = null, ?int $toDepth = null): TableOfContent
     {
         $crawler = new Crawler($content);
 
@@ -30,7 +30,7 @@ class CrawlerTableOfContentGenerator
         }
 
         $filters = $this->getFilters($fromDepth ?? static::MIN_DEPTH, $toDepth ?? static::MAX_DEPTH);
-        $tableOfContent = [];
+        $headlines = [];
         $previous = null;
 
         /* @var \DOMElement $element */
@@ -42,14 +42,14 @@ class CrawlerTableOfContentGenerator
             $previous = $current;
 
             if ($parent === null) {
-                $tableOfContent[] = $current;
+                $headlines[] = $current;
                 continue;
             }
 
             $parent->addChild($current);
         }
 
-        return $tableOfContent;
+        return new TableOfContent($headlines);
     }
 
     private function getFilters(int $fromDepth, int $toDepth): string

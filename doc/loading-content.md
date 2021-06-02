@@ -208,6 +208,10 @@ $tagedMobileArticles = $this->manager->getContents(
 );
 ```
 
+## Debug
+
+See [CLI - Debug](./cli.md#debug)
+
 ## Advanced usage and extension
 
 ### Register a custom denormalizer

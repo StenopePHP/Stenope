@@ -2,6 +2,7 @@
 lastname: Steinhausser
 firstname: Maxime
 nickname: ogi
+core: true
 tags: ["symfony", "cooking"]
 ---
 

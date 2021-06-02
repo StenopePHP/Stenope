@@ -1,12 +1,14 @@
 # CLI
 
+## Build
+
 The build command:
 
 ```shell
 bin/console stenope:build [options] [--] [<buildDir>]
 ```
 
-## Building into a specific directory
+### Building into a specific directory
 
 Use the `buildDir` argument:
 
@@ -14,7 +16,7 @@ Use the `buildDir` argument:
 bin/console stenope:build ./static
 ```
 
-## Options
+### Options
 
 | Option | Description |
 | -- | -- | -- |
@@ -24,3 +26,23 @@ bin/console stenope:build ./static
 | `--no-sitemap` | Don't build the sitemap | |
 | `--no-expose` | Don't expose the public directory | |
 | `--ignore-content-not-found` | Ignore content not found errors | |
+
+## Debug
+
+There is a command to list, filter, sort out and display content managed by Stenope:
+
+```shell
+bin/console debug:stenope:content [options] [--] <class> [<id>]
+```
+
+E.g:
+
+```shell
+bin/console debug:stenope:content "App\Model\Article" --filter="not:outdated" --filter="slug contains:symfony" --order="desc:publishedAt"
+```
+
+```shell
+bin/console debug:stenope:content "App\Model\Author" ogi
+```
+
+Use `--help` for more details and usage samples.

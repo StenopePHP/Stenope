@@ -27,7 +27,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Twig\Environment;
