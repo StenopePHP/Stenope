@@ -66,7 +66,7 @@ class ContentManagerTest extends TestCase
         ;
 
         $processor
-            ->__invoke(Argument::type('array'), Argument::type('string'), Argument::type(Content::class))
+            ->__invoke(Argument::type('array'), Argument::type(Content::class))
             ->shouldBeCalled()
         ;
 

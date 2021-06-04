@@ -8,6 +8,7 @@
 
 namespace Stenope\Bundle\Behaviour;
 
+use Stenope\Bundle\Content;
 use Symfony\Component\DomCrawler\Crawler;
 
 interface HtmlCrawlerManagerInterface
@@ -15,15 +16,15 @@ interface HtmlCrawlerManagerInterface
     /**
      * Get HTML Crawler for the given property (creats it if needed)
      */
-    public function get(array &$data, string $property): ?Crawler;
+    public function get(Content $content, array &$data, string $property): ?Crawler;
 
     /**
      * Dump the current state of the HTML Crawler into data for the given property.
      */
-    public function save(array &$data, string $property, bool $force = false): void;
+    public function save(Content $content, array &$data, string $property, bool $force = false): void;
 
     /**
      * Dump the current state of all HTML Crawlers into data for their respective property.
      */
-    public function saveAll(array &$data): void;
+    public function saveAll(Content $content, array &$data): void;
 }

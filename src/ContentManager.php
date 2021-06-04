@@ -84,11 +84,11 @@ class ContentManager
                 if (isset($contents[$content->getSlug()])) {
                     throw new RuntimeException(sprintf(
                         'Found multiple contents of type "%s" with the same "%s" identifier.',
-                        $type,
+                        $content->getType(),
                         $content->getSlug()
                     ));
                 }
-                $contents[$content->getSlug()] = $this->load($type, $content);
+                $contents[$content->getSlug()] = $this->load($content);
             }
         }
 
@@ -145,7 +145,7 @@ class ContentManager
 
         foreach ($this->getProviders($type) as $provider) {
             if ($content = $provider->getContent($id)) {
-                $loaded = $this->load($type, $content);
+                $loaded = $this->load($content);
 
                 if (isset($event)) {
                     $event->stop();
@@ -210,9 +210,9 @@ class ContentManager
         }
     }
 
-    private function load(string $type, Content $content)
+    private function load(Content $content)
     {
-        if ($data = $this->cache[$key = "$type:{$content->getSlug()}"] ?? false) {
+        if ($data = $this->cache[$key = "{$content->getType()}:{$content->getSlug()}"] ?? false) {
             return $data;
         }
 
@@ -222,12 +222,12 @@ class ContentManager
 
         // Apply processors to decoded data
         foreach ($this->processors as $processor) {
-            $processor($data, $type, $content);
+            $processor($data, $content);
         }
 
-        $this->crawlers->saveAll($data);
+        $this->crawlers->saveAll($content, $data);
 
-        $data = $this->denormalizer->denormalize($data, $type, $content->getFormat(), [
+        $data = $this->denormalizer->denormalize($data, $content->getType(), $content->getFormat(), [
             SkippingInstantiatedObjectDenormalizer::SKIP => true,
         ]);
 

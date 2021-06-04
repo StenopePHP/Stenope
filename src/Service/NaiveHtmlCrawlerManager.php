@@ -9,43 +9,55 @@
 namespace Stenope\Bundle\Service;
 
 use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
+use Stenope\Bundle\Content;
 use Symfony\Component\DomCrawler\Crawler;
 
 class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
 {
     private array $crawlers = [];
 
-    public function get(array &$data, string $property): ?Crawler
+    public function get(Content $content, array &$data, string $property): ?Crawler
     {
+        $key = "{$content->getType()}:{$content->getSlug()}";
         $crawler = $this->createCrawler($data[$property]);
 
         if ($crawler) {
-            $this->crawlers[$property] = $crawler;
+            if (!isset($this->crawlers[$key])) {
+                $this->crawlers[$key] = [];
+            }
+
+            $this->crawlers[$key][$property] = $crawler;
         }
 
         return $crawler;
     }
 
-    public function save(array &$data, string $property, bool $force = false): void
+    public function save(Content $content, array &$data, string $property, bool $force = false): void
     {
-        if (isset($this->crawlers[$property])) {
-            $data[$property] = $this->crawlers[$property]->html();
-            unset($this->crawlers[$property]);
+        $key = "{$content->getType()}:{$content->getSlug()}";
+
+        if (isset($this->crawlers[$key]) && isset($this->crawlers[$key][$property])) {
+            $data[$property] = $this->crawlers[$key][$property]->html();
+            unset($this->crawlers[$key][$property]);
         }
     }
 
-    public function saveAll(array &$data): void
+    public function saveAll(Content $content, array &$data): void
     {
-        foreach ($this->crawlers as $property => $crawler) {
-            $data[$property] = $crawler->html();
+        $key = "{$content->getType()}:{$content->getSlug()}";
+
+        foreach ($this->crawlers as $key => $crawlers) {
+            foreach ($crawlers as $property => $crawler) {
+                $data[$property] = $crawler->html();
+            }
         }
 
         $this->crawlers = [];
     }
 
-    public function createCrawler(string $content): ?Crawler
+    public function createCrawler(string $html): ?Crawler
     {
-        $crawler = new Crawler($content);
+        $crawler = new Crawler($html);
 
         try {
             $crawler->html();

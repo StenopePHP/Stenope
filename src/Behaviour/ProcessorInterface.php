@@ -16,8 +16,7 @@ interface ProcessorInterface
      * Apply modifications to decoded data before denormalization
      *
      * @param array   $data    The decoded data
-     * @param string  $type    The model being processed (FQN)
      * @param Content $content The source content
      */
-    public function __invoke(array &$data, string $type, Content $content): void;
+    public function __invoke(array &$data, Content $content): void;
 }

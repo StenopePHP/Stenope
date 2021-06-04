@@ -26,13 +26,13 @@ class HtmlAnchorProcessor implements ProcessorInterface
         $this->property = $property;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         if (!isset($data[$this->property])) {
             return;
         }
 
-        $crawler = $this->crawlers->get($data, $this->property);
+        $crawler = $this->crawlers->get($content, $data, $this->property);
 
         if (!$crawler) {
             return;
@@ -42,7 +42,7 @@ class HtmlAnchorProcessor implements ProcessorInterface
             $this->addAnchor($element);
         }
 
-        $this->crawlers->save($data, $this->property);
+        $this->crawlers->save($content, $data, $this->property);
     }
 
     /**

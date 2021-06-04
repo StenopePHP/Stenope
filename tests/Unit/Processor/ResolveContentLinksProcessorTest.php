@@ -58,7 +58,7 @@ class ResolveContentLinksProcessorTest extends TestCase
 
         $urlGenerator->resolveUrl($resolvedContent)->shouldBeCalledTimes(2)->willReturn('/other-contents-route-path/another-contents');
 
-        $processor->__invoke($data, \stdClass::class, $currentContent);
+        $processor->__invoke($data, $currentContent);
 
         self::assertXmlStringEqualsXmlString(<<<HTML
             <body>

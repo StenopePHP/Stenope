@@ -31,14 +31,14 @@ class ExtractTitleFromHtmlContentProcessor implements ProcessorInterface
         $this->titleProperty = $titleProperty;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         // Ignore if no content available, or if the title property is already set:
         if (!\is_string($data[$this->contentProperty] ?? null) || isset($data[$this->titleProperty])) {
             return;
         }
 
-        $crawler = $this->crawlers->get($data, $this->contentProperty);
+        $crawler = $this->crawlers->get($content, $data, $this->contentProperty);
 
         if (!$crawler) {
             return;

@@ -30,7 +30,7 @@ class ExtractTitleFromHtmlContentProcessorTest extends TestCase
         ];
 
         $processor = new ExtractTitleFromHtmlContentProcessor(new NaiveHtmlCrawlerManager());
-        $processor->__invoke($data, \stdClass::class, $this->getDummyContent());
+        $processor->__invoke($data, $this->getDummyContent());
 
         self::assertSame('If you wrestle or remain with a new affirmation, density feels you.', $data['title']);
     }
@@ -46,7 +46,7 @@ class ExtractTitleFromHtmlContentProcessorTest extends TestCase
         ];
 
         $processor = new ExtractTitleFromHtmlContentProcessor(new NaiveHtmlCrawlerManager(), 'html', 'name');
-        $processor->__invoke($data, \stdClass::class, $this->getDummyContent());
+        $processor->__invoke($data, $this->getDummyContent());
 
         self::assertSame('If you wrestle or remain with a new affirmation, density feels you.', $data['name']);
     }
@@ -62,7 +62,7 @@ class ExtractTitleFromHtmlContentProcessorTest extends TestCase
         ];
 
         $processor = new ExtractTitleFromHtmlContentProcessor(new NaiveHtmlCrawlerManager());
-        $processor->__invoke($data, \stdClass::class, $this->getDummyContent());
+        $processor->__invoke($data, $this->getDummyContent());
 
         self::assertSame($data, $data, 'data are unchanged, no title set.');
     }
@@ -73,7 +73,7 @@ class ExtractTitleFromHtmlContentProcessorTest extends TestCase
     public function testIgnoresWhenNoProperContentAvailable(array $data): void
     {
         $processor = new ExtractTitleFromHtmlContentProcessor(new NaiveHtmlCrawlerManager());
-        $processor->__invoke($data, \stdClass::class, $this->getDummyContent());
+        $processor->__invoke($data, $this->getDummyContent());
 
         self::assertSame($data, $data, 'data are unchanged');
     }
@@ -90,7 +90,7 @@ class ExtractTitleFromHtmlContentProcessorTest extends TestCase
         $data = ['title' => 'Expected title', 'content' => '<h1>Another title</h1>'];
 
         $processor = new ExtractTitleFromHtmlContentProcessor(new NaiveHtmlCrawlerManager());
-        $processor->__invoke($data, \stdClass::class, $this->getDummyContent());
+        $processor->__invoke($data, $this->getDummyContent());
 
         self::assertSame($data, $data, 'data are unchanged');
     }

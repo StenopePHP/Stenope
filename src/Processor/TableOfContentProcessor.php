@@ -44,7 +44,7 @@ class TableOfContentProcessor implements ProcessorInterface
         $this->maxDepth = $maxDepth;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         if (!isset($data[$this->contentProperty], $data[$this->tableOfContentProperty])) {
             // Skip on unavailable content property or no TOC property configured
@@ -63,7 +63,7 @@ class TableOfContentProcessor implements ProcessorInterface
         }
 
         $data[$this->tableOfContentProperty] = $this->generator->getTableOfContent(
-            $this->crawlers->get($data, $this->contentProperty),
+            $this->crawlers->get($content, $data, $this->contentProperty, $content),
             $this->minDepth,
             // Use the int value as max depth if specified, or fallback to default max depth otherwise:
             \is_int($tocValue) ? $tocValue : $this->maxDepth
