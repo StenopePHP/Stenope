@@ -11,6 +11,7 @@ namespace Stenope\Bundle\Tests\Unit\Service;
 use PHPUnit\Framework\TestCase;
 use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 use Stenope\Bundle\TableOfContent\Headline;
+use Symfony\Component\DomCrawler\Crawler;
 
 class CrawlerTableOfContentGeneratorTest extends TestCase
 {
@@ -26,7 +27,7 @@ class CrawlerTableOfContentGeneratorTest extends TestCase
      */
     public function testTableOfContent(string $htmlDom, ?int $fromDepth, ?int $toDepth, array $expectedToc): void
     {
-        $toc = $this->generator->getTableOfContent($htmlDom, $fromDepth, $toDepth);
+        $toc = $this->generator->getTableOfContent(new Crawler($htmlDom), $fromDepth, $toDepth);
 
         self::assertJsonStringEqualsJsonString(json_encode($expectedToc), json_encode($toc));
     }

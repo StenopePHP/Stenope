@@ -18,17 +18,8 @@ class CrawlerTableOfContentGenerator
     /**
      * @return Headline[]
      */
-    public function getTableOfContent(string $content, ?int $fromDepth = null, ?int $toDepth = null): TableOfContent
+    public function getTableOfContent(Crawler $crawler, ?int $fromDepth = null, ?int $toDepth = null): TableOfContent
     {
-        $crawler = new Crawler($content);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return [];
-        }
-
         $filters = $this->getFilters($fromDepth ?? static::MIN_DEPTH, $toDepth ?? static::MAX_DEPTH);
         $headlines = [];
         $previous = null;
