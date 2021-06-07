@@ -39,10 +39,10 @@ class GravatarProcessor implements ProcessorInterface
      * @param string  $type    The model being processed (FQN)
      * @param Content $content The source content
      */
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         // Only apply this processor on Users
-        if (!is_a($type, User::class, true)) {
+        if (!is_a($content->getType(), User::class, true)) {
             return;
         }
 
