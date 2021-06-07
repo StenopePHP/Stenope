@@ -9,10 +9,10 @@
 namespace Stenope\Bundle\Processor;
 
 use Stenope\Bundle\Behaviour\HighlighterInterface;
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\Service\HtmlUtils;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Apply syntax coloration to code blocs
@@ -20,36 +20,36 @@ use Symfony\Component\DomCrawler\Crawler;
 class CodeHighlightProcessor implements ProcessorInterface
 {
     private HighlighterInterface $highlighter;
+    private HtmlCrawlerManagerInterface $crawlers;
     private string $property;
 
-    public function __construct(HighlighterInterface $highlighter, string $property = 'content')
-    {
+    public function __construct(
+        HighlighterInterface $highlighter,
+        HtmlCrawlerManagerInterface $crawlers,
+        string $property = 'content'
+    ) {
         $this->highlighter = $highlighter;
+        $this->crawlers = $crawlers;
         $this->property = $property;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         if (!isset($data[$this->property])) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
+        $crawler = $this->crawlers->get($content, $data, $this->property);
 
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
+        if (!$crawler) {
             return;
         }
-
-        $crawler = new Crawler($data[$this->property]);
 
         foreach ($crawler->filter('code') as $element) {
             $this->highlight($element);
         }
 
-        $data[$this->property] = $crawler->html();
+        $this->crawlers->save($content, $data, $this->property);
     }
 
     private function highlight(\DOMElement $element): void

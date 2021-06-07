@@ -9,6 +9,7 @@
 namespace Stenope\Bundle;
 
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Exception\ContentNotFoundException;
 use Stenope\Bundle\Exception\RuntimeException;
@@ -27,6 +28,7 @@ class ContentManager
     private DecoderInterface $decoder;
     private DenormalizerInterface $denormalizer;
     private PropertyAccessorInterface $propertyAccessor;
+    private HtmlCrawlerManagerInterface $crawlers;
 
     /** @var iterable<ContentProviderInterface>|ContentProviderInterface[] */
     private iterable $providers;
@@ -47,6 +49,7 @@ class ContentManager
     public function __construct(
         DecoderInterface $decoder,
         DenormalizerInterface $denormalizer,
+        HtmlCrawlerManagerInterface $crawlers,
         iterable $contentProviders,
         iterable $processors,
         ?PropertyAccessorInterface $propertyAccessor = null,
@@ -54,6 +57,7 @@ class ContentManager
     ) {
         $this->decoder = $decoder;
         $this->denormalizer = $denormalizer;
+        $this->crawlers = $crawlers;
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
         $this->providers = $contentProviders;
         $this->processors = $processors;
@@ -80,11 +84,11 @@ class ContentManager
                 if (isset($contents[$content->getSlug()])) {
                     throw new RuntimeException(sprintf(
                         'Found multiple contents of type "%s" with the same "%s" identifier.',
-                        $type,
+                        $content->getType(),
                         $content->getSlug()
                     ));
                 }
-                $contents[$content->getSlug()] = $this->load($type, $content);
+                $contents[$content->getSlug()] = $this->load($content);
             }
         }
 
@@ -141,7 +145,7 @@ class ContentManager
 
         foreach ($this->getProviders($type) as $provider) {
             if ($content = $provider->getContent($id)) {
-                $loaded = $this->load($type, $content);
+                $loaded = $this->load($content);
 
                 if (isset($event)) {
                     $event->stop();
@@ -206,9 +210,9 @@ class ContentManager
         }
     }
 
-    private function load(string $type, Content $content)
+    private function load(Content $content)
     {
-        if ($data = $this->cache[$key = "$type:{$content->getSlug()}"] ?? false) {
+        if ($data = $this->cache[$key = "{$content->getType()}:{$content->getSlug()}"] ?? false) {
             return $data;
         }
 
@@ -218,10 +222,12 @@ class ContentManager
 
         // Apply processors to decoded data
         foreach ($this->processors as $processor) {
-            $processor($data, $type, $content);
+            $processor($data, $content);
         }
 
-        $data = $this->denormalizer->denormalize($data, $type, $content->getFormat(), [
+        $this->crawlers->saveAll($content, $data);
+
+        $data = $this->denormalizer->denormalize($data, $content->getType(), $content->getFormat(), [
             SkippingInstantiatedObjectDenormalizer::SKIP => true,
         ]);
 

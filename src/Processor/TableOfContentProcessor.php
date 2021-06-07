@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Stenope\Bundle\Processor;
 
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
@@ -21,6 +22,7 @@ use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 class TableOfContentProcessor implements ProcessorInterface
 {
     private CrawlerTableOfContentGenerator $generator;
+    private HtmlCrawlerManagerInterface $crawlers;
     private string $tableOfContentProperty;
     private string $contentProperty;
     private int $minDepth;
@@ -28,19 +30,21 @@ class TableOfContentProcessor implements ProcessorInterface
 
     public function __construct(
         CrawlerTableOfContentGenerator $generator,
+        HtmlCrawlerManagerInterface $crawlers,
         string $tableOfContentProperty = 'tableOfContent',
         string $contentProperty = 'content',
         int $minDepth = 1,
         int $maxDepth = 6
     ) {
         $this->generator = $generator;
+        $this->crawlers = $crawlers;
         $this->tableOfContentProperty = $tableOfContentProperty;
         $this->contentProperty = $contentProperty;
         $this->minDepth = $minDepth;
         $this->maxDepth = $maxDepth;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         if (!isset($data[$this->contentProperty], $data[$this->tableOfContentProperty])) {
             // Skip on unavailable content property or no TOC property configured
@@ -58,8 +62,14 @@ class TableOfContentProcessor implements ProcessorInterface
             return;
         }
 
+        $crawler = $this->crawlers->get($content, $data, $this->contentProperty);
+
+        if (\is_null($crawler)) {
+            return;
+        }
+
         $data[$this->tableOfContentProperty] = $this->generator->getTableOfContent(
-            $data[$this->contentProperty],
+            $crawler,
             $this->minDepth,
             // Use the int value as max depth if specified, or fallback to default max depth otherwise:
             \is_int($tocValue) ? $tocValue : $this->maxDepth

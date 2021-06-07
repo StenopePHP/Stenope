@@ -9,6 +9,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Psr\Log\LoggerInterface;
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Builder;
 use Stenope\Bundle\Builder\PageList;
 use Stenope\Bundle\Builder\Sitemap;
@@ -40,7 +41,9 @@ use Stenope\Bundle\Routing\RouteInfoCollection;
 use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Stenope\Bundle\Service\AssetUtils;
+use Stenope\Bundle\Service\NaiveHtmlCrawlerManager;
 use Stenope\Bundle\Service\Parsedown;
+use Stenope\Bundle\Service\SharedHtmlCrawlerManager;
 use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 use Stenope\Bundle\Twig\ContentExtension;
 use Stenope\Bundle\Twig\ContentRuntime;
@@ -60,6 +63,7 @@ return static function (ContainerConfigurator $container): void {
             '$decoder' => service('serializer'),
             '$denormalizer' => service('serializer'),
             '$propertyAccessor' => service('property_accessor'),
+            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
             '$contentProviders' => tagged_iterator(tags\content_provider),
             '$processors' => tagged_iterator(tags\content_processor),
             '$stopwatch' => service('debug.stopwatch')->nullOnInvalid(),
@@ -169,9 +173,13 @@ return static function (ContainerConfigurator $container): void {
 
         // Table of content
         ->set(CrawlerTableOfContentGenerator::class)
-        ;
 
-    // Tagged Property handlers:
+        // HTML Crawler Manager
+        ->set(NaiveHtmlCrawlerManager::class)
+        ->set(SharedHtmlCrawlerManager::class)
+        ->alias(HtmlCrawlerManagerInterface::class, NaiveHtmlCrawlerManager::class);
+
+    // Tagged processors:
     $container->services()->defaults()->tag(tags\content_processor)
         ->set(LastModifiedProcessor::class)
         ->set(SlugProcessor::class)
@@ -179,19 +187,36 @@ return static function (ContainerConfigurator $container): void {
             ->args([
                 '$property' => 'content',
                 '$slugger' => service(SluggerInterface::class),
+                '$crawlers' => service(HtmlCrawlerManagerInterface::class),
             ])
-        ->set(HtmlAnchorProcessor::class)
-        ->set(HtmlExternalLinksProcessor::class)
-        ->set(ExtractTitleFromHtmlContentProcessor::class)
-        ->set(CodeHighlightProcessor::class)->args(['$highlighter' => service(Prism::class)])
-        ->set(ResolveContentLinksProcessor::class)->args(['$resolver' => service(ContentUrlResolver::class)])
-        ->set(AssetsProcessor::class)->args(['$assetUtils' => service(AssetUtils::class)])
+        ->set(HtmlAnchorProcessor::class)->args([
+            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
+        ])
+        ->set(HtmlExternalLinksProcessor::class)->args([
+            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
+        ])
+        ->set(ExtractTitleFromHtmlContentProcessor::class)->args([
+            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
+        ])
+        ->set(CodeHighlightProcessor::class)->args([
+            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
+            '$highlighter' => service(Prism::class),
+        ])
+        ->set(ResolveContentLinksProcessor::class)->args([
+            '$resolver' => service(ContentUrlResolver::class),
+            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
+        ])
+        ->set(AssetsProcessor::class)->args([
+            '$assetUtils' => service(AssetUtils::class),
+            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
+        ])
         ->set(TableOfContentProcessor::class)
             ->args([
                 '$generator' => service(CrawlerTableOfContentGenerator::class),
                 '$tableOfContentProperty' => 'tableOfContent',
                 '$contentProperty' => 'content',
                 '$minDepth' => 2,
+                '$crawlers' => service(HtmlCrawlerManagerInterface::class),
             ])
             ->tag(tags\content_processor, ['priority' => -100])
     ;

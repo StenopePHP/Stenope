@@ -10,11 +10,11 @@ namespace Stenope\Bundle\Processor;
 
 use Stenope\Bundle\Behaviour\ContentManagerAwareInterface;
 use Stenope\Bundle\Behaviour\ContentManagerAwareTrait;
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\ReverseContent\RelativeLinkContext;
 use Stenope\Bundle\Routing\ContentUrlResolver;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Resolve relative links between contents using the route declared in config.
@@ -24,36 +24,36 @@ class ResolveContentLinksProcessor implements ProcessorInterface, ContentManager
     use ContentManagerAwareTrait;
 
     private ContentUrlResolver $resolver;
+    private HtmlCrawlerManagerInterface $crawlers;
     private string $property;
 
-    public function __construct(ContentUrlResolver $resolver, string $property = 'content')
-    {
+    public function __construct(
+        ContentUrlResolver $resolver,
+        HtmlCrawlerManagerInterface $crawlers,
+        string $property = 'content'
+    ) {
         $this->resolver = $resolver;
+        $this->crawlers = $crawlers;
         $this->property = $property;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         if (!isset($data[$this->property])) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
+        $crawler = $this->crawlers->get($content, $data, $this->property);
 
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
+        if (!$crawler) {
             return;
         }
-
-        $crawler = new Crawler($data[$this->property]);
 
         foreach ($crawler->filter('a') as $link) {
             $this->processLink($link, $content);
         }
 
-        $data[$this->property] = $crawler->html();
+        $this->crawlers->save($content, $data, $this->property);
     }
 
     private function processLink(\DOMElement $link, Content $currentContent): void

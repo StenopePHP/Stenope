@@ -15,9 +15,9 @@ class DefaultTocProcessor implements ProcessorInterface
         $this->tableOfContentProperty = $tableOfContentProperty;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
-        if (!is_a($type, Page::class, true)) {
+        if (!is_a($content->getType(), Page::class, true)) {
             return;
         }
 

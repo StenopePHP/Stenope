@@ -23,7 +23,7 @@ class SlugProcessor implements ProcessorInterface
         $this->property = $property;
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         if (isset($data[$this->property])) {
             // Slug already set.

@@ -30,6 +30,10 @@ class Configuration implements ConfigurationInterface
                 ->cannotBeEmpty()
                 ->defaultValue('%kernel.project_dir%/build')
             ->end()
+            ->booleanNode('shared_html_crawlers')
+                ->info('Activate the sharing of HTML crawlers for better performances.')
+                ->defaultFalse()
+            ->end()
             ->arrayNode('copy')
                 ->defaultValue([
                     [

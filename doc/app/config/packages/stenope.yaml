@@ -1,4 +1,5 @@
 stenope:
+    shared_html_crawlers: true
     resolve_links:
         App\Model\Page: { route: page, slug: page }
 

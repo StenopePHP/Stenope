@@ -8,9 +8,9 @@
 
 namespace Stenope\Bundle\Processor;
 
+use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -19,27 +19,29 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class HtmlIdProcessor implements ProcessorInterface
 {
+    private HtmlCrawlerManagerInterface $crawlers;
     private string $property;
     private SluggerInterface $slugger;
 
-    public function __construct(string $property = 'content', ?SluggerInterface $slugger = null)
-    {
+    public function __construct(
+        HtmlCrawlerManagerInterface $crawlers,
+        string $property = 'content',
+        ?SluggerInterface $slugger = null
+    ) {
+        $this->crawlers = $crawlers;
         $this->property = $property;
         $this->slugger = $slugger ?? new AsciiSlugger();
     }
 
-    public function __invoke(array &$data, string $type, Content $content): void
+    public function __invoke(array &$data, Content $content): void
     {
         if (!isset($data[$this->property])) {
             return;
         }
 
-        $crawler = new Crawler($data[$this->property]);
+        $crawler = $this->crawlers->get($content, $data, $this->property);
 
-        try {
-            $crawler->html();
-        } catch (\Exception $exception) {
-            // Content is not valid HTML.
+        if (!$crawler) {
             return;
         }
 
@@ -55,7 +57,7 @@ class HtmlIdProcessor implements ProcessorInterface
             $this->setIdForImage($element);
         }
 
-        $data[$this->property] = $crawler->html();
+        $this->crawlers->save($content, $data, $this->property);
     }
 
     private function setIdFromContent(\DOMElement $element): void

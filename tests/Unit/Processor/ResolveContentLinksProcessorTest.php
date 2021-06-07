@@ -15,6 +15,7 @@ use Stenope\Bundle\ContentManager;
 use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
 use Stenope\Bundle\ReverseContent\RelativeLinkContext;
 use Stenope\Bundle\Routing\ContentUrlResolver;
+use Stenope\Bundle\Service\NaiveHtmlCrawlerManager;
 
 class ResolveContentLinksProcessorTest extends TestCase
 {
@@ -41,7 +42,7 @@ class ResolveContentLinksProcessorTest extends TestCase
 
         $urlGenerator = $this->prophesize(ContentUrlResolver::class);
 
-        $processor = new ResolveContentLinksProcessor($urlGenerator->reveal());
+        $processor = new ResolveContentLinksProcessor($urlGenerator->reveal(), new NaiveHtmlCrawlerManager());
 
         $manager = $this->prophesize(ContentManager::class);
         $processor->setContentManager($manager->reveal());
@@ -57,7 +58,7 @@ class ResolveContentLinksProcessorTest extends TestCase
 
         $urlGenerator->resolveUrl($resolvedContent)->shouldBeCalledTimes(2)->willReturn('/other-contents-route-path/another-contents');
 
-        $processor->__invoke($data, \stdClass::class, $currentContent);
+        $processor->__invoke($data, $currentContent);
 
         self::assertXmlStringEqualsXmlString(<<<HTML
             <body>
