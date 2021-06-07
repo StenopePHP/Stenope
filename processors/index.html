@@ -82,7 +82,7 @@
 </ul>
 <h2 id="writing-a-custom-processor">Writing a custom processor<a href="#writing-a-custom-processor" class="anchor"></a></h2>
 <p>To write your own processor, just implements the <code class="code-inline" id="9f55ee1fb6055d910ff7a3498baecb63">Stenope\Bundle\Behaviour\ProcessorInterface</code> interface:</p>
-<pre class="code-multiline language-php"><code class="language-php" id="d149c8920cce4acd157a99aee8ec8a60"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<pre class="code-multiline language-php"><code class="language-php" id="c659802fcb6b1c586955ccc3436bedc0"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Stenope<span class="token punctuation">\</span>Processor</span><span class="token punctuation">;</span>
 
@@ -102,10 +102,10 @@
      * <span class="token keyword">@param</span> <span class="token class-name"><span class="token keyword">string</span></span>  <span class="token parameter">$type</span>    The model being processed (FQN)
      * <span class="token keyword">@param</span> <span class="token class-name">Content</span> <span class="token parameter">$content</span> The source content
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__invoke</span><span class="token punctuation">(</span><span class="token keyword type-declaration">array</span> <span class="token operator">&amp;</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$type</span><span class="token punctuation">,</span> <span class="token class-name type-declaration">Content</span> <span class="token variable">$content</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__invoke</span><span class="token punctuation">(</span><span class="token keyword type-declaration">array</span> <span class="token operator">&amp;</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token class-name type-declaration">Content</span> <span class="token variable">$content</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
     <span class="token punctuation">{</span>
         <span class="token comment">// Only apply this processor on Users</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">is_a</span><span class="token punctuation">(</span><span class="token variable">$type</span><span class="token punctuation">,</span> <span class="token scope">User<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token constant boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">is_a</span><span class="token punctuation">(</span><span class="token variable">$content</span><span class="token operator">-&gt;</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token scope">User<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token constant boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">return</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
 
