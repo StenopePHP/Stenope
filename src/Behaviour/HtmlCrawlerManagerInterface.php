@@ -14,9 +14,9 @@ use Symfony\Component\DomCrawler\Crawler;
 interface HtmlCrawlerManagerInterface
 {
     /**
-     * Get HTML Crawler for the given property (creats it if needed)
+     * Get HTML Crawler for the given property (creates it if needed)
      */
-    public function get(Content $content, array &$data, string $property): ?Crawler;
+    public function get(Content $content, array $data, string $property): ?Crawler;
 
     /**
      * Dump the current state of the HTML Crawler into data for the given property.

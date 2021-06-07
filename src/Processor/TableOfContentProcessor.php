@@ -63,7 +63,7 @@ class TableOfContentProcessor implements ProcessorInterface
         }
 
         $data[$this->tableOfContentProperty] = $this->generator->getTableOfContent(
-            $this->crawlers->get($content, $data, $this->contentProperty, $content),
+            $this->crawlers->get($content, $data, $this->contentProperty),
             $this->minDepth,
             // Use the int value as max depth if specified, or fallback to default max depth otherwise:
             \is_int($tocValue) ? $tocValue : $this->maxDepth

@@ -20,32 +20,28 @@ class SharedHtmlCrawlerManager implements HtmlCrawlerManagerInterface
     {
         $key = "{$content->getType()}:{$content->getSlug()}";
 
-        if (isset($this->crawlers[$key])) {
-            if (isset($this->crawlers[$key][$property])) {
-                return $this->crawlers[$key][$property];
-            }
+        if (isset($this->crawlers[$key][$property])) {
+            return $this->crawlers[$key][$property];
         }
 
         $crawler = $this->createCrawler($data[$property]);
 
-        if ($crawler) {
-            if (!isset($this->crawlers[$key])) {
-                $this->crawlers[$key] = [];
-            }
-
-            $this->crawlers[$key][$property] = $crawler;
-
-            return $crawler;
+        if (!$crawler) {
+            return null;
+        }
+        
+        if (!isset($this->crawlers[$key])) {
+            $this->crawlers[$key] = [];
         }
 
-        return null;
+        return $this->crawlers[$key][$property] = $crawler;
     }
 
     public function save(Content $content, array &$data, string $property, bool $force = false): void
     {
         $key = "{$content->getType()}:{$content->getSlug()}";
 
-        if ($force && isset($this->crawlers[$key]) && isset($this->crawlers[$key][$property])) {
+        if ($force && $this->crawlers[$key][$property] ?? false) {
             $data[$property] = $this->crawlers[$key][$property]->html();
             unset($this->crawlers[$key][$property]);
         }

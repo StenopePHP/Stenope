@@ -21,22 +21,22 @@ class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         $key = "{$content->getType()}:{$content->getSlug()}";
         $crawler = $this->createCrawler($data[$property]);
 
-        if ($crawler) {
-            if (!isset($this->crawlers[$key])) {
-                $this->crawlers[$key] = [];
-            }
-
-            $this->crawlers[$key][$property] = $crawler;
+        if (!$crawler) {
+            return null;
+        }
+        
+        if (!isset($this->crawlers[$key])) {
+            $this->crawlers[$key] = [];
         }
 
-        return $crawler;
+        return $this->crawlers[$key][$property] = $crawler;
     }
 
     public function save(Content $content, array &$data, string $property, bool $force = false): void
     {
         $key = "{$content->getType()}:{$content->getSlug()}";
 
-        if (isset($this->crawlers[$key]) && isset($this->crawlers[$key][$property])) {
+        if (isset($this->crawlers[$key][$property])) {
             $data[$property] = $this->crawlers[$key][$property]->html();
             unset($this->crawlers[$key][$property]);
         }
