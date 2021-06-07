@@ -37,14 +37,9 @@ class SharedHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         return $this->crawlers[$key][$property] = $crawler;
     }
 
-    public function save(Content $content, array &$data, string $property, bool $force = false): void
+    public function save(Content $content, array &$data, string $property): void
     {
-        $key = "{$content->getType()}:{$content->getSlug()}";
-
-        if ($force && $this->crawlers[$key][$property] ?? false) {
-            $data[$property] = $this->crawlers[$key][$property]->html();
-            unset($this->crawlers[$key][$property]);
-        }
+        // Will be saved only once in saveAll.
     }
 
     public function saveAll(Content $content, array &$data): void

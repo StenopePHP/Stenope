@@ -21,7 +21,7 @@ interface HtmlCrawlerManagerInterface
     /**
      * Dump the current state of the HTML Crawler into data for the given property.
      */
-    public function save(Content $content, array &$data, string $property, bool $force = false): void;
+    public function save(Content $content, array &$data, string $property): void;
 
     /**
      * Dump the current state of all HTML Crawlers into data for their respective property.

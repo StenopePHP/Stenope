@@ -32,7 +32,7 @@ class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         return $this->crawlers[$key][$property] = $crawler;
     }
 
-    public function save(Content $content, array &$data, string $property, bool $force = false): void
+    public function save(Content $content, array &$data, string $property): void
     {
         $key = "{$content->getType()}:{$content->getSlug()}";
 
