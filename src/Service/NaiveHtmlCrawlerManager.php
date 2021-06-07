@@ -24,7 +24,7 @@ class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         if (!$crawler) {
             return null;
         }
-        
+
         if (!isset($this->crawlers[$key])) {
             $this->crawlers[$key] = [];
         }
@@ -44,8 +44,6 @@ class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
 
     public function saveAll(Content $content, array &$data): void
     {
-        $key = "{$content->getType()}:{$content->getSlug()}";
-
         foreach ($this->crawlers as $key => $crawlers) {
             foreach ($crawlers as $property => $crawler) {
                 $data[$property] = $crawler->html();

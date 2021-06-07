@@ -29,7 +29,7 @@ class SharedHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         if (!$crawler) {
             return null;
         }
-        
+
         if (!isset($this->crawlers[$key])) {
             $this->crawlers[$key] = [];
         }
