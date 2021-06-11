@@ -9,6 +9,8 @@
 namespace Stenope\Bundle\Command;
 
 use Stenope\Bundle\ContentManager;
+use function Stenope\Bundle\ExpressionLanguage\expr;
+use Stenope\Bundle\ExpressionLanguage\Expression;
 use Stenope\Bundle\TableOfContent\Headline;
 use Stenope\Bundle\TableOfContent\TableOfContent;
 use Symfony\Component\Console\Command\Command;
@@ -18,6 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\VarDumper\Cloner\Stub;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -67,42 +70,58 @@ class DebugCommand extends Command
 
             The command allows to order the list:
 
-                <info>php %command.full_name% "App\Model\Author" --order="slug"</info>
-                <info>php %command.full_name% "App\Model\Author" --order="integrationDate"</info>
+                <info>php %command.full_name% "App\Model\Author" --order=slug</info>
+                <info>php %command.full_name% "App\Model\Author" --order=integrationDate</info>
 
             In <info>desc</info> order:
 
-                <info>php %command.full_name% "App\Model\Author" --order="desc:integrationDate"</info>
+                <info>php %command.full_name% "App\Model\Author" --order='desc:integrationDate'</info>
 
                 same as:
 
-                <info>php %command.full_name% "App\Model\Author" --order="-integrationDate"</info>
+                <info>php %command.full_name% "App\Model\Author" --order='-integrationDate'</info>
 
             You can order by multiple fields:
 
-                <info>php %command.full_name% "App\Model\Author" --order="desc:active" --order="integrationDate"</info>
+                <info>php %command.full_name% "App\Model\Author" --order='desc:active' --order='integrationDate'</info>
 
             --- Filter
 
-            The command allows to filter out the list in various ways:
+            The command allows to filter out the list in various ways, using an expression read by the ExpressionLanguage component.
+            See https://symfony.com/doc/current/components/expression_language/syntax.html
+            The current item is referred using "data", "d" or "_":
 
-                <info>php %command.full_name% "App\Model\Author" --filter=active</info>
+                <info>php %command.full_name% "App\Model\Author" --filter=data.active</info>
+                <info>php %command.full_name% "App\Model\Author" --filter=d.active</info>
+                <info>php %command.full_name% "App\Model\Author" --filter=_.active</info>
 
             Negation:
 
-                <info>php %command.full_name% "App\Model\Author" --filter="not:active"</info>
-
-                same as:
-
-                <info>php %command.full_name% "App\Model\Author" --filter="!active"</info>
+                <info>php %command.full_name% "App\Model\Author" --filter='not d.active'</info>
+                <info>php %command.full_name% "App\Model\Author" --filter='!d.active'</info>
 
             Contains:
 
-                <info>php %command.full_name% "App\Model\Article" --filter="slug contains:symfony"</info>
+                <info>php %command.full_name% "App\Model\Article" --filter='contains(_.slug, "symfony")'</info>
 
             You can also use multiple filters at once:
 
-                <info>php %command.full_name% "App\Model\Article" --filter="not:outdated" --filter="slug contains:symfony"</info>
+                <info>php %command.full_name% "App\Model\Article" \
+                    --filter='not _.outdated' \
+                    --filter='contains(_.slug, "dev")' \
+                    --filter='"symfony" in _.tags' \
+                    --filter='_.date > date("2021-01-23")'</info>
+
+            Built-in functions are:
+
+            * date
+            * datetime
+            * upper
+            * lower
+            * contains
+            * starts_with
+            * ends_with
+
             HELP
             )
         ;
@@ -158,34 +177,27 @@ class DebugCommand extends Command
         return $orders;
     }
 
-    private function getFilters(InputInterface $input): array
+    private function getFilters(InputInterface $input): ?Expression
     {
-        $filters = [];
-        foreach ($input->getOption('filter') ?? [] as $field) {
-            $matches = [];
-            if (preg_match('#^(\w+) contains:(.*)$#', $field, $matches)) {
-                $searched = $matches[2];
-                $filters[$matches[1]] = static fn ($value) => \is_string($value) ? str_contains($value, $searched) : false;
-                continue;
-            }
-            if (\str_starts_with($field, 'not:')) {
-                $filters[substr($field, 4)] = false;
-                continue;
-            }
-            if (\str_starts_with($field, '!')) {
-                $filters[substr($field, 1)] = false;
-                continue;
-            }
-
-            $filters[$field] = true;
+        if ([] === $filterExpr = $input->getOption('filter')) {
+            return null;
         }
 
-        return $filters;
+        if (!class_exists(ExpressionLanguage::class)) {
+            throw new \LogicException('You must install the Symfony ExpressionLanguage component ("symfony/expression-language") to use the "--filter" option.');
+        }
+
+        return expr(...$filterExpr);
     }
 
-    private function list(SymfonyStyle $io, string $class, array $sort, array $filters): void
+    private function list(SymfonyStyle $io, string $class, array $sort, ?Expression $filters): void
     {
         $io->section("\"$class\" items");
+
+        if ($filters) {
+            $io->writeln("Filtered with: <info>$filters</info>");
+            $io->newLine();
+        }
 
         $list = $this->manager->getContents($class, $sort, $filters);
 

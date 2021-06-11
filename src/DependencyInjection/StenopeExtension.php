@@ -11,6 +11,7 @@ namespace Stenope\Bundle\DependencyInjection;
 use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Builder;
+use Stenope\Bundle\ExpressionLanguage\ExpressionLanguage as StenopeExpressionLanguage;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactoryInterface;
@@ -22,6 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class StenopeExtension extends Extension
 {
@@ -45,6 +47,10 @@ class StenopeExtension extends Extension
 
         $this->processProviders($container, $config['providers']);
         $this->processLinkResolvers($container, $config['resolve_links']);
+
+        if (!class_exists(ExpressionLanguage::class)) {
+            $container->removeDefinition(StenopeExpressionLanguage::class);
+        }
     }
 
     public function getNamespace()

@@ -16,6 +16,7 @@ use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\ContentManager;
+use function Stenope\Bundle\ExpressionLanguage\expr;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
 use Stenope\Bundle\ReverseContent\RelativeLinkContext;
@@ -128,6 +129,10 @@ class ContentManagerTest extends TestCase
         self::assertSame([
             'foo2' => 'Foo 2',
         ], $getResults($manager->getContents('App\Foo', null, fn ($foo) => $foo->content === 'Foo 2')), 'filtered by function');
+
+        self::assertSame([
+            'foo2' => 'Foo 2',
+        ], $getResults($manager->getContents('App\Foo', null, expr('_.content === "Foo 2"'))), 'filtered using an expression');
     }
 
     public function testReverseContent(): void

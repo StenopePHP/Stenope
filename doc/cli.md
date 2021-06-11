@@ -38,7 +38,7 @@ bin/console debug:stenope:content [options] [--] <class> [<id>]
 E.g:
 
 ```shell
-bin/console debug:stenope:content "App\Model\Article" --filter="not:outdated" --filter="slug contains:symfony" --order="desc:publishedAt"
+bin/console debug:stenope:content "App\Model\Article" --filter='not _.outdated' --filter='contains(_.slug, "symfony")' --order="desc:publishedAt"
 ```
 
 ```shell
