@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Loading content | Stenope, the static website generation tool for Symfony</title>
         <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
-                    <link rel="stylesheet" href="/Stenope/build/style.3171f5ce.css">
+                    <link rel="stylesheet" href="/Stenope/build/style.c4e20cc1.css">
             </head>
     <body>
         <div class="main">
@@ -222,6 +222,33 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
     <span class="token constant">null</span><span class="token punctuation">,</span>
     <span class="token function">fn </span><span class="token punctuation">(</span><span class="token class-name type-declaration">Article</span> <span class="token variable">$article</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">bool</span> <span class="token operator">=&gt;</span> <span class="token function">in_array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'mobile'</span><span class="token punctuation">,</span> <span class="token variable">$article</span><span class="token operator">-&gt;</span><span class="token property">tags</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h4 id="an-expressionlanguage-expression">An ExpressionLanguage expression<a href="#an-expressionlanguage-expression" class="anchor"></a></h4>
+<pre class="code-multiline language-php"><code class="language-php" id="cd17bdddef696b409d479e808731b6e4"><span class="token keyword">use</span> <span class="token keyword">function</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ExpressionLanguage<span class="token punctuation">\</span>expr</span><span class="token punctuation">;</span>
+
+<span class="token variable">$tagedMobileArticles</span> <span class="token operator">=</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token property">manager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+    <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
+    <span class="token constant">null</span><span class="token punctuation">,</span>
+    <span class="token function">expr</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'"mobile" in _.tags'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>See the <a href="https://symfony.com/doc/current/components/expression_language/syntax.html" target="_blank">ExpressionLanguage syntax</a>.
+You may also want to extend the expression language capabilities for your own contents by <a href="https://symfony.com/doc/current/components/expression_language/extending.html#using-expression-providers" target="_blank">registering a custom expression provider</a> tagged with <code class="code-inline" id="f233445feafb6e30033b3a84a7e4f659">stenope.expression_language_provider</code>.</p>
+<p>Built-in functions are:</p>
+<ul>
+<li>date</li>
+<li>datetime</li>
+<li>upper</li>
+<li>lower</li>
+<li>contains</li>
+<li>starts_with</li>
+<li>ends_with</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+    <code class="code-inline" id="8d1dc3c660433f289282debc4dba780a">expr</code> accepts multiple expressions it'll combine using <code class="code-inline" id="be5d5d37542d75f93a87094459f76678">and</code>.<br>
+     Use <code class="code-inline" id="d396460c1aa4926aff986a1c64940d08">exprOr</code> to combine expressions using <code class="code-inline" id="e81c4e4f2b7b93b481e13a8553c2ae1b">or</code>.
+</p>
+</div>
 <h2 id="debug">Debug<a href="#debug" class="anchor"></a></h2>
 <p>See <a href="/Stenope/cli#debug">CLI - Debug</a></p>
 <h2 id="advanced-usage-and-extension">Advanced usage and extension<a href="#advanced-usage-and-extension" class="anchor"></a></h2>

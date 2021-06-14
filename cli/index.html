@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CLI | Stenope, the static website generation tool for Symfony</title>
         <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
-                    <link rel="stylesheet" href="/Stenope/build/style.3171f5ce.css">
+                    <link rel="stylesheet" href="/Stenope/build/style.c4e20cc1.css">
             </head>
     <body>
         <div class="main">
@@ -121,7 +121,7 @@
 <p>There is a command to list, filter, sort out and display content managed by Stenope:</p>
 <pre class="code-multiline language-shell"><code class="language-shell" id="1103fdfd33110822521c1a0bbbc50253">bin/console debug:stenope:content <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token punctuation">[</span>--<span class="token punctuation">]</span> <span class="token operator">&lt;</span>class<span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>id<span class="token operator">&gt;</span><span class="token punctuation">]</span></code></pre>
 <p>E.g:</p>
-<pre class="code-multiline language-shell"><code class="language-shell" id="df8b876c8679dfc971d71f5b526999c7">bin/console debug:stenope:content <span class="token string">"App\Model\Article"</span> --filter<span class="token operator">=</span><span class="token string">"not:outdated"</span> --filter<span class="token operator">=</span><span class="token string">"slug contains:symfony"</span> --order<span class="token operator">=</span><span class="token string">"desc:publishedAt"</span></code></pre>
+<pre class="code-multiline language-shell"><code class="language-shell" id="2824cdc7f2773e652e6034b20df3c77c">bin/console debug:stenope:content <span class="token string">"App\Model\Article"</span> --filter<span class="token operator">=</span><span class="token string">'not _.outdated'</span> --filter<span class="token operator">=</span><span class="token string">'contains(_.slug, "symfony")'</span> --order<span class="token operator">=</span><span class="token string">"desc:publishedAt"</span></code></pre>
 <pre class="code-multiline language-shell"><code class="language-shell" id="b2d01d345930473a93a449a72db36edf">bin/console debug:stenope:content <span class="token string">"App\Model\Author"</span> ogi</code></pre>
 <p>Use <code class="code-inline" id="0c113ca6d57519b559ba5a426be3c6b6">--help</code> for more details and usage samples.</p></body>                        <footer class="footer">
                                                             <p class="note">Stenope, the static website generation tool for Symfony.</p>
