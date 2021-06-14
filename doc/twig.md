@@ -9,6 +9,8 @@ from your templates.
 | -- | -- |
 | `content_get(type, id)` | Fetch a specific content |
 | `content_list(type, sortBy, filterBy)` |  List all contents for a given type |
+| `content_expr(...exprs)` |  Allow to build an expression to filter content with `content_list` |
+| `content_expr_or(...exprs)` |  Allow to build an expression combined with `or` to filter content with `content_list` |
 
 ## Usage
 

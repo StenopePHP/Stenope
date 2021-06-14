@@ -13,10 +13,13 @@ use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Exception\ContentNotFoundException;
 use Stenope\Bundle\Exception\RuntimeException;
+use Stenope\Bundle\ExpressionLanguage\ExpressionLanguage;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\ReversibleContentProviderInterface;
 use Stenope\Bundle\ReverseContent\Context;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
@@ -36,6 +39,8 @@ class ContentManager
     /** @var iterable<ProcessorInterface>|ProcessorInterface[] */
     private iterable $processors;
 
+    private ?ExpressionLanguage $expressionLanguage;
+
     private ?Stopwatch $stopwatch;
 
     /** @var array<string,object> */
@@ -53,6 +58,7 @@ class ContentManager
         iterable $contentProviders,
         iterable $processors,
         ?PropertyAccessorInterface $propertyAccessor = null,
+        ?ExpressionLanguage $expressionLanguage = null,
         ?Stopwatch $stopwatch = null
     ) {
         $this->decoder = $decoder;
@@ -62,6 +68,11 @@ class ContentManager
         $this->providers = $contentProviders;
         $this->processors = $processors;
         $this->stopwatch = $stopwatch;
+
+        if (!$expressionLanguage && class_exists(BaseExpressionLanguage::class)) {
+            $expressionLanguage = new ExpressionLanguage();
+        }
+        $this->expressionLanguage = $expressionLanguage;
     }
 
     /**
@@ -69,9 +80,10 @@ class ContentManager
      *
      * @template T
      *
-     * @param class-string<T>       $type     Model FQCN e.g. "App/Model/Article"
-     * @param string|array|callable $sortBy   String, array or callable
-     * @param string|array|callable $filterBy String, array or callable
+     * @param class-string<T>                  $type     Model FQCN e.g. "App/Model/Article"
+     * @param string|array|callable            $sortBy   String, array or callable
+     * @param string|array|callable|Expression $filterBy String, array, callable or an {@link Expression} instance to filter out
+     *                                                   with an expression using the ExpressionLanguage component.
      *
      * @return array<string,T> List of decoded contents with their slug as key
      */
@@ -275,7 +287,16 @@ class ContentManager
             return null;
         }
 
+        if ($filterBy instanceof Expression) {
+            return fn ($data) => $this->expressionLanguage->evaluate($filterBy, [
+                'data' => $data,
+                'd' => $data,
+                '_' => $data,
+            ]);
+        }
+
         if (\is_string($filterBy)) {
+            // Check if the property passed as a string is true-ish:
             return $this->getFilterFunction([$filterBy => true]);
         }
 

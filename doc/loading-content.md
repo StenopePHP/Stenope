@@ -208,6 +208,35 @@ $tagedMobileArticles = $this->manager->getContents(
 );
 ```
 
+#### An ExpressionLanguage expression
+
+```php
+use function Stenope\Bundle\ExpressionLanguage\expr;
+
+$tagedMobileArticles = $this->manager->getContents(
+    Article::class,
+    null,
+    expr('"mobile" in _.tags')
+);
+```
+
+See the [ExpressionLanguage syntax](https://symfony.com/doc/current/components/expression_language/syntax.html).
+You may also want to extend the expression language capabilities for your own contents by [registering a custom expression provider](https://symfony.com/doc/current/components/expression_language/extending.html#using-expression-providers) tagged with `stenope.expression_language_provider`.
+
+Built-in functions are:
+
+- date
+- datetime
+- upper
+- lower
+- contains
+- starts_with
+- ends_with
+
+!!! Note
+    `expr` accepts multiple expressions it'll combine using `and`.  
+     Use `exprOr` to combine expressions using `or`.
+
 ## Debug
 
 See [CLI - Debug](./cli.md#debug)

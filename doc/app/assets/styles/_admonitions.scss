@@ -1,0 +1,48 @@
+.admonition {
+  margin: 15px 0;
+  background-color: lighten($color-bg-light, 30);
+
+  .admonition-title {
+    color: transparentize($color-text, 0.5);
+    background-color: lighten($color-bg-light, 25);
+  }
+
+  p {
+    padding: 10px;
+    margin: 0;
+    color: transparentize($color-text, 0.3);
+  }
+
+  &.warning {
+    background-color: lighten($color-warning, 30);
+
+    .admonition-title {
+      color: $color-warning;
+      background-color: lighten($color-warning, 25);
+    }
+
+    p {
+      color: $color-warning;
+    }
+  }
+
+  &.note {
+    background-color: lighten($color-info, 40);
+
+    .admonition-title {
+      color: $color-info;
+      background-color: lighten($color-info, 35);
+    }
+
+    p {
+      color: $color-info;
+    }
+  }
+
+  .admonition-title {
+    padding: 10px;
+    text-transform: capitalize;
+    font-weight: bold;
+    margin: 0;
+  }
+}

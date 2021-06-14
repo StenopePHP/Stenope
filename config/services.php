@@ -21,6 +21,7 @@ use Stenope\Bundle\Decoder\MarkdownDecoder;
 use Stenope\Bundle\DependencyInjection\tags;
 use Stenope\Bundle\EventListener\Informator;
 use Stenope\Bundle\EventListener\SitemapListener;
+use Stenope\Bundle\ExpressionLanguage\ExpressionLanguage;
 use Stenope\Bundle\Highlighter\Prism;
 use Stenope\Bundle\Highlighter\Pygments;
 use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
@@ -62,10 +63,11 @@ return static function (ContainerConfigurator $container): void {
         ->set(ContentManager::class)->args([
             '$decoder' => service('serializer'),
             '$denormalizer' => service('serializer'),
-            '$propertyAccessor' => service('property_accessor'),
             '$crawlers' => service(HtmlCrawlerManagerInterface::class),
             '$contentProviders' => tagged_iterator(tags\content_provider),
             '$processors' => tagged_iterator(tags\content_processor),
+            '$propertyAccessor' => service('property_accessor'),
+            '$expressionLanguage' => service(ExpressionLanguage::class)->nullOnInvalid(),
             '$stopwatch' => service('debug.stopwatch')->nullOnInvalid(),
         ])
 
@@ -79,6 +81,11 @@ return static function (ContainerConfigurator $container): void {
             '$stopwatch' => service('stenope.build.stopwatch'),
         ])
         ->tag('console.command', ['command' => DebugCommand::getDefaultName()])
+
+        // Expression Language
+        ->set(ExpressionLanguage::class)->args([
+            '$providers' => tagged_iterator(tags\expression_language_provider),
+        ])
 
         // Build
         ->set(BuildCommand::class)->args([

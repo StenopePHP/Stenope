@@ -18,6 +18,8 @@ class ContentExtension extends AbstractExtension
         return [
             new TwigFunction('content_get', [ContentRuntime::class, 'getContent']),
             new TwigFunction('content_list', [ContentRuntime::class, 'listContents']),
+            new TwigFunction('content_expr', '\Stenope\Bundle\ExpressionLanguage\expr'),
+            new TwigFunction('content_expr_or', '\Stenope\Bundle\ExpressionLanguage\exprOr'),
         ];
     }
 }

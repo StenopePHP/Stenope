@@ -9,10 +9,14 @@
 namespace Stenope\Bundle\Tests\Integration\Command;
 
 use App\Model\Author;
+use App\Model\Recipe;
 use Stenope\Bundle\Command\DebugCommand;
+use Symfony\Bridge\PhpUnit\ClassExistsMock;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ExpressionLanguage;
 
 class DebugCommandTest extends KernelTestCase
 {
@@ -30,7 +34,7 @@ class DebugCommandTest extends KernelTestCase
             'class' => $class,
             '--filter' => $filters,
             '--order' => $orders,
-        ]);
+        ], ['verbosity' => ConsoleOutput::VERBOSITY_VERY_VERBOSE]);
 
         self::assertStringMatchesFormat(<<<TXT
 
@@ -83,44 +87,65 @@ class DebugCommandTest extends KernelTestCase
             TXT
         , [], ['-slug'], ];
 
-        yield 'filter' => [Author::class,
+        yield 'filter property (data prefix)' => [Author::class,
             <<<TXT
              * tom32i
              * ogi
             TXT
-        , ['core'], ];
+        , ['_.core'], ];
 
-        yield 'filter not:' => [Author::class,
-            <<<TXT
-             * john.doe
-            TXT
-        , ['not:core'], ];
-
-        yield 'filter not: (! notation)' => [Author::class,
-            <<<TXT
-             * john.doe
-            TXT
-        , ['!core'], ];
-
-        yield 'contains:' => [Author::class,
+        yield 'filter property (d prefix)' => [Author::class,
             <<<TXT
              * tom32i
              * ogi
             TXT
-            , ['slug contains:i'], ];
+        , ['d.core'], ];
+
+        yield 'filter property (_ prefix)' => [Author::class,
+            <<<TXT
+             * tom32i
+             * ogi
+            TXT
+        , ['_.core'], ];
+
+        yield 'filter not' => [Author::class,
+            <<<TXT
+             * john.doe
+            TXT
+        , ['not _.core'], ];
+
+        yield 'filter not (! notation)' => [Author::class,
+            <<<TXT
+             * john.doe
+            TXT
+        , ['!_.core'], ];
+
+        yield 'filter contains' => [Author::class,
+            <<<TXT
+             * tom32i
+             * ogi
+            TXT
+            , ['contains(_.slug, "i")'], ];
+
+        yield 'filter dates' => [Recipe::class,
+            <<<TXT
+             * tomiritsu
+             * ogito
+            TXT
+            , ['_.date > date("2019-01-01") and _.date < date("2020-01-01")'], ];
 
         yield 'filter and order' => [Author::class,
             <<<TXT
              * ogi
              * tom32i
             TXT
-        , ['core'], ['slug'], ];
+        , ['_.core'], ['slug'], ];
 
         yield 'multiple filters' => [Author::class,
             <<<TXT
              * ogi
             TXT
-        , ['core', 'slug contains:gi'], ];
+        , ['_.core', 'contains(_.slug, "gi")'], ];
     }
 
     public function testShow(): void
@@ -156,5 +181,32 @@ class DebugCommandTest extends KernelTestCase
             TXT,
             $tester->getDisplay(true)
         );
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testUnavailableExpressionLanguageHint(): void
+    {
+        ClassExistsMock::register(DebugCommand::class);
+        ClassExistsMock::withMockedClasses([ExpressionLanguage::class => false]);
+
+        $kernel = static::createKernel();
+        $application = new Application($kernel);
+
+        $command = $application->find(DebugCommand::getDefaultName());
+        $tester = new CommandTester($command);
+
+        try {
+            $this->expectException(\LogicException::class);
+            $this->expectExceptionMessage('You must install the Symfony ExpressionLanguage component ("symfony/expression-language")');
+
+            $tester->execute([
+                'class' => Author::class,
+                '--filter' => ['_.core'],
+            ], ['verbosity' => ConsoleOutput::VERBOSITY_VERY_VERBOSE]);
+        } finally {
+            ClassExistsMock::withMockedClasses([ExpressionLanguage::class => true]);
+        }
     }
 }
