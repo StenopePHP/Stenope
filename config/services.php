@@ -188,7 +188,11 @@ return static function (ContainerConfigurator $container): void {
 
     // Tagged processors:
     $container->services()->defaults()->tag(tags\content_processor)
-        ->set(LastModifiedProcessor::class)
+        ->set(LastModifiedProcessor::class)->args([
+            '$property' => 'lastModified',
+            '$gitPath' => 'git',
+            '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
+        ])
         ->set(SlugProcessor::class)
         ->set(HtmlIdProcessor::class)
             ->args([
