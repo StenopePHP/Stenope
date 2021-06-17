@@ -101,7 +101,7 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
             $this->supportedClass,
             file_get_contents($file->getPathname()),
             self::getFormat($file),
-            new \DateTime("@{$file->getMTime()}"),
+            new \DateTimeImmutable("@{$file->getMTime()}"),
             null,
             [
                 'path' => $file->getRealPath(),
@@ -131,6 +131,7 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
             ->exclude($excludedDirs)
             ->notPath(array_map(fn ($exclude) => $this->convertPattern($exclude), $excludedPatterns))
             ->path(array_map(fn ($pattern) => $this->convertPattern($pattern), $this->patterns))
+            ->sortByName()
         ;
 
         if ($this->depth) {

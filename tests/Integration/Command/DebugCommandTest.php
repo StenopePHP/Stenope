@@ -57,9 +57,9 @@ class DebugCommandTest extends KernelTestCase
     {
         yield 'list' => [Author::class,
             <<<TXT
-             * tom32i
              * john.doe
              * ogi
+             * tom32i
             TXT
         ];
 
@@ -89,22 +89,22 @@ class DebugCommandTest extends KernelTestCase
 
         yield 'filter property (data prefix)' => [Author::class,
             <<<TXT
-             * tom32i
              * ogi
+             * tom32i
             TXT
         , ['_.core'], ];
 
         yield 'filter property (d prefix)' => [Author::class,
             <<<TXT
-             * tom32i
              * ogi
+             * tom32i
             TXT
         , ['d.core'], ];
 
         yield 'filter property (_ prefix)' => [Author::class,
             <<<TXT
-             * tom32i
              * ogi
+             * tom32i
             TXT
         , ['_.core'], ];
 
@@ -122,24 +122,24 @@ class DebugCommandTest extends KernelTestCase
 
         yield 'filter contains' => [Author::class,
             <<<TXT
-             * tom32i
              * ogi
+             * tom32i
             TXT
             , ['contains(_.slug, "i")'], ];
 
         yield 'filter dates' => [Recipe::class,
             <<<TXT
-             * tomiritsu
              * ogito
+             * tomiritsu
             TXT
             , ['_.date > date("2019-01-01") and _.date < date("2020-01-01")'], ];
 
         yield 'filter and order' => [Author::class,
             <<<TXT
-             * ogi
              * tom32i
+             * ogi
             TXT
-        , ['_.core'], ['slug'], ];
+        , ['_.core'], ['desc:slug'], ];
 
         yield 'multiple filters' => [Author::class,
             <<<TXT
