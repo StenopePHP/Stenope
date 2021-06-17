@@ -101,7 +101,7 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
             $this->supportedClass,
             file_get_contents($file->getPathname()),
             self::getFormat($file),
-            new \DateTime("@{$file->getMTime()}"),
+            new \DateTimeImmutable("@{$file->getMTime()}"),
             null,
             [
                 'path' => $file->getRealPath(),

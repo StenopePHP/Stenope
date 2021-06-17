@@ -14,8 +14,8 @@ final class Content
     private string $type;
     private string $rawContent;
     private string $format;
-    private ?\DateTime $lastModified;
-    private ?\DateTime $createdAt;
+    private ?\DateTimeImmutable $lastModified;
+    private ?\DateTimeImmutable $createdAt;
     private array $metadata;
 
     public function __construct(
@@ -23,8 +23,8 @@ final class Content
         string $type,
         string $rawContent,
         string $format,
-        ?\DateTime $lastModified = null,
-        ?\DateTime $createdAt = null,
+        ?\DateTimeImmutable $lastModified = null,
+        ?\DateTimeImmutable $createdAt = null,
         array $metadata = []
     ) {
         $this->slug = $slug;
@@ -51,12 +51,12 @@ final class Content
         return $this->rawContent;
     }
 
-    public function getLastModified(): ?\DateTime
+    public function getLastModified(): ?\DateTimeImmutable
     {
         return $this->lastModified;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }

@@ -89,7 +89,7 @@ class LastModifiedProcessor implements ProcessorInterface
         }
 
         if ($output = $process->getOutput()) {
-            $data[$this->property] = new \DateTime($output);
+            $data[$this->property] = new \DateTimeImmutable($output);
         }
     }
 }
