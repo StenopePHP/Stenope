@@ -42,6 +42,7 @@ use Stenope\Bundle\Routing\RouteInfoCollection;
 use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Stenope\Bundle\Service\AssetUtils;
+use Stenope\Bundle\Service\Git\LastModifiedFetcher;
 use Stenope\Bundle\Service\NaiveHtmlCrawlerManager;
 use Stenope\Bundle\Service\Parsedown;
 use Stenope\Bundle\Service\SharedHtmlCrawlerManager;
@@ -190,8 +191,10 @@ return static function (ContainerConfigurator $container): void {
     $container->services()->defaults()->tag(tags\content_processor)
         ->set(LastModifiedProcessor::class)->args([
             '$property' => 'lastModified',
-            '$gitPath' => 'git',
-            '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
+            '$gitLastModified' => inline_service(LastModifiedFetcher::class)->args([
+                '$gitPath' => 'git',
+                '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
+            ]),
         ])
         ->set(SlugProcessor::class)
         ->set(HtmlIdProcessor::class)

@@ -9,6 +9,7 @@ parameters:
 
     excludes_analyse:
         - tests/fixtures/app/var/
+        - tests/fixtures/Unit/Service/Git/bin
 
     level: 1
 

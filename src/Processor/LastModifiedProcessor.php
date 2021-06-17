@@ -8,13 +8,10 @@
 
 namespace Stenope\Bundle\Processor;
 
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Content;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Stenope\Bundle\Service\Git\LastModifiedFetcher;
 
 /**
  * Set a "LastModified" property based on the last modified date set by the provider.
@@ -25,20 +22,12 @@ use Symfony\Component\Process\Process;
 class LastModifiedProcessor implements ProcessorInterface
 {
     private string $property;
-    /** Git executable path on the system / PATH used to get the last commit date for the file, or null to disable. */
-    private ?string $gitPath;
-    private LoggerInterface $logger;
+    private ?LastModifiedFetcher $gitLastModified;
 
-    private static ?bool $gitAvailable = null;
-
-    public function __construct(
-        string $property = 'lastModified',
-        ?string $gitPath = 'git',
-        ?LoggerInterface $logger = null
-    ) {
+    public function __construct(string $property = 'lastModified', ?LastModifiedFetcher $gitLastModified = null)
+    {
         $this->property = $property;
-        $this->gitPath = $gitPath;
-        $this->logger = $logger ?? new NullLogger();
+        $this->gitLastModified = $gitLastModified;
     }
 
     public function __invoke(array &$data, Content $content): void
@@ -55,41 +44,14 @@ class LastModifiedProcessor implements ProcessorInterface
             return;
         }
 
-        if (null === $this->gitPath || false === self::$gitAvailable) {
-            // Don't go further if the git command is not available or the git feature is disabled
+        if (null === $this->gitLastModified) {
             return;
         }
 
-        if (null === self::$gitAvailable) {
-            // Check once if the git command is available
-            $process = new Process([$this->gitPath, '--version']);
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                self::$gitAvailable = false;
-
-                $this->logger->notice('Git was not found at path "{gitPath}". Check the binary path is correct or part of your PATH.', [
-                    'gitPath' => $this->gitPath,
-                    'output' => $process->getOutput(),
-                    'err_output' => $process->getErrorOutput(),
-                ]);
-
-                return;
-            }
-
-            self::$gitAvailable = true;
-        }
-
         $filePath = $content->getMetadata()['path'];
-        $process = new Process([$this->gitPath, 'log', '-1', '--format=%cd', '--date=iso', $filePath]);
-        $process->run();
 
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        if ($output = $process->getOutput()) {
-            $data[$this->property] = new \DateTimeImmutable($output);
+        if ($lastModified = ($this->gitLastModified)($filePath)) {
+            $data[$this->property] = $lastModified;
         }
     }
 }
