@@ -82,8 +82,9 @@ class ContentManager
      *
      * @param class-string<T>                  $type     Model FQCN e.g. "App/Model/Article"
      * @param string|array|callable            $sortBy   String, array or callable
-     * @param string|array|callable|Expression $filterBy String, array, callable or an {@link Expression} instance to filter out
-     *                                                   with an expression using the ExpressionLanguage component.
+     * @param string|array|callable|Expression $filterBy Array, callable or an {@link Expression} instance / string
+     *                                                   to filter out with an expression using the ExpressionLanguage
+     *                                                   component.
      *
      * @return array<string,T> List of decoded contents with their slug as key
      */
@@ -287,17 +288,12 @@ class ContentManager
             return null;
         }
 
-        if ($filterBy instanceof Expression) {
+        if ($filterBy instanceof Expression || \is_string($filterBy)) {
             return fn ($data) => $this->expressionLanguage->evaluate($filterBy, [
                 'data' => $data,
                 'd' => $data,
                 '_' => $data,
             ]);
-        }
-
-        if (\is_string($filterBy)) {
-            // Check if the property passed as a string is true-ish:
-            return $this->getFilterFunction([$filterBy => true]);
         }
 
         if (\is_callable($filterBy)) {

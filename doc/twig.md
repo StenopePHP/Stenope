@@ -27,3 +27,11 @@ Get all active job offers:
     <!-- ... -->
 {% endfor %}
 ```
+
+using an expression filter:
+
+```twig
+{% for offer in content_list('App\\Model\\JobOffer', { date: true }, '_.active') %}
+    <!-- ... -->
+{% endfor %}
+```
