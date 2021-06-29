@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-06-29T07:49:13Z
+
+True, as in the latest releases, we'll add a small note:
+
+## Breaking Changes ⚠️
+
+The `ContentManager::getContents()` method now accepts string based expressions as filter.
+As a consequence, the ability to use a property name as filter directly as a string was removed. Use an [expression](https://stenopephp.github.io/Stenope/loading-content/#an-expressionlanguage-expression) instead:
+
+```diff
+-$users = $contentManager->getContents(User::class, null, 'active');
++$users = $contentManager->getContents(User::class, null, '_.active');
+```
