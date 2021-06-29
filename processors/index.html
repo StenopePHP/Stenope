@@ -93,7 +93,7 @@
 <span class="token doc-comment comment">/**
  * Load avatar from Gravatar for users
  */</span>
-<span class="token keyword">class</span> <span class="token class-name">GravatarProcessor</span> <span class="token keyword">implements</span> <span class="token class-name">ProcessorInterface</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">GravatarProcessor</span> <span class="token keyword">implements</span> <span class="token class-name">ProcessorInterface</span>
 <span class="token punctuation">{</span>
     <span class="token doc-comment comment">/**
      * Apply modifications to decoded data before denormalization
@@ -102,7 +102,7 @@
      * <span class="token keyword">@param</span> <span class="token class-name"><span class="token keyword">string</span></span>  <span class="token parameter">$type</span>    The model being processed (FQN)
      * <span class="token keyword">@param</span> <span class="token class-name">Content</span> <span class="token parameter">$content</span> The source content
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__invoke</span><span class="token punctuation">(</span><span class="token keyword type-declaration">array</span> <span class="token operator">&amp;</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token class-name type-declaration">Content</span> <span class="token variable">$content</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__invoke</span><span class="token punctuation">(</span><span class="token keyword type-declaration">array</span> <span class="token operator">&amp;</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token class-name type-declaration">Content</span> <span class="token variable">$content</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
     <span class="token punctuation">{</span>
         <span class="token comment">// Only apply this processor on Users</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">is_a</span><span class="token punctuation">(</span><span class="token variable">$content</span><span class="token operator">-&gt;</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token scope">User<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token constant boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -110,7 +110,7 @@
         <span class="token punctuation">}</span>
 
         <span class="token comment">// Ingore if url is already explicitly specified</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>\<span class="token function">array_key_exists</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'avatar'</span><span class="token punctuation">,</span> <span class="token variable">$data</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function"><span class="token punctuation">\</span>array_key_exists</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'avatar'</span><span class="token punctuation">,</span> <span class="token variable">$data</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">return</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
 

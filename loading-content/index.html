@@ -95,7 +95,7 @@
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Model</span><span class="token punctuation">;</span>
 
-<span class="token keyword">class</span> <span class="token class-name">Article</span> <span class="token punctuation">{</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Article</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword type-declaration">string</span> <span class="token variable">$slug</span><span class="token punctuation">;</span>
     <span class="token keyword">public</span> <span class="token keyword type-declaration">string</span> <span class="token variable">$title</span><span class="token punctuation">;</span>
     <span class="token keyword">public</span> <span class="token keyword type-declaration">string</span> <span class="token variable">$content</span><span class="token punctuation">;</span>
@@ -135,12 +135,12 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <span class="token doc-comment comment">/**
  * @Route("/blog")
  */</span>
-<span class="token keyword">class</span> <span class="token class-name">BlogController</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractController</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BlogController</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractController</span>
 <span class="token punctuation">{</span>
     <span class="token doc-comment comment">/**
      * @Route("/", name="blog")
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManager</span> <span class="token variable">$contentManager</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">index</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManager</span> <span class="token variable">$contentManager</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
             <span class="token string single-quoted-string">'blog/index.html.twig'</span><span class="token punctuation">,</span>
@@ -164,14 +164,14 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <span class="token doc-comment comment">/**
  * @Route("/blog")
  */</span>
-<span class="token keyword">class</span> <span class="token class-name">BlogController</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractController</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BlogController</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractController</span>
 <span class="token punctuation">{</span>
     <span class="token comment">// ...</span>
 
     <span class="token doc-comment comment">/**
      * @Route("/<span class="token punctuation">{</span>slug<span class="token punctuation">}</span>", name="article")
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">article</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManager</span> <span class="token variable">$contentManager</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$slug</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">article</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManager</span> <span class="token variable">$contentManager</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$slug</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
             <span class="token string single-quoted-string">'blog/article.html.twig'</span><span class="token punctuation">,</span>
@@ -196,7 +196,7 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <h4 id="a-custom-callable-supported-by-the-php-usort-function">A custom callable supported by the PHP <a href="https://www.php.net/manual/fr/function.usort.php" target="_blank">usort</a> function<a href="#a-custom-callable-supported-by-the-php-usort-function" class="anchor"></a></h4>
 <pre class="code-multiline language-php"><code class="language-php" id="fca13add98ae7f92a2c1cf89b3365785"><span class="token variable">$tasks</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
     <span class="token scope">Task<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
-    <span class="token function">fn</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">,</span> <span class="token variable">$b</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token variable">$a</span><span class="token operator">-&gt;</span><span class="token property">priority</span> <span class="token operator">&lt;=&gt;</span> <span class="token variable">$b</span><span class="token operator">-&gt;</span><span class="token property">priority</span>
+    <span class="token keyword">fn</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">,</span> <span class="token variable">$b</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token variable">$a</span><span class="token operator">-&gt;</span><span class="token property">priority</span> <span class="token operator">&lt;=&gt;</span> <span class="token variable">$b</span><span class="token operator">-&gt;</span><span class="token property">priority</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h3 id="filtering-contents">Filtering contents<a href="#filtering-contents" class="anchor"></a></h3>
 <p>The <code class="code-inline" id="38182794119a00cb3971971d3ed157b8">getContents</code> method have a third parameters <code class="code-inline" id="7981a5159468431c0fe44cac7c5654b7">$filterBy</code> that allows filtering the content list.</p>
@@ -220,7 +220,7 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <pre class="code-multiline language-php"><code class="language-php" id="533117be2ed7bc68d7aa24d7aaa7772f"><span class="token variable">$tagedMobileArticles</span> <span class="token operator">=</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token property">manager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
     <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
     <span class="token constant">null</span><span class="token punctuation">,</span>
-    <span class="token function">fn </span><span class="token punctuation">(</span><span class="token class-name type-declaration">Article</span> <span class="token variable">$article</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">bool</span> <span class="token operator">=&gt;</span> <span class="token function">in_array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'mobile'</span><span class="token punctuation">,</span> <span class="token variable">$article</span><span class="token operator">-&gt;</span><span class="token property">tags</span><span class="token punctuation">)</span>
+    <span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token class-name type-declaration">Article</span> <span class="token variable">$article</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">bool</span> <span class="token operator">=&gt;</span> <span class="token function">in_array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'mobile'</span><span class="token punctuation">,</span> <span class="token variable">$article</span><span class="token operator">-&gt;</span><span class="token property">tags</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h4 id="an-expressionlanguage-expression">An ExpressionLanguage expression<a href="#an-expressionlanguage-expression" class="anchor"></a></h4>
 <pre class="code-multiline language-php"><code class="language-php" id="cd17bdddef696b409d479e808731b6e4"><span class="token keyword">use</span> <span class="token keyword">function</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ExpressionLanguage<span class="token punctuation">\</span>expr</span><span class="token punctuation">;</span>
@@ -263,12 +263,12 @@ You may also want to extend the expression language capabilities for your own co
 <span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Serializer<span class="token punctuation">\</span>Normalizer<span class="token punctuation">\</span>DenormalizerInterface</span><span class="token punctuation">;</span>
 
-<span class="token keyword">class</span> <span class="token class-name">ArticleDenormalizer</span> <span class="token keyword">implements</span> <span class="token class-name">DenormalizerInterface</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">ArticleDenormalizer</span> <span class="token keyword">implements</span> <span class="token class-name">DenormalizerInterface</span>
 <span class="token punctuation">{</span>
     <span class="token doc-comment comment">/**
      * Must return true for supported models.
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">supportsDenormalization</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token variable">$type</span><span class="token punctuation">,</span> <span class="token variable">$format</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">supportsDenormalization</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token variable">$type</span><span class="token punctuation">,</span> <span class="token variable">$format</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token function">is_a</span><span class="token punctuation">(</span><span class="token variable">$type</span><span class="token punctuation">,</span> <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token constant boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
@@ -276,7 +276,7 @@ You may also want to extend the expression language capabilities for your own co
     <span class="token doc-comment comment">/**
      * Instanciate your model from the denormalized data array.
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">denormalize</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token variable">$class</span><span class="token punctuation">,</span> <span class="token variable">$format</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">,</span> <span class="token keyword type-hint">array</span> <span class="token variable">$context</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">denormalize</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">,</span> <span class="token variable">$class</span><span class="token punctuation">,</span> <span class="token variable">$format</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">,</span> <span class="token keyword type-hint">array</span> <span class="token variable">$context</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Article</span><span class="token punctuation">(</span>
             <span class="token variable">$data</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'title'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
