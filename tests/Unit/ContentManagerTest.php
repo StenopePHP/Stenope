@@ -133,6 +133,10 @@ class ContentManagerTest extends TestCase
         self::assertSame([
             'foo2' => 'Foo 2',
         ], $getResults($manager->getContents('App\Foo', null, expr('_.content === "Foo 2"'))), 'filtered using an expression');
+
+        self::assertSame([
+            'foo2' => 'Foo 2',
+        ], $getResults($manager->getContents('App\Foo', null, '_.content === "Foo 2"')), 'filtered using an expression directly provided as string');
     }
 
     public function testReverseContent(): void

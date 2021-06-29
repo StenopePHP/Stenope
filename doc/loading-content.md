@@ -184,24 +184,17 @@ $articles = $contentManager->getContents(
 When passing multiple requirements, all must be met:
 
 ```php
-$myDrafts = $this->manager->getContents(
+$myDrafts = $contentManager->getContents(
     Article::class,
     null,
     ['author' => 'ogizanagi', 'draft' => true]
 );
 ```
 
-#### A property name (string)
-
-```php
-// Equivalent to ['active' => true]
-$users = $contentManager->getContents(User::class, 'active');
-```
-
 #### A custom callable supported by the PHP [usort](https://www.php.net/manual/fr/function.usort.php) function
 
 ```php
-$tagedMobileArticles = $this->manager->getContents(
+$tagedMobileArticles = $contentManager->getContents(
     Article::class,
     null,
     fn (Article $article): bool => in_array('mobile', $article->tags)
@@ -213,14 +206,21 @@ $tagedMobileArticles = $this->manager->getContents(
 ```php
 use function Stenope\Bundle\ExpressionLanguage\expr;
 
-$tagedMobileArticles = $this->manager->getContents(
+$tagedMobileArticles = $contentManager->getContents(
     Article::class,
     null,
     expr('"mobile" in _.tags')
 );
+
+// expr() and exprOr() are optional syntax sugar,
+// but you can also provide the expression as a string directly:
+$activeUsers = $contentManager->getContents(User::class, '_.active'); // Equivalent to ['active' => true]
+$activeDevUsers = $contentManager->getContents(User::class, '_.active and _.dev');
 ```
 
-
+!!! Note
+`expr` accepts multiple expressions it'll combine using `and`.  
+Use `exprOr` to combine expressions using `or`.
 
 See the [ExpressionLanguage syntax](https://symfony.com/doc/current/components/expression_language/syntax.html).
 You may also want to extend the expression language capabilities for your own contents by [registering a custom expression provider](https://symfony.com/doc/current/components/expression_language/extending.html#using-expression-providers) tagged with `stenope.expression_language_provider`.
@@ -234,10 +234,6 @@ Built-in functions are:
 - contains
 - starts_with
 - ends_with
-
-!!! Note
-    `expr` accepts multiple expressions it'll combine using `and`.  
-     Use `exprOr` to combine expressions using `or`.
 
 ## Debug
 
