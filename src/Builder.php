@@ -399,8 +399,8 @@ class Builder
 
         if ($this->hasNoIndexHeader($response) && !$this->hasNoIndexTag($content)) {
             $this->logger->warning('Url "{url}" contains a "x-robots-tag: noindex" header that will be lost by going static. Consider using the HTML tag "<meta name="robots" content="noindex" />" instead.', [
-                    'url' => $url,
-                ]);
+                'url' => $url,
+            ]);
         }
 
         [$path, $file] = $this->getFilePath($request, $response);
