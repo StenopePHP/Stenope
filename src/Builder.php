@@ -29,6 +29,7 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
 
 /**
@@ -396,6 +397,12 @@ class Builder
         $output = ob_get_clean();
         $content = $response->getContent() ?: $output;
 
+        if ($this->hasNoIndexHeader($response) && !$this->hasNoIndexTag($content)) {
+            $this->logger->warning('Url "{url}" contains a "x-robots-tag: noindex" header that will be lost by going static. Consider using the HTML tag "<meta name="robots" content="noindex" />" instead.', [
+                    'url' => $url,
+                ]);
+        }
+
         [$path, $file] = $this->getFilePath($request, $response);
 
         $this->write($content, $path, $file);
@@ -405,6 +412,24 @@ class Builder
             'memory' => self::formatMemory($memory),
             'url' => $url,
         ]);
+    }
+
+    /**
+     * Test the presence of a "NoIndex" HTTP Header.
+     */
+    private function hasNoIndexHeader(Response $response): bool
+    {
+        return in_array('noindex', $response->headers->all('x-robots-tag'));
+    }
+
+    /**
+     * Test the presence of a "NoIndex" meta tag.
+     */
+    private function hasNoIndexTag(string $content): bool
+    {
+        $crawler = new Crawler($content);
+
+        return $crawler->filter('head > meta[content="noindex"]')->count() > 0;
     }
 
     /**
