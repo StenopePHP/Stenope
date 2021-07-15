@@ -123,12 +123,12 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
 <h3 id="listing-contents">Listing contents<a href="#listing-contents" class="anchor"></a></h3>
 <p>In your controller (or service):</p>
-<pre class="code-multiline language-php"><code class="language-php" id="faae1f2589dad2d3e11f0a035248bd9d"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<pre class="code-multiline language-php"><code class="language-php" id="c06397a8c79dd1ae099fa9d8a85b0ae2"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Controller</span><span class="token punctuation">;</span>
 
 <span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ContentManagerInterface</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>FrameworkBundle<span class="token punctuation">\</span>Controller<span class="token punctuation">\</span>AbstractController</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Routing<span class="token punctuation">\</span>Annotation<span class="token punctuation">\</span>Route</span><span class="token punctuation">;</span>
 
@@ -140,7 +140,7 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
     <span class="token doc-comment comment">/**
      * @Route("/", name="blog")
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">index</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManager</span> <span class="token variable">$contentManager</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">index</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManagerInterface</span> <span class="token variable">$contentManager</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
             <span class="token string single-quoted-string">'blog/index.html.twig'</span><span class="token punctuation">,</span>
@@ -149,15 +149,15 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
     <span class="token punctuation">}</span></span></code></pre>
 <p><em>Note: contents of the same type can very well be writen in different formats.</em></p>
 <h3 id="fetching-a-specific-content">Fetching a specific content<a href="#fetching-a-specific-content" class="anchor"></a></h3>
-<p>The ContentManager uses slugs to identify your content.</p>
+<p>The content manager uses slugs to identify your content.</p>
 <p>The <code class="code-inline" id="2dbcba41b9ac4c5d22886ba672463cb4">slug</code> argument must exactly match the static file name in your content directory.</p>
 <p>Example: <code class="code-inline" id="f341a2e6f77ea7ae8f5b496db7c87605">$contentManager-&gt;getContent(Article::class, 'how-to-train-your-dragon');</code> will fetch the <code class="code-inline" id="a3f6d98021342733f989d9354314b972">content/articles/how-to-train-your-dragon.md</code> article.</p>
-<pre class="code-multiline language-php"><code class="language-php" id="190033a78aa52bc34b7eb799436c6e96"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<pre class="code-multiline language-php"><code class="language-php" id="984e99b0a82956f06a82e7cfa419f3c6"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Controller</span><span class="token punctuation">;</span>
 
 <span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Model<span class="token punctuation">\</span>Article</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ContentManager</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ContentManagerInterface</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>FrameworkBundle<span class="token punctuation">\</span>Controller<span class="token punctuation">\</span>AbstractController</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Routing<span class="token punctuation">\</span>Annotation<span class="token punctuation">\</span>Route</span><span class="token punctuation">;</span>
 
@@ -171,7 +171,7 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
     <span class="token doc-comment comment">/**
      * @Route("/<span class="token punctuation">{</span>slug<span class="token punctuation">}</span>", name="article")
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">article</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManager</span> <span class="token variable">$contentManager</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$slug</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">article</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManagerInterface</span> <span class="token variable">$contentManager</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$slug</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
             <span class="token string single-quoted-string">'blog/article.html.twig'</span><span class="token punctuation">,</span>
@@ -214,15 +214,15 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
     <span class="token punctuation">[</span><span class="token string single-quoted-string">'author'</span> <span class="token operator">=&gt;</span> <span class="token string single-quoted-string">'ogizanagi'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'draft'</span> <span class="token operator">=&gt;</span> <span class="token constant boolean">true</span><span class="token punctuation">]</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h4 id="a-custom-callable-supported-by-the-php-usort-function">A custom callable supported by the PHP <a href="https://www.php.net/manual/fr/function.usort.php" target="_blank">usort</a> function<a href="#a-custom-callable-supported-by-the-php-usort-function" class="anchor"></a></h4>
-<pre class="code-multiline language-php"><code class="language-php" id="f74ad8cb6907ecd98c111378e2e7e51a"><span class="token variable">$tagedMobileArticles</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+<pre class="code-multiline language-php"><code class="language-php" id="af2652ab560f5fba3eac4729ffb0eec8"><span class="token variable">$taggedMobileArticles</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
     <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
     <span class="token constant">null</span><span class="token punctuation">,</span>
     <span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token class-name type-declaration">Article</span> <span class="token variable">$article</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">bool</span> <span class="token operator">=&gt;</span> <span class="token function">in_array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'mobile'</span><span class="token punctuation">,</span> <span class="token variable">$article</span><span class="token operator">-&gt;</span><span class="token property">tags</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h4 id="an-expressionlanguage-expression">An ExpressionLanguage expression<a href="#an-expressionlanguage-expression" class="anchor"></a></h4>
-<pre class="code-multiline language-php"><code class="language-php" id="6f873cf37ad142f573fe02e353f3ff17"><span class="token keyword">use</span> <span class="token keyword">function</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ExpressionLanguage<span class="token punctuation">\</span>expr</span><span class="token punctuation">;</span>
+<pre class="code-multiline language-php"><code class="language-php" id="a0444c1e0b9d87e3fc0643fc7053d9e9"><span class="token keyword">use</span> <span class="token keyword">function</span> <span class="token package">Stenope<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>ExpressionLanguage<span class="token punctuation">\</span>expr</span><span class="token punctuation">;</span>
 
-<span class="token variable">$tagedMobileArticles</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
+<span class="token variable">$taggedMobileArticles</span> <span class="token operator">=</span> <span class="token variable">$contentManager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span>
     <span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span>
     <span class="token constant">null</span><span class="token punctuation">,</span>
     <span class="token function">expr</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'"mobile" in _.tags'</span><span class="token punctuation">)</span>
