@@ -403,9 +403,6 @@ class Builder
             ]);
         }
 
-        $this->logger->error('ERROR');
-        $this->logger->warning('WARNING');
-
         [$path, $file] = $this->getFilePath($request, $response);
 
         $this->write($content, $path, $file);

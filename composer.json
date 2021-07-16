@@ -65,6 +65,7 @@
         "symfony/browser-kit": "^5.1",
         "symfony/expression-language": "^5.1",
         "symfony/framework-bundle": "^5.1",
+        "symfony/monolog-bundle": "^3.7",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/twig-bridge": "^5.1",
         "symfony/twig-bundle": "^5.1"

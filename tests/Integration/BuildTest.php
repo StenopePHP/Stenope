@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
@@ -45,26 +46,24 @@ class BuildTest extends KernelTestCase
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $command = $application->find(BuildCommand::getDefaultName());
-        $tester = new CommandTester($command);
-        $tester->execute(['--no-ansi'/*, '--no-interaction'*/], [
-            //'verbosity' => ConsoleOutput::VERBOSITY_NORMAL,
-            'capture_stderr_separately' => true,
+        $tester = new ApplicationTester($application);
+        $tester->run(['stenope:build', '--ansi'], [
+            'interactive' => false,
+            'verbosity' => ConsoleOutput::VERBOSITY_NORMAL,
         ]);
 
         $output = $tester->getDisplay(true);
-        $errorOutput = $tester->getErrorOutput(true);
 
         self::assertSame(Command::SUCCESS, $tester->getStatusCode(), <<<TXT
         The site cannot be build properly.
         Inspect output below:
         ---
-        {$output}
+        $output
         TXT
         );
 
         $this->assertStringContainsString('[OK] Built 17 pages.', $output);
-        $this->assertStringContainsString('Url "http://localhost/without-noindex" contains a "x-robots-tag: noindex" header that will be lost by going static.', $errorOutput);
+        $this->assertStringContainsString('Url "http://localhost/without-noindex" contains a "x-robots-tag: noindex" header that will be lost by going static.', $output);
     }
 
     /**
