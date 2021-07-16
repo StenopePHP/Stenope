@@ -8,6 +8,8 @@ framework:
     router:
         utf8: true
 
+    disallow_search_engine_index: false
+
 twig:
     default_path: '%kernel.project_dir%/templates'
 

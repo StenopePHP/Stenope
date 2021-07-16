@@ -12,14 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends AbstractController
+class NoIndexController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/with-noindex", name="with_noindex")
      */
-    public function index()
+    public function withNoIndex()
     {
-        $response = $this->render('homepage.html.twig');
+        $response = $this->render('noindex/with.html.twig');
 
         $response->headers->set('X-Robots-Tag', 'noindex');
 
@@ -27,10 +27,14 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/foo.html", name="foo_html")
+     * @Route("/without-noindex", name="without_noindex")
      */
-    public function foo()
+    public function withoutNoIndex()
     {
-        return new Response('foo');
+        $response = $this->render('noindex/without.html.twig');
+
+        $response->headers->set('X-Robots-Tag', 'noindex');
+
+        return $response;
     }
 }

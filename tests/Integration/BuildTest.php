@@ -12,9 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\Console\Tester\CommandTester;
+use Stenope\Bundle\Command\BuildCommand;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class BuildTest extends KernelTestCase
 {
@@ -43,16 +46,29 @@ class BuildTest extends KernelTestCase
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $tester = new ApplicationTester($application);
-        $tester->run(['stenope:build', '--ansi']);
+        $command = $application->find(BuildCommand::getDefaultName());
+        $tester = new CommandTester($command);
+        $tester->execute(['--no-ansi'/*, '--no-interaction'*/], [
+            //'verbosity' => ConsoleOutput::VERBOSITY_NORMAL,
+            'capture_stderr_separately' => true,
+        ]);
+
+        $output = $tester->getDisplay(true);
+        $errorOutput = $tester->getErrorOutput(true);
 
         self::assertSame(Command::SUCCESS, $tester->getStatusCode(), <<<TXT
         The site cannot be build properly.
         Inspect output below:
         ---
-        {$tester->getDisplay(true)}
+        {$output}
         TXT
         );
+
+        var_dump($output);
+        var_dump($errorOutput);
+
+        $this->assertStringContainsString('[OK] Built 17 pages.', $output);
+        $this->assertStringContainsString('Url "http://localhost/without-noindex" contains a "x-robots-tag: noindex" header that will be lost by going static.', $errorOutput);
     }
 
     /**
@@ -93,6 +109,8 @@ class BuildTest extends KernelTestCase
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
             'http://localhost/recipes/tomiritsu',
+            'http://localhost/with-noindex',
+            'http://localhost/without-noindex',
         ], $crawler->filter('url > loc')->extract(['_text']));
     }
 
