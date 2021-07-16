@@ -16,6 +16,7 @@ use Stenope\Bundle\Exception\ContentNotFoundException;
 use Stenope\Bundle\HttpFoundation\ContentRequest;
 use Stenope\Bundle\Routing\RouteInfoCollection;
 use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
@@ -29,7 +30,6 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
 
 /**
@@ -422,7 +422,7 @@ class Builder
      */
     private function hasNoIndexHeader(Response $response): bool
     {
-        return in_array('noindex', $response->headers->all('x-robots-tag'));
+        return \in_array('noindex', $response->headers->all('x-robots-tag'));
     }
 
     /**
