@@ -1,5 +1,26 @@
 .PHONY: dist
 
+##########
+# Colors #
+##########
+
+COLOR_RESET   := \033[0m
+COLOR_ERROR   := \033[31m
+COLOR_INFO    := \033[32m
+COLOR_WARNING := \033[33m
+COLOR_COMMENT := \033[36m
+
+###########
+# Helpers #
+###########
+
+define message_error
+	printf "$(COLOR_ERROR)(╯°□°)╯︵ ┻━┻ $(strip $(1))$(COLOR_RESET)\n"
+endef
+
+php8:
+	@php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);" || ($(call message_error, Please use PHP 8) && exit 1)
+
 ###########
 # Install #
 ###########
@@ -13,12 +34,14 @@ install:
 
 lint: lint-phpcsfixer lint-phpstan lint-twig lint-yaml lint-composer
 
+fix-phpcsfixer: php8
 fix-phpcsfixer:
 	vendor/bin/php-cs-fixer fix
 
 lint-composer:
 	composer validate --strict
 
+lint-phpcsfixer: php8
 lint-phpcsfixer:
 	vendor/bin/php-cs-fixer fix --dry-run --diff
 

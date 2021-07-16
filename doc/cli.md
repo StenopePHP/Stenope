@@ -46,3 +46,32 @@ bin/console debug:stenope:content "App\Model\Author" ogi
 ```
 
 Use `--help` for more details and usage samples.
+
+### Common queries
+
+You can register common queries using PHP 8 attributes:
+
+```php
+namespace App\Model;
+
+use Stenope\Bundle\Attribute\SuggestedDebugQuery;
+
+#[SuggestedDebugQuery('Scheduled', filters: 'not _.isPublished()', orders: 'desc:date')]
+#[SuggestedDebugQuery('Outdated', filters: '_.outdated', orders: 'desc:date')]
+#[SuggestedDebugQuery('Written in english', filters: '_.lang == "en"', orders: 'desc:date')]
+#[SuggestedDebugQuery('By author', filters: "'tjarrand' in keys(_.authors)", orders: 'desc:date')]
+#[SuggestedDebugQuery('By tag', filters: "'symfony' in _.tags", orders: 'desc:date')]
+#[SuggestedDebugQuery('Matching slug', filters: "_.slug matches '/symfony/'", orders: 'desc:date')]
+class Article
+{
+    // ...
+}
+```
+
+These queries will be suggested when using the debug CLI command:
+
+![cli-debug-suggestions](./images/cli-debug-suggestions.png)
+
+and you'll be asked to choose one by using the `--suggest` option.
+
+![cli-debug-suggest](./images/cli-debug-suggest.png)

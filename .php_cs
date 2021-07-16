@@ -34,5 +34,7 @@ return PhpCsFixer\Config::create()
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'void_return' => true,
         'single_line_throw' => false,
+        // @see https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5495
+        'binary_operator_spaces' => ['operators' => ['|' => null]]
     ])
 ;

@@ -8,6 +8,7 @@
 
 namespace Stenope\Bundle\Command;
 
+use Stenope\Bundle\Attribute\SuggestedDebugQuery;
 use Stenope\Bundle\ContentManagerInterface;
 use function Stenope\Bundle\ExpressionLanguage\expr;
 use Stenope\Bundle\ExpressionLanguage\Expression;
@@ -53,6 +54,7 @@ class DebugCommand extends Command
             ->addArgument('id', InputArgument::OPTIONAL, 'Content identifier')
             ->addOption('order', 'o', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Order by field(s)')
             ->addOption('filter', 'f', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Filter by field(s)')
+            ->addOption('suggest', 's', InputOption::VALUE_NONE, 'Suggest common queries')
             ->setHelp(<<<HELP
             The <info>%command.name%</info> allows to list and display content managed by Stenope:
 
@@ -121,6 +123,7 @@ class DebugCommand extends Command
             * contains
             * starts_with
             * ends_with
+            * keys
 
             HELP
             )
@@ -139,12 +142,19 @@ class DebugCommand extends Command
         $class = $input->getArgument('class');
         $id = $input->getArgument('id');
 
+        [$suggestedFilter, $suggestedOrder] = $this->suggest($io, $input, $class, $id);
+
         if (!$this->stopwatch->isStarted('fetch')) {
             $this->stopwatch->start('fetch', 'stenope');
         }
 
         if (null === $id) {
-            $this->list($io, $class, $this->geOrders($input), $this->getFilters($input));
+            $this->list(
+                $io,
+                $class,
+                $this->getOrders($suggestedOrder ?? $input->getOption('order')),
+                $suggestedFilter ? expr($suggestedFilter) : $this->getFilters($input)
+            );
         } else {
             $this->describe($io, $class, $id);
         }
@@ -158,10 +168,10 @@ class DebugCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function geOrders(InputInterface $input): array
+    private function getOrders(array $rawOrders): array
     {
         $orders = [];
-        foreach ($input->getOption('order') ?? [] as $field) {
+        foreach ($rawOrders ?? [] as $field) {
             if (\str_starts_with($field, 'desc:')) {
                 $orders[substr($field, 5)] = false;
                 continue;
@@ -252,5 +262,94 @@ class DebugCommand extends Command
         $s->value = 'headlines';
 
         return $headlines;
+    }
+
+    private function suggest(
+        SymfonyStyle $io,
+        InputInterface $input,
+        string $class,
+        ?string $id
+    ): array {
+        if ($input->getOption('suggest')) {
+            if (PHP_MAJOR_VERSION < 8) {
+                throw new \LogicException('You need PHP 8.0 at least to use this option.');
+            }
+
+            if (!$input->isInteractive()) {
+                throw new \LogicException('Cannot use the --suggest option in non-interactive mode.');
+            }
+
+            $suggestedQueries = $this->getSuggestedQueries($class);
+
+            $choices = array_map(
+                static fn (SuggestedDebugQuery $suggestion): string => sprintf(
+                    '<info>%s</info> (filter: %s, order: %s)',
+                    $suggestion->description,
+                    $suggestion->filters ?? '-',
+                    $suggestion->orders ? implode(', ', $suggestion->orders) : '-',
+                ),
+                $suggestedQueries,
+            );
+
+            /** @var SuggestedDebugQuery $choice */
+            $choice = $suggestedQueries[array_search(
+                $io->choice('Which query would you like to execute?', $choices),
+                $choices,
+                true
+            )];
+
+            $filter = $choice->filters;
+            $orders = $choice->orders;
+
+            $io->comment($this->getCommandLine($class, $choice));
+
+            return [$filter, $orders];
+        }
+
+        if (PHP_MAJOR_VERSION >= 8 && null === $id && $input->isInteractive()) {
+            $io->section('Suggested queries');
+
+            if (!$suggestedQueries = $this->getSuggestedQueries($class)) {
+                $io->writeln(sprintf(
+                    ' 💡 <fg=cyan>Use the <comment>"%s"</comment> attribute on the <info>"%s"</info> class to register common queries.</>',
+                    SuggestedDebugQuery::class,
+                    $class,
+                ));
+            }
+
+            $io->definitionList(...array_map(
+                fn (SuggestedDebugQuery $suggestion): array => [
+                    $suggestion->description => $this->getCommandLine($class, $suggestion),
+                ],
+                $suggestedQueries,
+            ));
+
+            $io->writeln(' 💡 <fg=cyan>Use <comment>--suggest</comment> to interactively run one of those queries.</>');
+        }
+
+        return [null, null];
+    }
+
+    private function getSuggestedQueries(string $class): array
+    {
+        return array_map(
+            static fn (\ReflectionAttribute $attribute) => $attribute->newInstance(),
+            (new \ReflectionClass($class))->getAttributes(SuggestedDebugQuery::class),
+        );
+    }
+
+    private function getCommandLine(string $class, SuggestedDebugQuery $query): string
+    {
+        $commandLine = sprintf('bin/console %s "%s"', $this->getName(), $class);
+
+        foreach ($query->orders as $order) {
+            $commandLine .= sprintf(' --order="%s"', $order);
+        }
+
+        if ($query->filters) {
+            $commandLine .= sprintf(' --filter="%s"', strtr($query->filters, ['"' => '\"']));
+        }
+
+        return $commandLine;
     }
 }
