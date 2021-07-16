@@ -8,13 +8,12 @@
 
 namespace Stenope\Bundle\Tests\Integration;
 
-use Stenope\Bundle\Command\BuildCommand;
+use Psr\Log\Test\TestLogger;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Tester\ApplicationTester;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
 use Symfony\Component\Filesystem\Filesystem;
@@ -63,7 +62,11 @@ class BuildTest extends KernelTestCase
         );
 
         $this->assertStringContainsString('[OK] Built 17 pages.', $output);
-        $this->assertStringContainsString('Url "http://localhost/without-noindex" contains a "x-robots-tag: noindex" header that will be lost by going static.', $output);
+
+        /** @var TestLogger $logger */
+        $logger = static::$container->get('logger');
+
+        $logger->hasWarningThatContains('Url "http://localhost/without-noindex" contains a "x-robots-tag: noindex" header that will be lost by going static.');
     }
 
     /**

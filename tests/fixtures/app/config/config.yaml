@@ -26,9 +26,10 @@ stenope:
         App\Model\Recipe: '%kernel.project_dir%/content/recipes'
         App\Model\Author: '%kernel.project_dir%/content/authors'
 
-monolog:
-    handlers:
-        console:
-            type: console
-            process_psr_3_messages: true
-            channels: ["!event", "!doctrine", "!console", "!request"]
+services:
+    Psr\Log\LoggerInterface: '@logger'
+    logger:
+        class: Psr\Log\Test\TestLogger
+        tags:
+            - name: kernel.reset
+              method: reset
