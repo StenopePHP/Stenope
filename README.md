@@ -70,5 +70,6 @@ Stenope is not a ready-to-use bloging system: but you could quickly _write your 
 <!-- TODO - [Adding custom files to the build]() -->
 <!-- TODO - [Data source: writing a custom Provider]() -->
 <!-- TODO - [Data format: writing a custom Decoder]() -->
-- [Data manipulation: writing a custom Processor](doc/processors.md)
+- [Lazy / Micro Stenope](doc/cookbooks/lazy-stenope.md)
+- [Data manipulation: writing a custom Processor](doc/cookbooks/processors.md)
 <!-- TODO - [How to automatically deploy and host a static site]() -->

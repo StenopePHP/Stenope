@@ -28,6 +28,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class ContentManager implements ContentManagerInterface
 {
+    public const STENOPE_CONTEXT = 'stenope_context';
+
     private DecoderInterface $decoder;
     private DenormalizerInterface $denormalizer;
     private PropertyAccessorInterface $propertyAccessor;
@@ -229,6 +231,7 @@ class ContentManager implements ContentManagerInterface
         $this->crawlers->saveAll($content, $data);
 
         $data = $this->denormalizer->denormalize($data, $content->getType(), $content->getFormat(), [
+            self::STENOPE_CONTEXT => true,
             SkippingInstantiatedObjectDenormalizer::SKIP => true,
         ]);
 

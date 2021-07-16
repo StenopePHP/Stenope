@@ -17,6 +17,7 @@ use Stenope\Bundle\Command\BuildCommand;
 use Stenope\Bundle\Command\DebugCommand;
 use Stenope\Bundle\ContentManager;
 use Stenope\Bundle\ContentManagerInterface;
+use Stenope\Bundle\Controller\GenericContentController;
 use Stenope\Bundle\Decoder\HtmlDecoder;
 use Stenope\Bundle\Decoder\MarkdownDecoder;
 use Stenope\Bundle\DependencyInjection\tags;
@@ -29,6 +30,7 @@ use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolve
 use Stenope\Bundle\Processor\AssetsProcessor;
 use Stenope\Bundle\Processor\CodeHighlightProcessor;
 use Stenope\Bundle\Processor\ExtractTitleFromHtmlContentProcessor;
+use Stenope\Bundle\Processor\GenericContentTypesProcessor;
 use Stenope\Bundle\Processor\HtmlAnchorProcessor;
 use Stenope\Bundle\Processor\HtmlExternalLinksProcessor;
 use Stenope\Bundle\Processor\HtmlIdProcessor;
@@ -42,6 +44,7 @@ use Stenope\Bundle\Routing\ContentUrlResolver;
 use Stenope\Bundle\Routing\RouteInfoCollection;
 use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
+use Stenope\Bundle\Serializer\Normalizer\StdClassDenormalizer;
 use Stenope\Bundle\Service\AssetUtils;
 use Stenope\Bundle\Service\Git\LastModifiedFetcher;
 use Stenope\Bundle\Service\NaiveHtmlCrawlerManager;
@@ -53,6 +56,7 @@ use Stenope\Bundle\Twig\ContentRuntime;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Mime\MimeTypesInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -142,6 +146,9 @@ return static function (ContainerConfigurator $container): void {
 
         // Serializer
         ->set(SkippingInstantiatedObjectDenormalizer::class)->tag('serializer.normalizer')
+        ->set(StdClassDenormalizer::class)->args([
+            service(PropertyAccessorInterface::class),
+        ])->tag('serializer.normalizer')
 
         // Decoders
         ->set(MarkdownDecoder::class)
@@ -188,7 +195,11 @@ return static function (ContainerConfigurator $container): void {
         // HTML Crawler Manager
         ->set(NaiveHtmlCrawlerManager::class)
         ->set(SharedHtmlCrawlerManager::class)
-        ->alias(HtmlCrawlerManagerInterface::class, NaiveHtmlCrawlerManager::class);
+        ->alias(HtmlCrawlerManagerInterface::class, NaiveHtmlCrawlerManager::class)
+
+        // Controller
+        ->set(GenericContentController::class)->public()->autowire()->autoconfigure()
+    ;
 
     // Tagged processors:
     $container->services()->defaults()->tag(tags\content_processor)
@@ -199,6 +210,7 @@ return static function (ContainerConfigurator $container): void {
                 '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
             ]),
         ])
+        ->set(GenericContentTypesProcessor::class)
         ->set(SlugProcessor::class)
         ->set(HtmlIdProcessor::class)
             ->args([
