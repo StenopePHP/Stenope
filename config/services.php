@@ -82,6 +82,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(DebugCommand::class)->args([
             '$manager' => service(ContentManagerInterface::class),
             '$stopwatch' => service('stenope.build.stopwatch'),
+            '$registeredTypes' => 'The known content types, defined by the extension',
         ])
         ->tag('console.command', ['command' => DebugCommand::getDefaultName()])
 
