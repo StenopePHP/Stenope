@@ -8,9 +8,11 @@
 
 namespace Stenope\Bundle\Tests\Integration;
 
+use Psr\Log\Test\TestLogger;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
@@ -44,15 +46,27 @@ class BuildTest extends KernelTestCase
         $application->setAutoExit(false);
 
         $tester = new ApplicationTester($application);
-        $tester->run(['stenope:build', '--ansi']);
+        $tester->run(['stenope:build', '--ansi'], [
+            'interactive' => false,
+            'verbosity' => ConsoleOutput::VERBOSITY_NORMAL,
+        ]);
+
+        $output = $tester->getDisplay(true);
 
         self::assertSame(Command::SUCCESS, $tester->getStatusCode(), <<<TXT
         The site cannot be build properly.
         Inspect output below:
         ---
-        {$tester->getDisplay(true)}
+        $output
         TXT
         );
+
+        $this->assertStringContainsString('[OK] Built 17 pages.', $output);
+
+        /** @var TestLogger $logger */
+        $logger = static::$container->get('logger');
+
+        $logger->hasWarningThatContains('Url "http://localhost/without-noindex" contains a "x-robots-tag: noindex" header that will be lost by going static.');
     }
 
     /**
@@ -93,6 +107,8 @@ class BuildTest extends KernelTestCase
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
             'http://localhost/recipes/tomiritsu',
+            'http://localhost/with-noindex',
+            'http://localhost/without-noindex',
         ], $crawler->filter('url > loc')->extract(['_text']));
     }
 

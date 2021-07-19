@@ -8,6 +8,8 @@ framework:
     router:
         utf8: true
 
+    disallow_search_engine_index: false
+
 twig:
     default_path: '%kernel.project_dir%/templates'
 
@@ -23,3 +25,11 @@ stenope:
     providers:
         App\Model\Recipe: '%kernel.project_dir%/content/recipes'
         App\Model\Author: '%kernel.project_dir%/content/authors'
+
+services:
+    Psr\Log\LoggerInterface: '@logger'
+    logger:
+        class: Psr\Log\Test\TestLogger
+        tags:
+            - name: kernel.reset
+              method: reset

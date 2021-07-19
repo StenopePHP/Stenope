@@ -19,7 +19,11 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        return $this->render('homepage.html.twig');
+        $response = $this->render('homepage.html.twig');
+
+        $response->headers->set('X-Robots-Tag', 'noindex');
+
+        return $response;
     }
 
     /**
