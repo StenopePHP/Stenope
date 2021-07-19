@@ -11,6 +11,7 @@ namespace Stenope\Bundle\DependencyInjection;
 use Stenope\Bundle\Behaviour\HtmlCrawlerManagerInterface;
 use Stenope\Bundle\Behaviour\ProcessorInterface;
 use Stenope\Bundle\Builder;
+use Stenope\Bundle\Command\DebugCommand;
 use Stenope\Bundle\ExpressionLanguage\ExpressionLanguage as StenopeExpressionLanguage;
 use Stenope\Bundle\Provider\ContentProviderInterface;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
@@ -47,6 +48,12 @@ class StenopeExtension extends Extension
 
         $this->processProviders($container, $config['providers']);
         $this->processLinkResolvers($container, $config['resolve_links']);
+
+        $registeredTypes = array_keys($config['providers']);
+        sort($registeredTypes, SORT_NATURAL);
+        $container->getDefinition(DebugCommand::class)
+            ->replaceArgument('$registeredTypes', $registeredTypes)
+        ;
 
         if (!class_exists(ExpressionLanguage::class)) {
             $container->removeDefinition(StenopeExpressionLanguage::class);

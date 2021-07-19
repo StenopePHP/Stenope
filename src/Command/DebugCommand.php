@@ -34,11 +34,13 @@ class DebugCommand extends Command
 
     private ContentManagerInterface $manager;
     private Stopwatch $stopwatch;
+    private array $registeredTypes;
 
-    public function __construct(ContentManagerInterface $manager, Stopwatch $stopwatch)
+    public function __construct(ContentManagerInterface $manager, Stopwatch $stopwatch, array $registeredTypes = [])
     {
         $this->manager = $manager;
         $this->stopwatch = $stopwatch;
+        $this->registeredTypes = $registeredTypes;
 
         parent::__construct();
     }
@@ -128,6 +130,22 @@ class DebugCommand extends Command
             HELP
             )
         ;
+    }
+
+    protected function interact(InputInterface $input, OutputInterface $output): void
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        if (!$input->getArgument('class')) {
+            if (0 === \count($this->registeredTypes)) {
+                $io->error('It seems there is no type known by Stenope. Did you configure stenope.providers?');
+
+                return;
+            }
+
+            $chosenType = $io->choice('Which content type would you like to inspect?', $this->registeredTypes);
+            $input->setArgument('class', $chosenType);
+        }
     }
 
     /**
