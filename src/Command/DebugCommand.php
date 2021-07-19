@@ -154,7 +154,7 @@ class DebugCommand extends Command
 
         $io->title('Debug Stenope Contents');
 
-        $class = $input->getArgument('class');
+        $class = $this->guessOrAskClass($input, $io);
         $id = $input->getArgument('id');
 
         if (!$this->stopwatch->isStarted('fetch')) {
@@ -270,5 +270,40 @@ class DebugCommand extends Command
         $s->value = 'headlines';
 
         return $headlines;
+    }
+
+    private function guessOrAskClass(InputInterface $input, SymfonyStyle $io): string
+    {
+        $class = $input->getArgument('class');
+
+        if ($input->isInteractive() && !\in_array($class, $this->registeredTypes, true)) {
+            $shorthands = array_combine(
+                $this->registeredTypes,
+                array_map(
+                    static fn (string $fqcn) => strtolower(basename(str_replace('\\', '/', $fqcn))),
+                    $this->registeredTypes
+                )
+            );
+
+            $comparedClassInput = strtolower($class);
+            $scores = array_combine(
+                array_keys($shorthands),
+                array_map(fn (string $shortname) => levenshtein($comparedClassInput, $shortname), $shorthands)
+            );
+
+            $bestScore = min($scores);
+            $matches = array_keys($scores, $bestScore, true);
+
+            if (\count($matches) > 1) {
+                $class = $io->choice('Did you mean one of these content types?', $matches);
+            } else {
+                $match = current($matches);
+                $class = $match;
+
+                $io->comment("Assuming you meant \"$class\"");
+            }
+        }
+
+        return $class;
     }
 }
