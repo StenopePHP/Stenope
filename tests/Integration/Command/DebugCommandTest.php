@@ -34,7 +34,7 @@ class DebugCommandTest extends KernelTestCase
             'class' => $class,
             '--filter' => $filters,
             '--order' => $orders,
-        ], ['verbosity' => ConsoleOutput::VERBOSITY_VERY_VERBOSE]);
+        ], ['verbosity' => ConsoleOutput::VERBOSITY_VERY_VERBOSE, 'interactive' => false]);
 
         self::assertStringMatchesFormat(<<<TXT
 

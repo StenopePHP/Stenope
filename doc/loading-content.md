@@ -234,6 +234,7 @@ Built-in functions are:
 - contains
 - starts_with
 - ends_with
+- keys
 
 ## Debug
 
