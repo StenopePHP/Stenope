@@ -219,8 +219,8 @@ $activeDevUsers = $contentManager->getContents(User::class, '_.active and _.dev'
 ```
 
 !!! Note
-`expr` accepts multiple expressions it'll combine using `and`.  
-Use `exprOr` to combine expressions using `or`.
+    `expr` accepts multiple expressions it'll combine using `and`.  
+    Use `exprOr` to combine expressions using `or`.
 
 See the [ExpressionLanguage syntax](https://symfony.com/doc/current/components/expression_language/syntax.html).
 You may also want to extend the expression language capabilities for your own contents by [registering a custom expression provider](https://symfony.com/doc/current/components/expression_language/extending.html#using-expression-providers) tagged with `stenope.expression_language_provider`.
