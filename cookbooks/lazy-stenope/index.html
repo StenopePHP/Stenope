@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Lazy Stenope | Stenope, the static website generation tool for Symfony</title>
+        <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
+                    <link rel="stylesheet" href="/Stenope/build/style.c4e20cc1.css">
+            </head>
+    <body>
+        <div class="main">
+                            <div class="columns">
+                    <aside class="sidebar">
+                                                        <a href="/Stenope/" class="logo">
+                                Stenope
+                            </a>
+                            <nav class="navigation">
+                                <a href="/Stenope/" class="">
+                                    About
+                                </a>
+                                                                                                    <a href="/Stenope/build-configuration" class="">
+                                        Configuring the build
+                                    </a>
+                                                                    <a href="/Stenope/cli" class="">
+                                        CLI
+                                    </a>
+                                                                    <a href="/Stenope/cookbooks/lazy-stenope" class="active">
+                                        Lazy Stenope
+                                    </a>
+                                                                    <a href="/Stenope/cookbooks/processors" class="">
+                                        Content processors
+                                    </a>
+                                                                    <a href="/Stenope/link-contents" class="">
+                                        Linking contents
+                                    </a>
+                                                                    <a href="/Stenope/loading-content" class="">
+                                        Loading content
+                                    </a>
+                                                                    <a href="/Stenope/supported-formats" class="">
+                                        Supported formats
+                                    </a>
+                                                                    <a href="/Stenope/supported-sources" class="">
+                                        Supported sources
+                                    </a>
+                                                                    <a href="/Stenope/syntax-highlighting" class="">
+                                        Syntax highlighting
+                                    </a>
+                                                                    <a href="/Stenope/twig" class="">
+                                        Twig integration
+                                    </a>
+                                                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Github
+                                </a>
+                            </nav>
+                        
+                <div class="table-of-content">
+            <p class="title">Table of content</p>
+            <ol class="list">
+                                    <li>
+                        <a href="#how-to-start">How to start</a>
+                                            </li>
+                                    <li>
+                        <a href="#writing-contents">Writing contents</a>
+                                            </li>
+                                    <li>
+                        <a href="#writing-templates">Writing templates</a>
+                                                    <ol class="sub-list">
+                                                                    <li><a href="#show-templates">Show templates</a></li>
+                                                                    <li><a href="#list-templates">List templates</a></li>
+                                                                    <li><a href="#template-directory-structure-reference">Template directory structure reference</a></li>
+                                                            </ol>
+                                            </li>
+                            </ol>
+        </div>
+                        </aside>
+                    <main class="content">
+                        <body><h1 id="lazy-stenope">Lazy Stenope<a href="#lazy-stenope" class="anchor"></a></h1>
+<p>Lazy or Micro Stenope is a lightweight opinionated alternative on how to create
+a Symfony application for generating a static site, with minimal knowledge, code
+and requirements.  </p>
+<p>Most notably, for basic usages, it's only required to know about Twig
+(templating), but <strong>you don't need to write custom code to serve your content</strong>.<br>
+Start right away by writing the content in the format you like, write the
+templates to render them and map the pages together, so it'll be dumped and
+accessible from the static generated version.</p>
+<p>It makes Stenope an alternative comparable to some other generation tools like
+Hugo, <strong>where you only need to write content and templates</strong>, while still being
+able to feel at home and tweak your app with your Symfony's knowledge if needed.</p>
+<h2 id="how-to-start">How to start<a href="#how-to-start" class="anchor"></a></h2>
+<p>Right after creating a Symfony app and requiring Stenope using Composer,
+configure the Lazy Stenope stack in your <code class="code-inline" id="9c6968b70659f410eb8de9e4fa30574b">src/Kernel.php</code>:</p>
+<pre class="code-multiline language-diff"><code class="language-diff" id="41ebe484a7bd7eccfae1b7cb0de10fa0"><span class="token deleted-arrow deleted"><span class="token prefix deleted">&lt;</span><span class="token line">?php
+</span></span>namespace App;
+
+<span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">use Stenope\Bundle\MicroStenopeKernelTrait;
+</span></span>use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+// [...]
+
+class Kernel extends BaseKernel
+{
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">   use MicroKernelTrait;
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">    use MicroStenopeKernelTrait;
+</span></span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">   protected function configureContainer(ContainerConfigurator $container): void
+</span><span class="token prefix unchanged"> </span><span class="token line">   {
+</span><span class="token prefix unchanged"> </span><span class="token line">       // [...]
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">        $this-&gt;configureStenope($container);
+</span></span><span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">   }
+</span></span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">   protected function configureRoutes(RoutingConfigurator $routes): void
+</span><span class="token prefix unchanged"> </span><span class="token line">   {
+</span><span class="token prefix unchanged"> </span><span class="token line">       // [...]
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">        $this-&gt;configureStenopeRoutes($routes);
+</span></span><span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">   }
+</span></span>}</code></pre>
+<p>It'll register two routes for showing and listing contents:</p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Path (default)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="code-inline" id="5ef8e1ebab10c16a967e2e8ef2aef8a3">stenope_show</code></td>
+<td><code class="code-inline" id="3b23919ca599a7dec24cd2680eade080">/{slug}</code></td>
+<td>Show a specific content</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="cb976a1e91cee97ae50df0316497a6f3">stenope_list</code></td>
+<td><code class="code-inline" id="e553c34400f3d77ee15780fec05c6007">/{type}/list</code></td>
+<td>List all contents of a given type and sub-types</td>
+</tr>
+</tbody>
+</table>
+<p>as well as preconfiguring Stenope to load contents from a <code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code> directory on
+your filesystem.<br>
+The equivalent config is:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="334372b8ae12b546ced6ebc9fb78f99f"><span class="token key atrule">stenope</span><span class="token punctuation">:</span>
+    <span class="token key atrule">providers</span><span class="token punctuation">:</span>
+        <span class="token key atrule">Stenope\Bundle\Content\GenericContent</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content'</span>
+    <span class="token key atrule">resolve_links</span><span class="token punctuation">:</span>
+        <span class="token key atrule">Stenope\Bundle\Content\GenericContent</span><span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token key atrule">route</span><span class="token punctuation">:</span> stenope_show<span class="token punctuation">,</span> <span class="token key atrule">slug</span><span class="token punctuation">:</span> slug <span class="token punctuation">}</span></code></pre>
+<p>Since your application would need an entrypoint, you can create a basic home
+route and template using:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="62ad501ca7235a902363394b65dee481"><span class="token comment"># config/routes.yaml</span>
+<span class="token key atrule">home</span><span class="token punctuation">:</span>
+  <span class="token key atrule">path</span><span class="token punctuation">:</span> /
+  <span class="token key atrule">controller</span><span class="token punctuation">:</span> Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  <span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+    <span class="token key atrule">template</span><span class="token punctuation">:</span> home.html.twig</code></pre>
+<p>and the following templates structures:</p>
+<pre class="code-multiline language-treeview"><code class="language-treeview" id="84270099c740ed2d2a9e15050b31f96c"><span class="token treeview-part"><span class="token entry-name dir">templates</span></span>
+<span class="token treeview-part"><span class="token entry-line line-h">├── </span><span class="token entry-name ext-html-twig#baselayoutforyoursite ext-twig#baselayoutforyoursite">base.html.twig # base layout for your site</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v-last">└── </span><span class="token entry-name ext-html-twig ext-twig">home.html.twig</span></span></code></pre>
+<h2 id="writing-contents">Writing contents<a href="#writing-contents" class="anchor"></a></h2>
+<p>You can write content in <a href="/Stenope/supported-formats">any supported format</a>, with
+any data inside ; on the contrary of the "full-stack" Stenope approach, there is
+no truly enforced structured model to which will be mapped your content.<br>
+Instead, a <code class="code-inline" id="6fb72cb3fafcf6bc00f0019a80a5feb9">GenericContent</code> is used and accepts any property.<br>
+Any structured data you write in your content is mapped to a property defined at
+runtime on this content object.</p>
+<p>E.g, such content:</p>
+<pre class="code-multiline language-md"><code class="language-md" id="09cb3de95f2d6924e4bc288181a71325"><span class="token front-matter-block"><span class="token punctuation">---</span>
+<span class="token font-matter yaml language-yaml"><span class="token key atrule">title</span><span class="token punctuation">:</span> <span class="token string">"Sunt amicitiaes desiderium ferox, placidus liberies."</span>   
+<span class="token key atrule">date</span><span class="token punctuation">:</span> <span class="token datetime number">2021-09-10</span>  
+<span class="token key atrule">draft</span><span class="token punctuation">:</span> <span class="token boolean important">true</span></span>
+<span class="token punctuation">---</span></span>
+
+Always cosmically develop the wonderful sinner.</code></pre>
+<p>will instantiate a <code class="code-inline" id="6fb72cb3fafcf6bc00f0019a80a5feb9">GenericContent</code> object with <code class="code-inline" id="d5d3db1765287eef77d7927cc956f50a">title</code>, <code class="code-inline" id="5fc732311905cb27e82d67f4f6511f7f">date</code> and <code class="code-inline" id="f91b2829bf8603e358094e1dedb6f947">draft</code>
+properties from the markdown header metadata. Specific to
+the <a href="/Stenope/supported-formats#markdown">markdown format</a>, the <code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code> property
+is created as well, using the main file content.</p>
+<p>Additionally, it always defines these 3 properties:</p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="code-inline" id="2dbcba41b9ac4c5d22886ba672463cb4">slug</code></td>
+<td>the content identifier, i.e: its file path.</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="599dcce2998a6b40b1e38e8c6006cb0a">type</code></td>
+<td>the content main type, i.e: its folder (e.g: a <code class="code-inline" id="201718beb8af799fba8e6a5f351555bc">users/john.md</code> content is of type <code class="code-inline" id="9bc65c2abec141778ffaa729489f3e87">users</code>)</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="d14a8022b085f9ef19d479cbdd581127">types</code></td>
+<td>the content types, i.e: its folder hierarchy (e.g: a <code class="code-inline" id="4510e25de6903bf2102b79fbcc17b88d">users/legacy/sarah.md</code> content has types <code class="code-inline" id="2d3f1afac91e4c2c26eaec16cb52ef09">users/legacy</code> and <code class="code-inline" id="9bc65c2abec141778ffaa729489f3e87">users</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="writing-templates">Writing templates<a href="#writing-templates" class="anchor"></a></h2>
+<p>Lazy-Stenope discovers the template files to use for your contents by
+convention.</p>
+<h3 id="show-templates">Show templates<a href="#show-templates" class="anchor"></a></h3>
+<p>At first, it'll attempt to find a template matching the exact directory
+structure of your content, so a <code class="code-inline" id="201718beb8af799fba8e6a5f351555bc">users/john.md</code> content could be rendered using
+a <code class="code-inline" id="d1d1ff8f34001902805b1e3afb92d55b">templates/users/john.html.twig</code> template.</p>
+<p>If this template is not found, it'll attempt to look at the content type(s) and
+search for a <code class="code-inline" id="168b39745a7a6f0f69d52a368fe30a81">show.html.twig</code> template. This way, you can use a same template to
+render similar types of contents, based on the directory structure and
+organization of your contents.</p>
+<p>Eventually, if no matching template is found so far, it'll make a last attempt
+to load a generic <code class="code-inline" id="e63fb9b3885e3c346fd77c55f8d08334">templates/stenope/show.html.twig</code> template.</p>
+<p>You can also explicit the template to use for a content using the <code class="code-inline" id="66f6181bcb4cff4cd38fbc804a036db6">template</code>
+property:</p>
+<pre class="code-multiline language-md"><code class="language-md" id="49185380818a6bae99f324369abd42ac"><span class="token front-matter-block"><span class="token punctuation">---</span>
+<span class="token font-matter yaml language-yaml"><span class="token key atrule">template</span><span class="token punctuation">:</span> <span class="token string">'other/an-explicit-template.html.twig'</span>  
+<span class="token key atrule">title</span><span class="token punctuation">:</span> <span class="token string">"Sunt amicitiaes desiderium ferox, placidus liberies."</span></span>
+<span class="token punctuation">---</span></span>
+
+Always cosmically develop the wonderful sinner.</code></pre>
+<p>To sum up, it'll attempt to load a template in the following order:</p>
+<ol>
+<li>Explicit template path from the <code class="code-inline" id="66f6181bcb4cff4cd38fbc804a036db6">template</code> property</li>
+<li><code class="code-inline" id="f683e475ff145c82d71a35c363715d2d">templates/{slug}.html.twig</code></li>
+<li><code class="code-inline" id="347941e02fce43fda176bf91a581b5b5">templates/{type}/show.html.twig</code></li>
+<li><code class="code-inline" id="2c8c5e8719292567920ecc886345b476">templates/{parentType}/show.html.twig</code></li>
+<li><code class="code-inline" id="e63fb9b3885e3c346fd77c55f8d08334">templates/stenope/show.html.twig</code></li>
+</ol>
+<h4 id="available-variables">Available variables<a href="#available-variables" class="anchor"></a></h4>
+<p>The following variables are exposed to the template:</p>
+<table>
+<thead>
+<tr>
+<th>variable</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code></td>
+<td>the <code class="code-inline" id="6fb72cb3fafcf6bc00f0019a80a5feb9">GenericContent</code> object instantiated from your content file</td>
+</tr>
+</tbody>
+</table>
+<h4 id="generate-a-link">Generate a link<a href="#generate-a-link" class="anchor"></a></h4>
+<p>You can generate a link to a content using its slug and:</p>
+<pre class="code-multiline language-twig"><code class="language-twig" id="ee174fe28eaa18b65202bb764ce8fc5d"><span class="token other">&lt;a href="</span><span class="token tag"><span class="token ld"><span class="token punctuation">{{</span></span> <span class="token property">path</span><span class="token punctuation">(</span><span class="token string"><span class="token punctuation">'</span>stenope_show<span class="token punctuation">'</span></span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token property">slug</span><span class="token punctuation">:</span> <span class="token string"><span class="token punctuation">'</span>users/john<span class="token punctuation">'</span></span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token rd"><span class="token punctuation">}}</span></span></span><span class="token other">"&gt;John's profile<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">&gt;</span></span></span></code></pre>
+<h3 id="list-templates">List templates<a href="#list-templates" class="anchor"></a></h3>
+<p>Contents inside a directory structure have one or more types registered, which
+you can use to categorize and differentiate some common types of contents (e.g:
+a <code class="code-inline" id="4510e25de6903bf2102b79fbcc17b88d">users/legacy/sarah.md</code> content has types <code class="code-inline" id="2d3f1afac91e4c2c26eaec16cb52ef09">users/legacy</code> and <code class="code-inline" id="9bc65c2abec141778ffaa729489f3e87">users</code>).</p>
+<p>Typed contents can be listed on a page by rendering
+a <code class="code-inline" id="62b0eb4465f242a8b7584aa13e17b204">templates/{type}/list.html.twig</code>
+template, so contents inside a <code class="code-inline" id="9bc65c2abec141778ffaa729489f3e87">users</code> directory could be rendered using
+a <code class="code-inline" id="a3329ffbc9d39323e37ebe7efdc6ecec">templates/users/list.html.twig</code> template.</p>
+<p>Eventually, if no matching template is found so far, it'll make a last attempt
+to load a generic <code class="code-inline" id="e63fb9b3885e3c346fd77c55f8d08334">templates/stenope/show.html.twig</code> template.</p>
+<p>To sum up, it'll attempt to load a template in the following order:</p>
+<ol>
+<li><code class="code-inline" id="62b0eb4465f242a8b7584aa13e17b204">templates/{type}/list.html.twig</code></li>
+<li><code class="code-inline" id="e63fb9b3885e3c346fd77c55f8d08334">templates/stenope/show.html.twig</code></li>
+</ol>
+<h4 id="available-variables">Available variables<a href="#available-variables" class="anchor"></a></h4>
+<p>The following variables are exposed to the template:</p>
+<table>
+<thead>
+<tr>
+<th>variable</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="code-inline" id="599dcce2998a6b40b1e38e8c6006cb0a">type</code></td>
+<td>current type in the URL</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="d14a8022b085f9ef19d479cbdd581127">types</code></td>
+<td>the types hierarchy for the type in the URL</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="98bf7d8c15784f0a3d63204441e1e2aa">contents</code></td>
+<td>the objects instantiated from your content files, filtered by the type in the URL</td>
+</tr>
+</tbody>
+</table>
+<h4 id="generate-a-link">Generate a link<a href="#generate-a-link" class="anchor"></a></h4>
+<p>You can generate a link to a content using its slug and:</p>
+<pre class="code-multiline language-twig"><code class="language-twig" id="21514e877fd5a945f04c3a06f94e2bff"><span class="token other">&lt;a href="</span><span class="token tag"><span class="token ld"><span class="token punctuation">{{</span></span> <span class="token property">path</span><span class="token punctuation">(</span><span class="token string"><span class="token punctuation">'</span>stenope_list<span class="token punctuation">'</span></span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token property">type</span><span class="token punctuation">:</span> <span class="token string"><span class="token punctuation">'</span>users<span class="token punctuation">'</span></span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token rd"><span class="token punctuation">}}</span></span></span><span class="token other">"&gt;List users<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">&gt;</span></span></span></code></pre>
+<h3 id="template-directory-structure-reference">Template directory structure reference<a href="#template-directory-structure-reference" class="anchor"></a></h3>
+<pre class="code-multiline language-treeview"><code class="language-treeview" id="10760f5156b770bef793c2830886c260"><span class="token treeview-part"><span class="token entry-name dir">templates</span></span>
+<span class="token treeview-part"><span class="token entry-line line-h">├── </span><span class="token entry-name ext-html-twig ext-twig">base.html.twig</span></span>
+<span class="token treeview-part"><span class="token entry-line line-h">├── </span><span class="token entry-name ext-html-twig➜rendersthe`projects-{yaml,json,md,…}`content ext-twig➜rendersthe`projects-{yaml,json,md,…}`content ext-{yaml,json,md,…}`content">projects.html.twig ➜ renders the `projects.{yaml,json,md,…}` content</span></span>
+<span class="token treeview-part"><span class="token entry-line line-h">├── </span><span class="token entry-name ext-html-twig ext-twig">home.html.twig</span></span>
+<span class="token treeview-part"><span class="token entry-line line-h">├── </span><span class="token entry-name dir">stenope</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v">│   </span><span class="token entry-line line-h">├── </span><span class="token entry-name ext-html-twig➜rendersalistingforatypewithnomatchinglisttemplate ext-twig➜rendersalistingforatypewithnomatchinglisttemplate">list.html.twig ➜ renders a listing for a type with no matching list template</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v">│   </span><span class="token entry-line line-v-last">└── </span><span class="token entry-name ext-html-twig➜renderacontentwithoutmatchingtemplate ext-twig➜renderacontentwithoutmatchingtemplate">show.html.twig ➜ render a content without matching template</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v-last">└── </span><span class="token entry-name dir">users</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v-gap">    </span><span class="token entry-line line-h">├── </span><span class="token entry-name dir">legacy</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v-gap">    </span><span class="token entry-line line-v">│   </span><span class="token entry-line line-h">├── </span><span class="token entry-name ext-html-twig➜rendersalistingforacontentfromthe`users/legacy`directory ext-twig➜rendersalistingforacontentfromthe`users/legacy`directory">list.html.twig ➜ renders a listing for a content from the `users/legacy` directory</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v-gap">    </span><span class="token entry-line line-v">│   </span><span class="token entry-line line-v-last">└── </span><span class="token entry-name ext-html-twig➜rendersacontentfromthe`users/legacy`directory ext-twig➜rendersacontentfromthe`users/legacy`directory">show.html.twig ➜ renders a content from the `users/legacy` directory</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v-gap">    </span><span class="token entry-line line-h">├── </span><span class="token entry-name ext-html-twig➜rendersalistingforacontentfromthe`users`directory ext-twig➜rendersalistingforacontentfromthe`users`directory">list.html.twig ➜ renders a listing for a content from the `users` directory</span></span>
+<span class="token treeview-part"><span class="token entry-line line-v-gap">    </span><span class="token entry-line line-v-last">└── </span><span class="token entry-name ext-html-twig➜rendersacontentfromthe`users`directory ext-twig➜rendersacontentfromthe`users`directory">show.html.twig ➜ renders a content from the `users` directory</span></span></code></pre></body>                        <footer class="footer">
+                                                            <p class="note">Stenope, the static website generation tool for Symfony.</p>
+                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Stenope on Github
+                                </a>
+                                                    </footer>
+                    </main>
+                </div>
+                    </div>
+                    <script src="/Stenope/build/runtime.a2069aab.js"></script><script src="/Stenope/build/app.4c1a4699.js"></script>
+            </body>
+</html>
