@@ -14,6 +14,8 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * A wrapper for UrlGenerator that register every generated url in the PageList.
+ *
+ * @final
  */
 class UrlGenerator implements UrlGeneratorInterface
 {
@@ -28,7 +30,7 @@ class UrlGenerator implements UrlGeneratorInterface
         $this->routesInfo = $routesInfo;
     }
 
-    public function generate($name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generate($name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         if (($routeInfo = $this->routesInfo[$name] ?? null) && !$routeInfo->isIgnored()) {
             $this->pageList->add(
@@ -44,7 +46,7 @@ class UrlGenerator implements UrlGeneratorInterface
         $this->urlGenerator->setContext($context);
     }
 
-    public function getContext()
+    public function getContext(): RequestContext
     {
         return $this->urlGenerator->getContext();
     }

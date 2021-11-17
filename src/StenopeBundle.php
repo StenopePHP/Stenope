@@ -12,6 +12,9 @@ use Stenope\Bundle\DependencyInjection\Compiler\TwigExtensionFixerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @final
+ */
 class StenopeBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
@@ -21,7 +24,7 @@ class StenopeBundle extends Bundle
         $container->addCompilerPass(new TwigExtensionFixerCompilerPass());
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return \dirname(__DIR__);
     }

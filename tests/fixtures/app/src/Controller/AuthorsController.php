@@ -13,12 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/authors")
+ * @Route(path="/authors")
  */
 class AuthorsController extends AbstractController
 {
     /**
-     * @Route("/{author<[\w.]+>}.json", name="author_json", options={
+     * @Route(path="/{author<[\w.]+>}.json", name="author_json", options={
      *     "stenope": {
      *         "sitemap": false,
      *     },
@@ -36,7 +36,7 @@ class AuthorsController extends AbstractController
     }
 
     /**
-     * @Route("/{author}", name="author")
+     * @Route(path="/{author}", name="author")
      */
     public function show(Author $author)
     {

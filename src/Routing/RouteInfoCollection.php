@@ -11,7 +11,8 @@ namespace Stenope\Bundle\Routing;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @phpstan-implements IteratorAggregate<string,RouteInfo>
+ * @phpstan-implements \IteratorAggregate<string,RouteInfo>
+ * @final
  */
 class RouteInfoCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 {
@@ -37,20 +38,17 @@ class RouteInfoCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
         return $this->routeInfos;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->getInfos());
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->getInfos()[$offset]);
     }
 
-    /**
-     * @return RouteInfo|null
-     */
-    public function offsetGet($offset)
+    public function offsetGet($offset): ?RouteInfo
     {
         return $this->getInfos()[$offset] ?? null;
     }
@@ -65,7 +63,7 @@ class RouteInfoCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
         throw new \BadMethodCallException(sprintf('Unexpected call to "%s()"', __METHOD__));
     }
 
-    public function count()
+    public function count(): int
     {
         return \count($this->getInfos());
     }

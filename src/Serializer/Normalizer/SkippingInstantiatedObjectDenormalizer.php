@@ -12,12 +12,14 @@ use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 
 /**
  * Avoiding double-denormalization for already instantiated objects inside $data.
+ *
+ * @final
  */
 class SkippingInstantiatedObjectDenormalizer implements ContextAwareDenormalizerInterface
 {
     public const SKIP = 'skip_instantiated_object';
 
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize($data, string $type, string $format = null, array $context = []): object
     {
         return $data;
     }

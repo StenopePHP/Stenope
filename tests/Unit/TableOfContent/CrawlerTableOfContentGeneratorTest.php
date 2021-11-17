@@ -6,7 +6,7 @@
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
  */
 
-namespace Stenope\Bundle\Tests\Unit\Service;
+namespace Stenope\Bundle\Tests\Unit\TableOfContent;
 
 use PHPUnit\Framework\TestCase;
 use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;

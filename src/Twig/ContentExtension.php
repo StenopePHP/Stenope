@@ -11,9 +11,12 @@ namespace Stenope\Bundle\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @final
+ */
 class ContentExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('content_get', [ContentRuntime::class, 'getContent']),

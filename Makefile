@@ -1,5 +1,7 @@
 .PHONY: dist
 
+PHP_CS_FIXER_VERSION=v3.3.2
+
 ##########
 # Colors #
 ##########
@@ -25,8 +27,30 @@ php8:
 # Install #
 ###########
 
+setup:
+	composer global require --no-progress --no-scripts --no-plugins symfony/flex
+
+install: setup
 install:
+	rm -f composer.lock
+	composer config minimum-stability --unset
+	composer update --prefer-dist
+
+install-54: setup
+install-54: export SYMFONY_REQUIRE = 5.4.*@dev
+install-54:
+	rm -f composer.lock
+	composer config minimum-stability dev
 	composer update
+	composer config minimum-stability --unset
+
+install-60: setup
+install-60: export SYMFONY_REQUIRE = 6.0.*@dev
+install-60:
+	rm -f composer.lock
+	composer config minimum-stability dev
+	composer update
+	composer config minimum-stability --unset
 
 ########
 # Lint #
@@ -34,16 +58,26 @@ install:
 
 lint: lint-phpcsfixer lint-phpstan lint-twig lint-yaml lint-composer
 
-fix-phpcsfixer: php8
-fix-phpcsfixer:
-	vendor/bin/php-cs-fixer fix
-
 lint-composer:
 	composer validate --strict
 
+php-cs-fixer.phar:
+	wget --no-verbose https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar
+	chmod +x php-cs-fixer.phar
+
+update-php-cs-fixer.phar:
+	rm -f php-cs-fixer.phar
+	make php-cs-fixer.phar
+
 lint-phpcsfixer: php8
+lint-phpcsfixer: php-cs-fixer.phar
 lint-phpcsfixer:
-	vendor/bin/php-cs-fixer fix --dry-run --diff
+	./php-cs-fixer.phar fix --dry-run --diff
+
+fix-phpcsfixer: php8
+fix-phpcsfixer: php-cs-fixer.phar
+fix-phpcsfixer:
+	./php-cs-fixer.phar fix
 
 lint-phpstan:
 	vendor/bin/phpstan analyse --memory-limit=-1

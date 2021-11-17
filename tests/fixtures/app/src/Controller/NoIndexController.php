@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NoIndexController extends AbstractController
 {
     /**
-     * @Route("/with-noindex", name="with_noindex")
+     * @Route(path="/with-noindex", name="with_noindex")
      */
     public function withNoIndex()
     {
@@ -26,7 +26,7 @@ class NoIndexController extends AbstractController
     }
 
     /**
-     * @Route("/without-noindex", name="without_noindex")
+     * @Route(path="/without-noindex", name="without_noindex")
      */
     public function withoutNoIndex()
     {

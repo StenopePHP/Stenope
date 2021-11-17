@@ -77,7 +77,7 @@ class HtmlIdProcessor implements ProcessorInterface
     private function setIdForImage(\DOMElement $element): void
     {
         if (!$id = $element->getAttribute('id')) {
-            $name = $element->getAttribute('alt') ?: \basename($element->getAttribute('src'));
+            $name = $element->getAttribute('alt') ?: basename($element->getAttribute('src'));
             $element->setAttribute('id', $this->slugify($name));
         }
     }

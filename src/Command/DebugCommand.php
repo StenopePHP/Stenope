@@ -190,11 +190,11 @@ class DebugCommand extends Command
     {
         $orders = [];
         foreach ($rawOrders ?? [] as $field) {
-            if (\str_starts_with($field, 'desc:')) {
+            if (str_starts_with($field, 'desc:')) {
                 $orders[substr($field, 5)] = false;
                 continue;
             }
-            if (\str_starts_with($field, '-')) {
+            if (str_starts_with($field, '-')) {
                 $orders[substr($field, 1)] = false;
                 continue;
             }

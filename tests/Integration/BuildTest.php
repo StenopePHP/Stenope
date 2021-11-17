@@ -64,7 +64,7 @@ class BuildTest extends KernelTestCase
         $this->assertStringContainsString('[OK] Built 17 pages.', $output);
 
         /** @var TestLogger $logger */
-        $logger = static::$container->get('logger');
+        $logger = static::getContainer()->get('logger');
 
         $logger->hasWarningThatContains('Url "http://localhost/without-noindex" contains a "x-robots-tag: noindex" header that will be lost by going static.');
     }

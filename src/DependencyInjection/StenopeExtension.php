@@ -26,6 +26,9 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
+/**
+ * @final
+ */
 class StenopeExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -60,12 +63,12 @@ class StenopeExtension extends Extension
         }
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'http://stenope.com/schema/dic/stenope';
     }
 
-    public function getXsdValidationBasePath()
+    public function getXsdValidationBasePath(): string
     {
         return __DIR__ . '/../../config/schema';
     }

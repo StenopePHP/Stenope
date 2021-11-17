@@ -44,13 +44,12 @@ class LastModifiedFetcherTest extends TestCase
         self::assertCount(1, $logger->records);
 
         self::assertNull($fetcher->__invoke('some-fake-path'));
-        self::assertCount(1, $logger->records, 'Do not attempt to check git avaiulability twice');
+        self::assertCount(1, $logger->records, 'Do not attempt to check git availability twice');
     }
 
     public function testSuccess(): void
     {
-        $logger = new TestLogger();
-        $fetcher = new LastModifiedFetcher(self::$executable, $logger);
+        $fetcher = new LastModifiedFetcher(self::$executable);
         $fetcher->reset();
 
         self::assertInstanceOf(\DateTimeImmutable::class, $date = $fetcher->__invoke('some-fake-path'));
@@ -59,8 +58,7 @@ class LastModifiedFetcherTest extends TestCase
 
     public function testEmpty(): void
     {
-        $logger = new TestLogger();
-        $fetcher = new LastModifiedFetcher(self::$executable, $logger);
+        $fetcher = new LastModifiedFetcher(self::$executable);
         $fetcher->reset();
 
         self::assertNull($fetcher->__invoke('empty'));
@@ -68,8 +66,7 @@ class LastModifiedFetcherTest extends TestCase
 
     public function testFailure(): void
     {
-        $logger = new TestLogger();
-        $fetcher = new LastModifiedFetcher(self::$executable, $logger);
+        $fetcher = new LastModifiedFetcher(self::$executable);
         $fetcher->reset();
 
         $this->expectException(ProcessFailedException::class);

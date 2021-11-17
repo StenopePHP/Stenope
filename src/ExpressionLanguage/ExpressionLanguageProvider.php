@@ -24,7 +24,7 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
         $this->providers = $providers;
     }
 
-    public function getFunctions()
+    public function getFunctions(): iterable
     {
         // prepend the default functions to let users override these easily:
         yield from [

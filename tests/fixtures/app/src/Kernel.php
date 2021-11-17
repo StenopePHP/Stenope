@@ -13,11 +13,14 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
+/**
+ * @final
+ */
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return __DIR__ . '/..';
     }

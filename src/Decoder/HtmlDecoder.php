@@ -13,6 +13,8 @@ use Symfony\Component\Serializer\Encoder\DecoderInterface;
 
 /**
  * Parse Html data
+ *
+ * @final
  */
 class HtmlDecoder implements DecoderInterface
 {
@@ -24,7 +26,7 @@ class HtmlDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($data, $format, array $context = [])
+    public function decode($data, $format, array $context = []): array
     {
         $crawler = new Crawler($data);
 
@@ -46,7 +48,7 @@ class HtmlDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsDecoding($format)
+    public function supportsDecoding($format): bool
     {
         return self::FORMAT === $format;
     }
