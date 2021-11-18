@@ -16,6 +16,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Map all routes into a Sitemap
+ *
+ * @final
  */
 class SitemapListener implements EventSubscriberInterface
 {
@@ -42,7 +44,7 @@ class SitemapListener implements EventSubscriberInterface
         if ($route && $route->isMapped() && $request->attributes->get('_canonical')) {
             $this->sitemap->add(
                 $request->attributes->get('_canonical'),
-                new \DateTime($response->headers->get('Last-Modified'))
+                new \DateTime($response->headers->get('Last-Modified') ?? 'now')
             );
         }
     }
@@ -50,7 +52,7 @@ class SitemapListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::RESPONSE => 'onKernelResponse'];
     }

@@ -15,11 +15,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
+/**
+ * @final
+ */
 class Informator implements EventSubscriberInterface
 {
     /**
-     * Url Generator
-     *
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -31,9 +32,6 @@ class Informator implements EventSubscriberInterface
      */
     private $twig;
 
-    /**
-     * Injecting dependencies
-     */
     public function __construct(UrlGeneratorInterface $urlGenerator, Environment $twig)
     {
         $this->urlGenerator = $urlGenerator;
@@ -43,14 +41,11 @@ class Informator implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => 'onRequest'];
     }
 
-    /**
-     * Before request
-     */
     public function onRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
@@ -66,12 +61,7 @@ class Informator implements EventSubscriberInterface
         }
     }
 
-    /**
-     * Get canonical URL
-     *
-     * @return string
-     */
-    private function getCanonicalUrl(Request $request)
+    private function getCanonicalUrl(Request $request): string
     {
         if (!$request->attributes->get('_route')) {
             return '';
@@ -84,12 +74,7 @@ class Informator implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Get root URL
-     *
-     * @return string
-     */
-    private function getRootUrl(Request $request)
+    private function getRootUrl(Request $request): string
     {
         return sprintf('%s://%s', $request->getScheme(), $request->getHost());
     }

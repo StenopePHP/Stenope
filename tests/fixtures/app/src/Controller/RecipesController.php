@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/recipes")
+ * @Route(path="/recipes")
  */
 class RecipesController extends AbstractController
 {
@@ -28,7 +28,7 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/", name="recipes")
+     * @Route(path="/", name="recipes")
      */
     public function index()
     {
@@ -43,7 +43,7 @@ class RecipesController extends AbstractController
     /**
      * Ensure {@link ContentArgumentResolver} handles nullable arguments properly.
      *
-     * @Route("/optional-recipe", name="optional-recipe", options={
+     * @Route(path="/optional-recipe", name="optional-recipe", options={
      *     "stenope": {
      *         "ignore": true,
      *     },
@@ -55,7 +55,7 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/{recipe}.pdf", name="recipe_pdf", options={
+     * @Route(path="/{recipe}.pdf", name="recipe_pdf", options={
      *     "stenope": {
      *         "sitemap": false,
      *     },
@@ -71,7 +71,7 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/{recipe}", name="recipe")
+     * @Route(path="/{recipe}", name="recipe")
      */
     public function show(Recipe $recipe)
     {

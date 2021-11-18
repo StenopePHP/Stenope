@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
+/**
+ * @final
+ */
 class ContentArgumentResolver implements ArgumentValueResolverInterface
 {
     private ContentManagerInterface $contentManager;
@@ -22,7 +25,7 @@ class ContentArgumentResolver implements ArgumentValueResolverInterface
         $this->contentManager = $contentManager;
     }
 
-    public function resolve(Request $request, ArgumentMetadata $argument)
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         $slug = $request->attributes->get($argument->getName());
 
@@ -33,7 +36,7 @@ class ContentArgumentResolver implements ArgumentValueResolverInterface
         yield $this->contentManager->getContent($argument->getType(), $slug);
     }
 
-    public function supports(Request $request, ArgumentMetadata $argument)
+    public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         if (null === $argument->getType() || !$this->contentManager->supports($argument->getType())) {
             return false;

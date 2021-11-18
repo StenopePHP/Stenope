@@ -11,15 +11,18 @@ namespace Stenope\Bundle\Command;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 
+/**
+ * @internal
+ */
 trait StopwatchHelperTrait
 {
     private static function formatEvent(StopwatchEvent $event): string
     {
         return sprintf(
             'Start time: %s — End time: %s — Duration: %s — Memory used: %s',
-            date('H:i:s', ($event->getOrigin() + $event->getStartTime()) / 1000),
-            date('H:i:s', ($event->getOrigin() + $event->getEndTime()) / 1000),
-            static::formatTimePrecision($event->getDuration() / 1000),
+            date('H:i:s', (int) (($event->getOrigin() + $event->getStartTime()) / 1000)),
+            date('H:i:s', (int) (($event->getOrigin() + $event->getEndTime()) / 1000)),
+            static::formatTimePrecision((int) $event->getDuration() / 1000),
             Helper::formatMemory($event->getMemory())
         );
     }

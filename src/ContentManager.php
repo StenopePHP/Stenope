@@ -122,13 +122,13 @@ class ContentManager implements ContentManagerInterface
     private function sortBy(array &$contents, $sortBy = null): void
     {
         if ($sorter = $this->getSortFunction($sortBy)) {
-            \set_error_handler(static function (int $severity, string $message, ?string $file, ?int $line): void {
+            set_error_handler(static function (int $severity, string $message, ?string $file, ?int $line): void {
                 throw new \ErrorException($message, $severity, $severity, $file, $line);
             });
 
             uasort($contents, $sorter);
 
-            \restore_error_handler();
+            restore_error_handler();
         }
     }
 

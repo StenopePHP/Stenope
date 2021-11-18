@@ -13,27 +13,29 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('tests/fixtures/app/build')
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config)
     ->setUsingCache(true)
     ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
-        'php_unit_namespaced' => true,
-        'psr0' => false,
-        'concat_space' => ['spacing' => 'one'],
-        'phpdoc_summary' => false,
-        'phpdoc_annotation_without_dot' => false,
-        'phpdoc_order' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'ordered_imports' => true,
-        'simplified_null_return' => false,
+        'concat_space' => ['spacing' => 'one'],
         'header_comment' => ['header' => $header],
-        'yoda_style' => [],
-        'no_superfluous_phpdoc_tags' => true,
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
-        'void_return' => true,
+        'ordered_imports' => true,
+        'php_unit_namespaced' => true,
+        'php_unit_method_casing' => false,
+        'phpdoc_annotation_without_dot' => false,
+        'phpdoc_summary' => false,
+        'phpdoc_order' => true,
+        'phpdoc_trim_consecutive_blank_line_separation' => true,
+        'psr_autoloading' => true,
         'single_line_throw' => false,
+        'simplified_null_return' => false,
+        'void_return' => true,
+        'yoda_style' => [],
+
         // @see https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5495
         'binary_operator_spaces' => ['operators' => ['|' => null]]
     ])

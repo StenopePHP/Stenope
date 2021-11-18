@@ -9,7 +9,8 @@
 namespace Stenope\Bundle\Builder;
 
 /**
- * Sitemap
+ * @phpstan-implements \Iterator<string,string>
+ * @final
  */
 class Sitemap implements \Iterator, \Countable
 {
@@ -21,8 +22,6 @@ class Sitemap implements \Iterator, \Countable
     private $urls = [];
 
     /**
-     * Position
-     *
      * @var int
      */
     private $position = 0;
@@ -30,10 +29,10 @@ class Sitemap implements \Iterator, \Countable
     /**
      * Add location
      *
-     * @param string   $location     The URL
-     * @param DateTime $lastModified Date of last modification
-     * @param int      $priority     Location priority
-     * @param string   $frequency
+     * @param string    $location     The URL
+     * @param \DateTime $lastModified Date of last modification
+     * @param int       $priority     Location priority
+     * @param string    $frequency
      */
     public function add(string $location, \DateTime $lastModified = null, int $priority = null, string $frequency = null): void
     {
@@ -68,7 +67,10 @@ class Sitemap implements \Iterator, \Countable
 
     /**
      * {@inheritdoc}
+     *
+     * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->urls[array_keys($this->urls)[$this->position]];
@@ -76,7 +78,10 @@ class Sitemap implements \Iterator, \Countable
 
     /**
      * {@inheritdoc}
+     *
+     * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return array_keys($this->urls)[$this->position];
@@ -93,7 +98,7 @@ class Sitemap implements \Iterator, \Countable
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset(array_keys($this->urls)[$this->position]);
     }
@@ -101,7 +106,7 @@ class Sitemap implements \Iterator, \Countable
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->urls);
     }

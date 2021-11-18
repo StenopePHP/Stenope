@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class StenopeExtensionTest extends TestCase
 {
-    const FIXTURES_PATH = __DIR__ . '/../../fixtures/Unit/DependencyInjection/StenopeExtension';
+    public const FIXTURES_PATH = __DIR__ . '/../../fixtures/Unit/DependencyInjection/StenopeExtension';
 
     public function testDefaults(): void
     {

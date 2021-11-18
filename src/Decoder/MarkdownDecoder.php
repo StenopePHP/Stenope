@@ -14,6 +14,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Parse Markdown data
+ *
+ * @final
  */
 class MarkdownDecoder implements DecoderInterface
 {
@@ -36,7 +38,7 @@ class MarkdownDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($data, $format, array $context = [])
+    public function decode($data, $format, array $context = []): array
     {
         $content = trim($data);
         $separator = static::HEAD_SEPARATOR;
@@ -57,7 +59,7 @@ class MarkdownDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsDecoding($format)
+    public function supportsDecoding($format): bool
     {
         return self::FORMAT === $format;
     }
