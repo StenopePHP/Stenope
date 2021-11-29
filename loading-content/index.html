@@ -12,38 +12,38 @@
         <div class="main">
                             <div class="columns">
                     <aside class="sidebar">
-                                                        <a href="/" class="logo">
+                                                        <a href="/Stenope/" class="logo">
                                 Stenope
                             </a>
                             <nav class="navigation">
-                                <a href="/" class="">
+                                <a href="/Stenope/" class="">
                                     About
                                 </a>
-                                                                                                    <a href="/build-configuration" class="">
+                                                                                                    <a href="/Stenope/build-configuration" class="">
                                         Configuring the build
                                     </a>
-                                                                    <a href="/cli" class="">
+                                                                    <a href="/Stenope/cli" class="">
                                         CLI
                                     </a>
-                                                                    <a href="/link-contents" class="">
+                                                                    <a href="/Stenope/link-contents" class="">
                                         Linking contents
                                     </a>
-                                                                    <a href="/loading-content" class="active">
+                                                                    <a href="/Stenope/loading-content" class="active">
                                         Loading content
                                     </a>
-                                                                    <a href="/processors" class="">
+                                                                    <a href="/Stenope/processors" class="">
                                         Content processors
                                     </a>
-                                                                    <a href="/supported-formats" class="">
+                                                                    <a href="/Stenope/supported-formats" class="">
                                         Supported formats
                                     </a>
-                                                                    <a href="/supported-sources" class="">
+                                                                    <a href="/Stenope/supported-sources" class="">
                                         Supported sources
                                     </a>
-                                                                    <a href="/syntax-highlighting" class="">
+                                                                    <a href="/Stenope/syntax-highlighting" class="">
                                         Syntax highlighting
                                     </a>
-                                                                    <a href="/twig" class="">
+                                                                    <a href="/Stenope/twig" class="">
                                         Twig integration
                                     </a>
                                                                 <a href="https://github.com/StenopePHP/Stenope">
@@ -108,7 +108,7 @@
   <span class="token key atrule">providers</span><span class="token punctuation">:</span>
     <span class="token key atrule">App\Model\Article</span><span class="token punctuation">:</span> <span class="token string">'%kernel.project_dir%/content/articles'</span> <span class="token comment"># Local directory</span></code></pre>
 <p>Articles sources files are now expected to be found in the <code class="code-inline" id="f6ca3ea9feb268d247d32b7909c0efb8">content/articles</code> path.</p>
-<p><em>Note: See other possible <a href="/supported-sources">type of sources</a>.</em></p>
+<p><em>Note: See other possible <a href="/Stenope/supported-sources">type of sources</a>.</em></p>
 <h3 id="write-your-first-content">Write your first content<a href="#write-your-first-content" class="anchor"></a></h3>
 <p>Write your first article in <code class="code-inline" id="a3f6d98021342733f989d9354314b972">content/articles/how-to-train-your-dragon.md</code>:</p>
 <pre class="code-multiline language-markdown"><code class="language-markdown" id="35198f87de2e21cbf3528b984b00aa16"><span class="token front-matter-block"><span class="token punctuation">---</span>
@@ -119,7 +119,7 @@
 
 It's twelve days north of Hopeless and a few degrees south of Freezing to Death. It's located solidly on the Meridian of Misery. My village. In a word, sturdy. It's been here for seven generations, but every single building is new. We've got hunting, fishing, and a charming view of the sunsets. The only problems are the pests. Most places have mice or mosquitoes. We have... dragons.</code></pre>
 <p>By default, the content of the source file are mapped on the <code class="code-inline" id="9a0364b9e99bb480dd25e1f0284c8555">content</code> property (Stenope supports Markdown out of the box) and the name of the file is mapped on the <code class="code-inline" id="2dbcba41b9ac4c5d22886ba672463cb4">slug</code> property._</p>
-<p><em>Note: Check out all the natively <a href="/supported-formats">supported formats</a>.</em></p>
+<p><em>Note: Check out all the natively <a href="/Stenope/supported-formats">supported formats</a>.</em></p>
 <h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
 <h3 id="listing-contents">Listing contents<a href="#listing-contents" class="anchor"></a></h3>
 <p>In your controller (or service):</p>
@@ -253,7 +253,7 @@ You may also want to extend the expression language capabilities for your own co
 <li>keys</li>
 </ul>
 <h2 id="debug">Debug<a href="#debug" class="anchor"></a></h2>
-<p>See <a href="/cli#debug">CLI - Debug</a></p>
+<p>See <a href="/Stenope/cli#debug">CLI - Debug</a></p>
 <h2 id="advanced-usage-and-extension">Advanced usage and extension<a href="#advanced-usage-and-extension" class="anchor"></a></h2>
 <h3 id="register-a-custom-denormalizer">Register a custom denormalizer<a href="#register-a-custom-denormalizer" class="anchor"></a></h3>
 <p>Unless specified otherwise, Stenope will denormalize your objects using the <a href="https://symfony.com/doc/current/components/serializer.html#deserializing-an-object" target="_blank">default Symfony serializer</a>.</p>
