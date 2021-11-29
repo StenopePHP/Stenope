@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-11-26T19:35:45Z
+
+> PHP Fatal error:  Declaration of Symfony\Component\String\Slugger\AsciiSlugger::getLocale() must be compatible with Symfony\Contracts\Translation\LocaleAwareInterface::getLocale(): string in /home/runner/work/Stenope/Stenope/vendor/symfony/string/Slugger/AsciiSlugger.php on line 93
+
+— https://github.com/StenopePHP/Stenope/runs/4335323370?check_suite_focus=true#step:8:10
+
+is fixed by https://github.com/symfony/symfony/pull/44246 (need to wait next RC)
+(or add the conflict rule/restrict deps ourselves)
+
+---
+
+>   !!  PHP Fatal error:  Uncaught LogicException: Symfony Runtime is missing. Try running "composer require symfony/runtime". in /home/runner/work/Stenope/Stenope/doc/app/bin/console:8
+
+— https://github.com/StenopePHP/Stenope/runs/4335323595?check_suite_focus=true#step:7:150
+
+to be fixed?
