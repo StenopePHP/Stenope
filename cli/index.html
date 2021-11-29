@@ -12,38 +12,38 @@
         <div class="main">
                             <div class="columns">
                     <aside class="sidebar">
-                                                        <a href="/Stenope/" class="logo">
+                                                        <a href="/" class="logo">
                                 Stenope
                             </a>
                             <nav class="navigation">
-                                <a href="/Stenope/" class="">
+                                <a href="/" class="">
                                     About
                                 </a>
-                                                                                                    <a href="/Stenope/build-configuration" class="">
+                                                                                                    <a href="/build-configuration" class="">
                                         Configuring the build
                                     </a>
-                                                                    <a href="/Stenope/cli" class="active">
+                                                                    <a href="/cli" class="active">
                                         CLI
                                     </a>
-                                                                    <a href="/Stenope/link-contents" class="">
+                                                                    <a href="/link-contents" class="">
                                         Linking contents
                                     </a>
-                                                                    <a href="/Stenope/loading-content" class="">
+                                                                    <a href="/loading-content" class="">
                                         Loading content
                                     </a>
-                                                                    <a href="/Stenope/processors" class="">
+                                                                    <a href="/processors" class="">
                                         Content processors
                                     </a>
-                                                                    <a href="/Stenope/supported-formats" class="">
+                                                                    <a href="/supported-formats" class="">
                                         Supported formats
                                     </a>
-                                                                    <a href="/Stenope/supported-sources" class="">
+                                                                    <a href="/supported-sources" class="">
                                         Supported sources
                                     </a>
-                                                                    <a href="/Stenope/syntax-highlighting" class="">
+                                                                    <a href="/syntax-highlighting" class="">
                                         Syntax highlighting
                                     </a>
-                                                                    <a href="/Stenope/twig" class="">
+                                                                    <a href="/twig" class="">
                                         Twig integration
                                     </a>
                                                                 <a href="https://github.com/StenopePHP/Stenope">
@@ -80,46 +80,14 @@
 <p>Use the <code class="code-inline" id="42ed0f9b85c5a487b1f0dc321384210c">buildDir</code> argument:</p>
 <pre class="code-multiline language-shell"><code class="language-shell" id="9d921127c6e942d0fd5005611aa76290">bin/console stenope:build ./static</code></pre>
 <h3 id="options">Options<a href="#options" class="anchor"></a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code class="code-inline" id="28c1cbfbe8549614d294c9f73f2d35d1">--host=stenopephp.github.io</code></td>
-<td>What should be used as domain name for absolute url generation?</td>
-<td></td>
-</tr>
-<tr>
-<td><code class="code-inline" id="f653142f8e72712090dc85c45293690e">--base-url=/Stenope</code></td>
-<td>What should be used as base-url for absolute url generation?</td>
-<td></td>
-</tr>
-<tr>
-<td><code class="code-inline" id="7056f2a28c29082857acff1eeeac7b1f">--scheme=https</code></td>
-<td>What should be used as scheme for absolute url generation?</td>
-<td></td>
-</tr>
-<tr>
-<td><code class="code-inline" id="9c735369a3ffe8523813e3735837dd55">--no-sitemap</code></td>
-<td>Don't build the sitemap</td>
-<td></td>
-</tr>
-<tr>
-<td><code class="code-inline" id="f2a07af5f7dd85ab92512747b407d627">--no-expose</code></td>
-<td>Don't expose the public directory</td>
-<td></td>
-</tr>
-<tr>
-<td><code class="code-inline" id="091baa8f32fc1a209b86a63d9d9ebd15">--ignore-content-not-found</code></td>
-<td>Ignore content not found errors</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<p>| Option | Description |
+| -- | -- | -- |
+| <code class="code-inline" id="28c1cbfbe8549614d294c9f73f2d35d1">--host=stenopephp.github.io</code> | What should be used as domain name for absolute url generation? | |
+| <code class="code-inline" id="f653142f8e72712090dc85c45293690e">--base-url=/Stenope</code> | What should be used as base-url for absolute url generation? | |
+| <code class="code-inline" id="7056f2a28c29082857acff1eeeac7b1f">--scheme=https</code> | What should be used as scheme for absolute url generation? | |
+| <code class="code-inline" id="9c735369a3ffe8523813e3735837dd55">--no-sitemap</code> | Don't build the sitemap | |
+| <code class="code-inline" id="f2a07af5f7dd85ab92512747b407d627">--no-expose</code> | Don't expose the public directory | |
+| <code class="code-inline" id="091baa8f32fc1a209b86a63d9d9ebd15">--ignore-content-not-found</code> | Ignore content not found errors | |</p>
 <h2 id="debug">Debug<a href="#debug" class="anchor"></a></h2>
 <p>There is a command to list, filter, sort out and display content managed by Stenope:</p>
 <pre class="code-multiline language-shell"><code class="language-shell" id="1103fdfd33110822521c1a0bbbc50253">bin/console debug:stenope:content <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token punctuation">[</span>--<span class="token punctuation">]</span> <span class="token operator">&lt;</span>class<span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>id<span class="token operator">&gt;</span><span class="token punctuation">]</span></code></pre>
@@ -144,9 +112,9 @@
     <span class="token comment">// ...</span>
 <span class="token punctuation">}</span></code></pre>
 <p>These queries will be suggested when using the debug CLI command:</p>
-<img src="/Stenope/./images/cli-debug-suggestions.png" alt="cli-debug-suggestions" title="cli-debug-suggestions" id="cli-debug-suggestions">
+<img src="/./images/cli-debug-suggestions.png" alt="cli-debug-suggestions" title="cli-debug-suggestions" id="cli-debug-suggestions">
 <p>and you'll be asked to choose one by using the <code class="code-inline" id="725413d6386cfcdb8bd36f843d4b71e6">--suggest</code> option.</p>
-<img src="/Stenope/./images/cli-debug-suggest.png" alt="cli-debug-suggest" title="cli-debug-suggest" id="cli-debug-suggest"></body>                        <footer class="footer">
+<img src="/./images/cli-debug-suggest.png" alt="cli-debug-suggest" title="cli-debug-suggest" id="cli-debug-suggest"></body>                        <footer class="footer">
                                                             <p class="note">Stenope, the static website generation tool for Symfony.</p>
                                 <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>
@@ -156,6 +124,6 @@
                     </main>
                 </div>
                     </div>
-                    <script src="/Stenope/build/runtime.a2069aab.js"></script><script src="/Stenope/build/app.4c1a4699.js"></script>
+                    <script src="/Stenope/build/runtime.a2069aab.js" defer></script><script src="/Stenope/build/app.4c1a4699.js" defer></script>
             </body>
 </html>
