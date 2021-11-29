@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02aba15971b7c89bb1a53927f44677da",
+    "content-hash": "259bcde17277e2a4918abc31e1d05198",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -823,7 +823,7 @@
             "dist": {
                 "type": "path",
                 "url": "../..",
-                "reference": "20d40712a62ff9ccb8ea6f346c8fe46c6b01bd74"
+                "reference": "738774b7b99cac26e139fe8bd7047fd6a1bd85a6"
             },
             "require": {
                 "erusev/parsedown": "^1.7.4",

@@ -16,7 +16,7 @@
         "symfony/framework-bundle": "5.4.*",
         "symfony/monolog-bundle": "^3.7",
         "symfony/runtime": "5.4.*",
-        "symfony/twig-bundle": "^5.4",
+        "symfony/twig-bundle": "5.4.*",
         "symfony/webpack-encore-bundle": "^1.11",
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
@@ -24,9 +24,9 @@
     },
     "require-dev": {
         "symfony/debug-bundle": "5.4.*",
-        "symfony/stopwatch": "^5.4",
-        "symfony/var-dumper": "^5.4",
-        "symfony/web-profiler-bundle": "^5.4"
+        "symfony/stopwatch": "5.4.*",
+        "symfony/var-dumper": "5.4.*",
+        "symfony/web-profiler-bundle": "5.4.*"
     },
     "config": {
         "optimize-autoloader": true,
