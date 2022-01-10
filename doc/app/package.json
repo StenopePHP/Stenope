@@ -15,7 +15,7 @@
     "core-js": "^3.12.0",
     "node-sass": "^6.0.1",
     "postcss-loader": "^4.0.0",
-    "prismjs": "^1.24.0",
+    "prismjs": "^1.25.0",
     "regenerator-runtime": "^0.13.2",
     "sass-loader": "^10.2.0",
     "webpack-notifier": "^1.13.0"
