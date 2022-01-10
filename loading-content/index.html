@@ -112,7 +112,7 @@
 <h3 id="write-your-first-content">Write your first content<a href="#write-your-first-content" class="anchor"></a></h3>
 <p>Write your first article in <code class="code-inline" id="a3f6d98021342733f989d9354314b972">content/articles/how-to-train-your-dragon.md</code>:</p>
 <pre class="code-multiline language-markdown"><code class="language-markdown" id="35198f87de2e21cbf3528b984b00aa16"><span class="token front-matter-block"><span class="token punctuation">---</span>
-<span class="token font-matter yaml language-yaml"><span class="token key atrule">title</span><span class="token punctuation">:</span> <span class="token string">"How to train your dragon"</span></span>
+<span class="token front-matter yaml language-yaml"><span class="token key atrule">title</span><span class="token punctuation">:</span> <span class="token string">"How to train your dragon"</span></span>
 <span class="token punctuation">---</span></span>
 
 <span class="token title important"><span class="token punctuation">#</span> This is Berk</span>
@@ -142,7 +142,7 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
      */</span>
     <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">index</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManagerInterface</span> <span class="token variable">$contentManager</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
+        <span class="token keyword">return</span> <span class="token this keyword">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
             <span class="token string single-quoted-string">'blog/index.html.twig'</span><span class="token punctuation">,</span>
             <span class="token punctuation">[</span><span class="token string single-quoted-string">'articles'</span> <span class="token operator">=&gt;</span> <span class="token variable">$contentManager</span><span class="token operator">-&gt;</span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
         <span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -173,7 +173,7 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
      */</span>
     <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">article</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManagerInterface</span> <span class="token variable">$contentManager</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$slug</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token this">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
+        <span class="token keyword">return</span> <span class="token this keyword">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
             <span class="token string single-quoted-string">'blog/article.html.twig'</span><span class="token punctuation">,</span>
             <span class="token punctuation">[</span><span class="token string single-quoted-string">'article'</span> <span class="token operator">=&gt;</span> <span class="token variable">$contentManager</span><span class="token operator">-&gt;</span><span class="token function">getContent</span><span class="token punctuation">(</span><span class="token scope">Article<span class="token punctuation">::</span></span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token variable">$slug</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
         <span class="token punctuation">)</span><span class="token punctuation">;</span>
