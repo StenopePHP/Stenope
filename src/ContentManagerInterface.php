@@ -16,7 +16,7 @@ interface ContentManagerInterface
     /**
      * List all content for the given type
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T>                  $type     Model FQCN e.g. "App/Model/Article"
      * @param string|array|callable            $sortBy   String, array or callable
@@ -31,7 +31,7 @@ interface ContentManagerInterface
     /**
      * Fetch a specific content
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $type Model FQCN e.g. "App/Model/Article"
      * @param string          $id   Unique identifier (slug)
