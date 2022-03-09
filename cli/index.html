@@ -80,14 +80,40 @@
 <p>Use the <code class="code-inline" id="42ed0f9b85c5a487b1f0dc321384210c">buildDir</code> argument:</p>
 <pre class="code-multiline language-shell"><code class="language-shell" id="9d921127c6e942d0fd5005611aa76290">bin/console stenope:build ./static</code></pre>
 <h3 id="options">Options<a href="#options" class="anchor"></a></h3>
-<p>| Option | Description |
-| -- | -- | -- |
-| <code class="code-inline" id="28c1cbfbe8549614d294c9f73f2d35d1">--host=stenopephp.github.io</code> | What should be used as domain name for absolute url generation? | |
-| <code class="code-inline" id="f653142f8e72712090dc85c45293690e">--base-url=/Stenope</code> | What should be used as base-url for absolute url generation? | |
-| <code class="code-inline" id="7056f2a28c29082857acff1eeeac7b1f">--scheme=https</code> | What should be used as scheme for absolute url generation? | |
-| <code class="code-inline" id="9c735369a3ffe8523813e3735837dd55">--no-sitemap</code> | Don't build the sitemap | |
-| <code class="code-inline" id="f2a07af5f7dd85ab92512747b407d627">--no-expose</code> | Don't expose the public directory | |
-| <code class="code-inline" id="091baa8f32fc1a209b86a63d9d9ebd15">--ignore-content-not-found</code> | Ignore content not found errors | |</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="code-inline" id="28c1cbfbe8549614d294c9f73f2d35d1">--host=stenopephp.github.io</code></td>
+<td>What should be used as domain name for absolute url generation?</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="f653142f8e72712090dc85c45293690e">--base-url=/Stenope</code></td>
+<td>What should be used as base-url for absolute url generation?</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="7056f2a28c29082857acff1eeeac7b1f">--scheme=https</code></td>
+<td>What should be used as scheme for absolute url generation?</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="9c735369a3ffe8523813e3735837dd55">--no-sitemap</code></td>
+<td>Don't build the sitemap</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="f2a07af5f7dd85ab92512747b407d627">--no-expose</code></td>
+<td>Don't expose the public directory</td>
+</tr>
+<tr>
+<td><code class="code-inline" id="091baa8f32fc1a209b86a63d9d9ebd15">--ignore-content-not-found</code></td>
+<td>Ignore content not found errors</td>
+</tr>
+</tbody>
+</table>
 <h2 id="debug">Debug<a href="#debug" class="anchor"></a></h2>
 <p>There is a command to list, filter, sort out and display content managed by Stenope:</p>
 <pre class="code-multiline language-shell"><code class="language-shell" id="1103fdfd33110822521c1a0bbbc50253">bin/console debug:stenope:content <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token punctuation">[</span>--<span class="token punctuation">]</span> <span class="token operator">&lt;</span>class<span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>id<span class="token operator">&gt;</span><span class="token punctuation">]</span></code></pre>
