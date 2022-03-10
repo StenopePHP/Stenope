@@ -28,7 +28,9 @@ class DocController extends AbstractController
     }
 
     /**
-     * @Route("/{page}", name="page")
+     * @Route("/{page}", name="page", requirements={
+     *    "page": ".+[^/]$",
+     * })
      */
     public function page(Page $page)
     {
