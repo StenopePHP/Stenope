@@ -52,6 +52,7 @@ class Prism implements HighlighterInterface
         }
 
         $this->server->stop();
+        $this->server = null;
         $this->input->close();
     }
 
