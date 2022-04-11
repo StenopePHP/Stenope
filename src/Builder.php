@@ -365,10 +365,8 @@ class Builder
      */
     private function buildUrl(string $url, bool $ignoreContentNotFoundErrors = false): void
     {
-        $periods = $this->stopwatch->lap('build_pages')->getPeriods();
-        $period = end($periods);
-        $time = $period->getDuration();
-        $memory = $period->getMemory();
+        $this->logger->debug('Attempt to build page {url}…', ['url' => $url]);
+
         $request = ContentRequest::create($url, 'GET')->withBaseUrl($this->router->getContext()->getBaseUrl());
 
         ob_start();
@@ -377,7 +375,7 @@ class Builder
             $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
         } catch (\Throwable $exception) {
             if ($ignoreContentNotFoundErrors && $exception instanceof ContentNotFoundException) {
-                $this->logger->warning('Could not build url "{url}": {exception}', [
+                $this->logger->warning('Could not build url {url}: {exception}', [
                     'exception' => $exception->getMessage(),
                     'url' => $url,
                 ]);
@@ -385,7 +383,7 @@ class Builder
                 return;
             }
 
-            throw new \Exception(sprintf('Could not build url "%s".', $url), 0, $exception);
+            throw new \Exception(sprintf('Could not build url %s.', $url), 0, $exception);
         }
 
         $this->httpKernel->terminate($request, $response);
@@ -398,7 +396,7 @@ class Builder
         $content = $response->getContent() ?: $output;
 
         if ($this->hasNoIndexHeader($response) && !$this->hasNoIndexTag($content)) {
-            $this->logger->warning('Url "{url}" contains a "x-robots-tag: noindex" header that will be lost by going static. Consider using the HTML tag "<meta name="robots" content="noindex" />" instead.', [
+            $this->logger->warning('Url {url} contains a "x-robots-tag: noindex" header that will be lost by going static. Consider using the HTML tag "<meta name="robots" content="noindex" />" instead.', [
                 'url' => $url,
             ]);
         }
@@ -407,7 +405,12 @@ class Builder
 
         $this->write($content, $path, $file);
 
-        $this->logger->debug('Page "{url}" built ({time}, {memory})', [
+        $periods = $this->stopwatch->lap('build_pages')->getPeriods();
+        $period = end($periods);
+        $time = $period->getDuration();
+        $memory = $period->getMemory();
+
+        $this->logger->debug('Page {url} built ({time}, {memory})', [
             'time' => self::formatTime($time),
             'memory' => self::formatMemory($memory),
             'url' => $url,
