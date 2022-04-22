@@ -40,6 +40,12 @@ class Prism implements HighlighterInterface
             $this->server = new Process(['node', $this->executable], null, null, $this->input);
         }
 
+        if ($this->server->isRunning()) {
+            // Every time a new highlight is asked for an already running process,
+            // give it a bit more time to live:
+            $this->server->setTimeout($this->server->getTimeout() + $this->server->getTimeout());
+        }
+
         if (!$this->server->isRunning()) {
             $this->server->start();
         }
