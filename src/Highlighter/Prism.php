@@ -20,6 +20,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class Prism implements HighlighterInterface
 {
+    private const IDLE_TIMEOUT = 60;
+
     private string $executable;
     private ?Process $server = null;
     private ?InputStream $input = null;
@@ -37,12 +39,14 @@ class Prism implements HighlighterInterface
     {
         if (!$this->server) {
             $this->input = new InputStream();
-            $this->server = new Process(['node', $this->executable], null, null, $this->input);
+            $this->server = new Process(['node', $this->executable], null, null, $this->input, null);
         }
 
         if (!$this->server->isRunning()) {
             $this->server->start();
         }
+
+        $this->server->setIdleTimeout(self::IDLE_TIMEOUT);
     }
 
     public function stop(): void
@@ -88,6 +92,10 @@ class Prism implements HighlighterInterface
 
             return false;
         });
+
+        // Code highlight was processed.
+        // Let's remove the idle timeout for the running server until next call:
+        $this->server->setIdleTimeout(null);
 
         if (isset($event)) {
             $event->stop();
