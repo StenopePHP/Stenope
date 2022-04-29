@@ -14,6 +14,8 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class SharedHtmlCrawlerManager implements HtmlCrawlerManagerInterface
 {
+    use CrawlerManagerTrait;
+
     private array $crawlers = [];
 
     public function get(Content $content, array &$data, string $property): ?Crawler
@@ -51,23 +53,9 @@ class SharedHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         }
 
         foreach ($this->crawlers[$key] as $property => $crawler) {
-            $data[$property] = $crawler->html();
+            $data[$property] = $this->getRawHtmlContent($crawler);
         }
 
         unset($this->crawlers[$key]);
-    }
-
-    public function createCrawler(string $content): ?Crawler
-    {
-        $crawler = new Crawler($content);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return null;
-        }
-
-        return $crawler;
     }
 }

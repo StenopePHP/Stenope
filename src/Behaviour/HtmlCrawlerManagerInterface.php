@@ -11,6 +11,10 @@ namespace Stenope\Bundle\Behaviour;
 use Stenope\Bundle\Content;
 use Symfony\Component\DomCrawler\Crawler;
 
+/**
+ * Manager for getting an HTML crawler instance for HTML content properties,
+ * meant to be rendered inside a page.
+ */
 interface HtmlCrawlerManagerInterface
 {
     /**

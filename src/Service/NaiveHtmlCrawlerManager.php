@@ -14,6 +14,11 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
 {
+    use CrawlerManagerTrait;
+
+    /**
+     * @var array<string,array<string,Crawler>>
+     */
     private array $crawlers = [];
 
     public function get(Content $content, array &$data, string $property): ?Crawler
@@ -46,24 +51,10 @@ class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
     {
         foreach ($this->crawlers as $key => $crawlers) {
             foreach ($crawlers as $property => $crawler) {
-                $data[$property] = $crawler->html();
+                $data[$property] = $this->getRawHtmlContent($crawler);
             }
         }
 
         $this->crawlers = [];
-    }
-
-    public function createCrawler(string $html): ?Crawler
-    {
-        $crawler = new Crawler($html);
-
-        try {
-            $crawler->html();
-        } catch (\Exception $e) {
-            // Content is not valid HTML.
-            return null;
-        }
-
-        return $crawler;
     }
 }

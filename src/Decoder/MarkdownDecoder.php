@@ -49,11 +49,11 @@ class MarkdownDecoder implements DecoderInterface
         if ($start === 0 && $stop) {
             return array_merge(
                 $this->parseYaml(substr($content, $start + $length, $stop - $length)),
-                ['content' => $this->markdownify(substr($content, $stop + $length))]
+                ['content' => $this->markdownToHtml(substr($content, $stop + $length))]
             );
         }
 
-        return ['content' => $this->markdownify($content)];
+        return ['content' => $this->markdownToHtml($content)];
     }
 
     /**
@@ -69,10 +69,7 @@ class MarkdownDecoder implements DecoderInterface
         return Yaml::parse($data, true);
     }
 
-    /**
-     * Parse Mardown to return HTML
-     */
-    private function markdownify(string $data): string
+    private function markdownToHtml(string $data): string
     {
         return $this->parser->parse($data);
     }

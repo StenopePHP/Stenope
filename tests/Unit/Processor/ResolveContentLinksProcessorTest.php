@@ -16,6 +16,7 @@ use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
 use Stenope\Bundle\ReverseContent\RelativeLinkContext;
 use Stenope\Bundle\Routing\ContentUrlResolver;
 use Stenope\Bundle\Service\NaiveHtmlCrawlerManager;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ResolveContentLinksProcessorTest extends TestCase
 {
@@ -60,6 +61,8 @@ class ResolveContentLinksProcessorTest extends TestCase
 
         $processor->__invoke($data, $currentContent);
 
+        $html = (new Crawler($data['content']))->filter('body')->outerHtml();
+
         self::assertXmlStringEqualsXmlString(<<<HTML
             <body>
                 <a href="/absolute-link">Don't change this</a>
@@ -70,7 +73,7 @@ class ResolveContentLinksProcessorTest extends TestCase
                 <a href="/other-contents-route-path/another-contents#some-anchor">Another content with anchor</a>
             </body>
             HTML,
-            $data['content']
+            $html
         );
     }
 }
