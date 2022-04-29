@@ -14,6 +14,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
 {
+    /**
+     * @var array<string,array<string,Crawler>>
+     */
     private array $crawlers = [];
 
     public function get(Content $content, array &$data, string $property): ?Crawler
