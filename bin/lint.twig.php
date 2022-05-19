@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+/*
+ * This file is part of the "StenopePHP/Stenope" bundle.
+ *
+ * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ */
+
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Bridge\Twig\Command\LintCommand;

@@ -1,6 +1,6 @@
 .PHONY: dist
 
-PHP_CS_FIXER_VERSION=v3.3.2
+PHP_CS_FIXER_VERSION=v3.8.0
 
 ##########
 # Colors #
