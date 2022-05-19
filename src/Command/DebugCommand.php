@@ -14,6 +14,7 @@ use function Stenope\Bundle\ExpressionLanguage\expr;
 use Stenope\Bundle\ExpressionLanguage\Expression;
 use Stenope\Bundle\TableOfContent\Headline;
 use Stenope\Bundle\TableOfContent\TableOfContent;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Dumper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,6 +27,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\VarDumper\Cloner\Stub;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
+#[AsCommand('debug:stenope:content')]
 class DebugCommand extends Command
 {
     use StopwatchHelperTrait;
