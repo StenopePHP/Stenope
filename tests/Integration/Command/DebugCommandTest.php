@@ -120,13 +120,6 @@ class DebugCommandTest extends KernelTestCase
             TXT
         , ['!_.core'], ];
 
-        yield 'filter contains' => [Author::class,
-            <<<TXT
-             * ogi
-             * tom32i
-            TXT
-            , ['contains(_.slug, "i")'], ];
-
         yield 'filter dates' => [Recipe::class,
             <<<TXT
              * ogito
@@ -145,7 +138,7 @@ class DebugCommandTest extends KernelTestCase
             <<<TXT
              * ogi
             TXT
-        , ['_.core', 'contains(_.slug, "gi")'], ];
+        , ['_.core', '"cooking" in _.tags'], ];
     }
 
     public function testShow(): void

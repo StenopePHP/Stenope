@@ -40,9 +40,6 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
             }),
             ExpressionFunction::fromPhp('strtoupper', 'upper'),
             ExpressionFunction::fromPhp('strtolower', 'lower'),
-            ExpressionFunction::fromPhp('str_contains', 'contains'),
-            ExpressionFunction::fromPhp('str_starts_with', 'starts_with'),
-            ExpressionFunction::fromPhp('str_ends_with', 'ends_with'),
             ExpressionFunction::fromPhp('array_keys', 'keys'),
         ];
 

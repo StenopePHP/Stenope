@@ -231,9 +231,6 @@ Built-in functions are:
 - datetime
 - upper
 - lower
-- contains
-- starts_with
-- ends_with
 - keys
 
 ## Debug
