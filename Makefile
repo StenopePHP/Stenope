@@ -40,15 +40,19 @@ install-54: setup
 install-54: export SYMFONY_REQUIRE = 5.4.*@dev
 install-54:
 	rm -f composer.lock
-	composer config minimum-stability dev
 	composer update
-	composer config minimum-stability --unset
 
 install-60: setup
 install-60: export SYMFONY_REQUIRE = 6.0.*@dev
 install-60:
 	rm -f composer.lock
-	composer config minimum-stability dev
+	composer update
+
+install-61: setup
+install-61: export SYMFONY_REQUIRE = 6.1.*@dev
+install-61:
+	rm -f composer.lock
+	composer config minimum-stability RC
 	composer update
 	composer config minimum-stability --unset
 
