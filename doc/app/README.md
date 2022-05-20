@@ -6,10 +6,6 @@
 
     make install
 
-### Server
+### Start
 
-    make start
-
-### Watcher
-
-    make watch
+    make serve

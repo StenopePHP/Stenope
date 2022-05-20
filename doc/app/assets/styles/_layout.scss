@@ -33,8 +33,8 @@ body {
         font-size: 2em;
         text-decoration: none;
         color: $color-secondary;
-        margin-bottom: $gutter/2;
-        padding: 0 $gutter/2;
+        margin-bottom: $gutter * 0.5;
+        padding: 0 $gutter * 0.5;
 
         &:hover {
             color: $color-primary;
