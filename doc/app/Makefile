@@ -55,7 +55,7 @@ build.content:
 	symfony console stenope:build
 
 ## Build the site and serve the static version
-serve.static: build-content
+serve.static: build.content
 	open http://localhost:8032
 	symfony php -S localhost:8032 -t build
 
