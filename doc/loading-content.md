@@ -222,19 +222,25 @@ $activeDevUsers = $contentManager->getContents(User::class, '_.active and _.dev'
     `expr` accepts multiple expressions it'll combine using `and`.  
     Use `exprOr` to combine expressions using `or`.
 
-See the [ExpressionLanguage syntax](https://symfony.com/doc/current/components/expression_language/syntax.html).
+See the [ExpressionLanguage syntax](https://symfony.com/doc/current/components/expression_language/syntax.html).  
+
 You may also want to extend the expression language capabilities for your own contents by [registering a custom expression provider](https://symfony.com/doc/current/components/expression_language/extending.html#using-expression-providers) tagged with `stenope.expression_language_provider`.
 
-Built-in functions are:
+**Built-in functions are:**
 
-- date
-- datetime
-- upper
-- lower
-- contains
-- starts_with
-- ends_with
-- keys
+- `date`
+- `datetime`
+- `upper`
+- `lower`
+- `keys`
+
+_The following functions are also available:_
+- `contains`
+- `starts_with`
+- `ends_with`
+
+!!! Note
+    but as of Symfony 6.1+, you should use the [new `starts with`, `ends with` and `contains` operators](https://symfony.com/blog/new-in-symfony-6-1-improved-expressionlanguage-syntax#new-operators) instead.
 
 ## Debug
 

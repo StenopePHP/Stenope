@@ -10,6 +10,7 @@ namespace Stenope\Bundle\Tests\Integration\Command;
 
 use App\Model\Author;
 use App\Model\Recipe;
+use Composer\InstalledVersions;
 use Stenope\Bundle\Command\DebugCommand;
 use Symfony\Bridge\PhpUnit\ClassExistsMock;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -120,12 +121,18 @@ class DebugCommandTest extends KernelTestCase
             TXT
         , ['!_.core'], ];
 
-        yield 'filter contains' => [Author::class,
-            <<<TXT
+        // As of Symfony 6.1, a new contains operator conflicts with our custom contains function:
+        // https://github.com/symfony/symfony/issues/46406
+        // Anyway, a Symfony 6.1 user should rather use the operator.
+        // But we'll keep the function for Symfony < 6.1 users.
+        if (-1 === version_compare(InstalledVersions::getVersion('symfony/expression-language'), '6.1.0')) {
+            yield 'filter contains' => [Author::class,
+                <<<TXT
              * ogi
              * tom32i
             TXT
             , ['contains(_.slug, "i")'], ];
+        }
 
         yield 'filter dates' => [Recipe::class,
             <<<TXT
@@ -145,7 +152,7 @@ class DebugCommandTest extends KernelTestCase
             <<<TXT
              * ogi
             TXT
-        , ['_.core', 'contains(_.slug, "gi")'], ];
+        , ['_.core', '"cooking" in _.tags'], ];
     }
 
     public function testShow(): void
