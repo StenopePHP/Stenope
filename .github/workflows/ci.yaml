@@ -178,7 +178,7 @@ jobs:
           coverage: "none"
           extensions: "json"
           ini-values: "memory_limit=-1"
-          php-version: "8.0"
+          php-version: "8.1"
 
       - name: 'Determine composer cache directory'
         id: composer-cache

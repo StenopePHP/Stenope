@@ -17,9 +17,7 @@ class DocController extends AbstractController
         $this->contentManager = $contentManager;
     }
 
-    /**
-     * @Route("/", name="index")
-     */
+    #[Route('/', name: 'index')]
     public function index()
     {
         $page = $this->contentManager->getContent(Index::class, 'README');
@@ -27,9 +25,7 @@ class DocController extends AbstractController
         return $this->render('doc/index.html.twig', ['page' => $page]);
     }
 
-    /**
-     * @Route("/{page}", name="page")
-     */
+    #[Route('/{page}', name: 'page')]
     public function page(Page $page)
     {
         return $this->render('doc/page.html.twig', ['page' => $page]);
