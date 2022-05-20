@@ -48,7 +48,7 @@ class HtmlDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsDecoding($format): bool
+    public function supportsDecoding($format, array $context = []): bool
     {
         return self::FORMAT === $format;
     }

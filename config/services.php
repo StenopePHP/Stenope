@@ -84,7 +84,7 @@ return static function (ContainerConfigurator $container): void {
             '$stopwatch' => service('stenope.build.stopwatch'),
             '$registeredTypes' => 'The known content types, defined by the extension',
         ])
-        ->tag('console.command', ['command' => DebugCommand::getDefaultName()])
+        ->tag('console.command', ['command' => 'debug:stenope:content'])
 
         // Expression Language
         ->set(ExpressionLanguage::class)->args([
@@ -96,7 +96,7 @@ return static function (ContainerConfigurator $container): void {
             '$builder' => service(Builder::class),
             '$stopwatch' => service('stenope.build.stopwatch'),
         ])
-        ->tag('console.command', ['command' => BuildCommand::getDefaultName()])
+        ->tag('console.command', ['command' => 'stenope:build'])
 
         ->set(Builder::class)->args([
             '$router' => service('router'),

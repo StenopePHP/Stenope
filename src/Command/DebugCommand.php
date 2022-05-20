@@ -14,7 +14,6 @@ use function Stenope\Bundle\ExpressionLanguage\expr;
 use Stenope\Bundle\ExpressionLanguage\Expression;
 use Stenope\Bundle\TableOfContent\Headline;
 use Stenope\Bundle\TableOfContent\TableOfContent;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Dumper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -27,12 +26,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\VarDumper\Cloner\Stub;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
-#[AsCommand('debug:stenope:content')]
 class DebugCommand extends Command
 {
     use StopwatchHelperTrait;
-
-    protected static $defaultName = 'debug:stenope:content';
 
     private ContentManagerInterface $manager;
     private Stopwatch $stopwatch;
@@ -53,6 +49,7 @@ class DebugCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setName('debug:stenope:content')
             ->setDescription('Debug Stenope managed contents')
             ->addArgument('class', InputArgument::REQUIRED, 'Content FQCN')
             ->addArgument('id', InputArgument::OPTIONAL, 'Content identifier')

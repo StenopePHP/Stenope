@@ -29,7 +29,7 @@ class DebugCommandTest extends KernelTestCase
         $kernel = static::createKernel();
         $application = new Application($kernel);
 
-        $command = $application->find(DebugCommand::getDefaultName());
+        $command = $application->find('debug:stenope:content');
         $tester = new CommandTester($command);
         $tester->execute([
             'class' => $class,
@@ -160,7 +160,7 @@ class DebugCommandTest extends KernelTestCase
         $kernel = static::createKernel();
         $application = new Application($kernel);
 
-        $command = $application->find(DebugCommand::getDefaultName());
+        $command = $application->find('debug:stenope:content');
         $tester = new CommandTester($command);
         $tester->execute([
             'class' => Author::class,
@@ -201,7 +201,7 @@ class DebugCommandTest extends KernelTestCase
         $kernel = static::createKernel();
         $application = new Application($kernel);
 
-        $command = $application->find(DebugCommand::getDefaultName());
+        $command = $application->find('debug:stenope:content');
         $tester = new CommandTester($command);
 
         try {

@@ -13,7 +13,7 @@ class HtmlUtils
     /**
      * Add class to the given element
      */
-    public static function addClass(\DomElement $element, string $class): void
+    public static function addClass(\DOMElement $element, string $class): void
     {
         $element->setAttribute('class', implode(' ', array_filter([
             trim($element->getAttribute('class')),
@@ -24,7 +24,7 @@ class HtmlUtils
     /**
      * Set element HTML content
      */
-    public static function setContent(\DomElement $element, string $content): void
+    public static function setContent(\DOMElement $element, string $content): void
     {
         $element->nodeValue = '';
 
@@ -38,7 +38,7 @@ class HtmlUtils
     /**
      * Wrap content
      */
-    public static function wrapContent(\DomElement $element, string $wrapTag, array $wrapAttributes = []): void
+    public static function wrapContent(\DOMElement $element, string $wrapTag, array $wrapAttributes = []): void
     {
         $wrapper = $element->ownerDocument->createElement($wrapTag);
 

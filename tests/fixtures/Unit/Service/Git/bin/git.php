@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+/*
+ * This file is part of the "StenopePHP/Stenope" bundle.
+ *
+ * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ */
+
 /**
  * @see \Stenope\Bundle\Tests\Unit\Service\Git\LastModifiedFetcherTest
  */

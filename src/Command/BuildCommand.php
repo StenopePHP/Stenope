@@ -9,7 +9,6 @@
 namespace Stenope\Bundle\Command;
 
 use Stenope\Bundle\Builder;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,12 +19,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Terminal;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-#[AsCommand('stenope:build')]
 class BuildCommand extends Command
 {
     use StopwatchHelperTrait;
-
-    protected static $defaultName = 'stenope:build';
 
     private Builder $builder;
     private Stopwatch $stopwatch;
@@ -44,6 +40,7 @@ class BuildCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setName('stenope:build')
             ->setDescription('Build static website')
             ->addArgument(
                 'buildDir',
