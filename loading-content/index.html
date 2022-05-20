@@ -239,19 +239,28 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
     Use <code class="code-inline" id="d396460c1aa4926aff986a1c64940d08">exprOr</code> to combine expressions using <code class="code-inline" id="e81c4e4f2b7b93b481e13a8553c2ae1b">or</code>.
 </p>
 </div>
-<p>See the <a href="https://symfony.com/doc/current/components/expression_language/syntax.html" target="_blank">ExpressionLanguage syntax</a>.
-You may also want to extend the expression language capabilities for your own contents by <a href="https://symfony.com/doc/current/components/expression_language/extending.html#using-expression-providers" target="_blank">registering a custom expression provider</a> tagged with <code class="code-inline" id="f233445feafb6e30033b3a84a7e4f659">stenope.expression_language_provider</code>.</p>
-<p>Built-in functions are:</p>
+<p>See the <a href="https://symfony.com/doc/current/components/expression_language/syntax.html" target="_blank">ExpressionLanguage syntax</a>.  </p>
+<p>You may also want to extend the expression language capabilities for your own contents by <a href="https://symfony.com/doc/current/components/expression_language/extending.html#using-expression-providers" target="_blank">registering a custom expression provider</a> tagged with <code class="code-inline" id="f233445feafb6e30033b3a84a7e4f659">stenope.expression_language_provider</code>.</p>
+<p><strong>Built-in functions are:</strong></p>
 <ul>
-<li>date</li>
-<li>datetime</li>
-<li>upper</li>
-<li>lower</li>
-<li>contains</li>
-<li>starts_with</li>
-<li>ends_with</li>
-<li>keys</li>
+<li><code class="code-inline" id="5fc732311905cb27e82d67f4f6511f7f">date</code></li>
+<li><code class="code-inline" id="dfeaaeb4316477bd556ea5e8c3295887">datetime</code></li>
+<li><code class="code-inline" id="0122b4c2c01ee1c698ecc309d2b8eb5a">upper</code></li>
+<li><code class="code-inline" id="81e073b428b50247daba38531dcf412a">lower</code></li>
+<li><code class="code-inline" id="14f802e1fba977727845e8872c1743a7">keys</code></li>
 </ul>
+<p><em>The following functions are also available:</em></p>
+<ul>
+<li><code class="code-inline" id="857af22f119fefbfa24769ed2ad6d5e7">contains</code></li>
+<li><code class="code-inline" id="76f7d12d470b32eb5e97964dedb0b407">starts_with</code></li>
+<li><code class="code-inline" id="6ed8b7b43ec4674c0ef761589e1581d4">ends_with</code></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+    but as of Symfony 6.1+, you should use the <a href="https://symfony.com/blog/new-in-symfony-6-1-improved-expressionlanguage-syntax#new-operators" target="_blank">new <code class="code-inline" id="0a7f4995e6820457caa233a0fe82bc64">starts with</code>, <code class="code-inline" id="feb972f0513d4da2670631692d44def9">ends with</code> and <code class="code-inline" id="857af22f119fefbfa24769ed2ad6d5e7">contains</code> operators</a> instead.
+</p>
+</div>
 <h2 id="debug">Debug<a href="#debug" class="anchor"></a></h2>
 <p>See <a href="/Stenope/cli#debug">CLI - Debug</a></p>
 <h2 id="advanced-usage-and-extension">Advanced usage and extension<a href="#advanced-usage-and-extension" class="anchor"></a></h2>
