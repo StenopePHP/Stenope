@@ -188,7 +188,7 @@ class DebugCommand extends Command
     private function getOrders(array $rawOrders): array
     {
         $orders = [];
-        foreach ($rawOrders ?? [] as $field) {
+        foreach ($rawOrders as $field) {
             if (str_starts_with($field, 'desc:')) {
                 $orders[substr($field, 5)] = false;
                 continue;

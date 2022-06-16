@@ -2,20 +2,20 @@ includes:
     - vendor/ekino/phpstan-banned-code/extension.neon
 
 parameters:
+    level: 1
+
     bootstrapFiles:
         - config/tags.php
         - tests/bootstrap.php
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
-    excludes_analyse:
-        - tests/fixtures/app/var/
-        - tests/fixtures/Unit/Service/Git/bin
-
-    level: 1
-
     paths:
         - 'src'
         - 'tests'
+
+    excludePaths:
+        - tests/fixtures/app/var/
+        - tests/fixtures/Unit/Service/Git/bin
 
     banned_code:
         nodes:
