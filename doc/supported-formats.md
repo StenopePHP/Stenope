@@ -2,11 +2,11 @@
 
 Stenope supports many formats out of the box and you can add support for any format.
 
-## Mardown
+## Markdown
 
-The Mardown format allow classic semantic writing, good for blog posts.
+The Markdown format allow classic semantic writing, good for blog posts.
 
-Markdown source files will be decoded into HTML and passed as a `content` property for denormalization.
+Markdown source files will be decoded into HTML and passed as a `content` property for denormalization.  
 An optional YAML formatted header can be provided at the beginning of the file to define a list of custom properties.
 
 ```markdown
@@ -25,7 +25,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas odio vita
 - Dolor
 ```
 
-The default MarkdownDecoder relies on [erusev/parsedown](https://github.com/erusev/parsedown) and supports the standard Markdown features, with some additions:
+The default `MarkdownDecoder` relies on [erusev/parsedown](https://github.com/erusev/parsedown) and supports the standard Markdown features, with some additions:
 
 - Headers: `# H1`, `## H2`, ...
 - Bold: `**bold**`
@@ -36,8 +36,8 @@ The default MarkdownDecoder relies on [erusev/parsedown](https://github.com/erus
 - Images:  `![Foo](/images/foo.png)`
 - Quotes: `> Foo bar.`
 - Inline code `` `$foo` ``
-- Multilign code `` ``` ``
-- Multilign highligted code `` ```php `` (see [Syntax Highlighting](syntax-highlighting.md))
+- Multiline code: `` ``` ``
+- Multiline highligted code: `` ```php `` (see [Syntax Highlighting](syntax-highlighting.md))
 - Tables
 - Embed HTML
 - [Admonitions](#admonitions)
@@ -47,7 +47,7 @@ The default MarkdownDecoder relies on [erusev/parsedown](https://github.com/erus
 Admonitions, also known as call-outs, are an excellent choice for including side
 content without significantly interrupting the document flow.
 
-Admonitions are supported as described in https://python-markdown.github.io/extensions/admonition/
+Admonitions are supported as described in https://python-markdown.github.io/extensions/admonition/.
 
 #### Usage
 
@@ -97,7 +97,7 @@ Writing CSS to render this is up to you.
 
 ## HTML
 
-The HTML format gives you full control over your content's DOM tree and Javascript integration, while still defining a list of key/value properties:
+The HTML format gives you full control over your content's DOM tree and JavaScript integration, while still defining a list of key/value properties:
 
 ```html
 <!DOCTYPE html>
@@ -149,6 +149,6 @@ The JSON format is an alternative the YAML format and can serve the same purpose
 
 ## Support custom formats
 
-You can support any format by creating a custom Decoder that implements `Symfony\Component\Serializer\Encoder\DecoderInterface`.
+You can support any format by creating a custom `Decoder` that implements `Symfony\Component\Serializer\Encoder\DecoderInterface`.
 
 See Symfony's ["How to Create your Custom Encoder"](https://symfony.com/doc/current/serializer/custom_encoders.html).
