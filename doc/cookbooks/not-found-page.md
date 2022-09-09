@@ -55,3 +55,7 @@ Apache:
 ```apacheconf
 ErrorDocument 404 /404.html
 ```
+
+!!! note "404 page on Github Pages"
+    If you're deploying on Github Pages, you're already set!
+    The `404.html` file at the root of your `gh-pages` branch is automatically picked by Github for this purpose.
