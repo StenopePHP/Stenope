@@ -52,6 +52,7 @@
         "symfony/property-access": "^5.1|^6.0",
         "symfony/routing": "^5.1|^6.0",
         "symfony/serializer": "^5.1|^6.0",
+        "symfony/stopwatch": "^5.1|^6.0",
         "symfony/string": "^5.1|^6.0",
         "symfony/yaml": "^5.1|^6.0",
         "twig/twig": "^2.12|^3.0"
@@ -67,7 +68,6 @@
         "symfony/framework-bundle": "^5.1|^6.0",
         "symfony/monolog-bundle": "^3.7",
         "symfony/phpunit-bridge": "^5.3|^6.0",
-        "symfony/stopwatch": "^5.1|^6.0",
         "symfony/twig-bridge": "^5.1|^6.0",
         "symfony/twig-bundle": "^5.1|^6.0"
     },
