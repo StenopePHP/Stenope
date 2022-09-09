@@ -28,6 +28,11 @@ class Kernel extends BaseKernel
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->import('../config/{config}.yaml');
+
+        if (self::VERSION_ID >= 60200) {
+            $container->import('../config/config_6.2.yaml');
+        }
+
         $container->import('../config/{services}.yaml');
     }
 
