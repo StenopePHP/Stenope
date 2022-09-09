@@ -2,6 +2,7 @@
 /.gitattributes    export-ignore
 /.gitignore        export-ignore
 /.php_cs           export-ignore
+/.php-version      export-ignore
 /bin/lint.twig.php export-ignore
 /bin/lint.yaml.php export-ignore
 /doc/images        export-ignore
