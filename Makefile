@@ -28,33 +28,39 @@ php8:
 ###########
 
 setup:
-	composer global require --no-progress --no-scripts --no-plugins symfony/flex
+	symfony composer global require --no-progress --no-scripts --no-plugins symfony/flex
 
 install: setup
 install:
 	rm -f composer.lock
-	composer config minimum-stability --unset
-	composer update --prefer-dist
+	symfony composer config minimum-stability --unset
+	symfony composer update --prefer-dist
 
 install-54: setup
 install-54: export SYMFONY_REQUIRE = 5.4.*@dev
 install-54:
 	rm -f composer.lock
-	composer update
+	symfony composer update
 
 install-60: setup
 install-60: export SYMFONY_REQUIRE = 6.0.*@dev
 install-60:
 	rm -f composer.lock
-	composer update
+	symfony composer update
 
 install-61: setup
 install-61: export SYMFONY_REQUIRE = 6.1.*@dev
 install-61:
 	rm -f composer.lock
-	composer config minimum-stability RC
-	composer update
-	composer config minimum-stability --unset
+	symfony composer update
+
+install-62: setup
+install-62: export SYMFONY_REQUIRE = 6.2.*@dev
+install-62:
+	rm -f composer.lock
+	symfony composer config minimum-stability dev
+	symfony composer update
+	symfony composer config minimum-stability --unset
 
 ########
 # Lint #
@@ -63,7 +69,7 @@ install-61:
 lint: lint-phpcsfixer lint-phpstan lint-twig lint-yaml lint-composer
 
 lint-composer:
-	composer validate --strict
+	symfony composer validate --strict
 
 php-cs-fixer.phar:
 	wget --no-verbose https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar
@@ -76,22 +82,22 @@ update-php-cs-fixer.phar:
 lint-phpcsfixer: php8
 lint-phpcsfixer: php-cs-fixer.phar
 lint-phpcsfixer:
-	./php-cs-fixer.phar fix --dry-run --diff
+	symfony php ./php-cs-fixer.phar fix --dry-run --diff
 
 fix-phpcsfixer: php8
 fix-phpcsfixer: php-cs-fixer.phar
 fix-phpcsfixer:
-	./php-cs-fixer.phar fix
+	symfony php ./php-cs-fixer.phar fix
 
 lint-phpstan:
-	vendor/bin/phpstan analyse --memory-limit=-1
+	symfony php vendor/bin/phpstan analyse --memory-limit=-1
 
 lint-twig:
-	php bin/lint.twig.php templates
+	symfony php bin/lint.twig.php templates
 	cd tests/fixtures/app && bin/console lint:twig templates -vv
 
 lint-yaml:
-	vendor/bin/yaml-lint --parse-tags config tests/fixtures/app/config
+	symfony php vendor/bin/yaml-lint --parse-tags config tests/fixtures/app/config
 
 ########
 # Dist #
@@ -125,5 +131,5 @@ demo:
 ########
 
 test:
-	vendor/bin/simple-phpunit
+	symfony php vendor/bin/simple-phpunit
 
