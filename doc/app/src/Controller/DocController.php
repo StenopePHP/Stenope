@@ -25,7 +25,7 @@ class DocController extends AbstractController
         return $this->render('doc/index.html.twig', ['page' => $page]);
     }
 
-    #[Route('/{page}', name: 'page')]
+    #[Route('/{page<.+>}', name: 'page')]
     public function page(Page $page)
     {
         return $this->render('doc/page.html.twig', ['page' => $page]);
