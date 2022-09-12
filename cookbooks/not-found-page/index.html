@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Exposing a not found page | Stenope, the static website generation tool for Symfony</title>
+        <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
+                    <link rel="stylesheet" href="/Stenope/build/style.c1443638.css">
+            </head>
+    <body>
+        <div class="main">
+                            <div class="columns">
+                    <aside class="sidebar">
+                                                        <a href="/Stenope/" class="logo">
+                                Stenope
+                            </a>
+                            <nav class="navigation">
+                                <a href="/Stenope/" class="">
+                                    About
+                                </a>
+                                                                                                    <a href="/Stenope/build-configuration" class="">
+                                        Configuring the build
+                                    </a>
+                                                                    <a href="/Stenope/cli" class="">
+                                        CLI
+                                    </a>
+                                                                    <a href="/Stenope/cookbooks/not-found-page" class="active">
+                                        Exposing a not found page
+                                    </a>
+                                                                    <a href="/Stenope/cookbooks/processors" class="">
+                                        Content processors
+                                    </a>
+                                                                    <a href="/Stenope/link-contents" class="">
+                                        Linking contents
+                                    </a>
+                                                                    <a href="/Stenope/loading-content" class="">
+                                        Loading content
+                                    </a>
+                                                                    <a href="/Stenope/supported-formats" class="">
+                                        Supported formats
+                                    </a>
+                                                                    <a href="/Stenope/supported-sources" class="">
+                                        Supported sources
+                                    </a>
+                                                                    <a href="/Stenope/syntax-highlighting" class="">
+                                        Syntax highlighting
+                                    </a>
+                                                                    <a href="/Stenope/twig" class="">
+                                        Twig integration
+                                    </a>
+                                                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Github
+                                </a>
+                            </nav>
+                        
+                            </aside>
+                    <main class="content">
+                        <body><h1 id="exposing-a-not-found-page">Exposing a not found page<a href="#exposing-a-not-found-page" class="anchor"></a></h1>
+<p>Since Stenope is a static site generator, it does not handle 404 errors for missing pages.
+Instead, your web server should handle them.</p>
+<p>However, you can let Stenope generate a 404.html page for you, and let your web server serve it.</p>
+<p>For instance, add in your <code class="code-inline" id="fb9d9a99e07358693beb67949d467045">config/routes.yaml</code>:</p>
+<pre class="code-multiline language-yaml"><code class="language-yaml" id="9d881ff05995920c64574dec2c9cf8c6"><span class="token key atrule">errors_404</span><span class="token punctuation">:</span>
+    <span class="token key atrule">path</span><span class="token punctuation">:</span> 404.html
+    <span class="token key atrule">controller</span><span class="token punctuation">:</span> Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    <span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+        <span class="token key atrule">template</span><span class="token punctuation">:</span> errors/404.html.twig
+    <span class="token key atrule">options</span><span class="token punctuation">:</span>
+        <span class="token key atrule">stenope</span><span class="token punctuation">:</span>
+            <span class="token key atrule">sitemap</span><span class="token punctuation">:</span> <span class="token boolean important">false</span></code></pre>
+<p>and create the <code class="code-inline" id="27b355b11792dfd7e9af022be31fb506">templates/errors/404.html.twig</code> template:</p>
+<pre class="code-multiline language-twig"><code class="language-twig" id="0f68071dee58380b2928a6f21dcf7244"><span class="token twig language-twig"><span class="token delimiter punctuation">{%</span> <span class="token tag-name keyword">extends</span> <span class="token string"><span class="token punctuation">'</span>base.html.twig<span class="token punctuation">'</span></span> <span class="token delimiter punctuation">%}</span></span>
+
+<span class="token twig language-twig"><span class="token delimiter punctuation">{%</span> <span class="token tag-name keyword">block</span> title <span class="token delimiter punctuation">%}</span></span>Page not found<span class="token twig language-twig"><span class="token delimiter punctuation">{%</span> <span class="token tag-name keyword">endblock</span> <span class="token delimiter punctuation">%}</span></span>
+
+<span class="token twig language-twig"><span class="token delimiter punctuation">{%</span> <span class="token tag-name keyword">block</span> content <span class="token delimiter punctuation">%}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">&gt;</span></span>404 Not Found<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">&gt;</span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>The page you are looking for does not exist.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+<span class="token twig language-twig"><span class="token delimiter punctuation">{%</span> <span class="token tag-name keyword">endblock</span> <span class="token delimiter punctuation">%}</span></span></code></pre>
+<p>Then, configure your web server to serve this page when a 404 error occurs.</p>
+<p>Nginx:</p>
+<pre class="code-multiline language-nginx"><code class="language-nginx" id="f6961a6b155de9df99488adeb15239fe"><span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">{</span>
+    <span class="token comment"># […]</span>
+
+    <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">{</span>
+        <span class="token directive"><span class="token keyword">try_files</span> <span class="token variable">$uri</span> <span class="token variable">$uri</span>/index.html =404</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token directive"><span class="token keyword">location</span> ~ \.html</span> <span class="token punctuation">{</span>
+        <span class="token directive"><span class="token keyword">internal</span></span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token directive"><span class="token keyword">error_page</span> <span class="token number">404</span> /404.html</span><span class="token punctuation">;</span></code></pre>
+<p>Apache:</p>
+<pre class="code-multiline language-apacheconf"><code class="language-apacheconf" id="1beb88fd7e8dea0297c6f084236b194a"><span class="token directive-inline property">ErrorDocument</span> 404 /404.html</code></pre>
+<div class="admonition note">
+<p class="admonition-title">404 page on Github Pages</p>
+<p>
+    If you're deploying on Github Pages, you're already set!
+    The <code class="code-inline" id="aa8eb2fe477b2d36ecc0f14d6422513f">404.html</code> file at the root of your <code class="code-inline" id="cd0ad3fd552a8dfd873ddfd5628ea6f5">gh-pages</code> branch is automatically picked by Github for this purpose.
+</p>
+</div></body>                        <footer class="footer">
+                                                            <p class="note">Stenope, the static website generation tool for Symfony.</p>
+                                <a href="https://github.com/StenopePHP/Stenope">
+                                    <span class="icon-github"></span>
+                                    Stenope on Github
+                                </a>
+                                                    </footer>
+                    </main>
+                </div>
+                    </div>
+                    <script src="/Stenope/build/runtime.55cd3057.js" defer></script><script src="/Stenope/build/app.355f5b0f.js" defer></script>
+            </body>
+</html>
