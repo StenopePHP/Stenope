@@ -18,17 +18,23 @@ Stenope does that.
 
 ## Installation
 
-In your Symfony app:
+In your existing Symfony app:
 
-    composer require stenope/stenope
+```shell
+composer require stenope/stenope
+```
+
+If you plan to create a new app from scratch, you can give a try to the [Stenope Skeleton](https://stenopephp.github.io/skeleton/).
 
 ## Usage
 
-Just [install Stenope](#installation) and run:
-
-    bin/console -e prod stenope:build ./static
+````shell
+bin/console -e prod stenope:build ./static
+````
 
 Your Symfony app is now a static website in: `./static`! ✨
+
+**Next:** [learn more about Stenope's content management system](doc/loading-content.md).
 
 ## Philosophy and goals
 
@@ -54,11 +60,11 @@ Stenope is not a ready-to-use bloging system: but you could quickly _write your 
 
 ### Features
 
-- [CLI usage](doc/cli.md)
-- [Debug contents](doc/cli.md#debug)
 - [Loading and parsing content](doc/loading-content.md)
 - [Supported formats](doc/supported-formats.md)
 - [Supported sources](doc/supported-sources.md)
+- [CLI usage](doc/cli.md)
+- [Debug contents](doc/cli.md#debug)
 - [Syntax highlighting](doc/syntax-highlighting.md)
 - [Linking contents](doc/link-contents.md)
 - [Configuring the build](doc/build-configuration.md)
