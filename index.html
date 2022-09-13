@@ -102,12 +102,13 @@
 </ul>
 <p>Stenope does that.</p>
 <h2 id="installation">Installation<a href="#installation" class="anchor"></a></h2>
-<p>In your Symfony app:</p>
-<pre><code id="121ee92f1a0912cf2f9760b05593601a">composer require stenope/stenope</code></pre>
+<p>In your existing Symfony app:</p>
+<pre class="code-multiline language-shell"><code class="language-shell" id="121ee92f1a0912cf2f9760b05593601a"><span class="token function">composer</span> require stenope/stenope</code></pre>
+<p>If you plan to create a new app from scratch, you can give a try to the <a href="https://stenopephp.github.io/skeleton/" target="_blank">Stenope Skeleton</a>.</p>
 <h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
-<p>Just <a href="#installation">install Stenope</a> and run:</p>
-<pre><code id="c5f098124ffc747a4823401a94fbde11">bin/console -e prod stenope:build ./static</code></pre>
+<pre class="code-multiline language-shell"><code class="language-shell" id="c5f098124ffc747a4823401a94fbde11">bin/console <span class="token parameter variable">-e</span> prod stenope:build ./static</code></pre>
 <p>Your Symfony app is now a static website in: <code class="code-inline" id="209f7da3fb816679a3bb26c62daaaa74">./static</code>! ✨</p>
+<p><strong>Next:</strong> <a href="/Stenope/loading-content">learn more about Stenope's content management system</a>.</p>
 <h2 id="philosophy-and-goals">Philosophy and goals<a href="#philosophy-and-goals" class="anchor"></a></h2>
 <p>Stenope was designed with these goals in mind:</p>
 <ul>
@@ -128,11 +129,11 @@
 <h2 id="in-depth-documentation">In-depth documentation<a href="#in-depth-documentation" class="anchor"></a></h2>
 <h3 id="features">Features<a href="#features" class="anchor"></a></h3>
 <ul>
-<li><a href="/Stenope/cli">CLI usage</a></li>
-<li><a href="/Stenope/cli#debug">Debug contents</a></li>
 <li><a href="/Stenope/loading-content">Loading and parsing content</a></li>
 <li><a href="/Stenope/supported-formats">Supported formats</a></li>
 <li><a href="/Stenope/supported-sources">Supported sources</a></li>
+<li><a href="/Stenope/cli">CLI usage</a></li>
+<li><a href="/Stenope/cli#debug">Debug contents</a></li>
 <li><a href="/Stenope/syntax-highlighting">Syntax highlighting</a></li>
 <li><a href="/Stenope/link-contents">Linking contents</a></li>
 <li><a href="/Stenope/build-configuration">Configuring the build</a></li>
