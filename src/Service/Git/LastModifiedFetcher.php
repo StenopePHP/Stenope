@@ -68,7 +68,7 @@ class LastModifiedFetcher implements ResetInterface
             if (!$process->isSuccessful()) {
                 self::$gitAvailable = false;
 
-                $this->logger->warning('The current project is not a git repsoitory. Last modified date will not be available using the LastModifiedFetcher.', [
+                $this->logger->warning('The current project is not a git repository. Last modified date will not be available using the LastModifiedFetcher.', [
                     'output' => $process->getOutput(),
                     'err_output' => $process->getErrorOutput(),
                 ]);
