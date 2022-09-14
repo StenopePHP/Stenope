@@ -58,6 +58,23 @@ class LastModifiedFetcher implements ResetInterface
 
                 return null;
             }
+        }
+
+        if (null === self::$gitAvailable) {
+            // Check once if the project is a git repository
+            $process = new Process([...$executable, 'rev-parse', '--is-inside-work-tree']);
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                self::$gitAvailable = false;
+
+                $this->logger->warning('The current project is not a git repository. Last modified date will not be available using the LastModifiedFetcher.', [
+                    'output' => $process->getOutput(),
+                    'err_output' => $process->getErrorOutput(),
+                ]);
+
+                return null;
+            }
 
             self::$gitAvailable = true;
         }
