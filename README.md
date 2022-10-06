@@ -29,6 +29,7 @@ If you plan to create a new app from scratch, you can give a try to the [Stenope
 ## Usage
 
 ````shell
+bin/console -e prod cache:clear
 bin/console -e prod stenope:build ./static
 ````
 
