@@ -106,7 +106,8 @@
 <pre class="code-multiline language-shell"><code class="language-shell" id="121ee92f1a0912cf2f9760b05593601a"><span class="token function">composer</span> require stenope/stenope</code></pre>
 <p>If you plan to create a new app from scratch, you can give a try to the <a href="https://stenopephp.github.io/skeleton/" target="_blank">Stenope Skeleton</a>.</p>
 <h2 id="usage">Usage<a href="#usage" class="anchor"></a></h2>
-<pre class="code-multiline language-shell"><code class="language-shell" id="c5f098124ffc747a4823401a94fbde11">bin/console <span class="token parameter variable">-e</span> prod stenope:build ./static</code></pre>
+<pre class="code-multiline language-shell"><code class="language-shell" id="e99a38039108a2f19adfe5be6be4937a">bin/console <span class="token parameter variable">-e</span> prod cache:clear
+bin/console <span class="token parameter variable">-e</span> prod stenope:build ./static</code></pre>
 <p>Your Symfony app is now a static website in: <code class="code-inline" id="209f7da3fb816679a3bb26c62daaaa74">./static</code>! ✨</p>
 <p><strong>Next:</strong> <a href="/Stenope/loading-content">learn more about Stenope's content management system</a>.</p>
 <h2 id="philosophy-and-goals">Philosophy and goals<a href="#philosophy-and-goals" class="anchor"></a></h2>
