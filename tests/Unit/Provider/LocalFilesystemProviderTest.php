@@ -81,6 +81,7 @@ class LocalFilesystemProviderTest extends TestCase
                 "path" => "$basePath/content/foo/foo.md",
                 "provider" => "files",
               ]
+              -list: false
             }
             DUMP,
             $provider->getContent('foo'),

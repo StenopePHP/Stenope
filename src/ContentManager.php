@@ -82,60 +82,27 @@ class ContentManager implements ContentManagerInterface
      */
     public function getContents(string $type, $sortBy = null, $filterBy = null): array
     {
-        $contents = [];
+        $contents = new ContentBag($type, $this->getSortFunction($sortBy), $this->getFilterFunction($filterBy));
 
         foreach ($this->getProviders($type) as $provider) {
             foreach ($provider->listContents() as $content) {
-                if (isset($contents[$content->getSlug()])) {
-                    throw new RuntimeException(sprintf(
-                        'Found multiple contents of type "%s" with the same "%s" identifier.',
-                        $content->getType(),
-                        $content->getSlug()
-                    ));
+                if ($content->isList()) {
+                    foreach ($this->load($content) as $index => $object) {
+                        $contents->add("{$content->getSlug()}[{$index}]", $object);
+                    }
+                } else {
+                    $contents->add($content->getSlug(), $this->load($content));
                 }
-                $contents[$content->getSlug()] = $this->load($content);
             }
         }
 
-        try {
-            $this->filterBy($contents, $filterBy);
-        } catch (\Throwable $exception) {
-            throw new RuntimeException(sprintf('There was a problem filtering %s.', $type), 0, $exception);
-        }
-
-        try {
-            $this->sortBy($contents, $sortBy);
-        } catch (\Throwable $exception) {
-            throw new RuntimeException(sprintf('There was a problem sorting %s.', $type), 0, $exception);
-        }
-
-        return $contents;
-    }
-
-    private function filterBy(array &$contents, $filterBy = null): void
-    {
-        if ($filter = $this->getFilterFunction($filterBy)) {
-            $contents = array_filter($contents, $filter);
-        }
-    }
-
-    private function sortBy(array &$contents, $sortBy = null): void
-    {
-        if ($sorter = $this->getSortFunction($sortBy)) {
-            set_error_handler(static function (int $severity, string $message, ?string $file, ?int $line): void {
-                throw new \ErrorException($message, $severity, $severity, $file, $line);
-            });
-
-            uasort($contents, $sorter);
-
-            restore_error_handler();
-        }
+        return $contents->getContents();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getContent(string $type, string $id): object
+    public function getContent(string $type, string $id, ?int $index = null): object
     {
         if ($this->stopwatch) {
             $event = $this->stopwatch->start('get_content', 'stenope');
@@ -147,6 +114,14 @@ class ContentManager implements ContentManagerInterface
 
                 if (isset($event)) {
                     $event->stop();
+                }
+
+                if ($content->isList()) {
+                    if ($index === null) {
+                        throw new RuntimeException("No index provided for list content \"$id\".", 1);
+                    }
+
+                    return $loaded[$index];
                 }
 
                 return $loaded;
@@ -228,7 +203,7 @@ class ContentManager implements ContentManagerInterface
 
         $this->crawlers->saveAll($content, $data);
 
-        $data = $this->denormalizer->denormalize($data, $content->getType(), $content->getFormat(), [
+        $data = $this->denormalizer->denormalize($data, $content->getType() . ($content->isList() ? '[]' : ''), $content->getFormat(), [
             SkippingInstantiatedObjectDenormalizer::SKIP => true,
         ]);
 
