@@ -8,24 +8,24 @@
         "composer/package-versions-deprecated": "^1.11",
         "phpdocumentor/reflection-docblock": "^5.2",
         "stenope/stenope": "dev-master",
-        "symfony/asset": "^6.1",
-        "symfony/console": "^6.1",
-        "symfony/dotenv": "^6.1",
+        "symfony/asset": "^6.2",
+        "symfony/console": "^6.2",
+        "symfony/dotenv": "^6.2",
         "symfony/flex": "^1.3.1",
-        "symfony/framework-bundle": "^6.1",
+        "symfony/framework-bundle": "^6.2",
         "symfony/monolog-bundle": "^3.7",
-        "symfony/runtime": "^6.1",
-        "symfony/twig-bundle": "^6.1",
+        "symfony/runtime": "^6.2",
+        "symfony/twig-bundle": "^6.2",
         "symfony/webpack-encore-bundle": "^1.11",
-        "symfony/yaml": "^6.1",
+        "symfony/yaml": "^6.2",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "symfony/debug-bundle": "^6.1",
-        "symfony/stopwatch": "^6.1",
-        "symfony/var-dumper": "^6.1",
-        "symfony/web-profiler-bundle": "^6.1"
+        "symfony/debug-bundle": "^6.2",
+        "symfony/stopwatch": "^6.2",
+        "symfony/var-dumper": "^6.2",
+        "symfony/web-profiler-bundle": "^6.2"
     },
     "config": {
         "optimize-autoloader": true,
@@ -76,7 +76,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.1.*"
+            "require": "6.2.*"
         }
     },
     "repositories": {

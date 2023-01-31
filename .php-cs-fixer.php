@@ -20,6 +20,7 @@ return (new PhpCsFixer\Config)
     ->setRules([
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'blank_line_between_import_groups' => false,
         'concat_space' => ['spacing' => 'one'],
         'header_comment' => ['header' => $header],
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
