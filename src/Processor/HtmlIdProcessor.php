@@ -62,21 +62,21 @@ class HtmlIdProcessor implements ProcessorInterface
 
     private function setIdFromContent(\DOMElement $element): void
     {
-        if (!$id = $element->getAttribute('id')) {
+        if (!$element->getAttribute('id')) {
             $element->setAttribute('id', $this->slugify($element->textContent));
         }
     }
 
     private function setIdFromHashedContent(\DOMElement $element): void
     {
-        if (!$id = $element->getAttribute('id')) {
+        if (!$element->getAttribute('id')) {
             $element->setAttribute('id', $this->hash($element->textContent));
         }
     }
 
     private function setIdForImage(\DOMElement $element): void
     {
-        if (!$id = $element->getAttribute('id')) {
+        if (!$element->getAttribute('id')) {
             $name = $element->getAttribute('alt') ?: basename($element->getAttribute('src'));
             $element->setAttribute('id', $this->slugify($name));
         }

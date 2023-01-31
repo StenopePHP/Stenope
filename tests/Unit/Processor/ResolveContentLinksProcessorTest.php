@@ -70,7 +70,11 @@ class ResolveContentLinksProcessorTest extends TestCase
                 <a href="/other-contents-route-path/another-contents#some-anchor">Another content with anchor</a>
             </body>
             HTML,
-            $data['content']
+            <<<HTML
+            <body>
+            {$data['content']}
+            </body>
+            HTML,
         );
     }
 }
