@@ -10,6 +10,7 @@ namespace Stenope\Bundle\Builder;
 
 /**
  * @phpstan-implements \Iterator<string,string>
+ *
  * @final
  */
 class Sitemap implements \Iterator, \Countable

@@ -12,6 +12,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @phpstan-implements \IteratorAggregate<string,RouteInfo>
+ *
  * @final
  */
 class RouteInfoCollection implements \IteratorAggregate, \ArrayAccess, \Countable

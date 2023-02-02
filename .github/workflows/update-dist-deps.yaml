@@ -23,7 +23,7 @@ jobs:
           node-version: 16
 
       - name: 'Update dist dependencies'
-        run: make dist-update
+        run: make dist.update
 
       - name: 'Git status'
         run: git status

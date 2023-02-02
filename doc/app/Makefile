@@ -1,17 +1,29 @@
 .SILENT:
 .PHONY: build
 
+include ../../.make/help.mk
+include ../../.make/text.mk
+
 ###########
 # Install #
 ###########
 
 # Install dependencies
-install:
+install: install.composer install.npm
+
+install.composer:
 	symfony composer install
+
+install.npm:
 	npm install
 
-update.php:
+update: update.composer update.npm
+
+update.composer:
 	symfony composer update -W
+
+update.npm:
+	npm update
 
 ###############
 # Development #
@@ -71,3 +83,10 @@ build.subdir: clear.build build.assets
 serve.static.subdir:
 	open http://localhost:8032/stenope
 	symfony php -S localhost:8032 -t build
+
+########
+# Test #
+########
+
+## Tests - Test
+test: build.content
