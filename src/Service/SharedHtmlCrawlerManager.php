@@ -19,7 +19,7 @@ class SharedHtmlCrawlerManager implements HtmlCrawlerManagerInterface
      */
     private array $crawlers = [];
 
-    public function get(Content $content, array &$data, string $property): ?Crawler
+    public function get(Content $content, array $data, string $property): ?Crawler
     {
         $key = "{$content->getType()}:{$content->getSlug()}";
 
@@ -54,7 +54,7 @@ class SharedHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         }
 
         foreach ($this->crawlers[$key] as $property => $crawler) {
-            $data[$property] = $crawler->html();
+            $data[$property] = $crawler->filterXPath('//body')->first()->html();
         }
 
         unset($this->crawlers[$key]);

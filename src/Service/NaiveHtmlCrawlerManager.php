@@ -19,7 +19,7 @@ class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
      */
     private array $crawlers = [];
 
-    public function get(Content $content, array &$data, string $property): ?Crawler
+    public function get(Content $content, array $data, string $property): ?Crawler
     {
         $key = "{$content->getType()}:{$content->getSlug()}";
         $crawler = $this->createCrawler($data[$property]);
@@ -40,16 +40,16 @@ class NaiveHtmlCrawlerManager implements HtmlCrawlerManagerInterface
         $key = "{$content->getType()}:{$content->getSlug()}";
 
         if (isset($this->crawlers[$key][$property])) {
-            $data[$property] = $this->crawlers[$key][$property]->html();
+            $data[$property] = $this->crawlers[$key][$property]->filterXPath('//body')->first()->html();
             unset($this->crawlers[$key][$property]);
         }
     }
 
     public function saveAll(Content $content, array &$data): void
     {
-        foreach ($this->crawlers as $key => $crawlers) {
+        foreach ($this->crawlers as $crawlers) {
             foreach ($crawlers as $property => $crawler) {
-                $data[$property] = $crawler->html();
+                $data[$property] = $crawler->filterXPath('//body')->first()->html();
             }
         }
 

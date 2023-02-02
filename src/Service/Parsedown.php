@@ -63,13 +63,15 @@ class Parsedown extends BaseParsedown
 
             return $block;
         }
+
+        return null;
     }
 
     protected function blockAdmonitionContinue($line, $block = null)
     {
         // A blank newline has occurred, or text without indent:
         if (isset($block['interrupted']) || $line['indent'] < 4) {
-            return;
+            return null;
         }
 
         $previous = $block['$admonitionContentRef'] ?? "\n";
