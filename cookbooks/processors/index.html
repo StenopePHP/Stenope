@@ -71,7 +71,7 @@
         </div>
                         </aside>
                     <main class="content">
-                        <body><h1 id="content-processors">Content processors<a href="#content-processors" class="anchor"></a></h1>
+                        <h1 id="content-processors">Content processors<a href="#content-processors" class="anchor"></a></h1>
 <p>Content processor are the main entry point for custom behaviours in Stenope.</p>
 <h2 id="what-are-processors">What are processors<a href="#what-are-processors" class="anchor"></a></h2>
 <p>A processor acts on the raw content loaded from your sources as an array, before denormalization into its model.</p>
@@ -128,7 +128,7 @@
 <p>To control processor execution order, use the <code class="code-inline" id="b988295c268025b49dfb3df26171ddc3">priority</code> tag property:</p>
 <pre class="code-multiline language-yaml"><code class="language-yaml" id="cca01b99e7edd442696f3c2942b4bcc2"><span class="token key atrule">App\Stenope\Processor\TableOfContentProcessor</span><span class="token punctuation">:</span>
         <span class="token key atrule">tags</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> stenope.processor<span class="token punctuation">,</span> <span class="token key atrule">priority</span><span class="token punctuation">:</span> <span class="token number">-10</span> <span class="token punctuation">}</span><span class="token punctuation">]</span></code></pre>
-<p><em>Note: High priority are executed first, lower priority (typically negative ones) are executed last.</em></p></body>                        <footer class="footer">
+<p><em>Note: High priority are executed first, lower priority (typically negative ones) are executed last.</em></p>                        <footer class="footer">
                                                             <p class="note">Stenope, the static website generation tool for Symfony.</p>
                                 <a href="https://github.com/StenopePHP/Stenope">
                                     <span class="icon-github"></span>
