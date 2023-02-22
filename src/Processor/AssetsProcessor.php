@@ -22,8 +22,11 @@ class AssetsProcessor implements ProcessorInterface
     private HtmlCrawlerManagerInterface $crawlers;
     private string $property;
 
-    public function __construct(AssetUtils $assetUtils, HtmlCrawlerManagerInterface $crawlers, string $property = 'content')
-    {
+    public function __construct(
+        AssetUtils $assetUtils,
+        HtmlCrawlerManagerInterface $crawlers,
+        string $property = 'content'
+    ) {
         $this->assetUtils = $assetUtils;
         $this->crawlers = $crawlers;
         $this->property = $property;

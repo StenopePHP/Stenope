@@ -1,0 +1,4 @@
+stenope:
+    processors:
+        anchors:
+            selector: h1, h2, h4

@@ -1,0 +1,4 @@
+stenope:
+    processors:
+        slug:
+            property: id

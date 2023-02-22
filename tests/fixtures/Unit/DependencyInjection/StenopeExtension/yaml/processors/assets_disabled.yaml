@@ -1,0 +1,3 @@
+stenope:
+    processors:
+        assets: false

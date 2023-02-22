@@ -274,6 +274,51 @@ class ConfigurationTest extends TestCase
             'providers' => [],
             'resolve_links' => [],
             'shared_html_crawlers' => false,
+            'processors' => [
+                'enabled' => true,
+                'content_property' => 'content',
+                'slug' => [
+                    'enabled' => true,
+                    'property' => 'slug',
+                ],
+                'assets' => [
+                    'enabled' => true,
+                ],
+                'resolve_content_links' => [
+                    'enabled' => true,
+                ],
+                'external_links' => [
+                    'enabled' => true,
+                ],
+                'anchors' => [
+                    'enabled' => true,
+                    'selector' => 'h1, h2, h3, h4, h5',
+                ],
+                'html_title' => [
+                    'enabled' => true,
+                    'property' => 'title',
+                ],
+                'html_elements_ids' => [
+                    'enabled' => true,
+                ],
+                'code_highlight' => [
+                    'enabled' => true,
+                ],
+                'toc' => [
+                    'enabled' => true,
+                    'property' => 'tableOfContent',
+                    'min_depth' => 2,
+                    'max_depth' => 6,
+                ],
+                'last_modified' => [
+                    'enabled' => true,
+                    'property' => 'lastModified',
+                    'git' => [
+                        'enabled' => true,
+                        'path' => 'git',
+                    ],
+                ],
+            ],
         ];
     }
 }

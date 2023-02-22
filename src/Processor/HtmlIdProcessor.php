@@ -15,7 +15,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * Add ids to title in the content
+ * Add ids to HTML elements in the content
  */
 class HtmlIdProcessor implements ProcessorInterface
 {

@@ -1,0 +1,6 @@
+stenope:
+    processors:
+        last_modified:
+            property: updatedAt
+            git:
+                path: /usr/bin/git

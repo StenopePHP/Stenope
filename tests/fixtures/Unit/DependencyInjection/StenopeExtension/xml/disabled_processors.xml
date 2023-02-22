@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:stenope="http://stenope.com/schema/dic/stenope"
+           xsi:schemaLocation="http://stenope.com/schema/dic/stenope http://stenope.com/schema/dic/stenope/stenope.xsd">
+
+    <stenope:config>
+        <stenope:processors enabled="false" />
+    </stenope:config>
+</container>

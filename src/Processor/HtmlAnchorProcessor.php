@@ -19,11 +19,16 @@ class HtmlAnchorProcessor implements ProcessorInterface
 {
     private HtmlCrawlerManagerInterface $crawlers;
     private string $property;
+    private string $selector;
 
-    public function __construct(HtmlCrawlerManagerInterface $crawlers, string $property = 'content')
-    {
+    public function __construct(
+        HtmlCrawlerManagerInterface $crawlers,
+        string $property = 'content',
+        string $selector = 'h1, h2, h3, h4, h5'
+    ) {
         $this->crawlers = $crawlers;
         $this->property = $property;
+        $this->selector = $selector;
     }
 
     public function __invoke(array &$data, Content $content): void
@@ -38,7 +43,7 @@ class HtmlAnchorProcessor implements ProcessorInterface
             return;
         }
 
-        foreach ($crawler->filter('h1, h2, h3, h4, h5') as $element) {
+        foreach ($crawler->filter($this->selector) as $element) {
             $this->addAnchor($element);
         }
 
@@ -56,7 +61,7 @@ class HtmlAnchorProcessor implements ProcessorInterface
             return;
         }
 
-        $child->appendXML('<a href="#' . $element->getAttribute('id') . '" class="anchor"></a>');
+        $child->appendXML(sprintf('<a href="#%s" class="anchor"></a>', $id));
 
         $element->appendChild($child);
     }

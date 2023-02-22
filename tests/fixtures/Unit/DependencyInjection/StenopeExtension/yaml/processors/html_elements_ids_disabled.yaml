@@ -1,0 +1,3 @@
+stenope:
+    processors:
+        html_elements_ids: false
