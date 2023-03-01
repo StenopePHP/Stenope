@@ -61,7 +61,7 @@ class BuildTest extends KernelTestCase
         TXT
         );
 
-        $this->assertStringContainsString('[OK] Built 17 pages.', $output);
+        $this->assertStringContainsString('[OK] Built 19 pages.', $output);
 
         /** @var TestLogger $logger */
         $logger = static::getContainer()->get('logger');
@@ -106,6 +106,7 @@ class BuildTest extends KernelTestCase
             'http://localhost/recipes/',
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
+            'http://localhost/recipes/stockholm%20mule',
             'http://localhost/recipes/tomiritsu',
             'http://localhost/with-noindex',
             'http://localhost/without-noindex',
@@ -129,12 +130,14 @@ class BuildTest extends KernelTestCase
         self::assertDirectoryExists($buildDir . '/recipes');
         self::assertFileExists($buildDir . '/recipes/index.html');
         self::assertFileExists($buildDir . '/recipes/cheesecake/index.html');
+        self::assertFileExists($buildDir . '/recipes/stockholm mule/index.html');
         self::assertFileExists($buildDir . '/recipes/ogito/index.html');
 
         $crawler = new Crawler(file_get_contents($buildDir . '/recipes/index.html'), 'http://localhost/recipes/');
         $links = array_map(fn (Link $link) => $link->getUri(), $crawler->filter('main .container a.recipe-link')->links());
 
         self::assertSame([
+            'http://localhost/recipes/stockholm%20mule',
             'http://localhost/recipes/cheesecake',
             'http://localhost/recipes/ogito',
             'http://localhost/recipes/tomiritsu',
@@ -157,6 +160,9 @@ class BuildTest extends KernelTestCase
         self::assertDirectoryDoesNotExist($path);
 
         self::assertFileExists($path = $buildDir . '/recipes/ogito.pdf');
+        self::assertDirectoryDoesNotExist($path);
+
+        self::assertFileExists($path = $buildDir . '/recipes/stockholm mule.pdf');
         self::assertDirectoryDoesNotExist($path);
     }
 
