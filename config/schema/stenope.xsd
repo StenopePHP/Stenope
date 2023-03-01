@@ -12,6 +12,7 @@
             <xsd:element name="copy" type="copy_entry" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="provider" type="provider" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="resolve_link" type="resolve_link" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="processors" type="processors_config" minOccurs="0"/>
         </xsd:sequence>
         <xsd:attribute name="build_dir" type="xsd:string"/>
     </xsd:complexType>
@@ -53,5 +54,61 @@
         <xsd:attribute name="depth" type="xsd:string" />
         <!-- custom -->
         <xsd:anyAttribute processContents="lax" />
+    </xsd:complexType>
+
+    <xsd:complexType name="processors_config">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="slug" type="processors.slug"/>
+            <xsd:element name="assets" type="processors.generic"/>
+            <xsd:element name="resolve_content_links" type="processors.generic"/>
+            <xsd:element name="external_links" type="processors.generic"/>
+            <xsd:element name="anchors" type="processors.anchors"/>
+            <xsd:element name="html_title" type="processors.html_title"/>
+            <xsd:element name="html_elements_ids" type="processors.generic"/>
+            <xsd:element name="code_highlight" type="processors.generic"/>
+            <xsd:element name="toc" type="processors.toc"/>
+            <xsd:element name="last_modified" type="processors.last_modified"/>
+        </xsd:choice>
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="content_property" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="processors.slug">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="property" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="processors.generic">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="processors.anchors">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="selector" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="processors.html_title">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="property" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="processors.toc">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="property" type="xsd:string"/>
+        <xsd:attribute name="min_depth" type="xsd:integer"/>
+        <xsd:attribute name="max_depth" type="xsd:integer"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="processors.last_modified">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="git" type="processors.last_modified.git"/>
+        </xsd:choice>
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="property" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="processors.last_modified.git">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="path" type="xsd:string"/>
     </xsd:complexType>
 </xsd:schema>

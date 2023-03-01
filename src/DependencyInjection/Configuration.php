@@ -103,6 +103,7 @@ class Configuration implements ConfigurationInterface
 
         $this->addProvidersSection($rootNode);
         $this->addResolveLinksSection($rootNode);
+        $this->addProcessorsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -217,6 +218,125 @@ class Configuration implements ConfigurationInterface
                             // Files provider validation
                             ->ifTrue(static fn ($p) => LocalFilesystemProviderFactory::TYPE === $p['type'] && empty($p['config']['path']))
                             ->thenInvalid('The "path" has to be specified to use the "files" provider')
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addProcessorsSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('processors')
+                    ->info('Built-in processors configuration. Disable to unregister all of the preconfigured processors.')
+                    ->canBeDisabled()
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('content_property')
+                            ->info('Key used by default by every processors to access and modify the main text of your contents')
+                            ->defaultValue('content')
+                            ->cannotBeEmpty()
+                        ->end()
+
+                        ->arrayNode('slug')
+                            ->canBeDisabled()
+                            ->children()
+                                ->scalarNode('property')
+                                    ->info('Inject the content slug in a property of your model. See SlugProcessor.')
+                                    ->defaultValue('slug')
+                                    ->cannotBeEmpty()
+                                ->end()
+                            ->end()
+                        ->end()
+
+                        ->arrayNode('assets')
+                            ->info('Attempt to resolve local assets URLs using the Asset component for images and links. See AssetsProcessor.')
+                            ->canBeDisabled()
+                        ->end()
+
+                        ->arrayNode('resolve_content_links')
+                            ->info('Attempt to resolve relative links between contents using the route declared in config. See ResolveContentLinksProcessor.')
+                            ->canBeDisabled()
+                        ->end()
+
+                        ->arrayNode('external_links')
+                            ->info('Automatically add target="_blank" to external links. See HtmlExternalLinksProcessor.')
+                            ->canBeDisabled()
+                        ->end()
+
+                        ->arrayNode('anchors')
+                            ->canBeDisabled()
+                            ->info('Automatically add anchor links to elements with an id. See HtmlAnchorProcessor.')
+                            ->children()
+                                ->scalarNode('selector')
+                                    ->defaultValue('h1, h2, h3, h4, h5')
+                                    ->cannotBeEmpty()
+                                ->end()
+                            ->end()
+                        ->end()
+
+                        ->arrayNode('html_title')
+                            ->canBeDisabled()
+                            ->info('Extract a content title from a HTML property by using the first available h1 tag. See ExtractTitleFromHtmlContentProcessor.')
+                            ->children()
+                                ->scalarNode('property')
+                                    ->info('Property where to inject the title in your model')
+                                    ->defaultValue('title')
+                                    ->cannotBeEmpty()
+                                ->end()
+                            ->end()
+                        ->end()
+
+                        ->arrayNode('html_elements_ids')
+                            ->canBeDisabled()
+                            ->info('Add ids to titles, images and other HTML elements in the content. See HtmlIdProcessor.')
+                        ->end()
+
+                        ->arrayNode('code_highlight')
+                            ->canBeDisabled()
+                            ->info('Enabled the syntax highlighting for code blocks using Prism.js. See CodeHighlightProcessor.')
+                        ->end()
+
+                        ->arrayNode('toc')
+                            ->canBeDisabled()
+                            ->info('Build a table of content from the HTML titles. See TableOfContentProcessor.')
+                            ->children()
+                                ->scalarNode('property')
+                                    ->info('Property used to configure and inject the TableOfContent object in your model')
+                                    ->defaultValue('tableOfContent')
+                                    ->cannotBeEmpty()
+                                ->end()
+                                ->integerNode('min_depth')
+                                    ->defaultValue(2)
+                                ->end()
+                                ->integerNode('max_depth')
+                                    ->defaultValue(6)
+                                ->end()
+                            ->end()
+                        ->end()
+
+                        ->arrayNode('last_modified')
+                            ->canBeDisabled()
+                            ->info('Attempt to fetch and populate the last modified date to a property. See LastModifiedProcessor.')
+                            ->children()
+                                ->scalarNode('property')
+                                    ->info('Property where to inject the last modified date of the content according to its provider.')
+                                    ->defaultValue('lastModified')
+                                    ->cannotBeEmpty()
+                                ->end()
+                                ->arrayNode('git')
+                                    ->canBeDisabled()
+                                    ->info('Whether to attempt using Git to get the last modified date of the content according to commits.')
+                                    ->children()
+                                        ->scalarNode('path')
+                                        ->info('Git binary path to use')
+                                        ->defaultValue('git')
+                                        ->cannotBeEmpty()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

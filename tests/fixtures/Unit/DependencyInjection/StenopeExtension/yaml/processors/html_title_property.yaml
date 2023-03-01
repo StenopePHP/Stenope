@@ -1,0 +1,4 @@
+stenope:
+    processors:
+        html_title:
+            property: documentName

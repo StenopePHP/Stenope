@@ -26,16 +26,6 @@ use Stenope\Bundle\ExpressionLanguage\ExpressionLanguage;
 use Stenope\Bundle\Highlighter\Prism;
 use Stenope\Bundle\Highlighter\Pygments;
 use Stenope\Bundle\HttpKernel\Controller\ArgumentResolver\ContentArgumentResolver;
-use Stenope\Bundle\Processor\AssetsProcessor;
-use Stenope\Bundle\Processor\CodeHighlightProcessor;
-use Stenope\Bundle\Processor\ExtractTitleFromHtmlContentProcessor;
-use Stenope\Bundle\Processor\HtmlAnchorProcessor;
-use Stenope\Bundle\Processor\HtmlExternalLinksProcessor;
-use Stenope\Bundle\Processor\HtmlIdProcessor;
-use Stenope\Bundle\Processor\LastModifiedProcessor;
-use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
-use Stenope\Bundle\Processor\SlugProcessor;
-use Stenope\Bundle\Processor\TableOfContentProcessor;
 use Stenope\Bundle\Provider\Factory\ContentProviderFactory;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Stenope\Bundle\Routing\ContentUrlResolver;
@@ -43,7 +33,6 @@ use Stenope\Bundle\Routing\RouteInfoCollection;
 use Stenope\Bundle\Routing\UrlGenerator;
 use Stenope\Bundle\Serializer\Normalizer\SkippingInstantiatedObjectDenormalizer;
 use Stenope\Bundle\Service\AssetUtils;
-use Stenope\Bundle\Service\Git\LastModifiedFetcher;
 use Stenope\Bundle\Service\NaiveHtmlCrawlerManager;
 use Stenope\Bundle\Service\Parsedown;
 use Stenope\Bundle\Service\SharedHtmlCrawlerManager;
@@ -55,7 +44,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 require_once __DIR__ . '/tags.php';
 
@@ -189,52 +177,4 @@ return static function (ContainerConfigurator $container): void {
         ->set(NaiveHtmlCrawlerManager::class)
         ->set(SharedHtmlCrawlerManager::class)
         ->alias(HtmlCrawlerManagerInterface::class, NaiveHtmlCrawlerManager::class);
-
-    // Tagged processors:
-    $container->services()->defaults()->tag(tags\content_processor)
-        ->set(LastModifiedProcessor::class)->args([
-            '$property' => 'lastModified',
-            '$gitLastModified' => inline_service(LastModifiedFetcher::class)->args([
-                '$gitPath' => 'git',
-                '$logger' => service(LoggerInterface::class)->nullOnInvalid(),
-            ]),
-        ])
-        ->set(SlugProcessor::class)
-        ->set(HtmlIdProcessor::class)
-            ->args([
-                '$property' => 'content',
-                '$slugger' => service(SluggerInterface::class),
-                '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-            ])
-        ->set(HtmlAnchorProcessor::class)->args([
-            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-        ])
-        ->set(HtmlExternalLinksProcessor::class)->args([
-            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-        ])
-        ->set(ExtractTitleFromHtmlContentProcessor::class)->args([
-            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-        ])
-        ->set(CodeHighlightProcessor::class)->args([
-            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-            '$highlighter' => service(Prism::class),
-        ])
-        ->set(ResolveContentLinksProcessor::class)->args([
-            '$resolver' => service(ContentUrlResolver::class),
-            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-        ])
-        ->set(AssetsProcessor::class)->args([
-            '$assetUtils' => service(AssetUtils::class),
-            '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-        ])
-        ->set(TableOfContentProcessor::class)
-            ->args([
-                '$generator' => service(CrawlerTableOfContentGenerator::class),
-                '$tableOfContentProperty' => 'tableOfContent',
-                '$contentProperty' => 'content',
-                '$minDepth' => 2,
-                '$crawlers' => service(HtmlCrawlerManagerInterface::class),
-            ])
-            ->tag(tags\content_processor, ['priority' => -100])
-    ;
 };

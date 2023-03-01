@@ -11,6 +11,16 @@ namespace Stenope\Bundle\Tests\Unit\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Stenope\Bundle\Builder;
 use Stenope\Bundle\DependencyInjection\StenopeExtension;
+use Stenope\Bundle\Processor\AssetsProcessor;
+use Stenope\Bundle\Processor\CodeHighlightProcessor;
+use Stenope\Bundle\Processor\ExtractTitleFromHtmlContentProcessor;
+use Stenope\Bundle\Processor\HtmlAnchorProcessor;
+use Stenope\Bundle\Processor\HtmlExternalLinksProcessor;
+use Stenope\Bundle\Processor\HtmlIdProcessor;
+use Stenope\Bundle\Processor\LastModifiedProcessor;
+use Stenope\Bundle\Processor\ResolveContentLinksProcessor;
+use Stenope\Bundle\Processor\SlugProcessor;
+use Stenope\Bundle\Processor\TableOfContentProcessor;
 use Stenope\Bundle\Provider\Factory\LocalFilesystemProviderFactory;
 use Stenope\Bundle\Routing\ContentUrlResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -104,6 +114,138 @@ abstract class StenopeExtensionTest extends TestCase
         self::assertCount(1, $routes = $resolver->getArgument('$routes'));
         self::assertInstanceOf(Reference::class, $ref = $routes['Foo\Bar']);
         self::assertSame(['foo_bar', 'foo', []], $container->getDefinition($ref)->getArguments());
+    }
+
+    public function testDisabledProcessors(): void
+    {
+        $container = $this->createContainerFromFile('disabled_processors');
+
+        self::assertCount(0, $container->findTaggedServiceIds('stenope.processor'), 'Default built-in processors are not registered');
+    }
+
+    public function testDefaultProcessors(): void
+    {
+        $container = $this->createContainerFromFile('defaults');
+
+        self::assertNotCount(0, $container->findTaggedServiceIds('stenope.processor'), 'Default built-in processors are registered');
+
+        // SlugProcessor
+        self::assertSame('slug', $container->getDefinition(SlugProcessor::class)->getArgument('$property'));
+
+        // AssetsProcessor
+        self::assertSame('content', $container->getDefinition(AssetsProcessor::class)->getArgument('$property'));
+
+        // ResolveContentLinksProcessor
+        self::assertSame('content', $container->getDefinition(ResolveContentLinksProcessor::class)->getArgument('$property'));
+
+        // HtmlExternalLinksProcessor
+        self::assertSame('content', $container->getDefinition(HtmlExternalLinksProcessor::class)->getArgument('$property'));
+
+        // HtmlAnchorProcessor
+        $def = $container->getDefinition(HtmlAnchorProcessor::class);
+        self::assertSame('h1, h2, h3, h4, h5', $def->getArgument('$selector'));
+        self::assertSame('content', $def->getArgument('$property'));
+
+        // ExtractTitleFromHtmlContentProcessor
+        $def = $container->getDefinition(ExtractTitleFromHtmlContentProcessor::class);
+        self::assertSame('title', $def->getArgument('$titleProperty'));
+        self::assertSame('content', $def->getArgument('$contentProperty'));
+
+        // HtmlIdProcessor
+        self::assertSame('content', $container->getDefinition(HtmlIdProcessor::class)->getArgument('$property'));
+
+        // CodeHighlightProcessor
+        self::assertSame('content', $container->getDefinition(CodeHighlightProcessor::class)->getArgument('$property'));
+
+        // TableOfContentProcessor
+        $def = $container->getDefinition(TableOfContentProcessor::class);
+        self::assertSame('tableOfContent', $def->getArgument('$tableOfContentProperty'));
+        self::assertSame(2, $def->getArgument('$minDepth'));
+        self::assertSame(6, $def->getArgument('$maxDepth'));
+        self::assertSame('content', $def->getArgument('$contentProperty'));
+
+        // LastModifiedProcessor
+        $def = $container->getDefinition(LastModifiedProcessor::class);
+        self::assertSame('lastModified', $def->getArgument('$property'));
+        self::assertSame('git', $def->getArgument('$gitLastModified')->getArgument('$gitPath'));
+    }
+
+    /**
+     * @dataProvider provideProcessorsConfig
+     */
+    public function testProcessorsConfig(string $configName, callable $expectations): void
+    {
+        $container = $this->createContainerFromFile("processors/$configName");
+
+        $expectations($container);
+    }
+
+    public function provideProcessorsConfig(): iterable
+    {
+        yield 'slug disabled' => ['slug_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(SlugProcessor::class));
+        }];
+
+        yield 'slug property' => ['slug_property', function (ContainerBuilder $container): void {
+            self::assertSame('id', $container->getDefinition(SlugProcessor::class)->getArgument('$property'));
+        }];
+
+        yield 'assets disabled' => ['assets_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(AssetsProcessor::class));
+        }];
+
+        yield 'resolve_content_links disabled' => ['resolve_content_links_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(ResolveContentLinksProcessor::class));
+        }];
+
+        yield 'external_links disabled' => ['external_links_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(HtmlExternalLinksProcessor::class));
+        }];
+
+        yield 'anchors disabled' => ['anchors_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(HtmlAnchorProcessor::class));
+        }];
+
+        yield 'anchors selector' => ['anchors_selector', function (ContainerBuilder $container): void {
+            self::assertSame('h1, h2, h4', $container->getDefinition(HtmlAnchorProcessor::class)->getArgument('$selector'));
+        }];
+
+        yield 'html_title selector' => ['html_title_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(ExtractTitleFromHtmlContentProcessor::class));
+        }];
+
+        yield 'html_title property' => ['html_title_property', function (ContainerBuilder $container): void {
+            self::assertSame('documentName', $container->getDefinition(ExtractTitleFromHtmlContentProcessor::class)->getArgument('$titleProperty'));
+        }];
+
+        yield 'html_elements_ids disabled' => ['html_elements_ids_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(HtmlIdProcessor::class));
+        }];
+
+        yield 'code_highlight disabled' => ['code_highlight_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(CodeHighlightProcessor::class));
+        }];
+
+        yield 'toc disabled' => ['toc_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(TableOfContentProcessor::class));
+        }];
+
+        yield 'toc config' => ['toc_config', function (ContainerBuilder $container): void {
+            self::assertNotNull($def = $container->getDefinition(TableOfContentProcessor::class));
+            self::assertSame('toc', $def->getArgument('$tableOfContentProperty'));
+            self::assertSame(1, $def->getArgument('$minDepth'));
+            self::assertSame(3, $def->getArgument('$maxDepth'));
+        }];
+
+        yield 'last_modified disabled' => ['last_modified_disabled', function (ContainerBuilder $container): void {
+            self::assertFalse($container->hasDefinition(LastModifiedProcessor::class));
+        }];
+
+        yield 'last_modified config' => ['last_modified_config', function (ContainerBuilder $container): void {
+            self::assertNotNull($def = $container->getDefinition(LastModifiedProcessor::class));
+            self::assertSame('updatedAt', $def->getArgument('$property'));
+            self::assertSame('/usr/bin/git', $def->getArgument('$gitLastModified')->getArgument('$gitPath'));
+        }];
     }
 
     protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder

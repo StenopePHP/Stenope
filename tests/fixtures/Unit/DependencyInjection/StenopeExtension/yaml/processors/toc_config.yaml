@@ -1,0 +1,6 @@
+stenope:
+    processors:
+        toc:
+            property: toc
+            min_depth: 1
+            max_depth: 3
