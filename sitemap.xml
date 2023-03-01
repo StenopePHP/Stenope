@@ -2,46 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
             <loc>https://stenopephp.github.io/Stenope/</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>            <priority>0</priority>            <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/build-configuration</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/cli</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/cookbooks/not-found-page</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/cookbooks/processors</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/link-contents</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/loading-content</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/supported-formats</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/supported-sources</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/syntax-highlighting</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
             <url>
             <loc>https://stenopephp.github.io/Stenope/twig</loc>
-            <lastmod>2023-02-02T16:36:33+00:00</lastmod>                        <changefreq>monthly</changefreq>
+            <lastmod>2023-03-01T10:10:48+00:00</lastmod>                        <changefreq>monthly</changefreq>
         </url>
     </urlset>
