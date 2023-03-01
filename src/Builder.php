@@ -440,7 +440,7 @@ class Builder
      */
     private function getFilePath(Request $request, Response $response): array
     {
-        $url = $request->getPathInfo();
+        $url = rawurldecode($request->getPathInfo());
         $info = pathinfo($url);
         $extension = $info['extension'] ?? null;
 
