@@ -21,6 +21,7 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
     private string $path;
     private ?string $depth;
     private array $excludes;
+    private bool $list;
 
     /** @var string[] */
     private array $patterns;
@@ -30,13 +31,15 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
         string $path,
         ?string $depth = null,
         array $excludes = [],
-        array $patterns = ['*']
+        array $patterns = ['*'],
+        bool $list = false,
     ) {
         $this->supportedClass = $supportedClass;
         $this->path = $path;
         $this->depth = $depth;
         $this->excludes = $excludes;
         $this->patterns = $patterns;
+        $this->list = $list;
     }
 
     /**
@@ -106,7 +109,8 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
             [
                 'path' => $file->getRealPath(),
                 'provider' => LocalFilesystemProviderFactory::TYPE,
-            ]
+            ],
+            $this->list,
         );
     }
 

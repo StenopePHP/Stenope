@@ -33,12 +33,13 @@ interface ContentManagerInterface
      *
      * @template T of object
      *
-     * @param class-string<T> $type Model FQCN e.g. "App/Model/Article"
-     * @param string          $id   Unique identifier (slug)
+     * @param class-string<T> $type  Model FQCN e.g. "App/Model/Article"
+     * @param string          $id    Unique identifier (slug)
+     * @param int             $index Index (for content lists)
      *
      * @return T An object of the given type.
      */
-    public function getContent(string $type, string $id): object;
+    public function getContent(string $type, string $id, ?int $index = null): object;
 
     /**
      * Attempt to reverse resolve a content according to a context.

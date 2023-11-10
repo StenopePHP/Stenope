@@ -18,11 +18,12 @@ class LocalFilesystemProviderFactory implements ContentProviderFactoryInterface
     public function create(string $type, array $config): ContentProviderInterface
     {
         return new LocalFilesystemProvider(
-            $config['class'],
+            trim($config['class'], '[]'),
             $config['path'],
             $config['depth'] ?? null,
             $config['excludes'] ?? [],
             $config['patterns'] ?? ['*'],
+            str_ends_with($config['class'], '[]')
         );
     }
 

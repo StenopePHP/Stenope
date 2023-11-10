@@ -17,6 +17,7 @@ final class Content
     private ?\DateTimeImmutable $lastModified;
     private ?\DateTimeImmutable $createdAt;
     private array $metadata;
+    private bool $list;
 
     public function __construct(
         string $slug,
@@ -25,7 +26,8 @@ final class Content
         string $format,
         ?\DateTimeImmutable $lastModified = null,
         ?\DateTimeImmutable $createdAt = null,
-        array $metadata = []
+        array $metadata = [],
+        bool $list = false,
     ) {
         $this->slug = $slug;
         $this->type = $type;
@@ -34,6 +36,7 @@ final class Content
         $this->lastModified = $lastModified;
         $this->createdAt = $createdAt;
         $this->metadata = $metadata;
+        $this->list = $list;
     }
 
     public function getSlug(): string
@@ -69,5 +72,10 @@ final class Content
     public function getMetadata(): array
     {
         return $this->metadata;
+    }
+
+    public function isList(): bool
+    {
+        return $this->list;
     }
 }
