@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\EventListener;
@@ -49,9 +50,6 @@ class SitemapListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::RESPONSE => 'onKernelResponse'];

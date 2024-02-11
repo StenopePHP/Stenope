@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Tests\Unit\Provider;
@@ -27,7 +28,7 @@ class LocalFilesystemProviderTest extends TestCase
 
     private const FIXTURES_DIR = FIXTURES_DIR . '/Unit/Provider/LocalFilesystemProvider';
 
-    protected function setUpVarDumper(array $casters, int $flags = null): void
+    protected function setUpVarDumper(array $casters, ?int $flags = null): void
     {
         $this->setUpVarDumperParent(
             $casters,

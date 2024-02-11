@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\ExpressionLanguage;
@@ -24,7 +25,7 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
         $this->providers = $providers;
     }
 
-    public function getFunctions(): iterable
+    public function getFunctions(): array
     {
         // prepend the default functions to let users override these easily:
         yield from [

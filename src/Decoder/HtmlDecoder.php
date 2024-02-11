@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Decoder;
@@ -23,9 +24,6 @@ class HtmlDecoder implements DecoderInterface
      */
     public const FORMAT = 'html';
 
-    /**
-     * {@inheritdoc}
-     */
     public function decode($data, $format, array $context = []): array
     {
         $crawler = new Crawler($data);
@@ -45,9 +43,6 @@ class HtmlDecoder implements DecoderInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsDecoding($format, array $context = []): bool
     {
         return self::FORMAT === $format;

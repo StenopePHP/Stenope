@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\EventListener;
@@ -38,9 +39,6 @@ class Informator implements EventSubscriberInterface
         $this->twig = $twig;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => 'onRequest'];

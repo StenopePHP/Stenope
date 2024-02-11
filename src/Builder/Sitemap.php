@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Builder;
@@ -33,9 +34,8 @@ class Sitemap implements \Iterator, \Countable
      * @param string    $location     The URL
      * @param \DateTime $lastModified Date of last modification
      * @param int       $priority     Location priority
-     * @param string    $frequency
      */
-    public function add(string $location, \DateTime $lastModified = null, int $priority = null, string $frequency = null): void
+    public function add(string $location, ?\DateTime $lastModified = null, ?int $priority = null, ?string $frequency = null): void
     {
         $url = ['location' => $location];
 
@@ -58,55 +58,33 @@ class Sitemap implements \Iterator, \Countable
         $this->urls[$location] = $url;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rewind(): void
     {
         $this->position = 0;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return mixed
-     */
     #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->urls[array_keys($this->urls)[$this->position]];
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return mixed
-     */
     #[\ReturnTypeWillChange]
     public function key()
     {
         return array_keys($this->urls)[$this->position];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function next(): void
     {
         ++$this->position;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function valid(): bool
     {
         return isset(array_keys($this->urls)[$this->position]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count(): int
     {
         return \count($this->urls);

@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Serializer\Normalizer;
@@ -22,12 +23,12 @@ if (-1 === version_compare(InstalledVersions::getVersion('symfony/serializer'), 
     {
         public const SKIP = 'skip_instantiated_object';
 
-        public function denormalize($data, string $type, string $format = null, array $context = []): object
+        public function denormalize($data, string $type, ?string $format = null, array $context = []): object
         {
             return $data;
         }
 
-        public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
+        public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
         {
             return (bool) ($context[self::SKIP] ?? false) && \is_object($data);
         }
@@ -42,14 +43,19 @@ if (-1 === version_compare(InstalledVersions::getVersion('symfony/serializer'), 
     {
         public const SKIP = 'skip_instantiated_object';
 
-        public function denormalize($data, string $type, string $format = null, array $context = []): object
+        public function denormalize($data, string $type, ?string $format = null, array $context = []): object
         {
             return $data;
         }
 
-        public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
+        public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
         {
             return (bool) ($context[self::SKIP] ?? false) && \is_object($data);
+        }
+
+        public function getSupportedTypes(?string $format): array
+        {
+            return [];
         }
     }
 }

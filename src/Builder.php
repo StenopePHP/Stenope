@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle;
@@ -46,7 +47,7 @@ class Builder
 
     /** Path to output the static site */
     private string $buildDir;
-    private FileSystem $files;
+    private Filesystem $files;
     private MimeTypesInterface $mimeTypes;
 
     /** Files to copy after build */
@@ -372,7 +373,7 @@ class Builder
         ob_start();
 
         try {
-            $response = $this->httpKernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
+            $response = $this->httpKernel->handle($request, HttpKernelInterface::MAIN_REQUEST, false);
         } catch (\Throwable $exception) {
             if ($ignoreContentNotFoundErrors && $exception instanceof ContentNotFoundException) {
                 $this->logger->warning('Could not build url {url}: {exception}', [
