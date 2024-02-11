@@ -3,7 +3,7 @@
 include .make/help.mk
 include .make/text.mk
 
-PHP_CS_FIXER_VERSION=v3.13.0
+PHP_CS_FIXER_VERSION=v3.49.0
 
 ##########
 # Colors #
@@ -62,6 +62,24 @@ install.61:
 install.62: setup
 install.62: export SYMFONY_REQUIRE = 6.2.*@dev
 install.62:
+	rm -f composer.lock
+	symfony composer config minimum-stability dev
+	symfony composer update
+	symfony composer config minimum-stability --unset
+
+## Install - Install Symfony 6.4 deps
+install.64: setup
+install.64: export SYMFONY_REQUIRE = 6.4.*@dev
+install.64:
+	rm -f composer.lock
+	symfony composer config minimum-stability dev
+	symfony composer update
+	symfony composer config minimum-stability --unset
+
+## Install - Install Symfony 7.0 deps
+install.70: setup
+install.70: export SYMFONY_REQUIRE = 7.0.*@dev
+install.70:
 	rm -f composer.lock
 	symfony composer config minimum-stability dev
 	symfony composer update
