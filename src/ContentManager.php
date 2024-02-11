@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle;
@@ -77,9 +78,6 @@ class ContentManager implements ContentManagerInterface
         $this->expressionLanguage = $expressionLanguage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContents(string $type, $sortBy = null, $filterBy = null): array
     {
         $contents = [];
@@ -132,9 +130,6 @@ class ContentManager implements ContentManagerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContent(string $type, string $id): object
     {
         if ($this->stopwatch) {
@@ -156,9 +151,6 @@ class ContentManager implements ContentManagerInterface
         throw new ContentNotFoundException($type, $id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseContent(Context $context): ?Content
     {
         $key = md5(serialize($context));

@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Decoder;
@@ -35,9 +36,6 @@ class MarkdownDecoder implements DecoderInterface
         $this->parser = $parser;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function decode($data, $format, array $context = []): array
     {
         $content = trim($data);
@@ -56,9 +54,6 @@ class MarkdownDecoder implements DecoderInterface
         return ['content' => $this->markdownToHtml($content)];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsDecoding($format, array $context = []): bool
     {
         return self::FORMAT === $format;
