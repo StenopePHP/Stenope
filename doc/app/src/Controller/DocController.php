@@ -10,11 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DocController extends AbstractController
 {
-    private ContentManagerInterface $contentManager;
-
-    public function __construct(ContentManagerInterface $contentManager)
-    {
-        $this->contentManager = $contentManager;
+    public function __construct(
+        private ContentManagerInterface $contentManager
+    ) {
     }
 
     #[Route('/', name: 'index')]
