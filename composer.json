@@ -33,7 +33,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": "^7.4|^8.0",
         "ext-dom": "*",
         "erusev/parsedown": "^1.7.4",
         "symfony/asset": "^5.4|^6.0|^7.0",
