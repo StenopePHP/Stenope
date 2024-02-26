@@ -18,15 +18,10 @@ class Sitemap implements \Iterator, \Countable
 {
     /**
      * Mapped URLs
-     *
-     * @var array
      */
-    private $urls = [];
+    private array $urls = [];
 
-    /**
-     * @var int
-     */
-    private $position = 0;
+    private int $position = 0;
 
     /**
      * Add location
@@ -64,13 +59,13 @@ class Sitemap implements \Iterator, \Countable
     }
 
     #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return $this->urls[array_keys($this->urls)[$this->position]];
     }
 
     #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         return array_keys($this->urls)[$this->position];
     }
