@@ -55,7 +55,9 @@ if (-1 === version_compare(InstalledVersions::getVersion('symfony/serializer'), 
 
         public function getSupportedTypes(?string $format): array
         {
-            return [];
+            return [
+                'object' => true,
+            ];
         }
     }
 }
