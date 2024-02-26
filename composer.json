@@ -58,7 +58,6 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.9|^2.0",
         "ekino/phpstan-banned-code": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^1.6",

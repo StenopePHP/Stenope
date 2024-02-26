@@ -15,9 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-    /**
-     * @Route(path="/", name="homepage")
-     */
+    #[Route(path: '/', name: 'homepage')]
     public function index()
     {
         $response = $this->render('homepage.html.twig');
@@ -27,9 +25,7 @@ class DefaultController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route(path="/foo.html", name="foo_html")
-     */
+    #[Route(path: '/foo.html', name: 'foo_html')]
     public function foo()
     {
         return new Response('foo');

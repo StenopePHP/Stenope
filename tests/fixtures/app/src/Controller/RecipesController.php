@@ -16,21 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(path="/recipes")
- */
+#[Route(path: '/recipes')]
 class RecipesController extends AbstractController
 {
-    private ContentManager $manager;
-
-    public function __construct(ContentManager $manager)
+    public function __construct(private ContentManager $manager)
     {
-        $this->manager = $manager;
     }
 
-    /**
-     * @Route(path="/", name="recipes")
-     */
+    #[Route(path: '/', name: 'recipes')]
     public function index()
     {
         $recipes = $this->manager->getContents(Recipe::class, ['date' => false]);
@@ -43,25 +36,14 @@ class RecipesController extends AbstractController
 
     /**
      * Ensure {@link ContentArgumentResolver} handles nullable arguments properly.
-     *
-     * @Route(path="/optional-recipe", name="optional-recipe", options={
-     *     "stenope": {
-     *         "ignore": true,
-     *     },
-     * })
      */
+    #[Route(path: '/optional-recipe', name: 'optional-recipe', options: ['stenope' => ['ignore' => true]])]
     public function optionalRecipe(?Recipe $recipe)
     {
         return new Response('OK');
     }
 
-    /**
-     * @Route(path="/{recipe}.pdf", name="recipe_pdf", options={
-     *     "stenope": {
-     *         "sitemap": false,
-     *     },
-     * })
-     */
+    #[Route(path: '/{recipe}.pdf', name: 'recipe_pdf', options: ['stenope' => ['sitemap' => false]])]
     public function downloadAsPdf(Recipe $recipe)
     {
         $response = $this->file(__DIR__ . '/../../var/pdf/dummy.pdf', "{$recipe->slug}.pdf");
@@ -71,9 +53,7 @@ class RecipesController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route(path="/{recipe}", name="recipe")
-     */
+    #[Route(path: '/{recipe}', name: 'recipe')]
     public function show(Recipe $recipe)
     {
         return $this->render('recipe/show.html.twig', [
