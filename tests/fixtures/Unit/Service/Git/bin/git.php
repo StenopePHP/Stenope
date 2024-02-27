@@ -5,10 +5,11 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 /**
- * @see \Stenope\Bundle\Tests\Unit\Service\Git\LastModifiedFetcherTest
+ * @see Stenope\Bundle\Tests\Unit\Service\Git\LastModifiedFetcherTest
  */
 $path = end($argv);
 

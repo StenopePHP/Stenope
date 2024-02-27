@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Highlighter;
@@ -20,7 +21,7 @@ class Pygments implements HighlighterInterface
     /**
      * File system
      *
-     * @var FileSystem
+     * @var Filesystem
      */
     private $files;
 
@@ -31,7 +32,7 @@ class Pygments implements HighlighterInterface
      */
     private $temporaryPath;
 
-    public function __construct(string $temporaryPath = null)
+    public function __construct(?string $temporaryPath = null)
     {
         $this->temporaryPath = $temporaryPath ?: sys_get_temp_dir();
         $this->files = new Filesystem();

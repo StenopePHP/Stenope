@@ -3,7 +3,7 @@
 include .make/help.mk
 include .make/text.mk
 
-PHP_CS_FIXER_VERSION=v3.13.0
+PHP_CS_FIXER_VERSION=v3.49.0
 
 ##########
 # Colors #
@@ -37,20 +37,6 @@ install:
 	symfony composer config minimum-stability --unset
 	symfony composer update --prefer-dist
 
-## Install - Install Symfony 5.4 deps
-install.54: setup
-install.54: export SYMFONY_REQUIRE = 5.4.*@dev
-install.54:
-	rm -f composer.lock
-	symfony composer update
-
-## Install - Install Symfony 6.0 deps
-install.60: setup
-install.60: export SYMFONY_REQUIRE = 6.0.*@dev
-install.60:
-	rm -f composer.lock
-	symfony composer update
-
 ## Install - Install Symfony 6.1 deps
 install.61: setup
 install.61: export SYMFONY_REQUIRE = 6.1.*@dev
@@ -62,6 +48,42 @@ install.61:
 install.62: setup
 install.62: export SYMFONY_REQUIRE = 6.2.*@dev
 install.62:
+	rm -f composer.lock
+	symfony composer config minimum-stability dev
+	symfony composer update
+	symfony composer config minimum-stability --unset
+
+## Install - Install Symfony 6.3 deps
+install.63: setup
+install.63: export SYMFONY_REQUIRE = 6.3.*@dev
+install.63:
+	rm -f composer.lock
+	symfony composer config minimum-stability dev
+	symfony composer update
+	symfony composer config minimum-stability --unset
+
+## Install - Install Symfony 6.4 deps
+install.64: setup
+install.64: export SYMFONY_REQUIRE = 6.4.*@dev
+install.64:
+	rm -f composer.lock
+	symfony composer config minimum-stability dev
+	symfony composer update
+	symfony composer config minimum-stability --unset
+
+## Install - Install Symfony 7.0 deps
+install.70: setup
+install.70: export SYMFONY_REQUIRE = 7.0.*@dev
+install.70:
+	rm -f composer.lock
+	symfony composer config minimum-stability dev
+	symfony composer update
+	symfony composer config minimum-stability --unset
+
+## Install - Install Symfony 7.1 deps
+install.71: setup
+install.71: export SYMFONY_REQUIRE = 7.1.*@dev
+install.71:
 	rm -f composer.lock
 	symfony composer config minimum-stability dev
 	symfony composer update

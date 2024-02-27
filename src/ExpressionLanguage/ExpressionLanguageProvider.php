@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\ExpressionLanguage;
@@ -24,10 +25,10 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
         $this->providers = $providers;
     }
 
-    public function getFunctions(): iterable
+    public function getFunctions(): array
     {
         // prepend the default functions to let users override these easily:
-        yield from [
+        $functions = [
             new ExpressionFunction('date', function ($arg) {
                 return sprintf('(new \DateTimeImmutable(%s))->setTime(0, 0)', $arg);
             }, function (array $variables, $value) {
@@ -47,7 +48,9 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
         ];
 
         foreach ($this->providers as $provider) {
-            yield from $provider->getFunctions();
+            $functions = array_merge($functions, $provider->getFunctions());
         }
+
+        return $functions;
     }
 }

@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Provider;
@@ -39,9 +40,6 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
         $this->patterns = $patterns;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function listContents(): iterable
     {
         foreach ($this->files() as $file) {
@@ -49,9 +47,6 @@ class LocalFilesystemProvider implements ReversibleContentProviderInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContent(string $slug): ?Content
     {
         $files = $this->files()->filter(

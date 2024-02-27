@@ -109,16 +109,12 @@ use Stenope\Bundle\ContentManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/blog")
- */
+#[Route('/blog')]
 class BlogController extends AbstractController
 {
     // ...
 
-    /**
-     * @Route("/{slug}", name="article")
-     */
+    #[Route('/{slug}', name: 'article')]
     public function article(ContentManagerInterface $contentManager, string $slug)
     {
         return $this->render(

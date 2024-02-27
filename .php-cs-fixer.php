@@ -4,6 +4,7 @@ $header = <<<'EOF'
 This file is part of the "StenopePHP/Stenope" bundle.
 
 @author Thomas Jarrand <thomas.jarrand@gmail.com>
+@author Maxime Steinhausser <maxime.steinhausser@gmail.com>
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
