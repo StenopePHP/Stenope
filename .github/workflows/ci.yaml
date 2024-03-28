@@ -101,15 +101,12 @@ jobs:
             os: 'ubuntu-latest'
             php: '8.2'
             symfony: '6.4.*'
-
-          # Bleeding edges:
           - name: 'Test Symfony 7.0 [Linux, PHP 8.3]'
             os: 'ubuntu-latest'
             php: '8.3'
-            symfony: '7.0.*@dev'
-            allow-unstable: true
-            allow-failure: true
+            symfony: '7.0.*'
 
+          # Bleeding edges:
           - name: 'Test Symfony 7.1 [Linux, PHP 8.3]'
             os: 'ubuntu-latest'
             php: '8.3'
