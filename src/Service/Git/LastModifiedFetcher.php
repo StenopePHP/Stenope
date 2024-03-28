@@ -46,7 +46,18 @@ class LastModifiedFetcher implements ResetInterface
         if (null === self::$gitAvailable) {
             // Check once if the git command is available
             $process = new Process([...$executable, '--version']);
-            $process->run();
+
+            try {
+                $process->run();
+            } catch (ProcessFailedException $exception) {
+                self::$gitAvailable = false;
+
+                $this->logger->warning('Git was not found at path "{gitPath}". Check the binary path is correct or part of your PATH.', [
+                    'gitPath' => $this->gitPath,
+                ]);
+
+                return null;
+            }
 
             if (!$process->isSuccessful()) {
                 self::$gitAvailable = false;
