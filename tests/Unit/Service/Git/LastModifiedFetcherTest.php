@@ -41,7 +41,10 @@ class LastModifiedFetcherTest extends TestCase
         $fetcher->reset();
 
         self::assertNull($fetcher->__invoke('some-fake-path'));
-        self::assertTrue($logger->hasWarningThatContains('Git was not found at path'));
+        self::assertTrue(
+            $logger->hasWarningThatContains('Git was not found at path')
+            || $logger->hasWarningThatContains('An unexpected error occurred while trying to check the git binary at path')
+        );
         self::assertCount(1, $logger->records);
 
         self::assertNull($fetcher->__invoke('some-fake-path'));

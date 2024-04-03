@@ -12,6 +12,7 @@ namespace Stenope\Bundle\Service\Git;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -49,11 +50,13 @@ class LastModifiedFetcher implements ResetInterface
 
             try {
                 $process->run();
-            } catch (ProcessFailedException $exception) {
+            } catch (RuntimeException $e) {
                 self::$gitAvailable = false;
 
-                $this->logger->warning('Git was not found at path "{gitPath}". Check the binary path is correct or part of your PATH.', [
+                $this->logger->warning('An unexpected error occurred while trying to check the git binary at path "{gitPath}"', [
                     'gitPath' => $this->gitPath,
+                    'exception' => $e,
+                    'exception_message' => $e->getMessage(),
                 ]);
 
                 return null;
