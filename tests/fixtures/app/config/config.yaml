@@ -30,7 +30,7 @@ stenope:
 services:
     Psr\Log\LoggerInterface: '@logger'
     logger:
-        class: Stenope\Bundle\Tests\Unit\Log\TestLogger
+        class: Psr\Log\Test\TestLogger
         tags:
             - name: kernel.reset
               method: reset

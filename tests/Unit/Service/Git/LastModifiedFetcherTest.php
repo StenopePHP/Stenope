@@ -10,8 +10,8 @@
 namespace Stenope\Bundle\Tests\Unit\Service\Git;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\Test\TestLogger;
 use Stenope\Bundle\Service\Git\LastModifiedFetcher;
-use Stenope\Bundle\Tests\Unit\Log\TestLogger;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\PhpExecutableFinder;
 

@@ -7,7 +7,7 @@ This file is part of the "StenopePHP/Stenope" bundle.
 @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
 EOF;
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new PhpCsFixer\Finder())
     ->in([__DIR__])
     ->exclude('doc/app')
     ->exclude('tests/fixtures/app/var')

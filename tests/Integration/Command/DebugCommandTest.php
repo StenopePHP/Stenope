@@ -71,7 +71,7 @@ class DebugCommandTest extends KernelTestCase
              * ogi
              * tom32i
             TXT
-        , [], ['slug'], ];
+            , [], ['slug'], ];
 
         yield 'order desc:' => [Author::class,
             <<<TXT
@@ -79,7 +79,7 @@ class DebugCommandTest extends KernelTestCase
              * ogi
              * john.doe
             TXT
-        , [], ['desc:slug'], ];
+            , [], ['desc:slug'], ];
 
         yield 'order desc (- notation)' => [Author::class,
             <<<TXT
@@ -87,40 +87,40 @@ class DebugCommandTest extends KernelTestCase
              * ogi
              * john.doe
             TXT
-        , [], ['-slug'], ];
+            , [], ['-slug'], ];
 
         yield 'filter property (data prefix)' => [Author::class,
             <<<TXT
              * ogi
              * tom32i
             TXT
-        , ['_.core'], ];
+            , ['_.core'], ];
 
         yield 'filter property (d prefix)' => [Author::class,
             <<<TXT
              * ogi
              * tom32i
             TXT
-        , ['d.core'], ];
+            , ['d.core'], ];
 
         yield 'filter property (_ prefix)' => [Author::class,
             <<<TXT
              * ogi
              * tom32i
             TXT
-        , ['_.core'], ];
+            , ['_.core'], ];
 
         yield 'filter not' => [Author::class,
             <<<TXT
              * john.doe
             TXT
-        , ['not _.core'], ];
+            , ['not _.core'], ];
 
         yield 'filter not (! notation)' => [Author::class,
             <<<TXT
              * john.doe
             TXT
-        , ['!_.core'], ];
+            , ['!_.core'], ];
 
         // As of Symfony 6.1, a new contains operator conflicts with our custom contains function:
         // https://github.com/symfony/symfony/issues/46406
@@ -132,7 +132,7 @@ class DebugCommandTest extends KernelTestCase
              * ogi
              * tom32i
             TXT
-            , ['contains(_.slug, "i")'], ];
+                , ['contains(_.slug, "i")'], ];
         }
 
         yield 'filter dates' => [Recipe::class,
@@ -147,13 +147,13 @@ class DebugCommandTest extends KernelTestCase
              * tom32i
              * ogi
             TXT
-        , ['_.core'], ['desc:slug'], ];
+            , ['_.core'], ['desc:slug'], ];
 
         yield 'multiple filters' => [Author::class,
             <<<TXT
              * ogi
             TXT
-        , ['_.core', '"cooking" in _.tags'], ];
+            , ['_.core', '"cooking" in _.tags'], ];
     }
 
     public function testShow(): void

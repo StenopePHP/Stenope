@@ -3,7 +3,7 @@
 include .make/help.mk
 include .make/text.mk
 
-PHP_CS_FIXER_VERSION=v3.49.0
+PHP_CS_FIXER_VERSION=v3.52.1
 
 ##########
 # Colors #
@@ -14,13 +14,6 @@ COLOR_ERROR   := \033[31m
 COLOR_INFO    := \033[32m
 COLOR_WARNING := \033[33m
 COLOR_COMMENT := \033[36m
-
-###########
-# Helpers #
-###########
-
-php8:
-	@php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);" || ($(call message_error, Please use PHP 8) && exit 1)
 
 ###########
 # Install #
@@ -36,31 +29,6 @@ install:
 	rm -f composer.lock
 	symfony composer config minimum-stability --unset
 	symfony composer update --prefer-dist
-
-## Install - Install Symfony 6.1 deps
-install.61: setup
-install.61: export SYMFONY_REQUIRE = 6.1.*@dev
-install.61:
-	rm -f composer.lock
-	symfony composer update
-
-## Install - Install Symfony 6.2 deps
-install.62: setup
-install.62: export SYMFONY_REQUIRE = 6.2.*@dev
-install.62:
-	rm -f composer.lock
-	symfony composer config minimum-stability dev
-	symfony composer update
-	symfony composer config minimum-stability --unset
-
-## Install - Install Symfony 6.3 deps
-install.63: setup
-install.63: export SYMFONY_REQUIRE = 6.3.*@dev
-install.63:
-	rm -f composer.lock
-	symfony composer config minimum-stability dev
-	symfony composer update
-	symfony composer config minimum-stability --unset
 
 ## Install - Install Symfony 6.4 deps
 install.64: setup
@@ -102,12 +70,10 @@ lint.fix: lint.php-cs-fixer.fix
 lint.composer:
 	symfony composer validate --strict
 
-lint.php-cs-fixer: php8
 lint.php-cs-fixer: php-cs-fixer.phar
 lint.php-cs-fixer:
 	symfony php ./php-cs-fixer.phar fix --dry-run --diff
 
-lint.php-cs-fixer.fix: php8
 lint.php-cs-fixer.fix: php-cs-fixer.phar
 lint.php-cs-fixer.fix:
 	symfony php ./php-cs-fixer.phar fix

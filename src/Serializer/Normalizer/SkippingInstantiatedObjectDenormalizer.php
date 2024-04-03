@@ -9,55 +9,31 @@
 
 namespace Stenope\Bundle\Serializer\Normalizer;
 
-use Composer\InstalledVersions;
-use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-if (-1 === version_compare(InstalledVersions::getVersion('symfony/serializer'), '6.1.0')) {
-    /**
-     * Avoiding double-denormalization for already instantiated objects inside $data.
-     *
-     * @final
-     */
-    class SkippingInstantiatedObjectDenormalizer implements ContextAwareDenormalizerInterface
+/**
+ * Avoiding double-denormalization for already instantiated objects inside $data.
+ *
+ * @final
+ */
+class SkippingInstantiatedObjectDenormalizer implements DenormalizerInterface
+{
+    public const SKIP = 'skip_instantiated_object';
+
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): object
     {
-        public const SKIP = 'skip_instantiated_object';
-
-        public function denormalize($data, string $type, ?string $format = null, array $context = []): object
-        {
-            return $data;
-        }
-
-        public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
-        {
-            return (bool) ($context[self::SKIP] ?? false) && \is_object($data);
-        }
+        return $data;
     }
-} else {
-    /**
-     * Avoiding double-denormalization for already instantiated objects inside $data.
-     *
-     * @final
-     */
-    class SkippingInstantiatedObjectDenormalizer implements DenormalizerInterface
+
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
-        public const SKIP = 'skip_instantiated_object';
+        return ($context[self::SKIP] ?? false) && \is_object($data);
+    }
 
-        public function denormalize($data, string $type, ?string $format = null, array $context = []): object
-        {
-            return $data;
-        }
-
-        public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
-        {
-            return (bool) ($context[self::SKIP] ?? false) && \is_object($data);
-        }
-
-        public function getSupportedTypes(?string $format): array
-        {
-            return [
-                'object' => true,
-            ];
-        }
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            'object' => true,
+        ];
     }
 }

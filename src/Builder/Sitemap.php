@@ -12,12 +12,21 @@ namespace Stenope\Bundle\Builder;
 /**
  * @phpstan-implements \Iterator<string,string>
  *
+ * @phpstan-type Url = array{
+ *     location: string,
+ *     lastModified?: \DateTime,
+ *     priority?: int,
+ *     frequency?: string,
+ * }
+ *
  * @final
  */
 class Sitemap implements \Iterator, \Countable
 {
     /**
      * Mapped URLs
+     *
+     * @var array<string, Url>
      */
     private array $urls = [];
 
@@ -26,12 +35,16 @@ class Sitemap implements \Iterator, \Countable
     /**
      * Add location
      *
-     * @param string    $location     The URL
-     * @param \DateTime $lastModified Date of last modification
-     * @param int       $priority     Location priority
+     * @param string         $location     The URL
+     * @param \DateTime|null $lastModified Date of last modification
+     * @param int|null       $priority     Location priority
      */
-    public function add(string $location, ?\DateTime $lastModified = null, ?int $priority = null, ?string $frequency = null): void
-    {
+    public function add(
+        string $location,
+        ?\DateTime $lastModified = null,
+        ?int $priority = null,
+        ?string $frequency = null,
+    ): void {
         $url = ['location' => $location];
 
         if ($priority === null && empty($this->urls)) {
@@ -58,14 +71,17 @@ class Sitemap implements \Iterator, \Countable
         $this->position = 0;
     }
 
+    /**
+     * @return array<string, Url>
+     */
     #[\ReturnTypeWillChange]
-    public function current(): mixed
+    public function current(): array
     {
         return $this->urls[array_keys($this->urls)[$this->position]];
     }
 
     #[\ReturnTypeWillChange]
-    public function key(): mixed
+    public function key(): string
     {
         return array_keys($this->urls)[$this->position];
     }
