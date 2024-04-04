@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Service\Git;
@@ -11,6 +12,7 @@ namespace Stenope\Bundle\Service\Git;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -45,7 +47,20 @@ class LastModifiedFetcher implements ResetInterface
         if (null === self::$gitAvailable) {
             // Check once if the git command is available
             $process = new Process([...$executable, '--version']);
-            $process->run();
+
+            try {
+                $process->run();
+            } catch (RuntimeException $e) {
+                self::$gitAvailable = false;
+
+                $this->logger->warning('An unexpected error occurred while trying to check the git binary at path "{gitPath}"', [
+                    'gitPath' => $this->gitPath,
+                    'exception' => $e,
+                    'exception_message' => $e->getMessage(),
+                ]);
+
+                return null;
+            }
 
             if (!$process->isSuccessful()) {
                 self::$gitAvailable = false;

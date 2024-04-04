@@ -3,7 +3,7 @@
 include .make/help.mk
 include .make/text.mk
 
-PHP_CS_FIXER_VERSION=v3.13.0
+PHP_CS_FIXER_VERSION=v3.52.1
 
 ##########
 # Colors #
@@ -14,13 +14,6 @@ COLOR_ERROR   := \033[31m
 COLOR_INFO    := \033[32m
 COLOR_WARNING := \033[33m
 COLOR_COMMENT := \033[36m
-
-###########
-# Helpers #
-###########
-
-php8:
-	@php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);" || ($(call message_error, Please use PHP 8) && exit 1)
 
 ###########
 # Install #
@@ -37,31 +30,28 @@ install:
 	symfony composer config minimum-stability --unset
 	symfony composer update --prefer-dist
 
-## Install - Install Symfony 5.4 deps
-install.54: setup
-install.54: export SYMFONY_REQUIRE = 5.4.*@dev
-install.54:
+## Install - Install Symfony 6.4 deps
+install.64: setup
+install.64: export SYMFONY_REQUIRE = 6.4.*@dev
+install.64:
 	rm -f composer.lock
+	symfony composer config minimum-stability dev
 	symfony composer update
+	symfony composer config minimum-stability --unset
 
-## Install - Install Symfony 6.0 deps
-install.60: setup
-install.60: export SYMFONY_REQUIRE = 6.0.*@dev
-install.60:
+## Install - Install Symfony 7.0 deps
+install.70: setup
+install.70: export SYMFONY_REQUIRE = 7.0.*@dev
+install.70:
 	rm -f composer.lock
+	symfony composer config minimum-stability dev
 	symfony composer update
+	symfony composer config minimum-stability --unset
 
-## Install - Install Symfony 6.1 deps
-install.61: setup
-install.61: export SYMFONY_REQUIRE = 6.1.*@dev
-install.61:
-	rm -f composer.lock
-	symfony composer update
-
-## Install - Install Symfony 6.2 deps
-install.62: setup
-install.62: export SYMFONY_REQUIRE = 6.2.*@dev
-install.62:
+## Install - Install Symfony 7.1 deps
+install.71: setup
+install.71: export SYMFONY_REQUIRE = 7.1.*@dev
+install.71:
 	rm -f composer.lock
 	symfony composer config minimum-stability dev
 	symfony composer update
@@ -80,12 +70,10 @@ lint.fix: lint.php-cs-fixer.fix
 lint.composer:
 	symfony composer validate --strict
 
-lint.php-cs-fixer: php8
 lint.php-cs-fixer: php-cs-fixer.phar
 lint.php-cs-fixer:
 	symfony php ./php-cs-fixer.phar fix --dry-run --diff
 
-lint.php-cs-fixer.fix: php8
 lint.php-cs-fixer.fix: php-cs-fixer.phar
 lint.php-cs-fixer.fix:
 	symfony php ./php-cs-fixer.phar fix

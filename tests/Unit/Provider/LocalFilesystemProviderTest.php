@@ -4,6 +4,7 @@
  * This file is part of the "StenopePHP/Stenope" bundle.
  *
  * @author Thomas Jarrand <thomas.jarrand@gmail.com>
+ * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 
 namespace Stenope\Bundle\Tests\Unit\Provider;
@@ -27,7 +28,7 @@ class LocalFilesystemProviderTest extends TestCase
 
     private const FIXTURES_DIR = FIXTURES_DIR . '/Unit/Provider/LocalFilesystemProvider';
 
-    protected function setUpVarDumper(array $casters, int $flags = null): void
+    protected function setUpVarDumper(array $casters, ?int $flags = null): void
     {
         $this->setUpVarDumperParent(
             $casters,
@@ -143,12 +144,12 @@ class LocalFilesystemProviderTest extends TestCase
                 self::FIXTURES_DIR . '/content/foo',
             ),
             [
-              'foo (markdown)',
-              'foo2 (markdown)',
-              'foo3 (html)',
-              'bar/bar (markdown)',
-              'bar/bar2 (markdown)',
-              'bar/baz/baz (markdown)',
+                'foo (markdown)',
+                'foo2 (markdown)',
+                'foo3 (html)',
+                'bar/bar (markdown)',
+                'bar/bar2 (markdown)',
+                'bar/baz/baz (markdown)',
             ],
         ];
 
@@ -159,9 +160,9 @@ class LocalFilesystemProviderTest extends TestCase
                 '< 1',
             ),
             [
-              'foo (markdown)',
-              'foo2 (markdown)',
-              'foo3 (html)',
+                'foo (markdown)',
+                'foo2 (markdown)',
+                'foo3 (html)',
             ],
         ];
 
@@ -174,9 +175,9 @@ class LocalFilesystemProviderTest extends TestCase
                 ['*.md'],
             ),
             [
-              'foo (markdown)',
-              'bar/bar (markdown)',
-              'bar/baz/baz (markdown)',
+                'foo (markdown)',
+                'bar/bar (markdown)',
+                'bar/baz/baz (markdown)',
             ],
         ];
 

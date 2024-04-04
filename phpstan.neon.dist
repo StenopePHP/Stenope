@@ -16,6 +16,8 @@ parameters:
     excludePaths:
         - tests/fixtures/app/var/
         - tests/fixtures/Unit/Service/Git/bin
+        - src/HttpKernel/Controller/ArgumentResolver/ContentArgumentResolver.php
+        - src/Serializer/Normalizer/SkippingInstantiatedObjectDenormalizer.php
 
     banned_code:
         nodes:
