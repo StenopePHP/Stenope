@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Loading content | Stenope, the static website generation tool for Symfony</title>
         <meta name="description" content="Stenope Documentation. The static website generation tool for Symfony">
-                    <link rel="stylesheet" href="/Stenope/build/style.c1443638.css">
+                    <link rel="stylesheet" href="/Stenope/build/style.bac99178.css">
             </head>
     <body>
         <div class="main">
@@ -155,7 +155,7 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <p>The content manager uses slugs to identify your content.</p>
 <p>The <code class="code-inline" id="2dbcba41b9ac4c5d22886ba672463cb4">slug</code> argument must exactly match the static file name in your content directory.</p>
 <p>Example: <code class="code-inline" id="f341a2e6f77ea7ae8f5b496db7c87605">$contentManager-&gt;getContent(Article::class, 'how-to-train-your-dragon');</code> will fetch the <code class="code-inline" id="a3f6d98021342733f989d9354314b972">content/articles/how-to-train-your-dragon.md</code> article.</p>
-<pre class="code-multiline language-php"><code class="language-php" id="984e99b0a82956f06a82e7cfa419f3c6"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<pre class="code-multiline language-php"><code class="language-php" id="ba2ee56667c51f19fcb03d7bd38fea0a"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Controller</span><span class="token punctuation">;</span>
 
@@ -164,16 +164,12 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Bundle<span class="token punctuation">\</span>FrameworkBundle<span class="token punctuation">\</span>Controller<span class="token punctuation">\</span>AbstractController</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">Symfony<span class="token punctuation">\</span>Component<span class="token punctuation">\</span>Routing<span class="token punctuation">\</span>Annotation<span class="token punctuation">\</span>Route</span><span class="token punctuation">;</span>
 
-<span class="token doc-comment comment">/**
- * @Route("/blog")
- */</span>
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">Route</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/blog'</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
 <span class="token keyword">class</span> <span class="token class-name-definition class-name">BlogController</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractController</span>
 <span class="token punctuation">{</span>
     <span class="token comment">// ...</span>
 
-    <span class="token doc-comment comment">/**
-     * @Route("/<span class="token punctuation">{</span>slug<span class="token punctuation">}</span>", name="article")
-     */</span>
+    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">Route</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/{slug}'</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">name</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">'article'</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
     <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">article</span><span class="token punctuation">(</span><span class="token class-name type-declaration">ContentManagerInterface</span> <span class="token variable">$contentManager</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$slug</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token this keyword">$this</span><span class="token operator">-&gt;</span><span class="token function">render</span><span class="token punctuation">(</span>
@@ -312,6 +308,6 @@ It's twelve days north of Hopeless and a few degrees south of Freezing to Death.
                     </main>
                 </div>
                     </div>
-                    <script src="/Stenope/build/runtime.55cd3057.js" defer></script><script src="/Stenope/build/785.bcd3d123.js" defer></script><script src="/Stenope/build/app.c09d61dc.js" defer></script>
+                    <script src="/Stenope/build/runtime.ee9772fe.js" defer></script><script src="/Stenope/build/242.321b298a.js" defer></script><script src="/Stenope/build/app.f2c6c3bd.js" defer></script>
             </body>
 </html>

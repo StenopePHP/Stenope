@@ -1,0 +1,1 @@
+(self.webpackChunkstenope_doc=self.webpackChunkstenope_doc||[]).push([[524],{8791:(e,t,a)=>{a(1629),a(3418),a(6099),a(7764),a(3500),Array.from(document.getElementsByClassName("sidebar")).forEach((function(e){e.addEventListener("click",(function(t){"A"!==t.target.tagName&&e.classList.toggle("active")}))}))}},e=>{e.O(0,[242],(()=>{return t=8791,e(e.s=t);var t}));e.O()}]);
