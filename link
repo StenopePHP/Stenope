@@ -5,6 +5,7 @@ require __DIR__.'/vendor/symfony/filesystem/Exception/ExceptionInterface.php';
 require __DIR__.'/vendor/symfony/filesystem/Exception/IOExceptionInterface.php';
 require __DIR__.'/vendor/symfony/filesystem/Exception/IOException.php';
 require __DIR__.'/vendor/symfony/filesystem/Filesystem.php';
+require __DIR__.'/vendor/symfony/filesystem/Path.php';
 
 use Symfony\Component\Filesystem\Filesystem;
 
