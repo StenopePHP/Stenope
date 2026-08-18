@@ -37,6 +37,9 @@ class BuildTest extends KernelTestCase
      */
     public function testBuildApp(): void
     {
+        // Shut down the kernel booted in setUp() before its cache is removed underneath it.
+        self::ensureKernelShutdown();
+
         // Empty build & cache
         ($fs = new Filesystem())->remove(($kernel = self::createKernel(self::$kernelOptions))->getCacheDir());
         $fs->remove($kernel->getProjectDir() . '/build');
