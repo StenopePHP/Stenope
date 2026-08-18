@@ -32,7 +32,7 @@ jobs:
         run: echo "::set-output name=directory::$(composer config cache-dir)"
 
       - name: 'Cache composer dependencies'
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.directory }}
           key: lint-composer-${{ hashFiles('**/composer.lock') }}
@@ -88,11 +88,6 @@ jobs:
             php: '8.2'
             symfony: '6.4.*'
 
-          - name: 'Test Symfony 7.0 [Linux, PHP 8.3]'
-            os: 'ubuntu-latest'
-            php: '8.3'
-            symfony: '7.0.*'
-
           # Bleeding edges:
           - name: 'Test Symfony 7.1 [Linux, PHP 8.3]'
             os: 'ubuntu-latest'
@@ -127,7 +122,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: 'Cache dependencies'
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-php-${{ matrix.php }}-symfony-${{ matrix.symfony }}-${{ hashFiles('**/composer.json') }}-flags-${{ matrix.composer-flags }}
@@ -181,7 +176,7 @@ jobs:
         run: echo "::set-output name=directory::$(composer config cache-dir)"
 
       - name: 'Cache composer dependencies'
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.directory }}
           key: composer-${{ hashFiles('./doc/app/**/composer.lock') }}
