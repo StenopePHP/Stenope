@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2026-08-18T09:44:40Z
+
+Indeed, we can drop the 7.0 version as it's EOL (7.1 as well). We'd rather test on 7.4 ideally, to test on latest LTS.
+Thanks for submitting this ✨
+
+---------------------------------------------------------------------------
+
+by MichaelBrauner at 2026-08-18T11:39:15Z
+
+Dropped 7.0. I left 7.1 in for now, even though it is EOL too — it is the only coverage left for the 7.x range `composer.json` allows, and it does pass. Happy to drop it as soon as 7.4 can go in.
+
+7.4 does not fit yet: it deprecates the XML configuration format, and `XmlStenopeExtensionTest` loads its config from XML — 22 direct notices from that class alone, and `phpunit.xml.dist` sets `max[direct]=0`. The tests themselves pass on 7.4, so it is the deprecation threshold rather than an incompatibility.
