@@ -4,3 +4,4 @@
 /.phpunit.result.cache
 /node_modules
 /php-cs-fixer.phar
+.idea
