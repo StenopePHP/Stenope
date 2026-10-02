@@ -26,6 +26,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class ContentManager implements ContentManagerInterface
 {
@@ -47,6 +48,14 @@ class ContentManager implements ContentManagerInterface
     /** @var array<string,object> */
     private array $cache = [];
 
+    private ?CacheInterface $cachePool;
+
+    /**
+     * Container build id, mixed into the cache keys: the pool itself is not versioned by it, and
+     * a rebuilt container means the processors that produced the cached objects may have changed.
+     */
+    private ?string $cacheVersion;
+
     /** @var array<string,object> */
     private array $reversedCache = [];
 
@@ -62,7 +71,9 @@ class ContentManager implements ContentManagerInterface
         iterable $processors,
         ?PropertyAccessorInterface $propertyAccessor = null,
         ?ExpressionLanguage $expressionLanguage = null,
-        ?Stopwatch $stopwatch = null
+        ?Stopwatch $stopwatch = null,
+        ?CacheInterface $cachePool = null,
+        ?string $cacheVersion = null
     ) {
         $this->decoder = $decoder;
         $this->denormalizer = $denormalizer;
@@ -71,6 +82,8 @@ class ContentManager implements ContentManagerInterface
         $this->providers = $contentProviders;
         $this->processors = $processors;
         $this->stopwatch = $stopwatch;
+        $this->cachePool = $cachePool;
+        $this->cacheVersion = $cacheVersion;
 
         if (!$expressionLanguage && class_exists(BaseExpressionLanguage::class)) {
             $expressionLanguage = new ExpressionLanguage();
@@ -209,6 +222,18 @@ class ContentManager implements ContentManagerInterface
             return $data;
         }
 
+        if ($this->cachePool === null) {
+            return $this->cache[$key] = $this->hydrate($content);
+        }
+
+        return $this->cache[$key] = $this->cachePool->get(
+            key: $this->cachePoolKey($content),
+            callback: fn () => $this->hydrate($content),
+        );
+    }
+
+    private function hydrate(Content $content): object
+    {
         $this->initProcessors();
 
         $data = $this->decoder->decode($content->getRawContent(), $content->getFormat());
@@ -220,11 +245,24 @@ class ContentManager implements ContentManagerInterface
 
         $this->crawlers->saveAll($content, $data);
 
-        $data = $this->denormalizer->denormalize($data, $content->getType(), $content->getFormat(), [
+        return $this->denormalizer->denormalize($data, $content->getType(), $content->getFormat(), [
             SkippingInstantiatedObjectDenormalizer::SKIP => true,
         ]);
+    }
 
-        return $this->cache[$key] = $data;
+    /**
+     * Keyed on the contents, not on the last modified date: a checkout or a copy re-dates every file
+     * without changing a byte of it. Hashed: a FQCN and a slug may contain characters PSR-6 reserves.
+     */
+    private function cachePoolKey(Content $content): string
+    {
+        return 'stenope.content.' . hash('xxh128', implode(':', [
+            $this->cacheVersion,
+            $content->getType(),
+            $content->getSlug(),
+            $content->getFormat(),
+            $content->getRawContent(),
+        ]));
     }
 
     private function getSortFunction($sortBy): ?callable

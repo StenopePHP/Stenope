@@ -287,3 +287,27 @@ class ArticleDenormalizer implements DenormalizerInterface
 ```
 
 _Note: Using autowiring, denormalizers are automaticaly registered in Symfony serializer._
+
+### Caching contents
+
+Stenope comes with a content cache, keyed on the content itself — its type, slug, format and raw
+contents — and on the container build id, so changing a processor invalidates the entries. It is
+registered as a regular cache pool, with this default configuration:
+
+```yaml
+# config/packages/cache.yaml
+framework:
+    cache:
+        pools:
+            stenope.content_cache:
+                adapter: cache.system
+```
+
+Clear it:
+
+```bash
+php bin/console cache:pool:clear stenope.content_cache
+```
+
+_Caution: the key covers the content, not what a processor reads elsewhere. Asset URLs and links
+resolved to other contents keep the values they had when the entry was written._

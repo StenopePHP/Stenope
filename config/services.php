@@ -41,6 +41,7 @@ use Stenope\Bundle\TableOfContent\CrawlerTableOfContentGenerator;
 use Stenope\Bundle\Twig\ContentExtension;
 use Stenope\Bundle\Twig\ContentRuntime;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -60,6 +61,8 @@ return static function (ContainerConfigurator $container): void {
             '$propertyAccessor' => service('property_accessor'),
             '$expressionLanguage' => service(ExpressionLanguage::class)->nullOnInvalid(),
             '$stopwatch' => service('debug.stopwatch')->nullOnInvalid(),
+            '$cachePool' => service('stenope.content_cache')->nullOnInvalid(),
+            '$cacheVersion' => new Parameter('container.build_id'),
         ])->call('setContentManager', [service(ContentManagerInterface::class)])
         ->alias(ContentManagerInterface::class, ContentManager::class)
 
