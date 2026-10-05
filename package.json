@@ -17,7 +17,7 @@
     "prismjs": "^1.23.0"
   },
   "devDependencies": {
-    "@symfony/webpack-encore": "^4.6.1",
+    "@symfony/webpack-encore": "^7.2.0",
     "babel-plugin-prismjs": "^2.0.1",
     "webpack-notifier": "^1.13.0"
   }
