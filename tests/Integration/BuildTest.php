@@ -50,7 +50,7 @@ class BuildTest extends KernelTestCase
         $application->setAutoExit(false);
 
         $tester = new ApplicationTester($application);
-        $tester->run(['stenope:build', '--ansi'], [
+        $tester->run(['stenope:build'], [
             'interactive' => false,
             'verbosity' => ConsoleOutput::VERBOSITY_NORMAL,
         ]);
