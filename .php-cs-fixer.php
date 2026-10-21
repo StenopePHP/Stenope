@@ -12,6 +12,7 @@ $finder = (new PhpCsFixer\Finder())
     ->exclude('doc/app')
     ->exclude('tests/fixtures/app/var')
     ->exclude('tests/fixtures/app/build')
+    ->notPath('tests/fixtures/app/config/reference.php')
 ;
 
 return (new PhpCsFixer\Config)

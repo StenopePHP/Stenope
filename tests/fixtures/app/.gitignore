@@ -4,3 +4,4 @@
 #/public/build/
 npm-debug.log
 /build/
+/config/reference.php
