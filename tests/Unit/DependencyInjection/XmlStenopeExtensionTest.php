@@ -13,8 +13,18 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
+/**
+ * @group legacy
+ */
 class XmlStenopeExtensionTest extends StenopeExtensionTest
 {
+    protected function setUp(): void
+    {
+        if (!class_exists(XmlFileLoader::class)) {
+            $this->markTestSkipped('Symfony >=8.0 dropped XML configuration');
+        }
+    }
+
     protected function loadFromFile(ContainerBuilder $container, string $file): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(self::FIXTURES_PATH . '/xml'));
