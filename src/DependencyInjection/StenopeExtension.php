@@ -34,6 +34,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -41,8 +42,20 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 /**
  * @final
  */
-class StenopeExtension extends Extension
+class StenopeExtension extends Extension implements PrependExtensionInterface
 {
+    /** Prepended rather than defined in services.php, where it would override the app's own config. */
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('framework', [
+            'cache' => [
+                'pools' => [
+                    'stenope.content_cache' => ['adapter' => 'cache.system'],
+                ],
+            ],
+        ]);
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../../config'));

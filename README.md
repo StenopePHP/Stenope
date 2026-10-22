@@ -62,6 +62,7 @@ Stenope is not a ready-to-use bloging system: but you could quickly _write your 
 ### Features
 
 - [Loading and parsing content](doc/loading-content.md)
+- [Caching contents](doc/loading-content.md#caching-contents)
 - [Supported formats](doc/supported-formats.md)
 - [Supported sources](doc/supported-sources.md)
 - [CLI usage](doc/cli.md)
