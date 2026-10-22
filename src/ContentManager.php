@@ -24,6 +24,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLan
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -222,6 +223,8 @@ class ContentManager implements ContentManagerInterface
 
         $data = $this->denormalizer->denormalize($data, $content->getType(), $content->getFormat(), [
             SkippingInstantiatedObjectDenormalizer::SKIP => true,
+            // Accept any date the DateTime constructor understands, as front matter dates rarely follow RFC 3339
+            DateTimeNormalizer::FORMAT_KEY => null,
         ]);
 
         return $this->cache[$key] = $data;
