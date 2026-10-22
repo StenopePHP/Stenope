@@ -370,10 +370,20 @@ class Builder
 
         $request = ContentRequest::create($url, 'GET')->withBaseUrl($this->router->getContext()->getBaseUrl());
 
+        $obLevel = ob_get_level();
+
         ob_start();
 
         try {
             $response = $this->httpKernel->handle($request, HttpKernelInterface::MAIN_REQUEST, false);
+
+            $this->httpKernel->terminate($request, $response);
+
+            if ($response instanceof BinaryFileResponse || $response instanceof StreamedResponse) {
+                $response->sendContent();
+            }
+
+            $output = ob_get_contents();
         } catch (\Throwable $exception) {
             if ($ignoreContentNotFoundErrors && $exception instanceof ContentNotFoundException) {
                 $this->logger->warning('Could not build url {url}: {exception}', [
@@ -385,15 +395,13 @@ class Builder
             }
 
             throw new \Exception(sprintf('Could not build url %s.', $url), 0, $exception);
+        } finally {
+            // A page interrupted mid-rendering may leave nested buffers of its own behind.
+            while (ob_get_level() > $obLevel) {
+                ob_end_clean();
+            }
         }
 
-        $this->httpKernel->terminate($request, $response);
-
-        if ($response instanceof BinaryFileResponse || $response instanceof StreamedResponse) {
-            $response->sendContent();
-        }
-
-        $output = ob_get_clean();
         $content = $response->getContent() ?: $output;
 
         if ($this->hasNoIndexHeader($response) && !$this->hasNoIndexTag($content)) {
